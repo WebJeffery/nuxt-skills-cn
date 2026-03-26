@@ -4,9 +4,9 @@ category: '@Math'
 
 # useTrunc
 
-Reactive `Math.trunc`.
+响应式 `Math.trunc`。
 
-## Usage
+## 用法
 
 ```ts
 import { useTrunc } from '@vueuse/math'
@@ -17,11 +17,11 @@ const result1 = useTrunc(value1) // 0
 const result2 = useTrunc(value2) // -2
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Reactive `Math.trunc`.
+ * 响应式 `Math.trunc`。
  *
  * @see https://vueuse.org/useTrunc
  *

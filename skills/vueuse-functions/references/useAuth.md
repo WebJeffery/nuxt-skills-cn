@@ -4,10 +4,9 @@ category: '@Firebase'
 
 # useAuth
 
-Reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding. It provides a reactive `user` and `isAuthenticated` so you
-can easily react to changes in the users' authentication status.
+响应式 [Firebase Auth](https://firebase.google.com/docs/auth) 绑定。它提供了响应式 `user` 和 `isAuthenticated`,因此您可以轻松响应用户身份验证状态的变化。
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -26,22 +25,22 @@ const signIn = () => signInWithPopup(auth, new GoogleAuthProvider())
   <pre v-if="isAuthenticated">{{ user }}</pre>
   <div v-else>
     <button @click="signIn">
-      Sign In with Google
+      使用 Google 登录
     </button>
   </div>
 </template>
 ```
 
-## Return Values
+## 返回值
 
-| Name              | Type                   | Description                                               |
+| 名称              | 类型                   | 描述                                               |
 | ----------------- | ---------------------- | --------------------------------------------------------- |
-| `user`            | `Ref<User \| null>`    | The current Firebase user, or `null` if not authenticated |
-| `isAuthenticated` | `ComputedRef<boolean>` | Whether a user is currently authenticated                 |
+| `user`            | `Ref<User \| null>`    | 当前的 Firebase 用户,如果未验证则为 `null` |
+| `isAuthenticated` | `ComputedRef<boolean>` | 用户当前是否已验证                 |
 
-The composable automatically updates when the user's ID token changes (including sign-in, sign-out, and token refresh events) using Firebase's `onIdTokenChanged` listener.
+该组合式函数使用 Firebase 的 `onIdTokenChanged` 监听器,在用户的 ID 令牌更改时(包括登录、登出和令牌刷新事件)自动更新。
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseFirebaseAuthOptions {
@@ -49,7 +48,7 @@ export interface UseFirebaseAuthOptions {
   user: Ref<User | null>
 }
 /**
- * Reactive Firebase Auth binding
+ * 响应式 Firebase Auth 绑定
  *
  * @see https://vueuse.org/useAuth
  *

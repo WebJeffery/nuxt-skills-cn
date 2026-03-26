@@ -4,11 +4,11 @@ category: Array
 
 # useArraySome
 
-Reactive `Array.some`
+响应式 `Array.some`
 
-## Usage
+## 用法
 
-### Use with array of multiple refs
+### 与多个 ref 的数组一起使用
 
 ```ts
 import { useArraySome } from '@vueuse/core'
@@ -25,7 +25,7 @@ item1.value = 11
 // result.value: true
 ```
 
-### Use with reactive array
+### 与响应式数组一起使用
 
 ```ts
 import { useArraySome } from '@vueuse/core'
@@ -37,18 +37,18 @@ list.value.push(11)
 // result.value: true
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UseArraySomeReturn = ComputedRef<boolean>
 /**
- * Reactive `Array.some`
+ * 响应式 `Array.some`
  *
  * @see https://vueuse.org/useArraySome
- * @param list - the array was called upon.
- * @param fn - a function to test each element.
+ * @param list - 被调用的数组。
+ * @param fn - 测试每个元素的函数。
  *
- * @returns **true** if the `fn` function returns a **truthy** value for any element from the array. Otherwise, **false**.
+ * @returns 如果对于数组中的任何元素,`fn` 函数返回**真值**,则返回 **true**。否则,返回 **false**。
  *
  * @__NO_SIDE_EFFECTS__
  */

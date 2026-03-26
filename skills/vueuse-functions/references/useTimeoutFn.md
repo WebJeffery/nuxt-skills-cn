@@ -4,9 +4,9 @@ category: Animation
 
 # useTimeoutFn
 
-Wrapper for `setTimeout` with controls.
+带有控制的 `setTimeout` 包装器。
 
-## Usage
+## 用法
 
 ```ts
 import { useTimeoutFn } from '@vueuse/core'
@@ -16,18 +16,18 @@ const { isPending, start, stop } = useTimeoutFn(() => {
 }, 3000)
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseTimeoutFnOptions {
   /**
-   * Start the timer immediately
+   * 立即启动计时器
    *
    * @default true
    */
   immediate?: boolean
   /**
-   * Execute the callback immediately after calling `start`
+   * 在调用 `start` 后立即执行回调
    *
    * @default false
    */
@@ -37,7 +37,7 @@ export type UseTimeoutFnReturn<CallbackFn extends AnyFn> = Stoppable<
   Parameters<CallbackFn> | []
 >
 /**
- * Wrapper for `setTimeout` with controls.
+ * 带有控制的 `setTimeout` 包装器。
  *
  * @param cb
  * @param interval

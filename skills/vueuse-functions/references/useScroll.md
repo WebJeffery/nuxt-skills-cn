@@ -4,9 +4,9 @@ category: Sensors
 
 # useScroll
 
-Reactive scroll position and state.
+响应式滚动位置和状态。
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -22,7 +22,7 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
 </template>
 ```
 
-### With offsets
+### 使用偏移量
 
 ```ts
 import { useScroll } from '@vueuse/core'
@@ -32,9 +32,9 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(el, {
 })
 ```
 
-### Setting scroll position
+### 设置滚动位置
 
-Set the `x` and `y` values to make the element scroll to that position.
+设置 `x` 和 `y` 值以使元素滚动到该位置。
 
 ```vue
 <script setup lang="ts">
@@ -56,9 +56,9 @@ const { x, y } = useScroll(el)
 </template>
 ```
 
-### Smooth scrolling
+### 平滑滚动
 
-Set `behavior: smooth` to enable smooth scrolling. The `behavior` option defaults to `auto`, which means no smooth scrolling. See the `behavior` option on [`window.scrollTo()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollTo) for more information.
+设置 `behavior: smooth` 以启用平滑滚动。`behavior` 选项默认为 `auto`，这意味着没有平滑滚动。有关更多信息，请参阅 [`window.scrollTo()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollTo) 上的 `behavior` 选项。
 
 ```ts
 import { useScroll } from '@vueuse/core'
@@ -67,17 +67,17 @@ import { useTemplateRef } from 'vue'
 const el = useTemplateRef('el')
 const { x, y } = useScroll(el, { behavior: 'smooth' })
 
-// Or as a `ref`:
+// 或者作为 `ref`:
 const smooth = ref(false)
 const behavior = computed(() => smooth.value ? 'smooth' : 'auto')
 const { x, y } = useScroll(el, { behavior })
 ```
 
-### Recalculate scroll state
+### 重新计算滚动状态
 
-You can call the `measure()` method to manually update the scroll position and `arrivedState` at any time.
+您可以调用 `measure()` 方法来随时手动更新滚动位置和 `arrivedState`。
 
-This is useful, for example, after dynamic content changes or when you want to recalculate the scroll state outside of scroll events.
+这很有用，例如，在动态内容更改之后，或者当您想在滚动事件之外重新计算滚动状态时。
 
 ```ts
 import { useScroll } from '@vueuse/core'
@@ -88,12 +88,12 @@ const reactiveValue = shallowRef(false)
 
 const { measure } = useScroll(el)
 
-// In a watcher
+// 在 watcher 中
 watch(reactiveValue, () => {
   measure()
 })
 
-// Or inside any function
+// 或者在任何函数内部
 function updateScrollState() {
   // ...some logic
   nextTick(() => {
@@ -102,12 +102,12 @@ function updateScrollState() {
 }
 ```
 
-> [!NOTE]
-> it's recommended to call `measure()` inside `nextTick()`, to ensure the DOM is updated first.
-> The scroll state is initialized automatically `onMount`.
-> You only need to call `measure()` manually if you want to recalculate the state after some dynamic changes.
+> [!注意]
+> 建议在 `nextTick()` 内调用 `measure()`，以确保首先更新 DOM。
+> 滚动状态在 `onMount` 时自动初始化。
+> 如果您想在某些动态更改后重新计算状态，则只需要手动调用 `measure()`。
 
-## Directive Usage
+## 指令用法
 
 ```vue
 <script setup lang="ts">
@@ -128,7 +128,7 @@ function onScroll(state: UseScrollReturn) {
     </div>
   </div>
 
-  <!-- with options -->
+  <!-- 带选项 -->
   <div v-scroll="[onScroll, { throttle: 10 }]">
     <div v-for="item in data" :key="item">
       {{ item }}
@@ -137,25 +137,25 @@ function onScroll(state: UseScrollReturn) {
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseScrollOptions extends ConfigurableWindow {
   /**
-   * Throttle time for scroll event, it’s disabled by default.
+   * 滚动事件的节流时间，默认禁用。
    *
    * @default 0
    */
   throttle?: number
   /**
-   * The check time when scrolling ends.
-   * This configuration will be setting to (throttle + idle) when the `throttle` is configured.
+   * 滚动结束时的检查时间。
+   * 当配置了 `throttle` 时，此配置将设置为 (throttle + idle)。
    *
    * @default 200
    */
   idle?: number
   /**
-   * Offset arrived states by x pixels
+   * 以 x 像素偏移到达状态
    *
    */
   offset?: {
@@ -165,8 +165,8 @@ export interface UseScrollOptions extends ConfigurableWindow {
     bottom?: number
   }
   /**
-   * Use MutationObserver to monitor specific DOM changes,
-   * such as attribute modifications, child node additions or removals, or subtree changes.
+   * 使用 MutationObserver 监视特定的 DOM 更改，
+   * 例如属性修改、子节点添加或删除，或子树更改。
    * @default { mutation: boolean }
    */
   observe?:
@@ -175,32 +175,32 @@ export interface UseScrollOptions extends ConfigurableWindow {
         mutation?: boolean
       }
   /**
-   * Trigger it when scrolling.
+   * 滚动时触发。
    *
    */
   onScroll?: (e: Event) => void
   /**
-   * Trigger it when scrolling ends.
+   * 滚动结束时触发。
    *
    */
   onStop?: (e: Event) => void
   /**
-   * Listener options for scroll event.
+   * 滚动事件的监听器选项。
    *
    * @default {capture: false, passive: true}
    */
   eventListenerOptions?: boolean | AddEventListenerOptions
   /**
-   * Optionally specify a scroll behavior of `auto` (default, not smooth scrolling) or
-   * `smooth` (for smooth scrolling) which takes effect when changing the `x` or `y` refs.
+   * 可选指定 `auto`（默认，无平滑滚动）或
+   * `smooth`（用于平滑滚动）的滚动行为，这在更改 `x` 或 `y` refs 时生效。
    *
    * @default 'auto'
    */
   behavior?: MaybeRefOrGetter<ScrollBehavior>
   /**
-   * On error callback
+   * 错误回调
    *
-   * Default log error to `console.error`
+   * 默认将错误记录到 `console.error`
    */
   onError?: (error: unknown) => void
 }
@@ -223,7 +223,7 @@ export interface UseScrollReturn {
   measure: () => void
 }
 /**
- * Reactive scroll.
+ * 响应式滚动。
  *
  * @see https://vueuse.org/useScroll
  * @param element

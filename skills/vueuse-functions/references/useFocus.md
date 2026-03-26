@@ -4,9 +4,9 @@ category: Sensors
 
 # useFocus
 
-Reactive utility to track or set the focus state of a DOM element. State changes to reflect whether the target element is the focused element. Setting reactive value from the outside will trigger `focus` and `blur` events for `true` and `false` values respectively.
+响应式实用程序，用于跟踪或设置 DOM 元素的焦点状态。状态更改以反映目标元素是否为焦点元素。从外部设置响应式值将分别为 `true` 和 `false` 值触发 `focus` 和 `blur` 事件。
 
-## Basic Usage
+## 基本用法
 
 ```ts
 import { useFocus } from '@vueuse/core'
@@ -21,9 +21,9 @@ watch(focused, (focused) => {
 })
 ```
 
-## Setting initial focus
+## 设置初始焦点
 
-To focus the element on its first render one can provide the `initialValue` option as `true`. This will trigger a `focus` event on the target element.
+要在元素首次渲染时聚焦元素，可以将 `initialValue` 选项提供为 `true`。这将在目标元素上触发 `focus` 事件。
 
 ```ts
 import { useFocus } from '@vueuse/core'
@@ -32,9 +32,9 @@ const target = shallowRef()
 const { focused } = useFocus(target, { initialValue: true })
 ```
 
-## Change focus state
+## 更改焦点状态
 
-Changes of the `focused` reactive ref will automatically trigger `focus` and `blur` events for `true` and `false` values respectively. You can utilize this behavior to focus the target element as a result of another action (e.g. when a button click as shown below).
+`focused` 响应式 ref 的更改将分别为 `true` 和 `false` 值自动触发 `focus` 和 `blur` 事件。您可以利用此行为来聚焦目标元素，作为另一个操作的结果（例如，当按钮点击时如下所示）。
 
 ```vue
 <script setup lang="ts">
@@ -55,24 +55,24 @@ const { focused } = useFocus(input)
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseFocusOptions extends ConfigurableWindow {
   /**
-   * Initial value. If set true, then focus will be set on the target
+   * 初始值。如果设置为 true，则将在目标上设置焦点
    *
    * @default false
    */
   initialValue?: boolean
   /**
-   * Replicate the :focus-visible behavior of CSS
+   * 复制 CSS 的 :focus-visible 行为
    *
    * @default false
    */
   focusVisible?: boolean
   /**
-   * Prevent scrolling to the element when it is focused.
+   * 防止在元素聚焦时滚动到元素。
    *
    * @default false
    */
@@ -80,16 +80,16 @@ export interface UseFocusOptions extends ConfigurableWindow {
 }
 export interface UseFocusReturn {
   /**
-   * If read as true, then the element has focus. If read as false, then the element does not have focus
-   * If set to true, then the element will be focused. If set to false, the element will be blurred.
+   * 如果读取为 true，则元素具有焦点。如果读取为 false，则元素不具有焦点
+   * 如果设置为 true，则元素将被聚焦。如果设置为 false，则元素将失去焦点。
    */
   focused: WritableComputedRef<boolean>
 }
 /**
- * Track or set the focus state of a DOM element.
+ * 跟踪或设置 DOM 元素的焦点状态。
  *
  * @see https://vueuse.org/useFocus
- * @param target The target element for the focus and blur events.
+ * @param target 焦点和模糊事件的目标元素。
  * @param options
  */
 export declare function useFocus(

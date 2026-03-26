@@ -4,9 +4,9 @@ category: Sensors
 
 # usePageLeave
 
-Reactive state to show whether the mouse leaves the page.
+响应式状态，显示鼠标是否离开页面。
 
-## Usage
+## 用法
 
 ```ts
 import { usePageLeave } from '@vueuse/core'
@@ -14,7 +14,7 @@ import { usePageLeave } from '@vueuse/core'
 const isLeft = usePageLeave()
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -24,13 +24,13 @@ const isLeft = usePageLeave()
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UsePageLeaveOptions extends ConfigurableWindow {}
 export type UsePageLeaveReturn = ShallowRef<boolean>
 /**
- * Reactive state to show whether mouse leaves the page.
+ * 响应式状态，显示鼠标是否离开页面。
  *
  * @see https://vueuse.org/usePageLeave
  * @param options

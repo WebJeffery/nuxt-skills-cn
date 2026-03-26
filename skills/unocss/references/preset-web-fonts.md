@@ -1,13 +1,13 @@
 ---
 name: preset-web-fonts
-description: Easy Google Fonts and other web fonts integration
+description: 轻松集成 Google Fonts 和其他 Web 字体
 ---
 
-# Preset Web Fonts
+# 预设 Web Fonts
 
-Easily use web fonts from Google Fonts and other providers.
+轻松使用来自 Google Fonts 和其他提供商的 Web 字体。
 
-## Installation
+## 安装
 
 ```ts
 import { defineConfig, presetWebFonts, presetWind3 } from 'unocss'
@@ -26,26 +26,26 @@ export default defineConfig({
 })
 ```
 
-## Providers
+## 提供商
 
-- `google` - Google Fonts (default)
-- `bunny` - Privacy-friendly alternative
-- `fontshare` - Quality fonts by ITF
-- `fontsource` - Self-hosted open source fonts
-- `coollabs` - Privacy-friendly drop-in replacement
-- `none` - Treat as system font
+- `google` - Google Fonts（默认）
+- `bunny` - 隐私友好的替代方案
+- `fontshare` - ITF 提供的优质字体
+- `fontsource` - 自托管开源字体
+- `coollabs` - 隐私友好的替代品
+- `none` - 视为系统字体
 
-## Font Configuration
+## 字体配置
 
 ```ts
 fonts: {
-  // Simple
+  // 简单
   sans: 'Roboto',
   
-  // Multiple (fallback)
+  // 多个（回退）
   mono: ['Fira Code', 'Fira Mono:400,700'],
   
-  // Detailed
+  // 详细
   lato: [
     {
       name: 'Lato',
@@ -60,16 +60,16 @@ fonts: {
 }
 ```
 
-## Usage
+## 用法
 
 ```html
 <p class="font-sans">Roboto</p>
 <code class="font-mono">Fira Code</code>
 ```
 
-## Local Fonts
+## 本地字体
 
-Self-host fonts:
+自托管字体：
 
 ```ts
 import { createLocalFontProcessor } from '@unocss/preset-web-fonts/local'
@@ -85,7 +85,7 @@ presetWebFonts({
 })
 ```
 
-<!-- 
-Source references:
+<!--
+源参考：
 - https://unocss.dev/presets/web-fonts
 -->

@@ -4,9 +4,9 @@ category: Animation
 
 # useTimestamp
 
-Reactive current timestamp
+响应式当前时间戳
 
-## Usage
+## 用法
 
 ```ts
 import { useTimestamp } from '@vueuse/core'
@@ -20,7 +20,7 @@ import { useTimestamp } from '@vueuse/core'
 const { timestamp, pause, resume } = useTimestamp({ controls: true })
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -36,40 +36,40 @@ const { timestamp, pause, resume } = useTimestamp({ controls: true })
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseTimestampOptions<
   Controls extends boolean,
 > extends ConfigurableScheduler {
   /**
-   * Expose more controls
+   * 暴露更多控制
    *
    * @default false
    */
   controls?: Controls
   /**
-   * Offset value adding to the value
+   * 添加到值的偏移值
    *
    * @default 0
    */
   offset?: number
   /**
-   * Update the timestamp immediately
+   * 立即更新时间戳
    *
-   * @deprecated Please use `scheduler` option instead
+   * @deprecated 请改用 `scheduler` 选项
    * @default true
    */
   immediate?: boolean
   /**
-   * Update interval, or use requestAnimationFrame
+   * 更新间隔，或使用 requestAnimationFrame
    *
-   * @deprecated Please use `scheduler` option instead
+   * @deprecated 请改用 `scheduler` 选项
    * @default requestAnimationFrame
    */
   interval?: "requestAnimationFrame" | number
   /**
-   * Callback on each update
+   * 每次更新时的回调
    */
   callback?: (timestamp: number) => void
 }
@@ -79,7 +79,7 @@ export type UseTimestampReturn<Controls extends boolean> = Controls extends true
     } & Pausable
   : ShallowRef<number>
 /**
- * Reactive current timestamp.
+ * 响应式当前时间戳。
  *
  * @see https://vueuse.org/useTimestamp
  * @param options

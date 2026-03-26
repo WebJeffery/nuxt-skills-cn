@@ -1,27 +1,27 @@
 ---
 name: transformer-attributify-jsx
-description: Support valueless attributify in JSX/TSX
+description: 在 JSX/TSX 中支持无值 attributify
 ---
 
 # Transformer Attributify JSX
 
-Fixes valueless attributify mode in JSX where `<div foo>` becomes `<div foo={true}>`.
+修复 JSX 中的无值 attributify 模式，其中 `<div foo>` 变为 `<div foo={true}>`。
 
-## The Problem
+## 问题
 
-In JSX, valueless attributes are transformed:
+在 JSX 中，无值属性被转换：
 
 ```jsx
-// You write
+// 您编写
 <div m-2 rounded text-teal-400 />
 
-// JSX compiles to
+// JSX 编译为
 <div m-2={true} rounded={true} text-teal-400={true} />
 ```
 
-The `={true}` breaks UnoCSS attributify detection.
+`={true}` 破坏了 UnoCSS attributify 检测。
 
-## Installation
+## 安装
 
 ```ts
 import { 
@@ -40,49 +40,49 @@ export default defineConfig({
 })
 ```
 
-## How It Works
+## 工作原理
 
-The transformer converts JSX boolean attributes back to strings:
+转换器将 JSX 布尔属性转换回字符串：
 
 ```jsx
-// Input (after JSX compilation)
+// 输入（JSX 编译后）
 <div m-2={true} rounded={true} />
 
-// Output (transformed)
+// 输出（转换后）
 <div m-2="" rounded="" />
 ```
 
-Now UnoCSS can properly extract the attributify classes.
+现在 UnoCSS 可以正确提取 attributify 类。
 
-## Options
+## 选项
 
 ```ts
 transformerAttributifyJsx({
-  // Only transform specific attributes
-  // Default: transforms all that match attributify patterns
+  // 仅转换特定属性
+  // 默认：转换所有匹配 attributify 模式的属性
   blocklist: ['text', 'font'],
 })
 ```
 
-## When to Use
+## 何时使用
 
-Required when using:
+使用以下内容时必需：
 - React
 - Preact
 - Solid
-- Any JSX-based framework
+- 任何基于 JSX 的框架
 
-With valueless attributify syntax:
+使用无值 attributify 语法：
 
 ```jsx
-// This needs the transformer
+// 这需要转换器
 <div flex items-center gap-4 />
 
-// This works without transformer (has values)
+// 这在没有转换器的情况下工作（有值）
 <div flex="~" items="center" gap="4" />
 ```
 
-## Framework Setup
+## 框架设置
 
 ### React
 
@@ -93,7 +93,7 @@ import UnoCSS from 'unocss/vite'
 
 export default {
   plugins: [
-    UnoCSS(), // Must be before React
+    UnoCSS(), // 必须在 React 之前
     React(),
   ],
 }
@@ -121,7 +121,7 @@ export default defineConfig({
 
 ### Preact
 
-Same as React, use `@preact/preset-vite` or `@prefresh/vite`.
+与 React 相同，使用 `@preact/preset-vite` 或 `@prefresh/vite`。
 
 ### Solid
 
@@ -137,9 +137,9 @@ export default {
 }
 ```
 
-## TypeScript Support
+## TypeScript 支持
 
-Add type declarations:
+添加类型声明：
 
 ```ts
 // shims.d.ts
@@ -150,7 +150,7 @@ declare module 'react' {
 }
 ```
 
-<!-- 
-Source references:
+<!--
+源参考：
 - https://unocss.dev/transformers/attributify-jsx
 -->

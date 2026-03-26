@@ -4,26 +4,26 @@ category: '@Router'
 
 # useRouteQuery
 
-Shorthand for a reactive `route.query`. Updates the URL query parameters when the ref changes.
+响应式 `route.query` 的简写。当 ref 更改时更新 URL 查询参数。
 
-## Usage
+## 用法
 
 ```ts
 import { useRouteQuery } from '@vueuse/router'
 
 const search = useRouteQuery('search')
 
-const search = useRouteQuery('search', 'foo') // or with a default value
+const search = useRouteQuery('search', 'foo') // 或使用默认值
 
-const page = useRouteQuery('page', '1', { transform: Number }) // or transforming value
+const page = useRouteQuery('page', '1', { transform: Number }) // 或转换值
 
 console.log(search.value) // route.query.search
 search.value = 'foobar' // router.replace({ query: { search: 'foobar' } })
 ```
 
-### Navigation Mode
+### 导航模式
 
-By default, changes use `router.replace()`. Set `mode: 'push'` to use `router.push()` instead.
+默认情况下，更改使用 `router.replace()`。设置 `mode: 'push'` 以改用 `router.push()`。
 
 ```ts
 import { useRouteQuery } from '@vueuse/router'
@@ -31,9 +31,9 @@ import { useRouteQuery } from '@vueuse/router'
 const search = useRouteQuery('search', '', { mode: 'push' })
 ```
 
-### Bidirectional Transform
+### 双向转换
 
-You can provide separate `get` and `set` transforms for reading and writing values.
+您可以提供单独的 `get` 和 `set` 转换来读取和写入值。
 
 ```ts
 import { useRouteQuery } from '@vueuse/router'
@@ -45,13 +45,13 @@ const filters = useRouteQuery('filters', [], {
   },
 })
 
-// Reading: 'a,b,c' -> ['a', 'b', 'c']
-// Writing: ['a', 'b', 'c'] -> 'a,b,c'
+// 读取：'a,b,c' -> ['a', 'b', 'c']
+// 写入：['a', 'b', 'c'] -> 'a,b,c'
 ```
 
-### Default Value Behavior
+### 默认值行为
 
-When the value equals the default value, the query parameter is removed from the URL.
+当值等于默认值时，查询参数将从 URL 中删除。
 
 ```ts
 import { useRouteQuery } from '@vueuse/router'
@@ -59,7 +59,7 @@ import { useRouteQuery } from '@vueuse/router'
 const page = useRouteQuery('page', '1')
 
 page.value = '2' // URL: ?page=2
-page.value = '1' // URL: (no page param, since it equals default)
+page.value = '1' // URL:（无 page 参数，因为它等于默认值）
 ```
 
 ## Type Declarations

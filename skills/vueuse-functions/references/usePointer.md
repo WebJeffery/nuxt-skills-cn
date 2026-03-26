@@ -4,9 +4,9 @@ category: Sensors
 
 # usePointer
 
-Reactive [pointer state](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events).
+响应式 [pointer state](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events)。
 
-## Basic Usage
+## 基本用法
 
 ```ts
 import { usePointer } from '@vueuse/core'
@@ -14,9 +14,9 @@ import { usePointer } from '@vueuse/core'
 const { x, y, pressure, pointerType } = usePointer()
 ```
 
-## Component Usage
+## 组件用法
 
-By default, the component will track the pointer on `window`
+默认情况下，组件将在 `window` 上跟踪指针
 
 ```vue
 <template>
@@ -27,7 +27,7 @@ By default, the component will track the pointer on `window`
 </template>
 ```
 
-To track local position in the element, set `target="self"`:
+要跟踪元素中的本地位置，设置 `target="self"`：
 
 ```vue
 <template>
@@ -37,7 +37,7 @@ To track local position in the element, set `target="self"`:
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UsePointerState extends Position {
@@ -52,13 +52,13 @@ export interface UsePointerState extends Position {
 }
 export interface UsePointerOptions extends ConfigurableWindow {
   /**
-   * Pointer types that listen to.
+   * 要监听的指针类型。
    *
    * @default ['mouse', 'touch', 'pen']
    */
   pointerTypes?: PointerType[]
   /**
-   * Initial values
+   * 初始值
    */
   initialValue?: MaybeRef<Partial<UsePointerState>>
   /**
@@ -80,7 +80,7 @@ export interface UsePointerReturn {
   isInside: ShallowRef<boolean>
 }
 /**
- * Reactive pointer state.
+ * 响应式指针状态。
  *
  * @see https://vueuse.org/usePointer
  * @param options

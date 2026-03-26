@@ -5,28 +5,28 @@ alias: createReactiveFn
 
 # reactify
 
-Converts plain functions into reactive functions. The converted function accepts refs as its arguments and returns a ComputedRef, with proper typing.
+将普通函数转换为响应式函数。转换后的函数接受 refs 作为参数并返回 ComputedRef,具有适当的类型。
 
 ::: tip
-Interested to see some application or looking for some pre-reactified functions?
+有兴趣查看一些应用程序或寻找一些预反应函数?
 
-Check out [⚗️ Vue Chemistry](https://github.com/antfu/vue-chemistry)!
+查看 [⚗️ Vue Chemistry](https://github.com/antfu/vue-chemistry)!
 :::
 
-## Usage
+## 用法
 
-Basic example
+基本示例
 
 ```ts
 import { reactify } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
-// a plain function
+// 普通函数
 function add(a: number, b: number): number {
   return a + b
 }
 
-// now it accept refs and returns a computed ref
+// 现在它接受 refs 并返回一个 computed ref
 // (a: number | Ref<number>, b: number | Ref<number>) => ComputedRef<number>
 const reactiveAdd = reactify(add)
 
@@ -41,7 +41,7 @@ a.value = 5
 console.log(sum.value) // 7
 ```
 
-An example of implementing a reactive [Pythagorean theorem](https://en.wikipedia.org/wiki/Pythagorean_theorem).
+实现响应式[勾股定理](https://en.wikipedia.org/wiki/Pythagorean_theorem)的示例。
 
 <!-- eslint-skip -->
 
@@ -64,7 +64,7 @@ b.value = 12
 console.log(c.value) // 13
 ```
 
-You can also do it this way:
+您也可以这样做:
 
 ```ts
 import { reactify } from '@vueuse/core'
@@ -81,7 +81,7 @@ const c = reactify(pythagorean)(a, b)
 console.log(c.value) // 5
 ```
 
-Another example of making reactive `stringify`
+另一个制作响应式 `stringify` 的示例
 
 ```ts
 import { reactify } from '@vueuse/core'
@@ -99,7 +99,7 @@ obj.value = { foo: 'bar' }
 console.log(dumped.value) // '{"foo":"bar"}'
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type Reactified<T, Computed extends boolean> = T extends (
@@ -119,19 +119,19 @@ export type ReactifyReturn<
 > = Reactified<T, K>
 export interface ReactifyOptions<T extends boolean> {
   /**
-   * Accept passing a function as a reactive getter
+   * 接受将函数作为响应式 getter
    *
    * @default true
    */
   computedGetter?: T
 }
 /**
- * Converts plain function into a reactive function.
- * The converted function accepts refs as it's arguments
- * and returns a ComputedRef, with proper typing.
+ * 将普通函数转换为响应式函数。
+ * 转换后的函数接受 refs 作为参数
+ * 并返回 ComputedRef,具有适当的类型。
  *
- * @param fn - Source function
- * @param options - Options
+ * @param fn - 源函数
+ * @param options - 选项
  *
  * @__NO_SIDE_EFFECTS__
  */
@@ -139,6 +139,6 @@ export declare function reactify<T extends AnyFn, K extends boolean = true>(
   fn: T,
   options?: ReactifyOptions<K>,
 ): ReactifyReturn<T, K>
-/** @deprecated use `reactify` instead */
+/** @deprecated 使用 `reactify` 代替 */
 export declare const createReactiveFn: typeof reactify
 ```

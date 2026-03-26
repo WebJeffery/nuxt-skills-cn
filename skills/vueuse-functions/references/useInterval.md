@@ -4,18 +4,18 @@ category: Animation
 
 # useInterval
 
-Reactive counter that increases on every interval.
+在每个间隔增加的响应式计数器。
 
-## Usage
+## 用法
 
 ```ts
 import { useInterval } from '@vueuse/core'
 
-// count will increase every 200ms
+// 计数器每 200ms 增加一次
 const counter = useInterval(200)
 ```
 
-### With Controls
+### 带控制
 
 ```ts
 import { useInterval } from '@vueuse/core'
@@ -24,25 +24,25 @@ const { counter, reset, pause, resume, isActive } = useInterval(200, {
   controls: true,
 })
 
-// Reset counter to 0
+// 将计数器重置为 0
 reset()
 
-// Pause/resume the interval
+// 暂停/恢复间隔
 pause()
 resume()
 ```
 
-### Options
+### 选项
 
-| Option      | Type                      | Default | Description                                                |
+| 选项      | 类型                      | 默认值 | 描述                                                |
 | ----------- | ------------------------- | ------- | ---------------------------------------------------------- |
-| `controls`  | `boolean`                 | `false` | Expose `pause`, `resume`, `reset`, and `isActive` controls |
-| `immediate` | `boolean`                 | `true`  | Start the interval immediately                             |
-| `callback`  | `(count: number) => void` | —       | Called on every interval with the current count            |
+| `controls`  | `boolean`                 | `false` | 暴露 `pause`、`resume`、`reset` 和 `isActive` 控制 |
+| `immediate` | `boolean`                 | `true`  | 立即启动间隔                             |
+| `callback`  | `(count: number) => void` | —       | 在每个间隔使用当前计数调用            |
 
-### Reactive Interval
+### 响应式间隔
 
-The interval can be reactive:
+间隔可以是响应式的：
 
 ```ts
 import { useInterval } from '@vueuse/core'
@@ -50,18 +50,18 @@ import { useInterval } from '@vueuse/core'
 const intervalMs = ref(1000)
 const counter = useInterval(intervalMs)
 
-// Change the interval dynamically
+// 动态更改间隔
 intervalMs.value = 500
 ```
 
-### Callback on Every Interval
+### 每个间隔的回调
 
 ```ts
 import { useInterval } from '@vueuse/core'
 
 useInterval(1000, {
   callback: (count) => {
-    console.log(`Tick ${count}`)
+    console.log(`滴答 ${count}`)
   },
 })
 ```

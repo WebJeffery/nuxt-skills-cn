@@ -4,9 +4,9 @@ category: State
 
 # createInjectionState
 
-Create global state that can be injected into components.
+创建可以注入到组件中的全局状态。
 
-## Usage
+## 用法
 
 ```ts twoslash include useCounterStore
 // useCounterStore.ts
@@ -14,7 +14,7 @@ import { createInjectionState } from '@vueuse/core'
 import { computed, shallowRef } from 'vue'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
-  // state
+  // 状态
   const count = shallowRef(initialValue)
 
   // getters
@@ -30,7 +30,7 @@ const [useProvideCounterStore, useCounterStore] = createInjectionState((initialV
 
 export { useProvideCounterStore }
 
-// If you want to hide `useCounterStore` and wrap it in default value logic or throw error logic, please don't export `useCounterStore`
+// 如果您想隐藏 `useCounterStore` 并将其包装在默认值逻辑或抛出错误逻辑中,请不要导出 `useCounterStore`
 export { useCounterStore }
 
 export function useCounterStoreWithDefaultValue() {
@@ -44,7 +44,7 @@ export function useCounterStoreWithDefaultValue() {
 export function useCounterStoreOrThrow() {
   const counterStore = useCounterStore()
   if (counterStore == null)
-    throw new Error('Please call `useProvideCounterStore` on the appropriate parent component')
+    throw new Error('Please call `useProvideCounterStore` on appropriate parent component')
   return counterStore
 }
 ```
@@ -75,13 +75,13 @@ useProvideCounterStore(0)
 // ---cut---
 import { useCounterStore } from './useCounterStore'
 
-// use non-null assertion operator to ignore the case that store is not provided.
+// 使用非空断言运算符来忽略未提供 store 的情况。
 const { count, double } = useCounterStore()!
-// if you want to allow component to working without providing store, you can use follow code instead:
+// 如果您想允许组件在没有提供 store 的情况下工作,可以使用以下代码代替:
 // const { count, double } = useCounterStore() ?? { count: shallowRef(0), double: shallowRef(0) }
-// also, you can use another hook to provide default value
+// 也可以,您可以使用另一个 hook 来提供默认值
 // const { count, double } = useCounterStoreWithDefaultValue()
-// or throw error
+// 或者抛出错误
 // const { count, double } = useCounterStoreOrThrow()
 </script>
 
@@ -105,7 +105,7 @@ const { count, double } = useCounterStore()!
 // ---cut---
 import { useCounterStore } from './useCounterStore'
 
-// use non-null assertion operator to ignore the case that store is not provided.
+// 使用非空断言运算符来忽略未提供 store 的情况。
 const { increment } = useCounterStore()!
 </script>
 
@@ -116,18 +116,18 @@ const { increment } = useCounterStore()!
 </template>
 ```
 
-## Provide a custom InjectionKey
+## 提供自定义 InjectionKey
 
 ```ts
 // useCounterStore.ts
 import { createInjectionState } from '@vueuse/core'
 import { computed, shallowRef } from 'vue'
 
-// custom injectionKey
+// 自定义 injectionKey
 const CounterStoreKey = 'counter-store'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
-  // state
+  // 状态
   const count = shallowRef(initialValue)
 
   // getters
@@ -142,7 +142,7 @@ const [useProvideCounterStore, useCounterStore] = createInjectionState((initialV
 }, { injectionKey: CounterStoreKey })
 ```
 
-## Provide a custom default value
+## 提供自定义默认值
 
 ```ts
 // useCounterStore.ts
@@ -150,7 +150,7 @@ import { createInjectionState } from '@vueuse/core'
 import { computed, shallowRef } from 'vue'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
-  // state
+  // 状态
   const count = shallowRef(initialValue)
 
   // getters
@@ -165,7 +165,7 @@ const [useProvideCounterStore, useCounterStore] = createInjectionState((initialV
 }, { defaultValue: 0 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type CreateInjectionStateReturn<
@@ -174,32 +174,32 @@ export type CreateInjectionStateReturn<
 > = Readonly<
   [
     /**
-     * Call this function in a provider component to create and provide the state.
+     * 在提供者组件中调用此函数以创建和提供状态。
      *
-     * @param args Arguments passed to the composable
-     * @returns The state returned by the composable
+     * @param args 传递给可组合函数的参数
+     * @returns 可组合函数返回的状态
      */
     useProvidingState: (...args: Arguments) => Return,
     /**
-     * Call this function in a consumer component to inject the state.
+     * 在消费者组件中调用此函数以注入状态。
      *
-     * @returns The injected state, or `undefined` if not provided and no default value was set.
+     * @returns 注入的状态,如果未提供且未设置默认值,则为 `undefined`。
      */
     useInjectedState: () => Return | undefined,
   ]
 >
 export interface CreateInjectionStateOptions<Return> {
   /**
-   * Custom injectionKey for InjectionState
+   * InjectionState 的自定义 injectionKey
    */
   injectionKey?: string | InjectionKey<Return>
   /**
-   * Default value for the InjectionState
+   * InjectionState 的默认值
    */
   defaultValue?: Return
 }
 /**
- * Create global state that can be injected into components.
+ * 创建可以注入到组件中的全局状态。
  *
  * @see https://vueuse.org/createInjectionState
  *

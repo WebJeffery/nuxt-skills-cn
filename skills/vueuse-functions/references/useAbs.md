@@ -4,9 +4,9 @@ category: '@Math'
 
 # useAbs
 
-Reactive `Math.abs`.
+响应式 `Math.abs`。
 
-## Usage
+## 用法
 
 ```ts
 import { useAbs } from '@vueuse/math'
@@ -15,11 +15,11 @@ const value = ref(-23)
 const absValue = useAbs(value) // Ref<23>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Reactive `Math.abs`.
+ * 响应式 `Math.abs`。
  *
  * @see https://vueuse.org/useAbs
  *

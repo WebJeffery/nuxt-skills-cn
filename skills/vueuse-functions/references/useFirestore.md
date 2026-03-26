@@ -4,9 +4,9 @@ category: '@Firebase'
 
 # useFirestore
 
-Reactive [Firestore](https://firebase.google.com/docs/firestore) binding. Making it straightforward to **always keep your local data in sync** with remotes databases.
+响应式 [Firestore](https://firebase.google.com/docs/firestore) 绑定。使**始终将本地数据与远程数据库保持同步**变得简单。
 
-## Usage
+## 用法
 
 ```ts {9,12,17,22}
 import { useFirestore } from '@vueuse/firebase/useFirestore'
@@ -19,51 +19,51 @@ const db = getFirestore(app)
 
 const todos = useFirestore(collection(db, 'todos'))
 
-// or for doc reference
+// 或用于文档引用
 const user = useFirestore(doc(db, 'users', 'my-user-id'))
 
-// you can also use ref value for reactive query
+// 您还可以使用 ref 值进行响应式查询
 const postsLimit = shallowRef(10)
 const postsQuery = computed(() => query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(postsLimit.value)))
 const posts = useFirestore(postsQuery)
 
-// you can use the boolean value to tell a query when it is ready to run
-// when it gets falsy value, return the initial value
+// 您可以使用布尔值来告诉查询何时准备好运行
+// 当它获取假值时，返回初始值
 const userId = shallowRef('')
 const userQuery = computed(() => userId.value && doc(db, 'users', userId.value))
 const userData = useFirestore(userQuery, null)
 ```
 
-### Return Value
+### 返回值
 
-- For **Document Reference**: Returns `Ref<T | null>` (single document with `id` property)
-- For **Query**: Returns `Ref<T[]>` (array of documents, each with `id` property)
+- 对于**文档引用**：返回 `Ref<T | null>`（单个文档，带有 `id` 属性）
+- 对于**查询**：返回 `Ref<T[]>`（文档数组，每个都有 `id` 属性）
 
-The document `id` is automatically added as a read-only property to each returned document.
+文档 `id` 作为只读属性自动添加到每个返回的文档。
 
-### Options
+### 选项
 
-| Option         | Type                   | Default         | Description                                                                |
+| 选项         | 类型                   | 默认值         | 描述                                                                |
 | -------------- | ---------------------- | --------------- | -------------------------------------------------------------------------- |
-| `errorHandler` | `(err: Error) => void` | `console.error` | Custom error handler                                                       |
-| `autoDispose`  | `boolean \| number`    | `true`          | Auto-unsubscribe on scope dispose. Pass a number for delayed dispose (ms). |
+| `errorHandler` | `(err: Error) => void` | `console.error` | 自定义错误处理程序                                                       |
+| `autoDispose`  | `boolean \| number`    | `true`          | 在作用域释放时自动取消订阅。传递数字以延迟释放（毫秒）。 |
 
-### Error Handling
+### 错误处理
 
 ```ts
 const todos = useFirestore(collection(db, 'todos'), [], {
   errorHandler: (err) => {
     console.error('Firestore error:', err)
-    // Handle error (e.g., show notification)
+    // 处理错误（例如，显示通知）
   },
 })
 ```
 
-## Share across instances
+## 跨实例共享
 
-You can reuse the db reference by passing `autoDispose: false`. You can also set an amount of milliseconds before auto disposing the db reference.
+您可以通过传递 `autoDispose: false` 来重用 db 引用。您还可以设置 db 引用自动释放的毫秒数。
 
-Note : Getting a not disposed db reference again don't cost a Firestore read.
+注意：再次获取未释放的 db 引用不会消耗 Firestore 读取。
 
 ```ts
 import { useFirestore } from '@vueuse/firebase/useFirestore'
@@ -72,7 +72,7 @@ import { collection } from 'firebase/firestore'
 const todos = useFirestore(collection(db, 'todos'), undefined, { autoDispose: false })
 ```
 
-or use `createGlobalState` from the core package
+或使用核心包中的 `createGlobalState`
 
 ```ts twoslash include store
 // @filename: store.ts
@@ -97,7 +97,7 @@ const todos = useTodos()
 </script>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseFirestoreOptions {

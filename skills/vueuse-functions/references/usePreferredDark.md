@@ -4,9 +4,9 @@ category: Browser
 
 # usePreferredDark
 
-Reactive dark theme preference.
+响应式深色主题偏好。
 
-## Usage
+## 用法
 
 ```ts
 import { usePreferredDark } from '@vueuse/core'
@@ -14,7 +14,7 @@ import { usePreferredDark } from '@vueuse/core'
 const isDark = usePreferredDark()
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -24,11 +24,11 @@ const isDark = usePreferredDark()
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Reactive dark theme preference.
+ * 响应式深色主题偏好。
  *
  * @see https://vueuse.org/usePreferredDark
  * @param [options]

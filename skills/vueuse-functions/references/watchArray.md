@@ -4,11 +4,11 @@ category: Watch
 
 # watchArray
 
-Watch for an array with additions and removals.
+监视数组的添加和删除。
 
-## Usage
+## 用法
 
-Similar to `watch`, but provides the added and removed elements to the callback function. Pass `{ deep: true }` if the list is updated in place with `push`, `splice`, etc.
+与 `watch` 类似，但向回调函数提供添加和删除的元素。如果列表使用 `push`、`splice` 等就地更新，请传递 `{ deep: true }`。
 
 ```ts
 import { watchArray } from '@vueuse/core'
@@ -27,7 +27,7 @@ onMounted(() => {
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export declare type WatchArrayCallback<V = any, OV = any> = (
@@ -38,7 +38,7 @@ export declare type WatchArrayCallback<V = any, OV = any> = (
   onCleanup: (cleanupFn: () => void) => void,
 ) => any
 /**
- * Watch for an array with additions and removals.
+ * 监视数组的添加和删除。
  *
  * @see https://vueuse.org/watchArray
  */

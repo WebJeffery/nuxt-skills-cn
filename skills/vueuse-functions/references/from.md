@@ -4,9 +4,9 @@ category: '@RxJS'
 
 # from / fromEvent
 
-Wrappers around RxJS's [`from()`](https://rxjs.dev/api/index/function/from) and [`fromEvent()`](https://rxjs.dev/api/index/function/fromEvent) to allow them to accept `ref`s.
+围绕 RxJS 的 [`from()`](https://rxjs.dev/api/index/function/from) 和 [`fromEvent()`](https://rxjs.dev/api/index/function/fromEvent) 的包装器,允许它们接受 `ref`s。
 
-## Usage
+## 用法
 
 <!-- TODO: import rxjs error if enable twoslash -->
 
@@ -36,21 +36,21 @@ useSubscription(
 
 ## from
 
-The `from` function can accept either a standard RxJS `ObservableInput` or a Vue `ref`. When passed a ref, it creates an Observable that emits whenever the ref's value changes.
+`from` 函数可以接受标准的 RxJS `ObservableInput` 或 Vue `ref`。当传递 ref 时,它会创建一个 Observable,每当 ref 的值发生变化时就会发出。
 
-### Watch Options
+### Watch 选项
 
-When using `from` with a ref, you can pass Vue's `WatchOptions`:
+当使用 `from` 与 ref 时,您可以传递 Vue 的 `WatchOptions`:
 
 | Option      | Type                        | Description                        |
 | ----------- | --------------------------- | ---------------------------------- |
-| `immediate` | `boolean`                   | Emit the current value immediately |
-| `deep`      | `boolean`                   | Deeply watch nested objects        |
-| `flush`     | `'pre' \| 'post' \| 'sync'` | Timing of the callback flush       |
+| `immediate` | `boolean`                   | 立即发出当前值 |
+| `deep`      | `boolean`                   | 深度观察嵌套对象        |
+| `flush`     | `'pre' \| 'post' \| 'sync'` | 回调刷新的时机       |
 
 ## fromEvent
 
-The `fromEvent` function extends RxJS's `fromEvent` to accept a ref to an element. When the ref's value changes (e.g., after the component mounts), it automatically subscribes to the new element.
+`fromEvent` 函数扩展了 RxJS 的 `fromEvent`,以接受对元素的 ref。当 ref 的值发生变化时(例如,组件挂载后),它会自动订阅新元素。
 
 ```ts no-twoslash
 import { fromEvent, useSubscription } from '@vueuse/rxjs'
@@ -58,7 +58,7 @@ import { useTemplateRef } from 'vue'
 
 const button = useTemplateRef('buttonRef')
 
-// Will automatically subscribe when the button element becomes available
+// 当 button 元素可用时将自动订阅
 useSubscription(
   fromEvent(button, 'click').subscribe(() => {
     console.log('clicked!')
@@ -66,7 +66,7 @@ useSubscription(
 )
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export declare function from<T>(

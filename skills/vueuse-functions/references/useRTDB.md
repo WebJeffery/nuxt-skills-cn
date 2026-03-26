@@ -31,15 +31,15 @@ const todos = useRTDB(db.ref('todos'))
 
 Returns a `Ref<T | undefined>` that is automatically updated when the database value changes.
 
-## Reusing Database References
+## 重用数据库引用
 
-You can reuse the db reference by passing `autoDispose: false`
+您可以通过传递 `autoDispose: false` 来重用 db 引用
 
 ```ts
 const todos = useRTDB(db.ref('todos'), { autoDispose: false })
 ```
 
-or use `createGlobalState` from the core package
+或使用核心包中的 `createGlobalState`
 
 ```ts twoslash include store
 // @filename: store.ts
@@ -64,7 +64,7 @@ const todos = useTodos()
 </script>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseRTDBOptions {

@@ -4,11 +4,11 @@ category: Utilities
 
 # makeDestructurable
 
-Make isomorphic destructurable for object and array at the same time. See [this blog](https://antfu.me/posts/destructuring-with-object-or-array/) for more details.
+使对象和数组同时具有同构可解构性。有关更多详细信息,请参阅[此博客](https://antfu.me/posts/destructuring-with-object-or-array/)。
 
-## Usage
+## 用法
 
-TypeScript Example:
+TypeScript 示例:
 
 ```ts twoslash include main
 import { makeDestructurable } from '@vueuse/core'
@@ -22,7 +22,7 @@ const obj = makeDestructurable(
 )
 ```
 
-Usage:
+用法:
 
 ```ts twoslash
 // @include: main
@@ -31,7 +31,7 @@ let { foo, bar } = obj
 let [foo, bar] = obj
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export declare function makeDestructurable<

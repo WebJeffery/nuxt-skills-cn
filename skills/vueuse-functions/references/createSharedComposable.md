@@ -5,13 +5,13 @@ related: createGlobalState
 
 # createSharedComposable
 
-Make a composable function usable with multiple Vue instances.
+使可组合函数可用于多个 Vue 实例。
 
 > [!WARNING]
-> When used in a **SSR** environment, `createSharedComposable` will **automatically fallback** to a non-shared version.
-> This means every call will create a fresh instance in SSR to avoid [cross-request state pollution](https://vuejs.org/guide/scaling-up/ssr.html#cross-request-state-pollution).
+> 当在 **SSR** 环境中使用时,`createSharedComposable` 将**自动回退**到非共享版本。
+> 这意味着每次调用都会在 SSR 中创建一个新实例,以避免[跨请求状态污染](https://vuejs.org/guide/scaling-up/ssr.html#cross-request-state-pollution)。
 
-## Usage
+## 用法
 
 ```ts
 import { createSharedComposable, useMouse } from '@vueuse/core'
@@ -21,16 +21,16 @@ const useSharedMouse = createSharedComposable(useMouse)
 // CompA.vue
 const { x, y } = useSharedMouse()
 
-// CompB.vue - will reuse the previous state and no new event listeners will be registered
+// CompB.vue - 将重用之前的状态,不会注册新的事件监听器
 const { x, y } = useSharedMouse()
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type SharedComposableReturn<T extends AnyFn = AnyFn> = T
 /**
- * Make a composable function usable with multiple Vue instances.
+ * 使可组合函数可用于多个 Vue 实例。
  *
  * @see https://vueuse.org/createSharedComposable
  *

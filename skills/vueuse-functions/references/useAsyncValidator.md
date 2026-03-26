@@ -4,21 +4,21 @@ category: '@Integrations'
 
 # useAsyncValidator
 
-Wrapper for [`async-validator`](https://github.com/yiminghe/async-validator).
+[`async-validator`](https://github.com/yiminghe/async-validator) 的包装器。
 
-## Install
+## 安装
 
 ```bash
 npm i async-validator@^4
 ```
 
-## Usage
+## 用法
 
 ```ts
 import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type AsyncValidatorError = Error & {
@@ -45,19 +45,19 @@ export interface UseAsyncValidatorOptions {
    */
   validateOption?: ValidateOption
   /**
-   * The validation will be triggered right away for the first time.
-   * Only works when `manual` is not set to true.
+   * 验证将在第一次立即触发。
+   * 仅当 `manual` 未设置为 true 时有效。
    *
    * @default true
    */
   immediate?: boolean
   /**
-   * If set to true, the validation will not be triggered automatically.
+   * 如果设置为 true,则不会自动触发验证。
    */
   manual?: boolean
 }
 /**
- * Wrapper for async-validator.
+ * async-validator 的包装器。
  *
  * @see https://vueuse.org/useAsyncValidator
  * @see https://github.com/yiminghe/async-validator

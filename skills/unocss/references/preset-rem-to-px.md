@@ -1,13 +1,13 @@
 ---
 name: preset-rem-to-px
-description: Convert rem units to px for utilities
+description: 将 rem 单位转换为 px 用于工具类
 ---
 
-# Preset Rem to Px
+# 预设 Rem to Px
 
-Converts `rem` units to `px` in generated utilities.
+将生成的工具类中的 `rem` 单位转换为 `px`。
 
-## Installation
+## 安装
 
 ```ts
 import { defineConfig, presetRemToPx, presetWind3 } from 'unocss'
@@ -20,41 +20,41 @@ export default defineConfig({
 })
 ```
 
-## What It Does
+## 功能
 
-Transforms all rem values to px:
+将所有 rem 值转换为 px：
 
 ```html
 <div class="p-4">
 ```
 
-Without preset:
+不使用预设：
 ```css
 .p-4 { padding: 1rem; }
 ```
 
-With preset:
+使用预设：
 ```css
 .p-4 { padding: 16px; }
 ```
 
-## Use Cases
+## 使用场景
 
-- Projects requiring pixel-perfect designs
-- Environments where rem doesn't work well
-- Consistency with pixel-based design systems
-- Email templates (better compatibility)
+- 需要像素完美设计的项目
+- rem 不能很好工作的环境
+- 与基于像素的设计系统保持一致
+- 电子邮件模板（更好的兼容性）
 
-## Options
+## 选项
 
 ```ts
 presetRemToPx({
-  // Base font size for conversion (default: 16)
+  // 转换的基础字体大小（默认：16）
   baseFontSize: 16,
 })
 ```
 
-Custom base:
+自定义基础：
 
 ```ts
 presetRemToPx({
@@ -62,9 +62,9 @@ presetRemToPx({
 })
 ```
 
-## With Preset Wind4
+## 与预设 Wind4 一起使用
 
-**Note:** `presetRemToPx` is not needed with `preset-wind4`. Use the built-in processor instead:
+**注意：** `presetRemToPx` 在 `preset-wind4` 中不需要。使用内置处理器代替：
 
 ```ts
 import { createRemToPxProcessor } from '@unocss/preset-wind4/utils'
@@ -79,19 +79,19 @@ export default defineConfig({
       },
     }),
   ],
-  // Also apply to utilities
+  // 也应用于工具类
   postprocess: [createRemToPxProcessor()],
 })
 ```
 
-## Important Notes
+## 重要说明
 
-- Order matters: place after the preset that generates rem values
-- Affects all utilities with rem units
-- Theme values in rem are also converted
+- 顺序很重要：放在生成 rem 值的预设之后
+- 影响所有带有 rem 单位的工具类
+- 主题中的 rem 值也会被转换
 
-<!-- 
-Source references:
+<!--
+源参考：
 - https://unocss.dev/presets/rem-to-px
 - https://unocss.dev/presets/wind4
 -->

@@ -4,11 +4,11 @@ category: Browser
 
 # useClipboard
 
-Reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API). Provides the ability to respond to clipboard commands (cut, copy, and paste) as well as to asynchronously read from and write to the system clipboard. Access to the contents of the clipboard is gated behind the [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API). Without user permission, reading or altering the clipboard contents is not permitted.
+响应式 [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)。提供响应剪贴板命令(剪切、复制和粘贴)以及异步读取和写入系统剪贴板的能力。对剪贴板内容的访问受到 [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API) 的限制。未经用户许可,不允许读取或更改剪贴板内容。
 
-<CourseLink href="https://vueschool.io/lessons/reactive-browser-wrappers-in-vueuse-useclipboard?friend=vueuse">Learn how to reactively save text to the clipboard with this FREE video lesson from Vue School!</CourseLink>
+<CourseLink href="https://vueschool.io/lessons/reactive-browser-wrappers-in-vueuse-useclipboard?friend=vueuse">通过 Vue School 的这个免费视频课程学习如何响应式地将文本保存到剪贴板!</CourseLink>
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -21,78 +21,78 @@ const { text, copy, copied, isSupported } = useClipboard({ source })
 <template>
   <div v-if="isSupported">
     <button @click="copy(source)">
-      <!-- by default, `copied` will be reset in 1.5s -->
-      <span v-if="!copied">Copy</span>
-      <span v-else>Copied!</span>
+      <!-- 默认情况下,`copied` 将在 1.5s 后重置 -->
+      <span v-if="!copied">复制</span>
+      <span v-else>已复制!</span>
     </button>
-    <p>Current copied: <code>{{ text || 'none' }}</code></p>
+    <p>当前复制: <code>{{ text || '无' }}</code></p>
   </div>
   <p v-else>
-    Your browser does not support Clipboard API
+    您的浏览器不支持 Clipboard API
   </p>
 </template>
 ```
 
-### Options
+### 选项
 
-| Option         | Type                       | Default | Description                                                       |
+| 选项         | 类型                       | 默认值 | 描述                                                       |
 | -------------- | -------------------------- | ------- | ----------------------------------------------------------------- |
-| `source`       | `MaybeRefOrGetter<string>` | —       | Default content to copy when `copy()` is called without arguments |
-| `read`         | `boolean`                  | `false` | Enable reading clipboard content on copy/cut events               |
-| `copiedDuring` | `number`                   | `1500`  | Milliseconds before `copied` resets to `false`                    |
-| `legacy`       | `boolean`                  | `false` | Fallback to `document.execCommand` if Clipboard API unavailable   |
+| `source`       | `MaybeRefOrGetter<string>` | —       | 在不带参数调用 `copy()` 时要复制的默认内容 |
+| `read`         | `boolean`                  | `false` | 在复制/剪切事件上启用读取剪贴板内容               |
+| `copiedDuring` | `number`                   | `1500`  | `copied` 重置为 `false` 之前的毫秒数                    |
+| `legacy`       | `boolean`                  | `false` | 如果 Clipboard API 不可用,则回退到 `document.execCommand`   |
 
-### Return Values
+### 返回值
 
-| Property      | Type                               | Description                                       |
+| 属性      | 类型                               | 描述                                       |
 | ------------- | ---------------------------------- | ------------------------------------------------- |
-| `isSupported` | `ComputedRef<boolean>`             | Whether clipboard is supported (native or legacy) |
-| `text`        | `Ref<string>`                      | Current clipboard content (when `read: true`)     |
-| `copied`      | `Ref<boolean>`                     | `true` after successful copy, auto-resets         |
-| `copy`        | `(text?: string) => Promise<void>` | Copy text to clipboard                            |
+| `isSupported` | `ComputedRef<boolean>`             | 是否支持剪贴板(本机或传统) |
+| `text`        | `Ref<string>`                      | 当前剪贴板内容(当 `read: true` 时)     |
+| `copied`      | `Ref<boolean>`                     | 成功复制后为 `true`,自动重置         |
+| `copy`        | `(text?: string) => Promise<void>` | 将文本复制到剪贴板                            |
 
-### Legacy Mode
+### 传统模式
 
-Set `legacy: true` to keep the ability to copy if [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) is not available. It will handle copy with [execCommand](https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand) as fallback.
+设置 `legacy: true` 以在 [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) 不可用时保持复制能力。它将使用 [execCommand](https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand) 作为回退来处理复制。
 
 ```ts
 const { copy, isSupported } = useClipboard({ legacy: true })
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
-  <UseClipboard v-slot="{ copy, copied }" source="copy me">
+  <UseClipboard v-slot="{ copy, copied }" source="复制我">
     <button @click="copy()">
-      {{ copied ? 'Copied' : 'Copy' }}
+      {{ copied ? '已复制' : '复制' }}
     </button>
   </UseClipboard>
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
   /**
-   * Enabled reading for clipboard
+   * 为剪贴板启用读取
    *
    * @default false
    */
   read?: boolean
   /**
-   * Copy source
+   * 复制源
    */
   source?: Source
   /**
-   * Milliseconds to reset state of `copied` ref
+   * 重置 `copied` ref 状态的毫秒数
    *
    * @default 1500
    */
   copiedDuring?: number
   /**
-   * Whether fallback to document.execCommand('copy') if clipboard is undefined.
+   * 如果剪贴板未定义,是否回退到 document.execCommand('copy')。
    *
    * @default false
    */
@@ -106,7 +106,7 @@ export interface UseClipboardReturn<Optional> extends Supportable {
     : (text: string) => Promise<void>
 }
 /**
- * Reactive Clipboard API.
+ * 响应式 Clipboard API。
  *
  * @see https://vueuse.org/useClipboard
  * @param options

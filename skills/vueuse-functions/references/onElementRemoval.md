@@ -4,9 +4,9 @@ category: Sensors
 
 # onElementRemoval
 
-Fires when the element or any element containing it is removed from the DOM.
+当元素或包含它的任何元素从 DOM 中移除时触发。
 
-## Usage
+## 用法
 
 ```vue {13}
 <script setup lang="ts">
@@ -42,9 +42,9 @@ onElementRemoval(btnRef, () => ++removedCount.value)
 </template>
 ```
 
-### Callback with Mutation Records
+### 带有 Mutation Records 的回调
 
-The callback receives an array of `MutationRecord` objects that triggered the removal.
+回调接收触发移除的 `MutationRecord` 对象数组。
 
 ```ts
 import { onElementRemoval } from '@vueuse/core'
@@ -54,18 +54,18 @@ onElementRemoval(targetRef, (mutationRecords) => {
 })
 ```
 
-### Return Value
+### 返回值
 
-Returns a stop function to stop observing.
+返回一个停止函数来停止观察。
 
 ```ts
 const stop = onElementRemoval(targetRef, callback)
 
-// Later, stop observing
+// 稍后,停止观察
 stop()
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface OnElementRemovalOptions
@@ -74,7 +74,7 @@ export interface OnElementRemovalOptions
     ConfigurableDocumentOrShadowRoot,
     WatchOptionsBase {}
 /**
- * Fires when the element or any element containing it is removed.
+ * 当元素或包含它的任何元素从 DOM 中移除时触发。
  *
  * @param target
  * @param callback

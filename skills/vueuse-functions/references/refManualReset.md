@@ -4,9 +4,9 @@ category: Reactivity
 
 # refManualReset
 
-Create a ref with manual reset functionality.
+创建一个具有手动重置功能的 ref。
 
-## Usage
+## 用法
 
 ```ts
 import { refManualReset } from '@vueuse/core'
@@ -20,23 +20,23 @@ message.reset()
 console.log(message.value) // 'default message'
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Define the shape of a ref that supports manual reset functionality.
+ * 定义支持手动重置功能的 ref 的形状。
  *
- * This interface extends the standard `Ref` type from Vue and adds a `reset` method.
- * The `reset` method allows the ref to be manually reset to its default value.
+ * 此接口扩展了 Vue 的标准 `Ref` 类型并添加了 `reset` 方法。
+ * `reset` 方法允许 ref 手动重置为其默认值。
  */
 export interface ManualResetRefReturn<T> extends Ref<T> {
   reset: Fn
 }
 /**
- * Create a ref with manual reset functionality.
+ * 创建一个具有手动重置功能的 ref。
  *
  * @see https://vueuse.org/refManualReset
- * @param defaultValue The value which will be set.
+ * @param defaultValue 将设置的值。
  */
 export declare function refManualReset<T>(
   defaultValue: MaybeRefOrGetter<T>,

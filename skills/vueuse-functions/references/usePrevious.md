@@ -4,9 +4,9 @@ category: Utilities
 
 # usePrevious
 
-Holds the previous value of a ref.
+保持 ref 的前一个值。
 
-## Usage
+## 用法
 
 ```ts
 import { usePrevious } from '@vueuse/core'
@@ -22,11 +22,11 @@ counter.value = 'World'
 console.log(previous.value) // Hello
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Holds the previous value of a ref.
+ * 保持 ref 的前一个值。
  *
  * @see   {@link https://vueuse.org/usePrevious}
  */

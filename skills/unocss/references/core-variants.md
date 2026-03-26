@@ -1,35 +1,35 @@
 ---
 name: unocss-variants
-description: Apply variations like hover:, dark:, responsive to rules
+description: 将 hover:、dark:、responsive 等变体应用于规则
 ---
 
-# UnoCSS Variants
+# UnoCSS 变体
 
-Variants apply modifications to utility rules, like `hover:`, `dark:`, or responsive prefixes.
+变体对工具规则应用修改，如 `hover:`、`dark:` 或响应式前缀。
 
-## How Variants Work
+## 变体如何工作
 
-When matching `hover:m-2`:
+当匹配 `hover:m-2` 时：
 
-1. `hover:m-2` is extracted from source
-2. Sent to all variants for matching
-3. `hover:` variant matches and returns `m-2`
-4. Result `m-2` continues to next variants
-5. Finally matches the rule `.m-2 { margin: 0.5rem; }`
-6. Variant transformation applied: `.hover\:m-2:hover { margin: 0.5rem; }`
+1. 从源代码中提取 `hover:m-2`
+2. 发送到所有变体进行匹配
+3. `hover:` 变体匹配并返回 `m-2`
+4. 结果 `m-2` 继续到下一个变体
+5. 最后匹配规则 `.m-2 { margin: 0.5rem; }`
+6. 应用变体转换：`.hover\:m-2:hover { margin: 0.5rem; }`
 
-## Creating Custom Variants
+## 创建自定义变体
 
 ```ts
 variants: [
-  // hover: variant
+  // hover: 变体
   (matcher) => {
     if (!matcher.startsWith('hover:'))
       return matcher
     return {
-      // Remove prefix, pass to next variants/rules
+      // 移除前缀，传递给下一个变体/规则
       matcher: matcher.slice(6),
-      // Modify the selector
+      // 修改选择器
       selector: s => `${s}:hover`,
     }
   },
@@ -39,58 +39,58 @@ rules: [
 ]
 ```
 
-## Variant Return Object
+## 变体返回对象
 
-- `matcher` - The processed class name to pass forward
-- `selector` - Function to customize the CSS selector
-- `parent` - Wrapper like `@media`, `@supports`
-- `layer` - Specify output layer
-- `sort` - Control ordering
+- `matcher` - 向前传递的处理后的类名
+- `selector` - 自定义 CSS 选择器的函数
+- `parent` - 像 `@media`、`@supports` 这样的包装器
+- `layer` - 指定输出图层
+- `sort` - 控制排序
 
-## Built-in Variants (preset-wind3)
+## 内置变体（preset-wind3）
 
-### Pseudo-classes
-- `hover:`, `focus:`, `active:`, `visited:`
-- `first:`, `last:`, `odd:`, `even:`
-- `disabled:`, `checked:`, `required:`
-- `focus-within:`, `focus-visible:`
+### 伪类
+- `hover:`、`focus:`、`active:`、`visited:`
+- `first:`、`last:`、`odd:`、`even:`
+- `disabled:`、`checked:`、`required:`
+- `focus-within:`、`focus-visible:`
 
-### Pseudo-elements
-- `before:`, `after:`
-- `placeholder:`, `selection:`
-- `marker:`, `file:`
+### 伪元素
+- `before:`、`after:`
+- `placeholder:`、`selection:`
+- `marker:`、`file:`
 
-### Responsive
-- `sm:`, `md:`, `lg:`, `xl:`, `2xl:`
-- `lt-sm:` (less than sm)
-- `at-lg:` (at lg only)
+### 响应式
+- `sm:`、`md:`、`lg:`、`xl:`、`2xl:`
+- `lt-sm:`（小于 sm）
+- `at-lg:`（仅在 lg）
 
-### Dark Mode
-- `dark:` - Class-based dark mode (default)
-- `@dark:` - Media query dark mode
+### 暗色模式
+- `dark:` - 基于类的暗色模式（默认）
+- `@dark:` - 媒体查询暗色模式
 
-### Group/Peer
-- `group-hover:`, `group-focus:`
-- `peer-checked:`, `peer-focus:`
+### 组合/同级
+- `group-hover:`、`group-focus:`
+- `peer-checked:`、`peer-focus:`
 
-### Container Queries
-- `@container`, `@sm:`, `@md:`
+### 容器查询
+- `@container`、`@sm:`、`@md:`
 
-### Print
+### 打印
 - `print:`
 
-### Supports
+### 支持
 - `supports-[display:grid]:`
 
 ### Aria
-- `aria-checked:`, `aria-disabled:`
+- `aria-checked:`、`aria-disabled:`
 
-### Data Attributes
+### 数据属性
 - `data-[state=open]:`
 
-## Dark Mode Configuration
+## 暗色模式配置
 
-### Class-based (default)
+### 基于类（默认）
 ```ts
 presetWind3({
   dark: 'class'
@@ -101,25 +101,26 @@ presetWind3({
 <div class="dark:bg-gray-800">
 ```
 
-Generates: `.dark .dark\:bg-gray-800 { ... }`
+生成：`.dark .dark\:bg-gray-800 { ... }`
 
-### Media Query
+### 媒体查询
 ```ts
 presetWind3({
   dark: 'media'
 })
 ```
 
-Generates: `@media (prefers-color-scheme: dark) { ... }`
+生成：`@media (prefers-color-scheme: dark) { ... }`
 
-### Opt-in Media Query
-Use `@dark:` regardless of config:
+### 选择性媒体查询
+
+无论配置如何，使用 `@dark:`：
 
 ```html
 <div class="@dark:bg-gray-800">
 ```
 
-### Custom Selectors
+### 自定义选择器
 ```ts
 presetWind3({
   dark: {
@@ -129,22 +130,22 @@ presetWind3({
 })
 ```
 
-## CSS @layer Variant
+## CSS @layer 变体
 
-Native CSS `@layer` support:
+原生 CSS `@layer` 支持：
 
 ```html
 <div class="layer-foo:p-4" />
 ```
 
-Generates:
+生成：
 ```css
 @layer foo {
   .layer-foo\:p-4 { padding: 1rem; }
 }
 ```
 
-## Breakpoint Differences from Windi CSS
+## 与 Windi CSS 的断点差异
 
 | Windi CSS | UnoCSS |
 |-----------|--------|
@@ -152,23 +153,23 @@ Generates:
 | `@lg:p-1` | `at-lg:p-1` |
 | `>xl:p-1` | `xl:p-1` |
 
-## Media Hover (Experimental)
+## 媒体悬停（实验性）
 
-Addresses sticky hover on touch devices:
+解决触摸设备上的粘性悬停：
 
 ```html
 <div class="@hover-text-red">
 ```
 
-Generates:
+生成：
 ```css
 @media (hover: hover) and (pointer: fine) {
   .\@hover-text-red:hover { color: rgb(248 113 113); }
 }
 ```
 
-<!-- 
-Source references:
+<!--
+源参考：
 - https://unocss.dev/config/variants
 - https://unocss.dev/presets/wind3
 - https://unocss.dev/presets/mini

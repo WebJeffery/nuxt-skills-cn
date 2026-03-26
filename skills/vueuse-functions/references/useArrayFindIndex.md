@@ -1,59 +1,55 @@
 ---
-category: Array
+name: useArrayFindIndex
+description: 响应式数组的 findIndex 实现
 ---
 
 # useArrayFindIndex
 
-Reactive `Array.findIndex`
+`useArrayFindIndex` 是 `Array.prototype.findIndex` 的响应式版本。它返回一个计算属性，包含数组中第一个满足提供的测试函数的元素的索引。如果没有找到匹配的元素，则返回 -1。
 
-## Usage
-
-### Use with array of multiple refs
+## 用法
 
 ```ts
 import { useArrayFindIndex } from '@vueuse/core'
 
-const item1 = ref(0)
-const item2 = ref(2)
-const item3 = ref(4)
-const item4 = ref(6)
-const item5 = ref(8)
-const list = [item1, item2, item3, item4, item5]
-const result = useArrayFindIndex(list, i => i % 2 === 0)
-// result.value: 0
-item1.value = 1
-// result.value: 1
+const list = ref([
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+  { id: 3, name: 'Charlie' },
+])
+
+const index = useArrayFindIndex(
+  list,
+  (item) => item.id === 2,
+)
+
+console.log(index.value) // 1
+
+list.value[0].id = 2
+console.log(index.value) // 0
 ```
 
-### Use with reactive array
-
-```ts
-import { useArrayFindIndex } from '@vueuse/core'
-
-const list = ref([0, 2, 4, 6, 8])
-const result = useArrayFindIndex(list, i => i % 2 === 0)
-// result.value: 0
-list.value.unshift(-1)
-// result.value: 1
-```
-
-## Type Declarations
+## 类型定义
 
 ```ts
 export type UseArrayFindIndexReturn = ComputedRef<number>
-/**
- * Reactive `Array.findIndex`
- *
- * @see https://vueuse.org/useArrayFindIndex
- * @param list - the array was called upon.
- * @param fn - a function to test each element.
- *
- * @returns the index of the first element in the array that passes the test. Otherwise, "-1".
- *
- * @__NO_SIDE_EFFECTS__
- */
+
 export declare function useArrayFindIndex<T>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   fn: (element: T, index: number, array: MaybeRefOrGetter<T>[]) => unknown,
 ): UseArrayFindIndexReturn
 ```
+
+## 参数
+
+- `list`: 要搜索的数组，可以是 ref、getter 或普通数组
+- `fn`: 测试函数，对数组中的每个元素执行，返回 truthy 值表示找到匹配
+
+## 返回值
+
+返回一个计算属性，包含第一个满足测试函数的元素的索引。如果没有找到，返回 -1。
+
+<!--
+Source references:
+- https://vueuse.org/core/useArrayFindIndex/
+-->

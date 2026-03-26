@@ -4,9 +4,9 @@ category: Elements
 
 # useMutationObserver
 
-Watch for changes being made to the DOM tree. [MutationObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver)
+监视对 DOM 树所做的更改。[MutationObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver)
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -31,7 +31,7 @@ useMutationObserver(el, (mutations) => {
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseMutationObserverOptions
@@ -41,7 +41,7 @@ export interface UseMutationObserverReturn extends Supportable {
   takeRecords: () => MutationRecord[] | undefined
 }
 /**
- * Watch for changes being made to the DOM tree.
+ * 监视对 DOM 树所做的更改。
  *
  * @see https://vueuse.org/useMutationObserver
  * @see https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver MutationObserver MDN

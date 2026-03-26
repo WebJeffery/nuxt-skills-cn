@@ -4,9 +4,9 @@ category: Component
 
 # tryOnMounted
 
-Safe `onMounted`. Call `onMounted()` if it's inside a component lifecycle, if not, just call the function
+安全的 `onMounted`。如果它在组件生命周期内,则调用 `onMounted()`,否则,只调用函数
 
-## Usage
+## 用法
 
 ```ts
 import { tryOnMounted } from '@vueuse/core'
@@ -16,14 +16,14 @@ tryOnMounted(() => {
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Call onMounted() if it's inside a component lifecycle, if not, just call the function
+ * 如果它在组件生命周期内,则调用 onMounted(),否则,只调用函数
  *
  * @param fn
- * @param sync if set to false, it will run in the nextTick() of Vue
+ * @param sync 如果设置为 false,它将在 Vue 的 nextTick() 中运行
  * @param target
  */
 export declare function tryOnMounted(

@@ -4,9 +4,9 @@ category: Time
 
 # useCountdown
 
-Reactive countdown timer in seconds.
+响应式倒计时计时器（以秒为单位）。
 
-## Usage
+## 用法
 
 ```ts
 import { useCountdown } from '@vueuse/core'
@@ -22,8 +22,8 @@ const { remaining, start, stop, pause, resume } = useCountdown(countdownSeconds,
 })
 ```
 
-You can use a `ref` to change the initial countdown.
-`start()` and `resume()` also accept a new countdown value for the next countdown.
+您可以使用 `ref` 来更改初始倒计时。
+`start()` 和 `resume()` 也接受新的倒计数值用于下一次倒计时。
 
 ```ts
 import { useCountdown } from '@vueuse/core'
@@ -33,65 +33,65 @@ const countdown = shallowRef(5)
 const { start, reset } = useCountdown(countdown, {
 })
 
-// change the countdown value
+// 更改倒计数值
 countdown.value = 10
 
-// start a new countdown with 2 seconds
+// 开始一个新的 2 秒倒计时
 start(2)
 
-// reset the countdown to 4, but do not start it
+// 将倒计时重置为 4，但不启动它
 reset(4)
 
-// start the countdown with the current value of `countdown`
+// 使用 `countdown` 的当前值开始倒计时
 start()
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseCountdownOptions extends ConfigurableScheduler {
   /**
-   *  Interval for the countdown in milliseconds. Default is 1000ms.
+   *  倒计时间隔（毫秒）。默认为 1000ms。
    *
-   * @deprecated Please use `scheduler` option instead
+   * @deprecated 请改用 `scheduler` 选项
    */
   interval?: MaybeRefOrGetter<number>
   /**
-   * Callback function called when the countdown reaches 0.
+   * 倒计时达到 0 时调用的回调函数。
    */
   onComplete?: () => void
   /**
-   * Callback function called on each tick of the countdown.
+   * 倒计时每次滴答时调用的回调函数。
    */
   onTick?: () => void
   /**
-   * Start the countdown immediately
+   * 立即开始倒计时
    *
-   * @deprecated Please use `scheduler` option instead
+   * @deprecated 请改用 `scheduler` 选项
    * @default false
    */
   immediate?: boolean
 }
 export interface UseCountdownReturn extends Pausable {
   /**
-   * Current countdown value.
+   * 当前倒计数值。
    */
   remaining: ShallowRef<number>
   /**
-   * Resets the countdown and repeatsLeft to their initial values.
+   * 将倒计时和 repeatsLeft 重置为其初始值。
    */
   reset: (countdown?: MaybeRefOrGetter<number>) => void
   /**
-   * Stops the countdown and resets its state.
+   * 停止倒计时并重置其状态。
    */
   stop: () => void
   /**
-   * Reset the countdown and start it again.
+   * 重置倒计时并再次启动它。
    */
   start: (countdown?: MaybeRefOrGetter<number>) => void
 }
 /**
- * Reactive countdown timer in seconds.
+ * 响应式倒计时计时器（以秒为单位）。
  *
  * @param initialCountdown
  * @param options

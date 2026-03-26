@@ -4,25 +4,26 @@ category: Utilities
 
 # useToString
 
-Reactively convert a ref to string.
+响应式 `String` 转换。
 
-## Usage
+## 用法
 
 ```ts
 import { useToString } from '@vueuse/core'
-import { shallowRef } from 'vue'
 
-const number = shallowRef(3.14)
-const str = useToString(number)
+const value1 = ref(123)
+const value2 = ref(456)
+const value3 = ref('789')
 
-str.value // '3.14'
+const result = useToString(() => [value1.value, value2.value, value3.value])
+console.log(result.value) // '123456789'
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Reactively convert a ref to string.
+ * 响应式 `String` 转换。
  *
  * @see https://vueuse.org/useToString
  *

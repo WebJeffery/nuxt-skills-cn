@@ -4,9 +4,9 @@ category: Utilities
 
 # set
 
-Shorthand for `ref.value = x`
+`ref.value = x` 的简写
 
-## Usage
+## 用法
 
 ```ts
 import { set } from '@vueuse/core'
@@ -18,7 +18,7 @@ set(a, 1)
 console.log(a.value) // 1
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export declare function set<T>(ref: Ref<T>, value: T): void

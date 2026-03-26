@@ -5,11 +5,11 @@ related: createSharedComposable
 
 # createGlobalState
 
-Keep states in the global scope to be reusable across Vue instances.
+将状态保持在全局作用域中,以便在 Vue 实例之间重用。
 
-## Usage
+## 用法
 
-### Without Persistence (Store in Memory)
+### 不带持久性(存储在内存中)
 
 ```ts
 // store.ts
@@ -24,7 +24,7 @@ export const useGlobalState = createGlobalState(
 )
 ```
 
-A bigger example:
+一个更大的示例:
 
 ```ts
 // store.ts
@@ -33,7 +33,7 @@ import { computed, shallowRef } from 'vue'
 
 export const useGlobalState = createGlobalState(
   () => {
-    // state
+    // 状态
     const count = shallowRef(0)
 
     // getters
@@ -49,9 +49,9 @@ export const useGlobalState = createGlobalState(
 )
 ```
 
-### With Persistence
+### 带持久性
 
-Store in `localStorage` with `useStorage`:
+使用 `useStorage` 存储在 `localStorage` 中:
 
 ```ts twoslash include store
 // store.ts
@@ -77,15 +77,15 @@ export default defineComponent({
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type CreateGlobalStateReturn<Fn extends AnyFn = AnyFn> = Fn
 /**
- * Keep states in the global scope to be reusable across Vue instances.
+ * 将状态保持在全局作用域中,以便在 Vue 实例之间重用。
  *
  * @see https://vueuse.org/createGlobalState
- * @param stateFactory A factory function to create the state
+ * @param stateFactory 用于创建状态的工厂函数
  *
  * @__NO_SIDE_EFFECTS__
  */

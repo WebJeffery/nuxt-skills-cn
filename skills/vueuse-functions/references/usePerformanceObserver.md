@@ -4,9 +4,9 @@ category: Browser
 
 # usePerformanceObserver
 
-Observe performance metrics.
+观察性能指标。
 
-## Usage
+## 用法
 
 ```ts
 import { usePerformanceObserver } from '@vueuse/core'
@@ -19,20 +19,20 @@ usePerformanceObserver({
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UsePerformanceObserverOptions = PerformanceObserverInit &
   ConfigurableWindow & {
     /**
-     * Start the observer immediate.
+     * 立即启动观察者。
      *
      * @default true
      */
     immediate?: boolean
   }
 /**
- * Observe performance metrics.
+ * 观察性能指标。
  *
  * @see https://vueuse.org/usePerformanceObserver
  * @param options

@@ -4,9 +4,9 @@ category: Browser
 
 # usePreferredColorScheme
 
-Reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query.
+响应式 [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) 媒体查询。
 
-## Usage
+## 用法
 
 ```ts
 import { usePreferredColorScheme } from '@vueuse/core'
@@ -14,7 +14,7 @@ import { usePreferredColorScheme } from '@vueuse/core'
 const preferredColor = usePreferredColorScheme()
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -24,12 +24,12 @@ const preferredColor = usePreferredColorScheme()
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type ColorSchemeType = "dark" | "light" | "no-preference"
 /**
- * Reactive prefers-color-scheme media query.
+ * 响应式 prefers-color-scheme 媒体查询。
  *
  * @see https://vueuse.org/usePreferredColorScheme
  * @param [options]

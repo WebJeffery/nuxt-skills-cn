@@ -4,9 +4,9 @@ category: '@Math'
 
 # useSum
 
-Get the sum of an array reactively
+响应式获取数组的总和
 
-## Usage
+## 用法
 
 ```ts
 import { useSum } from '@vueuse/math'
@@ -24,7 +24,7 @@ const b = ref(3)
 const sum = useSum(a, b, 2) // Ref<6>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export declare function useSum(

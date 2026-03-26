@@ -4,25 +4,25 @@ category: Watch
 
 # watchAtMost
 
-`watch` with the number of times triggered.
+带有触发次数的 `watch`。
 
-## Usage
+## 用法
 
-Similar to `watch` with an extra option `count` which set up the number of times the callback function is triggered. After the count is reached, the watch will be stopped automatically.
+与 `watch` 类似，但有一个额外的选项 `count`，用于设置回调函数触发的次数。达到计数后，watch 将自动停止。
 
 ```ts
 import { watchAtMost } from '@vueuse/core'
 
 watchAtMost(
   source,
-  () => { console.log('trigger!') }, // triggered it at most 3 times
+  () => { console.log('trigger!') }, // 最多触发 3 次
   {
-    count: 3, // the number of times triggered
+    count: 3, // 触发次数
   },
 )
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface WatchAtMostOptions<

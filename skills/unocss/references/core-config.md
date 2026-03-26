@@ -1,15 +1,15 @@
 ---
 name: unocss-configuration
-description: Config file setup and all configuration options for UnoCSS
+description: UnoCSS 的配置文件设置和所有配置选项
 ---
 
-# UnoCSS Configuration
+# UnoCSS 配置
 
-UnoCSS is configured via a dedicated config file in your project root.
+UnoCSS 通过项目根目录中的专用配置文件进行配置。
 
-## Config File
+## 配置文件
 
-**Recommended:** Use a dedicated `uno.config.ts` file for best IDE support and HMR.
+**推荐：** 使用专用的 `uno.config.ts` 文件以获得最佳的 IDE 支持和 HMR。
 
 ```ts
 // uno.config.ts
@@ -51,12 +51,12 @@ export default defineConfig({
 })
 ```
 
-UnoCSS automatically looks for `uno.config.{js,ts,mjs,mts}` or `unocss.config.{js,ts,mjs,mts}` in the project root.
+UnoCSS 会自动在项目根目录中查找 `uno.config.{js,ts,mjs,mts}` 或 `unocss.config.{js,ts,mjs,mts}`。
 
-## Key Configuration Options
+## 主要配置选项
 
 ### rules
-Define CSS utility rules. Later entries have higher priority.
+定义 CSS 工具规则。后面的条目具有更高的优先级。
 
 ```ts
 rules: [
@@ -66,7 +66,7 @@ rules: [
 ```
 
 ### shortcuts
-Combine multiple rules into a single shorthand.
+将多个规则组合成单个简写。
 
 ```ts
 shortcuts: {
@@ -75,7 +75,7 @@ shortcuts: {
 ```
 
 ### theme
-Theme object for design tokens shared between rules.
+在规则之间共享的设计令牌的主题对象。
 
 ```ts
 theme: {
@@ -90,7 +90,7 @@ theme: {
 ```
 
 ### presets
-Predefined configurations bundling rules, variants, and themes.
+捆绑规则、变体和主题的预定义配置。
 
 ```ts
 presets: [
@@ -100,7 +100,7 @@ presets: [
 ```
 
 ### transformers
-Transform source code to support special syntax.
+转换源代码以支持特殊语法。
 
 ```ts
 transformers: [
@@ -110,16 +110,16 @@ transformers: [
 ```
 
 ### variants
-Preprocess selectors with ability to rewrite CSS output.
+使用重写 CSS 输出的能力预处理选择器。
 
 ### extractors
-Handle source files and extract utility class names.
+处理源文件并提取工具类名称。
 
 ### preflights
-Inject raw CSS globally.
+全局注入原始 CSS。
 
 ### layers
-Control the order of CSS layers. Default is `0`.
+控制 CSS 图层的顺序。默认为 `0`。
 
 ```ts
 layers: {
@@ -130,21 +130,21 @@ layers: {
 ```
 
 ### safelist
-Utilities that are always included in output.
+始终包含在输出中的工具类。
 
 ```ts
 safelist: ['p-1', 'p-2', 'p-3']
 ```
 
 ### blocklist
-Utilities that are always excluded.
+始终排除的工具类。
 
 ```ts
 blocklist: ['p-1', /^p-[2-4]$/]
 ```
 
 ### content
-Configure where to extract utilities from.
+配置从何处提取工具类。
 
 ```ts
 content: {
@@ -156,16 +156,16 @@ content: {
 ```
 
 ### separators
-Variant separator characters. Default: `[':', '-']`
+变体分隔符。默认为 `[':', '-']`
 
 ### outputToCssLayers
-Output UnoCSS layers as CSS Cascade Layers.
+将 UnoCSS 图层输出为 CSS 级联图层。
 
 ```ts
 outputToCssLayers: true
 ```
 
-## Specifying Config File Location
+## 指定配置文件位置
 
 ```ts
 // vite.config.ts
@@ -180,8 +180,8 @@ export default defineConfig({
 })
 ```
 
-<!-- 
-Source references:
+<!--
+源参考：
 - https://unocss.dev/guide/config-file
 - https://unocss.dev/config/
 -->

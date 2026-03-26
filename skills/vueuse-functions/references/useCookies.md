@@ -4,21 +4,21 @@ category: '@Integrations'
 
 # useCookies
 
-Wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie).
+[`universal-cookie`](https://www.npmjs.com/package/universal-cookie) 的包装器。
 
 ::: tip
-When using with Nuxt 3, this functions will **NOT** be auto imported in favor of Nuxt's built-in [`useCookie()`](https://v3.nuxtjs.org/api/composables/use-cookie). Use explicit import if you want to use the function from VueUse.
+当与 Nuxt 3 一起使用时，此函数将**不会**自动导入，以支持 Nuxt 内置的 [`useCookie()`](https://v3.nuxtjs.org/api/composables/use-cookie)。如果您想使用 VueUse 中的函数，请使用显式导入。
 :::
 
-## Install
+## 安装
 
 ```bash
 npm i universal-cookie@^7
 ```
 
-## Usage
+## 用法
 
-### Common usage
+### 常见用法
 
 ```vue
 <script setup lang="ts">
@@ -42,11 +42,11 @@ const cookies = useCookies(['locale'])
 </template>
 ```
 
-## Options
+## 选项
 
-Access and modify cookies using vue composition-api.
+使用 vue composition-api 访问和修改 cookies。
 
-> By default, you should use it inside `setup()`, but this function also works anywhere else.
+> 默认情况下，您应该在 `setup()` 中使用它，但此函数也可以在任何其他地方使用。
 
 ```ts
 import { useCookies } from '@vueuse/integrations/useCookies'
@@ -64,35 +64,35 @@ const {
 })
 ```
 
-### `dependencies` (optional)
+### `dependencies` (可选)
 
-Let you optionally specify a list of cookie names your component depend on or that should trigger a re-render. If unspecified, it will render on every cookie change.
+让您可以选择指定组件依赖的 cookie 名称或应该触发重新渲染的 cookie 名称。如果未指定，它将在每次 cookie 更改时渲染。
 
-### `options` (optional)
+### `options` (可选)
 
-- `doNotParse` (boolean = false): do not convert the cookie into an object no matter what. **Passed as default value to `get`/`getAll` methods.**
-- `autoUpdateDependencies` (boolean = false): automatically add cookie names ever provided to `get` method. If **true** then you don't need to care about provided `dependencies`.
+- `doNotParse` (boolean = false): 无论什么情况，都不将 cookie 转换为对象。**作为默认值传递给 `get`/`getAll` 方法。**
+- `autoUpdateDependencies` (boolean = false): 自动添加曾经提供给 `get` 方法的 cookie 名称。如果为 **true**，则您无需关心提供的 `dependencies`。
 
-### `cookies` (optional)
+### `cookies` (可选)
 
-Let you provide a `universal-cookie` instance (creates a new instance by default)
+让您提供 `universal-cookie` 实例（默认创建新实例）
 
-> Info about methods available in the [universal-cookie api docs](https://www.npmjs.com/package/universal-cookie#api---cookies-class)
+> 关于 [universal-cookie api docs](https://www.npmjs.com/package/universal-cookie#api---cookies-class) 中可用方法的信息
 
 ## `createCookies([req])`
 
-Create a `universal-cookie` instance using request (default is window.document.cookie) and returns `useCookies` function with provided universal-cookie instance
+使用请求创建 `universal-cookie` 实例（默认为 window.document.cookie）并返回带有提供的 universal-cookie 实例的 `useCookies` 函数
 
-- req (object): Node's [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage) request object
+- req (object): Node 的 [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage) 请求对象
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Creates a new {@link useCookies} function
- * @param req - incoming http request (for SSR)
+ * 创建一个新的 {@link useCookies} 函数
+ * @param req - 传入的 http 请求（用于 SSR）
  * @see https://github.com/reactivestack/cookies/tree/master/packages/universal-cookie universal-cookie
- * @description Creates universal-cookie instance using request (default is window.document.cookie) and returns {@link useCookies} function with provided universal-cookie instance
+ * @description 使用请求（默认为 window.document.cookie）创建 universal-cookie 实例并返回带有提供的 universal-cookie 实例的 {@link useCookies} 函数
  */
 export declare function createCookies(req?: IncomingMessage): (
   dependencies?: string[] | null,
@@ -105,11 +105,11 @@ export declare function createCookies(req?: IncomingMessage): (
   },
 ) => {
   /**
-   * Reactive get cookie by name. If **autoUpdateDependencies = true** then it will update watching dependencies
+   * 按名称响应式获取 cookie。如果 **autoUpdateDependencies = true**，它将更新监视的依赖项
    */
   get: <T = any>(name: string, options?: CookieGetOptions | undefined) => T
   /**
-   * Reactive get all cookies
+   * 响应式获取所有 cookies
    */
   getAll: <T = any>(options?: CookieGetOptions | undefined) => T
   set: (
@@ -122,12 +122,12 @@ export declare function createCookies(req?: IncomingMessage): (
   removeChangeListener: (callback: CookieChangeListener) => void
 }
 /**
- * Reactive methods to work with cookies (use {@link createCookies} method instead if you are using SSR)
- * @param dependencies - array of watching cookie's names. Pass empty array if don't want to watch cookies changes.
+ * 使用 cookies 的响应式方法（如果您使用 SSR，请改用 {@link createCookies} 方法）
+ * @param dependencies - 监视的 cookie 名称数组。如果不想监视 cookies 更改，请传递空数组。
  * @param options
- * @param options.doNotParse - don't try parse value as JSON
- * @param options.autoUpdateDependencies - automatically update watching dependencies
- * @param cookies - universal-cookie instance
+ * @param options.doNotParse - 不要尝试将值解析为 JSON
+ * @param options.autoUpdateDependencies - 自动更新监视的依赖项
+ * @param cookies - universal-cookie 实例
  *
  * @__NO_SIDE_EFFECTS__
  */
@@ -143,11 +143,11 @@ export declare function useCookies(
   cookies?: Cookie,
 ): {
   /**
-   * Reactive get cookie by name. If **autoUpdateDependencies = true** then it will update watching dependencies
+   * 按名称响应式获取 cookie。如果 **autoUpdateDependencies = true**，它将更新监视的依赖项
    */
   get: <T = any>(name: string, options?: CookieGetOptions | undefined) => T
   /**
-   * Reactive get all cookies
+   * 响应式获取所有 cookies
    */
   getAll: <T = any>(options?: CookieGetOptions | undefined) => T
   set: (

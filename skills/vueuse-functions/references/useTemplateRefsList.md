@@ -4,9 +4,9 @@ category: Component
 
 # useTemplateRefsList
 
-Shorthand for binding refs to template elements and components inside `v-for`.
+在 `v-for` 中将 refs 绑定到模板元素和组件的简写。
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -25,7 +25,7 @@ onUpdated(() => {
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type TemplateRefsList<T> = T[] & {

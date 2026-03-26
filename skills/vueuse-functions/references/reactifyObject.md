@@ -4,9 +4,9 @@ category: Reactivity
 
 # reactifyObject
 
-Apply `reactify` to an object
+将 `reactify` 应用于对象
 
-## Usage
+## 用法
 
 ```ts
 import { reactifyObject } from '@vueuse/core'
@@ -15,10 +15,10 @@ const reactifiedConsole = reactifyObject(console)
 
 const a = ref('42')
 
-reactifiedConsole.log(a) // no longer need `.value`
+reactifiedConsole.log(a) // 不再需要 `.value`
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type ReactifyNested<
@@ -37,14 +37,14 @@ export interface ReactifyObjectOptions<
   T extends boolean,
 > extends ReactifyOptions<T> {
   /**
-   * Includes names from Object.getOwnPropertyNames
+   * 包括来自 Object.getOwnPropertyNames 的名称
    *
    * @default true
    */
   includeOwnProperties?: boolean
 }
 /**
- * Apply `reactify` to an object
+ * 将 `reactify` 应用于对象
  *
  * @__NO_SIDE_EFFECTS__
  */

@@ -4,51 +4,33 @@ category: Utilities
 
 # useToNumber
 
-Reactively convert a string ref to number.
+响应式 `Number` 转换。
 
-## Usage
+## 用法
 
 ```ts
 import { useToNumber } from '@vueuse/core'
-import { shallowRef } from 'vue'
 
-const str = shallowRef('123')
-const number = useToNumber(str)
+const value1 = ref('123')
+const value2 = ref('456')
+const value3 = ref('789')
 
-number.value // 123
+const result = useToNumber(() => [value1.value, value2.value, value3.value])
+console.log(result.value) // [123, 456, 789]
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
-export interface UseToNumberOptions {
-  /**
-   * Method to use to convert the value to a number.
-   *
-   * Or a custom function for the conversion.
-   *
-   * @default 'parseFloat'
-   */
-  method?: "parseFloat" | "parseInt" | ((value: string | number) => number)
-  /**
-   * The base in mathematical numeral systems passed to `parseInt`.
-   * Only works with `method: 'parseInt'`
-   */
-  radix?: number
-  /**
-   * Replace NaN with zero
-   *
-   * @default false
-   */
-  nanToZero?: boolean
-}
 /**
- * Reactively convert a string ref to number.
+ * 响应式 `Number` 转换。
+ *
+ * @see https://vueuse.org/useToNumber
  *
  * @__NO_SIDE_EFFECTS__
  */
 export declare function useToNumber(
-  value: MaybeRefOrGetter<number | string>,
+  value: MaybeRefOrGetter<unknown>,
   options?: UseToNumberOptions,
 ): ComputedRef<number>
 ```

@@ -4,9 +4,9 @@ category: Animation
 
 # useTimeout
 
-Reactive value that becomes `true` after a given time.
+在给定时间后变为 `true` 的响应式值。
 
-## Usage
+## 用法
 
 ```ts
 import { useTimeout } from '@vueuse/core'
@@ -14,34 +14,34 @@ import { useTimeout } from '@vueuse/core'
 const ready = useTimeout(1000)
 ```
 
-After 1 second, `ready.value` becomes `true`.
+1 秒后，`ready.value` 变为 `true`。
 
-### With Controls
+### 带有控制
 
 ```ts
 import { useTimeout } from '@vueuse/core'
 
 const { ready, start, stop, isPending } = useTimeout(1000, { controls: true })
 
-// Check if timeout is pending
+// 检查超时是否正在进行
 console.log(isPending.value) // true
 
-// Stop the timeout
+// 停止超时
 stop()
 
-// Start/restart the timeout
+// 启动/重启超时
 start()
 ```
 
-### Options
+### 选项
 
-| Option      | Type         | Default | Description                                      |
-| ----------- | ------------ | ------- | ------------------------------------------------ |
-| `controls`  | `boolean`    | `false` | Expose `start`, `stop`, and `isPending` controls |
-| `immediate` | `boolean`    | `true`  | Start the timeout immediately                    |
-| `callback`  | `() => void` | —       | Called when the timeout completes                |
+| 选项      | 类型         | 默认值 | 描述                                      |
+| ----------- | ------------ | ------- | ----------------------------------------- |
+| `controls`  | `boolean`    | `false` | 暴露 `start`、`stop` 和 `isPending` 控制 |
+| `immediate` | `boolean`    | `true`  | 立即启动超时                    |
+| `callback`  | `() => void` | —       | 超时完成时调用                |
 
-### Callback on Timeout
+### 超时回调
 
 ```ts
 import { useTimeout } from '@vueuse/core'
@@ -53,9 +53,9 @@ useTimeout(1000, {
 })
 ```
 
-### Reactive Interval
+### 响应式间隔
 
-The timeout duration can be reactive:
+超时持续时间可以是响应式的：
 
 ```ts
 import { useTimeout } from '@vueuse/core'
@@ -63,24 +63,24 @@ import { useTimeout } from '@vueuse/core'
 const duration = ref(1000)
 const ready = useTimeout(duration)
 
-// Change the duration (only affects future timeouts when using controls)
+// 更改持续时间（仅影响使用控件时的未来超时）
 duration.value = 2000
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseTimeoutOptions<
   Controls extends boolean,
 > extends UseTimeoutFnOptions {
   /**
-   * Expose more controls
+   * 暴露更多控制
    *
    * @default false
    */
   controls?: Controls
   /**
-   * Callback on timeout
+   * 超时回调
    */
   callback?: Fn
 }
@@ -90,11 +90,11 @@ export type UseTimeoutReturn =
       readonly ready: ComputedRef<boolean>
     } & Stoppable)
 /**
- * @deprecated use UseTimeoutReturn instead
+ * @deprecated 使用 UseTimeoutReturn 代替
  */
 export type UseTimoutReturn = UseTimeoutReturn
 /**
- * Update value after a given time with controls.
+ * 在给定时间后更新值并带有控制。
  *
  * @see   {@link https://vueuse.org/useTimeout}
  * @param interval

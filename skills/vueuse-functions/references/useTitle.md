@@ -4,23 +4,23 @@ category: Browser
 
 # useTitle
 
-Reactive document title.
+响应式文档标题。
 
 ::: warning
-This composable isn't compatible with SSR.
+此组合式函数与 SSR 不兼容。
 :::
 
-## Usage
+## 用法
 
 ```ts
 import { useTitle } from '@vueuse/core'
 
 const title = useTitle()
-console.log(title.value) // print current title
-title.value = 'Hello' // change current title
+console.log(title.value) // 打印当前标题
+title.value = 'Hello' // 更改当前标题
 ```
 
-Set initial title immediately:
+立即设置初始标题：
 
 ```ts
 import { useTitle } from '@vueuse/core'
@@ -28,7 +28,7 @@ import { useTitle } from '@vueuse/core'
 const title = useTitle('New Title')
 ```
 
-Pass a `ref` and the title will be updated when the source ref changes:
+传递一个 `ref`，当源 ref 更改时标题将更新：
 
 ```ts
 import { useTitle } from '@vueuse/core'
@@ -40,10 +40,10 @@ const title = computed(() => {
   return !messages.value ? 'No message' : `${messages.value} new messages`
 })
 
-useTitle(title) // document title will match with the ref "title"
+useTitle(title) // 文档标题将与 ref "title" 匹配
 ```
 
-Pass an optional template tag [Vue Meta Title Template](https://vue-meta.nuxtjs.org/guide/metainfo.html) to update the title to be injected into this template:
+传递一个可选的模板标签 [Vue Meta Title Template](https://vue-meta.nuxtjs.org/guide/metainfo.html) 以更新要注入到此模板的标题：
 
 ```ts
 import { useTitle } from '@vueuse/core'
@@ -54,17 +54,17 @@ const title = useTitle('New Title', {
 ```
 
 ::: warning
-`observe` is incompatible with `titleTemplate`.
+`observe` 与 `titleTemplate` 不兼容。
 :::
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UseTitleOptionsBase = {
   /**
-   * Restore the original title when unmounted
-   * @param originTitle original title
-   * @returns restored title
+   * 在卸载时恢复原始标题
+   * @param originTitle 原始标题
+   * @returns 恢复的标题
    */
   restoreOnUnmount?:
     | false
@@ -75,8 +75,8 @@ export type UseTitleOptionsBase = {
 } & (
   | {
       /**
-       * Observe `document.title` changes using MutationObserve
-       * Cannot be used together with `titleTemplate` option.
+       * 使用 MutationObserve 观察 `document.title` 更改
+       * 不能与 `titleTemplate` 选项一起使用。
        *
        * @default false
        */
@@ -84,8 +84,8 @@ export type UseTitleOptionsBase = {
     }
   | {
       /**
-       * The template string to parse the title (e.g., '%s | My Website')
-       * Cannot be used together with `observe` option.
+       * 用于解析标题的模板字符串（例如，'%s | My Website'）
+       * 不能与 `observe` 选项一起使用。
        *
        * @default '%s'
        */
@@ -97,12 +97,12 @@ export type UseTitleReturn =
   | ComputedRef<string | null | undefined>
   | Ref<string | null | undefined>
 /**
- * Reactive document title.
+ * 响应式文档标题。
  *
  * @see https://vueuse.org/useTitle
  * @param newTitle
  * @param options
- * @description It's not SSR compatible. Your value will be applied only on client-side.
+ * @description 它与 SSR 不兼容。您的值将仅在客户端应用。
  */
 export declare function useTitle(
   newTitle: ReadonlyRefOrGetter<string | null | undefined>,

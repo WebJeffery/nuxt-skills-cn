@@ -12,7 +12,7 @@ Uses localStorage by default, other storage sources be specified via third argum
 ## Usage
 
 ::: tip
-When using with Nuxt 3, this function will **NOT** be auto imported in favor of Nitro's built-in [`useStorage()`](https://nitro.unjs.io/guide/storage). Use explicit import if you want to use the function from VueUse.
+当与 Nuxt 3 一起使用时，此函数将**不会**被自动导入，以支持 Nitro 内置的 [`useStorage()`](https://nitro.unjs.io/guide/storage)。如果要使用来自 VueUse 的函数，请使用显式导入。
 :::
 
 ```ts
@@ -36,7 +36,7 @@ state.value = null
 
 ## Merge Defaults
 
-By default, `useStorage` will use the value from storage if it is present and ignores the default value. Be aware that when you are adding more properties to the default value, the key might be `undefined` if client's storage does not have that key.
+默认情况下，如果存储中存在值，`useStorage` 将使用存储中的值并忽略默认值。请注意，当您向默认值添加更多属性时，如果客户端的存储没有该键，则该键可能为 `undefined`。
 
 ```ts
 import { useStorage } from '@vueuse/core'
@@ -45,7 +45,7 @@ localStorage.setItem('my-store', '{"hello": "hello"}')
 
 const state = useStorage('my-store', { hello: 'hi', greeting: 'hello' }, localStorage)
 
-console.log(state.value.greeting) // undefined, since the value is not presented in storage
+console.log(state.value.greeting) // undefined，因为值未在存储中呈现
 ```
 
 To solve that, you can enable `mergeDefaults` option.
@@ -81,7 +81,7 @@ const state = useStorage(
 
 ## Custom Serialization
 
-By default, `useStorage` will smartly use the corresponding serializer based on the data type of provided default value. For example, `JSON.stringify` / `JSON.parse` will be used for objects, `Number.toString` / `parseFloat` for numbers, etc.
+默认情况下，`useStorage` 将根据提供的默认值的数据类型智能地使用相应的序列化器。 For example, `JSON.stringify` / `JSON.parse` will be used for objects, `Number.toString` / `parseFloat` for numbers, etc.
 
 You can also provide your own serialization function to `useStorage`:
 
@@ -101,7 +101,7 @@ useStorage(
 )
 ```
 
-Please note when you provide `null` as the default value, `useStorage` can't assume the data type from it. In this case, you can provide a custom serializer or reuse the built-in ones explicitly.
+请注意，当您提供 `null` 作为默认值时，`useStorage` 无法从中假设数据类型。在这种情况下，您可以提供自定义序列化器或显式重用内置序列化器。
 
 ```ts
 import { StorageSerializers, useStorage } from '@vueuse/core'
@@ -156,7 +156,7 @@ useStorage('key', defaults, storage, {
 
 ## Reactive Key
 
-The storage key can be a ref or getter, and the data will be updated when the key changes:
+存储键可以是 ref 或 getter，当键更改时数据将更新：
 
 ```ts
 import { useStorage } from '@vueuse/core'
@@ -167,7 +167,7 @@ const userData = useStorage(
   { name: '' },
 )
 
-// Changing the key will read from the new storage location
+// 更改键将从新的存储位置读取
 userId.value = 'user-2'
 ```
 

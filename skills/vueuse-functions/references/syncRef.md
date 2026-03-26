@@ -5,9 +5,9 @@ related: syncRefs
 
 # syncRef
 
-Two-way refs synchronization.
+双向 refs 同步。
 
-## Usage
+## 用法
 
 ```ts
 import { syncRef } from '@vueuse/core'
@@ -28,7 +28,7 @@ a.value = 'bar'
 console.log(b.value) // bar
 ```
 
-### One directional
+### 单向
 
 ```ts
 import { syncRef } from '@vueuse/core'
@@ -39,7 +39,7 @@ const b = ref('b')
 const stop = syncRef(a, b, { direction: 'rtl' })
 ```
 
-### Custom Transform
+### 自定义转换
 
 ```ts
 import { syncRef } from '@vueuse/core'
@@ -61,7 +61,7 @@ b.value = 30
 console.log(a.value) // 15
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 type Direction = "ltr" | "rtl" | "both"
@@ -158,28 +158,28 @@ export type SyncRefOptions<
   D extends Direction,
 > = ConfigurableFlushSync & {
   /**
-   * Watch deeply
+   * 深度观察
    *
    * @default false
    */
   deep?: boolean
   /**
-   * Sync values immediately
+   * 立即同步值
    *
    * @default true
    */
   immediate?: boolean
   /**
-   * Direction of syncing. Value will be redefined if you define syncConvertors
+   * 同步的方向。如果您定义了 syncConvertors,值将被重新定义
    *
    * @default 'both'
    */
   direction?: D
 } & TransformType<D, L, R>
 /**
- * Two-way refs synchronization.
- * From the set theory perspective to restrict the option's type
- * Check in the following order:
+ * 双向 refs 同步。
+ * 从集合论角度限制选项的类型
+ * 按以下顺序检查:
  * 1. L = R
  * 2. L ∩ R ≠ ∅
  * 3. L ⊆ R

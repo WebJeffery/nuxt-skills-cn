@@ -4,9 +4,9 @@ category: Browser
 
 # useCssSupports
 
-SSR compatible and reactive [`CSS.supports`](https://developer.mozilla.org/docs/Web/API/CSS/supports_static).
+SSR 兼容且响应式的 [`CSS.supports`](https://developer.mozilla.org/docs/Web/API/CSS/supports_static)。
 
-## Usage
+## 用法
 
 ```ts
 import { useCssSupports } from '@vueuse/core'
@@ -14,7 +14,7 @@ import { useCssSupports } from '@vueuse/core'
 const { isSupported } = useCssSupports('container-type', 'scroll-state')
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseCssSupportsOptions extends ConfigurableWindow {

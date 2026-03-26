@@ -5,9 +5,9 @@ related: useUserMedia
 
 # useDisplayMedia
 
-Reactive [`mediaDevices.getDisplayMedia`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia) streaming.
+响应式 [`mediaDevices.getDisplayMedia`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia) 流。
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -16,12 +16,12 @@ import { useTemplateRef } from 'vue'
 
 const { stream, start } = useDisplayMedia()
 
-// start streaming
+// 开始流
 start()
 
 const videoRef = useTemplateRef('video')
 watchEffect(() => {
-  // preview on a video element
+  // 在视频元素上预览
   videoRef.value.srcObject = stream.value
 })
 </script>
@@ -31,21 +31,21 @@ watchEffect(() => {
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseDisplayMediaOptions extends ConfigurableNavigator {
   /**
-   * If the stream is enabled
+   * 是否启用流
    * @default false
    */
   enabled?: MaybeRef<boolean>
   /**
-   * If the stream video media constraints
+   * 是否流视频媒体约束
    */
   video?: boolean | MediaTrackConstraints | undefined
   /**
-   * If the stream audio media constraints
+   * 是否流音频媒体约束
    */
   audio?: boolean | MediaTrackConstraints | undefined
 }
@@ -56,7 +56,7 @@ export interface UseDisplayMediaReturn extends Supportable {
   enabled: ShallowRef<boolean>
 }
 /**
- * Reactive `mediaDevices.getDisplayMedia` streaming
+ * 响应式 `mediaDevices.getDisplayMedia` 流
  *
  * @see https://vueuse.org/useDisplayMedia
  * @param options

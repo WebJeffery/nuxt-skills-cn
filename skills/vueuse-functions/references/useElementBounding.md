@@ -4,9 +4,9 @@ category: Elements
 
 # useElementBounding
 
-Reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) of an HTML element
+HTML 元素的响应式 [边界框](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect)
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -22,7 +22,7 @@ const { x, y, top, right, bottom, left, width, height } = useElementBounding(el)
 </template>
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -32,7 +32,7 @@ const { x, y, top, right, bottom, left, width, height } = useElementBounding(el)
 </template>
 ```
 
-## Directive Usage
+## 指令用法
 
 ```vue
 <script setup lang="ts">
@@ -64,44 +64,44 @@ const options = {
 
 <template>
   <textarea v-element-bounding="onBounding" />
-  <!-- with options -->
+  <!-- 带选项 -->
   <textarea v-element-bounding="[onBounding, options]" />
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseElementBoundingOptions {
   /**
-   * Reset values to 0 on component unmounted
+   * 在组件卸载时将值重置为 0
    *
    * @default true
    */
   reset?: boolean
   /**
-   * Listen to window resize event
+   * 监听窗口调整大小事件
    *
    * @default true
    */
   windowResize?: boolean
   /**
-   * Listen to window scroll event
+   * 监听窗口滚动事件
    *
    * @default true
    */
   windowScroll?: boolean
   /**
-   * Immediately call update on component mounted
+   * 在组件挂载时立即调用更新
    *
    * @default true
    */
   immediate?: boolean
   /**
-   * Timing to recalculate the bounding box
+   * 重新计算边界框的时机
    *
-   * Setting to `next-frame` can be useful when using this together with something like {@link useBreakpoints}
-   * and therefore the layout (which influences the bounding box of the observed element) is not updated on the current tick.
+   * 设置为 `next-frame` 在与 {@link useBreakpoints} 之类的东西一起使用时可能很有用
+   * 因此，布局（影响被观察元素的边界框）不会在当前刻度上更新。
    *
    * @default 'sync'
    */
@@ -119,7 +119,7 @@ export interface UseElementBoundingReturn {
   update: () => void
 }
 /**
- * Reactive bounding box of an HTML element.
+ * HTML 元素的响应式边界框。
  *
  * @see https://vueuse.org/useElementBounding
  * @param target

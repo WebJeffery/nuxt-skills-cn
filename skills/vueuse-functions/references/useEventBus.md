@@ -4,9 +4,9 @@ category: Utilities
 
 # useEventBus
 
-A basic event bus.
+一个基本的事件总线。
 
-## Usage
+## 用法
 
 ```ts
 import { useEventBus } from '@vueuse/core'
@@ -17,26 +17,26 @@ function listener(event: string) {
   console.log(`news: ${event}`)
 }
 
-// listen to an event
+// 监听事件
 const unsubscribe = bus.on(listener)
 
-// fire an event
-bus.emit('The Tokyo Olympics has begun')
+// 触发事件
+bus.emit('东京奥运会已经开始')
 
-// unregister the listener
+// 取消注册监听器
 unsubscribe()
-// or
+// 或者
 bus.off(listener)
 
-// clearing all listeners
+// 清除所有监听器
 bus.reset()
 ```
 
-Listeners registered inside of components `setup` will be unregistered automatically when the component gets unmounted.
+在组件 `setup` 中注册的监听器将在组件卸载时自动取消注册。
 
 ## TypeScript
 
-Using `EventBusKey` is the key to bind the event type to the key, similar to Vue's [`InjectionKey`](https://antfu.me/posts/typed-provide-and-inject-in-vue) util.
+使用 `EventBusKey` 是将事件类型绑定到键的关键，类似于 Vue 的 [`InjectionKey`](https://antfu.me/posts/typed-provide-and-inject-in-vue) 工具。
 
 ```ts
 // fooKey.ts
@@ -53,11 +53,11 @@ import { fooKey } from './fooKey'
 const bus = useEventBus(fooKey)
 
 bus.on((e) => {
-  // `e` will be `{ name: foo }`
+  // `e` 将是 `{ name: foo }`
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type EventBusListener<T = unknown, P = any> = (
@@ -69,29 +69,29 @@ export interface EventBusKey<T> extends Symbol {}
 export type EventBusIdentifier<T = unknown> = EventBusKey<T> | string | number
 export interface UseEventBusReturn<T, P> {
   /**
-   * Subscribe to an event. When calling emit, the listeners will execute.
-   * @param listener watch listener.
-   * @returns a stop function to remove the current callback.
+   * 订阅事件。调用 emit 时，监听器将执行。
+   * @param listener 监听器。
+   * @returns 停止函数以移除当前回调。
    */
   on: (listener: EventBusListener<T, P>) => Fn
   /**
-   * Similar to `on`, but only fires once
-   * @param listener watch listener.
-   * @returns a stop function to remove the current callback.
+   * 类似于 `on`，但只触发一次
+   * @param listener 监听器。
+   * @returns 停止函数以移除当前回调。
    */
   once: (listener: EventBusListener<T, P>) => Fn
   /**
-   * Emit an event, the corresponding event listeners will execute.
-   * @param event data sent.
+   * 触发事件，相应的事件监听器将执行。
+   * @param event 发送的数据。
    */
   emit: (event?: T, payload?: P) => void
   /**
-   * Remove the corresponding listener.
-   * @param listener watch listener.
+   * 移除相应的监听器。
+   * @param listener 监听器。
    */
   off: (listener: EventBusListener<T>) => void
   /**
-   * Clear all events
+   * 清除所有事件
    */
   reset: () => void
 }
@@ -99,3 +99,8 @@ export declare function useEventBus<T = unknown, P = any>(
   key: EventBusIdentifier<T>,
 ): UseEventBusReturn<T, P>
 ```
+
+<!--
+Source references:
+- https://vueuse.org/core/useEventBus/
+-->

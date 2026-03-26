@@ -4,9 +4,9 @@ category: Utilities
 
 # useCounter
 
-Basic counter with utility functions.
+带有实用函数的基本计数器。
 
-## Basic Usage
+## 基本用法
 
 ```ts
 import { useCounter } from '@vueuse/core'
@@ -14,7 +14,7 @@ import { useCounter } from '@vueuse/core'
 const { count, inc, dec, set, reset } = useCounter()
 ```
 
-## Usage with options
+## 使用选项
 
 ```ts
 import { useCounter } from '@vueuse/core'
@@ -22,7 +22,7 @@ import { useCounter } from '@vueuse/core'
 const { count, inc, dec, set, reset } = useCounter(1, { min: 0, max: 16 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseCounterOptions {
@@ -31,38 +31,38 @@ export interface UseCounterOptions {
 }
 export interface UseCounterReturn {
   /**
-   * The current value of the counter.
+   * 计数器的当前值。
    */
   readonly count: Readonly<Ref<number>>
   /**
-   * Increment the counter.
+   * 增加计数器。
    *
-   * @param {number} [delta=1] The number to increment.
+   * @param {number} [delta=1] 要增加的数字。
    */
   inc: (delta?: number) => void
   /**
-   * Decrement the counter.
+   * 减少计数器。
    *
-   * @param {number} [delta=1] The number to decrement.
+   * @param {number} [delta=1] 要减少的数字。
    */
   dec: (delta?: number) => void
   /**
-   * Get the current value of the counter.
+   * 获取计数器的当前值。
    */
   get: () => number
   /**
-   * Set the counter to a new value.
+   * 将计数器设置为新值。
    *
-   * @param val The new value of the counter.
+   * @param val 计数器的新值。
    */
   set: (val: number) => void
   /**
-   * Reset the counter to an initial value.
+   * 将计数器重置为初始值。
    */
   reset: (val?: number) => number
 }
 /**
- * Basic counter with utility functions.
+ * 带有实用函数的基本计数器。
  *
  * @see https://vueuse.org/useCounter
  * @param [initialValue]

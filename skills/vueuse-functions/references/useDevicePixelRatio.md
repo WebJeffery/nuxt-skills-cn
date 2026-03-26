@@ -4,11 +4,11 @@ category: Sensors
 
 # useDevicePixelRatio
 
-Reactively track [`window.devicePixelRatio`](https://developer.mozilla.org/docs/Web/API/Window/devicePixelRatio)
+响应式跟踪 [`window.devicePixelRatio`](https://developer.mozilla.org/docs/Web/API/Window/devicePixelRatio)
 
-> NOTE: there is no event listener for `window.devicePixelRatio` change. So this function uses [`Testing media queries programmatically (window.matchMedia)`](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries) applying the same mechanism as described in [this example](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio#monitoring_screen_resolution_or_zoom_level_changes).
+> 注意：没有用于 `window.devicePixelRatio` 更改的事件侦听器。因此，此函数使用 [`以编程方式测试媒体查询（window.matchMedia）`](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries)，应用与 [此示例](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio#monitoring_screen_resolution_or_zoom_level_changes) 中描述的相同机制。
 
-## Usage
+## 用法
 
 ```ts
 import { useDevicePixelRatio } from '@vueuse/core'
@@ -16,7 +16,7 @@ import { useDevicePixelRatio } from '@vueuse/core'
 const { pixelRatio } = useDevicePixelRatio()
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -26,7 +26,7 @@ const { pixelRatio } = useDevicePixelRatio()
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseDevicePixelRatioOptions extends ConfigurableWindow {}
@@ -35,7 +35,7 @@ export interface UseDevicePixelRatioReturn {
   stop: WatchStopHandle
 }
 /**
- * Reactively track `window.devicePixelRatio`.
+ * 响应式跟踪 `window.devicePixelRatio`。
  *
  * @see https://vueuse.org/useDevicePixelRatio
  *

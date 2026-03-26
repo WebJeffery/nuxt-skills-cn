@@ -4,9 +4,9 @@ category: Array
 
 # useArrayReduce
 
-Reactive `Array.reduce`.
+响应式 `Array.reduce`。
 
-## Usage
+## 用法
 
 ```ts
 import { useArrayReduce } from '@vueuse/core'
@@ -15,7 +15,7 @@ const sum = useArrayReduce([ref(1), ref(2), ref(3)], (sum, val) => sum + val)
 // sum.value: 6
 ```
 
-### Use with reactive array
+### 与响应式数组一起使用
 
 ```ts
 import { useArrayReduce } from '@vueuse/core'
@@ -27,7 +27,7 @@ list.push(3)
 // sum.value: 6
 ```
 
-### Use with initialValue
+### 使用初始值
 
 ```ts
 import { useArrayReduce } from '@vueuse/core'
@@ -37,7 +37,7 @@ const sum = useArrayReduce(list, (sum, val) => sum + val.num, 0)
 // sum.value: 3
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UseArrayReducer<PV, CV, R> = (
@@ -47,13 +47,13 @@ export type UseArrayReducer<PV, CV, R> = (
 ) => R
 export type UseArrayReduceReturn<T = any> = ComputedRef<T>
 /**
- * Reactive `Array.reduce`
+ * 响应式 `Array.reduce`
  *
  * @see https://vueuse.org/useArrayReduce
- * @param list - the array was called upon.
- * @param reducer - a "reducer" function.
+ * @param list - 被调用的数组。
+ * @param reducer - 一个 "reducer" 函数。
  *
- * @returns the value that results from running the "reducer" callback function to completion over the entire array.
+ * @returns 在整个数组上运行 "reducer" 回调函数到完成所产生的值。
  *
  * @__NO_SIDE_EFFECTS__
  */
@@ -62,14 +62,14 @@ export declare function useArrayReduce<T>(
   reducer: UseArrayReducer<T, T, T>,
 ): UseArrayReduceReturn<T>
 /**
- * Reactive `Array.reduce`
+ * 响应式 `Array.reduce`
  *
  * @see https://vueuse.org/useArrayReduce
- * @param list - the array was called upon.
- * @param reducer - a "reducer" function.
- * @param initialValue - a value to be initialized the first time when the callback is called.
+ * @param list - 被调用的数组。
+ * @param reducer - 一个 "reducer" 函数。
+ * @param initialValue - 在第一次调用回调时初始化的值。
  *
- * @returns the value that results from running the "reducer" callback function to completion over the entire array.
+ * @returns 在整个数组上运行 "reducer" 回调函数到完成所产生的值。
  *
  * @__NO_SIDE_EFFECTS__
  */

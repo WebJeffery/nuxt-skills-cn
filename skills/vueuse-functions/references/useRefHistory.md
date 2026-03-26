@@ -5,11 +5,11 @@ related: useManualRefHistory
 
 # useRefHistory
 
-Track the change history of a ref, also provides undo and redo functionality
+跟踪 ref 的更改历史，还提供撤消和重做功能
 
-<CourseLink href="https://vueschool.io/lessons/ref-history-with-vueuse?friend=vueuse">Learn useRefHistory with this FREE video lesson from Vue School!</CourseLink>
+<CourseLink href="https://vueschool.io/lessons/ref-history-with-vueuse?friend=vueuse">通过 Vue School 的这个免费视频课程学习 useRefHistory！</CourseLink>
 
-## Usage
+## 用法
 
 ```ts {5} twoslash include usage
 import { useRefHistory } from '@vueuse/core'
@@ -19,7 +19,7 @@ const counter = shallowRef(0)
 const { history, undo, redo } = useRefHistory(counter)
 ```
 
-Internally, `watch` is used to trigger a history point when the ref value is modified. This means that history points are triggered asynchronously batching modifications in the same "tick".
+在内部，使用 `watch` 在修改 ref 值时触发历史点。这意味着历史点在同一"刻度"中异步批处理修改。
 
 ```ts
 // @include: usage
@@ -34,7 +34,7 @@ console.log(history.value)
 ] */
 ```
 
-You can use `undo` to reset the ref value to the last history point.
+您可以使用 `undo` 将 ref 值重置为最后一个历史点。
 
 ```ts
 // @include: usage
@@ -44,9 +44,9 @@ undo()
 console.log(counter.value) // 0
 ```
 
-### Objects / arrays
+### 对象/数组
 
-When working with objects or arrays, since changing their attributes does not change the reference, it will not trigger the committing. To track attribute changes, you would need to pass `deep: true`. It will create clones for each history record.
+当处理对象或数组时，由于更改它们的属性不会更改引用，因此不会触发提交。要跟踪属性更改，您需要传递 `deep: true`。它将为每个历史记录创建克隆。
 
 ```ts
 import { useRefHistory } from '@vueuse/core'
@@ -70,11 +70,11 @@ console.log(history.value)
 ] */
 ```
 
-#### Custom Clone Function
+#### 自定义克隆函数
 
-`useRefHistory` only embeds the minimal clone function `x => JSON.parse(JSON.stringify(x))`. To use a full featured or custom clone function, you can set up via the `clone` options.
+`useRefHistory` 仅嵌入最小的克隆函数 `x => JSON.parse(JSON.stringify(x))`。要使用功能齐全或自定义的克隆函数，您可以通过 `clone` 选项进行设置。
 
-For example, using [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone):
+例如，使用 [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone)：
 
 ```ts
 import { useRefHistory } from '@vueuse/core'
@@ -82,7 +82,7 @@ import { useRefHistory } from '@vueuse/core'
 const refHistory = useRefHistory(target, { clone: structuredClone })
 ```
 
-Or by using [lodash's `cloneDeep`](https://lodash.com/docs/4.17.15#cloneDeep):
+或使用 [lodash 的 `cloneDeep`](https://lodash.com/docs/4.17.15#cloneDeep)：
 
 ```ts
 import { useRefHistory } from '@vueuse/core'
@@ -91,7 +91,7 @@ import { cloneDeep } from 'lodash-es'
 const refHistory = useRefHistory(target, { clone: cloneDeep })
 ```
 
-Or a more lightweight [`klona`](https://github.com/lukeed/klona):
+或更轻量级的 [`klona`](https://github.com/lukeed/klona)：
 
 ```ts
 import { useRefHistory } from '@vueuse/core'
@@ -100,9 +100,9 @@ import { klona } from 'klona'
 const refHistory = useRefHistory(target, { clone: klona })
 ```
 
-#### Custom Dump and Parse Function
+#### 自定义转储和解析函数
 
-Instead of using the `clone` options, you can pass custom functions to control the serialization and parsing. In case you do not need history values to be objects, this can save an extra clone when undoing. It is also useful in case you want to have the snapshots already stringified to be saved to local storage for example.
+除了使用 `clone` 选项，您可以传递自定义函数来控制序列化和解析。如果您不需要历史值为对象，这可以在撤消时节省额外的克隆。如果您想要快照已经字符串化以便保存到本地存储，这也很有用。
 
 ```ts
 import { useRefHistory } from '@vueuse/core'
@@ -113,35 +113,35 @@ const refHistory = useRefHistory(target, {
 })
 ```
 
-### History Capacity
+### 历史容量
 
-We will keep all the history by default (unlimited) until you explicitly clear them up, you can set the maximal amount of history to be kept by `capacity` options.
-
-```ts
-import { useRefHistory } from '@vueuse/core'
-// ---cut---
-const refHistory = useRefHistory(target, {
-  capacity: 15, // limit to 15 history records
-})
-
-refHistory.clear() // explicitly clear all the history
-```
-
-### History WatchOptionFlush Timing
-
-From [Vue's documentation](https://vuejs.org/guide/essentials/watchers.html#callback-flush-timing): Vue's reactivity system buffers invalidated effects and flush them asynchronously to avoid unnecessary duplicate invocation when there are many state mutations happening in the same "tick".
-
-In the same way as `watch`, you can modify the flush timing using the `flush` option.
+默认情况下，我们将保留所有历史记录（无限），直到您明确清除它们，您可以通过 `capacity` 选项设置要保留的最大历史记录数量。
 
 ```ts
 import { useRefHistory } from '@vueuse/core'
 // ---cut---
 const refHistory = useRefHistory(target, {
-  flush: 'sync', // options 'pre' (default), 'post' and 'sync'
+  capacity: 15, // 限制为 15 个历史记录
+})
+
+refHistory.clear() // 明确清除所有历史记录
+```
+
+### 历史记录 WatchOptionFlush 时序
+
+从 [Vue 的文档](https://vuejs.org/guide/essentials/watchers.html#callback-flush-timing)：Vue 的响应式系统缓冲无效的效果并异步刷新它们，以避免在同一"刻度"中发生许多状态突变时不必要的重复调用。
+
+与 `watch` 的方式相同，您可以使用 `flush` 选项修改刷新时序。
+
+```ts
+import { useRefHistory } from '@vueuse/core'
+// ---cut---
+const refHistory = useRefHistory(target, {
+  flush: 'sync', // 选项 'pre'（默认）、'post' 和 'sync'
 })
 ```
 
-The default is `'pre'`, to align this composable with the default for Vue's watchers. This also helps to avoid common issues, like several history points generated as part of a multi-step update to a ref value that can break invariants of the app state. You can use `commit()` in case you need to create multiple history points in the same "tick"
+默认值为 `'pre'`，以使此可组合项与 Vue 观察器的默认值对齐。这还有助于避免常见问题，例如作为对 ref 值的多步骤更新的一部分生成的几个历史点，这些点可能会破坏应用程序状态的不变量。如果您需要在同一"刻度"中创建多个历史点，可以使用 `commit()`
 
 ```ts
 import { useRefHistory } from '@vueuse/core'
@@ -163,7 +163,7 @@ console.log(history.value)
 ] */
 ```
 
-On the other hand, when using flush `'sync'`, you can use `batch(fn)` to generate a single history point for several sync operations
+另一方面，当使用 flush `'sync'` 时，您可以使用 `batch(fn)` 为几个同步操作生成单个历史点
 
 ```ts
 import { useRefHistory } from '@vueuse/core'
@@ -183,7 +183,7 @@ console.log(history.value)
 ] */
 ```
 
-If `{ flush: 'sync', deep: true }` is used, `batch` is also useful when doing a mutable `splice` in an array. `splice` can generate up to three atomic operations that will be pushed to the ref history.
+如果使用 `{ flush: 'sync', deep: true }`，`batch` 在数组中进行可变 `splice` 时也很有用。`splice` 可以生成多达三个原子操作，这些操作将被推送到 ref 历史记录中。
 
 ```ts
 import { useRefHistory } from '@vueuse/core'
@@ -192,53 +192,53 @@ const arr = ref([1, 2, 3])
 const { history, batch } = useRefHistory(arr, { deep: true, flush: 'sync' })
 
 batch(() => {
-  arr.value.splice(1, 1) // batch ensures only one history point is generated
+  arr.value.splice(1, 1) // batch 确保只生成一个历史点
 })
 ```
 
-Another option is to avoid mutating the original ref value using `arr.value = [...arr.value].splice(1,1)`.
+另一个选择是避免使用 `arr.value = [...arr.value].splice(1,1)` 来改变原始 ref 值。
 
-## Recommended Readings
+## 推荐阅读
 
-- [History and Persistence](https://patak.dev/vue/history-and-persistence.html) - by [@patak-dev](https://github.com/patak-dev)
+- [历史记录和持久性](https://patak.dev/vue/history-and-persistence.html) - 作者 [@patak-dev](https://github.com/patak-dev)
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseRefHistoryOptions<Raw, Serialized = Raw>
   extends ConfigurableEventFilter, ConfigurableFlush {
   /**
-   * Watch for deep changes, default to false
+   * 监视深度更改，默认为 false
    *
-   * When set to true, it will also create clones for values store in the history
+   * 设置为 true 时，它还将为历史记录中存储的值创建克隆
    *
    * @default false
    */
   deep?: boolean
   /**
-   * Maximum number of history to be kept. Default to unlimited.
+   * 要保留的最大历史记录数量。默认为无限。
    */
   capacity?: number
   /**
-   * Clone when taking a snapshot, shortcut for dump: JSON.parse(JSON.stringify(value)).
-   * Default to false
+   * 在拍摄快照时克隆，dump: JSON.parse(JSON.stringify(value)) 的快捷方式。
+   * 默认为 false
    *
    * @default false
    */
   clone?: boolean | CloneFn<Raw>
   /**
-   * Serialize data into the history
+   * 将数据序列化到历史记录中
    */
   dump?: (v: Raw) => Serialized
   /**
-   * Deserialize data from the history
+   * 从历史记录中反序列化数据
    */
   parse?: (v: Serialized) => Raw
   /**
-   * Function to determine if the commit should proceed
-   * @param oldValue Previous value
-   * @param newValue New value
-   * @returns boolean indicating if commit should proceed
+   * 确定是否应该继续提交的函数
+   * @param oldValue 旧值
+   * @param newValue 新值
+   * @returns 指示是否应该继续提交的布尔值
    */
   shouldCommit?: (oldValue: Raw | undefined, newValue: Raw) => boolean
 }
@@ -247,32 +247,32 @@ export interface UseRefHistoryReturn<
   Serialized,
 > extends UseManualRefHistoryReturn<Raw, Serialized> {
   /**
-   * A ref representing if the tracking is enabled
+   * 表示是否启用跟踪的 ref
    */
   isTracking: Ref<boolean>
   /**
-   * Pause change tracking
+   * 暂停更改跟踪
    */
   pause: () => void
   /**
-   * Resume change tracking
+   * 恢复更改跟踪
    *
-   * @param [commit] if true, a history record will be create after resuming
+   * @param [commit] 如果为 true，将在恢复后创建历史记录
    */
   resume: (commit?: boolean) => void
   /**
-   * A sugar for auto pause and auto resuming within a function scope
+   * 在函数范围内自动暂停和自动恢复的语法糖
    *
    * @param fn
    */
   batch: (fn: (cancel: Fn) => void) => void
   /**
-   * Clear the data and stop the watch
+   * 清除数据并停止监视
    */
   dispose: () => void
 }
 /**
- * Track the change history of a ref, also provides undo and redo functionality.
+ * 跟踪 ref 的更改历史，还提供撤消和重做功能。
  *
  * @see https://vueuse.org/useRefHistory
  * @param source

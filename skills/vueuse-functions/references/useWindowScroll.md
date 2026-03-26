@@ -4,9 +4,9 @@ category: Elements
 
 # useWindowScroll
 
-Reactive window scroll
+响应式窗口滚动
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -17,25 +17,25 @@ const { x, y } = useWindowScroll()
 
 <template>
   <div>
-    read current x, y scroll: {{ x }}, {{ y }}
+    读取当前 x, y 滚动: {{ x }}, {{ y }}
   </div>
   <button @click="x = 100">
-    scroll X to 100
+    滚动 X 到 100
   </button>
   <button @click="y = 100">
-    scroll Y to 100
+    滚动 Y 到 100
   </button>
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseWindowScrollOptions
   extends ConfigurableWindow, UseScrollOptions {}
 export interface UseWindowScrollReturn extends UseScrollReturn {}
 /**
- * Reactive window scroll.
+ * 响应式窗口滚动。
  *
  * @see https://vueuse.org/useWindowScroll
  * @param options

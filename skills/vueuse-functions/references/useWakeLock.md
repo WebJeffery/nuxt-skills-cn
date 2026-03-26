@@ -4,9 +4,9 @@ category: Browser
 
 # useWakeLock
 
-Reactive [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API). Provides a way to prevent devices from dimming or locking the screen when an application needs to keep running.
+响应式 [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API)。提供了一种在应用程序需要保持运行时防止设备变暗或锁定屏幕的方法。
 
-## Usage
+## 用法
 
 ```ts
 import { useWakeLock } from '@vueuse/core'
@@ -14,13 +14,13 @@ import { useWakeLock } from '@vueuse/core'
 const { isSupported, isActive, forceRequest, request, release } = useWakeLock()
 ```
 
-When `request` is called, the wake lock will be requested if the document is visible. Otherwise, the request will be queued until the document becomes visible. If the request is successful, `isActive` will be **true**. Whenever the document is hidden, the `isActive` will be **false**.
+当调用 `request` 时，如果文档可见，将请求唤醒锁定。否则，请求将被排队，直到文档变为可见。如果请求成功，`isActive` 将为 **true**。每当文档隐藏时，`isActive` 将为 **false**。
 
-When `release` is called, the wake lock will be released. If there is a queued request, it will be canceled.
+当调用 `release` 时，将释放唤醒锁定。如果有排队的请求，它将被取消。
 
-To request a wake lock immediately, even if the document is hidden, use `forceRequest`. Note that this may throw an error if the document is hidden.
+要立即请求唤醒锁定，即使文档隐藏，请使用 `forceRequest`。请注意，如果文档隐藏，这可能会抛出错误。
 
-## Type Declarations
+## 类型声明
 
 ```ts
 type WakeLockType = "screen"
@@ -38,7 +38,7 @@ export interface UseWakeLockReturn extends Supportable {
   release: () => Promise<void>
 }
 /**
- * Reactive Screen Wake Lock API.
+ * 响应式 Screen Wake Lock API。
  *
  * @see https://vueuse.org/useWakeLock
  * @param options

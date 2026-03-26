@@ -4,11 +4,11 @@ category: Array
 
 # useArrayEvery
 
-Reactive `Array.every`
+响应式 `Array.every`
 
-## Usage
+## 用法
 
-### Use with array of multiple refs
+### 与多个 ref 的数组一起使用
 
 ```ts
 import { useArrayEvery } from '@vueuse/core'
@@ -25,7 +25,7 @@ item1.value = 1
 // result.value: false
 ```
 
-### Use with reactive array
+### 与响应式数组一起使用
 
 ```ts
 import { useArrayEvery } from '@vueuse/core'
@@ -37,18 +37,18 @@ list.value.push(9)
 // result.value: false
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UseArrayEveryReturn = ComputedRef<boolean>
 /**
- * Reactive `Array.every`
+ * 响应式 `Array.every`
  *
  * @see https://vueuse.org/useArrayEvery
- * @param list - the array was called upon.
- * @param fn - a function to test each element.
+ * @param list - 被调用的数组。
+ * @param fn - 测试每个元素的函数。
  *
- * @returns **true** if the `fn` function returns a **truthy** value for every element from the array. Otherwise, **false**.
+ * @returns 如果对于数组中的每个元素,`fn` 函数返回**真值**,则返回 **true**。否则,返回 **false**。
  *
  * @__NO_SIDE_EFFECTS__
  */

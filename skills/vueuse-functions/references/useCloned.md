@@ -4,9 +4,9 @@ category: Utilities
 
 # useCloned
 
-Reactive clone of a ref. By default, it use `JSON.parse(JSON.stringify())` to do the clone.
+ref 的响应式克隆。默认情况下,它使用 `JSON.parse(JSON.stringify())` 进行克隆。
 
-## Usage
+## 用法
 
 ```ts
 import { useCloned } from '@vueuse/core'
@@ -20,7 +20,7 @@ original.value.key = 'some new value'
 console.log(cloned.value.key) // 'value'
 ```
 
-## Manual cloning
+## 手动克隆
 
 ```ts
 import { useCloned } from '@vueuse/core'
@@ -38,9 +38,9 @@ sync()
 console.log(cloned.value.key)// 'manual'
 ```
 
-## Custom Clone Function
+## 自定义克隆函数
 
-Using [`klona`](https://www.npmjs.com/package/klona) for example:
+使用 [`klona`](https://www.npmjs.com/package/klona) 作为示例:
 
 ```ts
 import { useCloned } from '@vueuse/core'
@@ -51,18 +51,18 @@ const original = ref({ key: 'value' })
 const { cloned, isModified, sync } = useCloned(original, { clone: klona })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseClonedOptions<T = any> extends WatchOptions {
   /**
-   * Custom clone function.
+   * 自定义克隆函数。
    *
-   * By default, it use `JSON.parse(JSON.stringify(value))` to clone.
+   * 默认情况下,它使用 `JSON.parse(JSON.stringify(value))` 进行克隆。
    */
   clone?: (source: T) => T
   /**
-   * Manually sync the ref
+   * 手动同步 ref
    *
    * @default false
    */
@@ -70,15 +70,15 @@ export interface UseClonedOptions<T = any> extends WatchOptions {
 }
 export interface UseClonedReturn<T> {
   /**
-   * Cloned ref
+   * 克隆的 ref
    */
   cloned: Ref<T>
   /**
-   * Ref indicates whether the cloned data is modified
+   * Ref 指示克隆数据是否已修改
    */
   isModified: Ref<boolean>
   /**
-   * Sync cloned data with source manually
+   * 手动将克隆数据与源同步
    */
   sync: () => void
 }

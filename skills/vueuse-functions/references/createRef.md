@@ -4,9 +4,9 @@ category: Reactivity
 
 # createRef
 
-Returns a `deepRef` or `shallowRef` depending on the `deep` param.
+根据 `deep` 参数返回 `deepRef` 或 `shallowRef`。
 
-## Usage
+## 用法
 
 ```ts
 import { createRef } from '@vueuse/core'
@@ -21,7 +21,7 @@ isShallow(shallowData) // true
 isShallow(deepData) // false
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type CreateRefReturn<
@@ -33,7 +33,7 @@ export type ShallowOrDeepRef<
   D extends boolean = false,
 > = D extends true ? Ref<T> : ShallowRef<T>
 /**
- * Returns a `deepRef` or `shallowRef` depending on the `deep` param.
+ * 根据 `deep` 参数返回 `deepRef` 或 `shallowRef`。
  *
  * @example createRef(1) // ShallowRef<number>
  * @example createRef(1, false) // ShallowRef<number>
@@ -43,7 +43,7 @@ export type ShallowOrDeepRef<
  *
  * @param value
  * @param deep
- * @returns the `deepRef` or `shallowRef`
+ * @returns `deepRef` 或 `shallowRef`
  *
  * @__NO_SIDE_EFFECTS__
  */

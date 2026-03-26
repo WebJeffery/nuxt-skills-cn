@@ -6,9 +6,9 @@ related: logicAnd, logicNot
 
 # logicOr
 
-`OR` conditions for refs.
+ref 的 `OR` 条件。
 
-## Usage
+## 用法
 
 ```ts
 import { whenever } from '@vueuse/core'
@@ -22,11 +22,11 @@ whenever(logicOr(a, b), () => {
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * `OR` conditions for refs.
+ * Ref 的 `OR` 条件。
  *
  * @see https://vueuse.org/logicOr
  *
@@ -35,6 +35,6 @@ whenever(logicOr(a, b), () => {
 export declare function logicOr(
   ...args: MaybeRefOrGetter<any>[]
 ): ComputedRef<boolean>
-/** @deprecated use `logicOr` instead */
+/** @deprecated 使用 `logicOr` 代替 */
 export declare const or: typeof logicOr
 ```

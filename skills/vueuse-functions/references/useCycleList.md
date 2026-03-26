@@ -4,11 +4,11 @@ category: Utilities
 
 # useCycleList
 
-Cycle through a list of items.
+循环遍历项目列表。
 
-<CourseLink href="https://vueschool.io/lessons/create-an-image-carousel-with-vueuse?friend=vueuse">Learn how to use useCycleList to create an image carousel with this FREE video lesson from Vue School!</CourseLink>
+<CourseLink href="https://vueschool.io/lessons/create-an-image-carousel-with-vueuse?friend=vueuse">通过 Vue School 的这个免费视频课程学习如何使用 useCycleList 创建图片轮播！</CourseLink>
 
-## Usage
+## 用法
 
 ```ts
 import { useCycleList } from '@vueuse/core'
@@ -35,26 +35,26 @@ go(3)
 console.log(state.value) // 'Shark'
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseCycleListOptions<T> {
   /**
-   * The initial value of the state.
-   * A ref can be provided to reuse.
+   * state 的初始值。
+   * 可以提供一个 ref 来重用。
    */
   initialValue?: MaybeRef<T>
   /**
-   * The default index when
+   * 时的默认索引
    */
   fallbackIndex?: number
   /**
-   * Custom function to get the index of the current value.
+   * 获取当前值索引的自定义函数。
    */
   getIndexOf?: (value: T, list: T[]) => number
 }
 /**
- * Cycle through a list of items
+ * 循环遍历项目列表
  *
  * @see https://vueuse.org/useCycleList
  */
@@ -68,7 +68,7 @@ export interface UseCycleListReturn<T> {
   next: (n?: number) => T
   prev: (n?: number) => T
   /**
-   * Go to a specific index
+   * 转到特定索引
    */
   go: (i: number) => T
 }

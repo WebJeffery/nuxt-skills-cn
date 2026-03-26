@@ -4,19 +4,19 @@ category: '@Integrations'
 
 # useFocusTrap
 
-Reactive wrapper for [`focus-trap`](https://github.com/focus-trap/focus-trap).
+[`focus-trap`](https://github.com/focus-trap/focus-trap) 的响应式包装器。
 
-For more information on what options can be passed, see [`createOptions`](https://github.com/focus-trap/focus-trap#createoptions) in the `focus-trap` documentation.
+有关可以传递哪些选项的更多信息，请参阅 `focus-trap` 文档中的 [`createOptions`](https://github.com/focus-trap/focus-trap#createoptions)。
 
-## Install
+## 安装
 
 ```bash
 npm i focus-trap@^7
 ```
 
-## Usage
+## 用法
 
-**Basic Usage**
+**基本用法**
 
 ```vue
 <script setup lang="ts">
@@ -30,20 +30,20 @@ const { hasFocus, activate, deactivate } = useFocusTrap(target)
 <template>
   <div>
     <button @click="activate()">
-      Activate
+      激活
     </button>
     <div ref="target">
       <span>Has Focus: {{ hasFocus }}</span>
       <input type="text">
       <button @click="deactivate()">
-        Deactivate
+        停用
       </button>
     </div>
   </div>
 </template>
 ```
 
-**Multiple Refs**
+**多个 Ref**
 
 ```vue
 <script setup lang="ts">
@@ -58,25 +58,25 @@ const { hasFocus, activate, deactivate } = useFocusTrap([targetOne, targetTwo])
 <template>
   <div>
     <button @click="activate()">
-      Activate
+      激活
     </button>
     <div ref="targetOne">
       <span>Has Focus: {{ hasFocus }}</span>
       <input type="text">
     </div>
     ...
-    <div ref="targetTow">
+    <div ref="targetTwo">
       <p>Another target here</p>
       <input type="text">
       <button @click="deactivate()">
-        Deactivate
+        停用
       </button>
     </div>
   </div>
 </template>
 ```
 
-**Dynamic Focus Target**
+**动态焦点目标**
 
 ```vue
 <script setup lang="ts">
@@ -110,7 +110,7 @@ const { activate } = useFocusTrap(target)
 </template>
 ```
 
-**Automatically Focus**
+**自动聚焦**
 
 ```vue
 <script setup lang="ts">
@@ -130,9 +130,9 @@ const { hasFocus, activate, deactivate } = useFocusTrap(target, { immediate: tru
 </template>
 ```
 
-**Conditional Rendering**
+**条件渲染**
 
-This function can't properly activate focus on elements with conditional rendering using `v-if`. This is because they do not exist in the DOM at the time of the focus activation. To solve this you need to activate on the next tick.
+此函数无法在使用 `v-if` 进行条件渲染的元素上正确激活焦点。这是因为它们在焦点激活时不存在于 DOM 中。要解决此问题，您需要在下一个刻度上激活。
 
 ```vue
 <script setup lang="ts">
@@ -165,9 +165,9 @@ async function reveal() {
 </template>
 ```
 
-## Using Component
+## 使用组件
 
-With the `UseFocusTrap` component, Focus Trap will be activated automatically on mounting this component and deactivated on unmount.
+使用 `UseFocusTrap` 组件，焦点陷阱将在挂载此组件时自动激活，并在卸载时停用。
 
 ```vue
 <script setup lang="ts">
@@ -186,53 +186,53 @@ const show = shallowRef(false)
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseFocusTrapOptions extends Options {
   /**
-   * Immediately activate the trap
+   * 立即激活陷阱
    */
   immediate?: boolean
 }
 export interface UseFocusTrapReturn {
   /**
-   * Indicates if the focus trap is currently active
+   * 指示焦点陷阱当前是否活动
    */
   hasFocus: ShallowRef<boolean>
   /**
-   * Indicates if the focus trap is currently paused
+   * 指示焦点陷阱当前是否暂停
    */
   isPaused: ShallowRef<boolean>
   /**
-   * Activate the focus trap
+   * 激活焦点陷阱
    *
    * @see https://github.com/focus-trap/focus-trap#trapactivateactivateoptions
-   * @param opts Activate focus trap options
+   * @param opts 激活焦点陷阱选项
    */
   activate: (opts?: ActivateOptions) => void
   /**
-   * Deactivate the focus trap
+   * 停用焦点陷阱
    *
    * @see https://github.com/focus-trap/focus-trap#trapdeactivatedeactivateoptions
-   * @param opts Deactivate focus trap options
+   * @param opts 停用焦点陷阱选项
    */
   deactivate: (opts?: DeactivateOptions) => void
   /**
-   * Pause the focus trap
+   * 暂停焦点陷阱
    *
    * @see https://github.com/focus-trap/focus-trap#trappause
    */
   pause: Fn
   /**
-   * Unpauses the focus trap
+   * 取消暂停焦点陷阱
    *
    * @see https://github.com/focus-trap/focus-trap#trapunpause
    */
   unpause: Fn
 }
 /**
- * Reactive focus-trap
+ * 响应式焦点陷阱
  *
  * @see https://vueuse.org/useFocusTrap
  */

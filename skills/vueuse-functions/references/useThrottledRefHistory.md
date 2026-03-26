@@ -5,11 +5,11 @@ related: useDebouncedRefHistory, useRefHistory
 
 # useThrottledRefHistory
 
-Shorthand for `useRefHistory` with throttled filter.
+`useRefHistory` 带有节流过滤器的简写。
 
-## Usage
+## 用法
 
-This function takes the first snapshot right after the counter's value was changed and the second with a delay of 1000ms.
+此函数在计数器的值更改后立即拍摄第一个快照，并在 1000 毫秒的延迟后拍摄第二个快照。
 
 ```ts
 import { useThrottledRefHistory } from '@vueuse/core'
@@ -19,7 +19,7 @@ const counter = shallowRef(0)
 const { history, undo, redo } = useThrottledRefHistory(counter, { deep: true, throttle: 1000 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UseThrottledRefHistoryOptions<Raw, Serialized = Raw> = Omit<
@@ -34,7 +34,7 @@ export type UseThrottledRefHistoryReturn<
   Serialized = Raw,
 > = UseRefHistoryReturn<Raw, Serialized>
 /**
- * Shorthand for [useRefHistory](https://vueuse.org/useRefHistory) with throttled filter.
+ * [useRefHistory](https://vueuse.org/useRefHistory) 带有节流过滤器的简写。
  *
  * @see https://vueuse.org/useThrottledRefHistory
  * @param source

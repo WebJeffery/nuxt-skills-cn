@@ -4,9 +4,9 @@ category: '@Math'
 
 # useCeil
 
-Reactive `Math.ceil`
+响应式 `Math.ceil`
 
-## Usage
+## 用法
 
 ```ts
 import { useCeil } from '@vueuse/math'
@@ -15,11 +15,11 @@ const value = ref(0.95)
 const result = useCeil(value) // 1
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Reactive `Math.ceil`.
+ * 响应式 `Math.ceil`。
  *
  * @see https://vueuse.org/useCeil
  *

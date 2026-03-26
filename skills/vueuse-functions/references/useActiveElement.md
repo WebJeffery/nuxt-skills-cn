@@ -4,9 +4,9 @@ category: Elements
 
 # useActiveElement
 
-Reactive `document.activeElement`. Returns a shallow ref that updates when focus changes.
+响应式 `document.activeElement`。返回一个浅层 ref,当焦点更改时更新。
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -21,20 +21,20 @@ watch(activeElement, (el) => {
 </script>
 ```
 
-### Shadow DOM Support
+### Shadow DOM 支持
 
-By default, `useActiveElement` will traverse into shadow DOM to find the deeply active element. Set `deep: false` to disable this behavior.
+默认情况下,`useActiveElement` 将遍历到 shadow DOM 以查找深度活动的元素。设置 `deep: false` 以禁用此行为。
 
 ```ts
 import { useActiveElement } from '@vueuse/core'
 
-// Only get the shadow host, not the element inside shadow DOM
+// 只获取 shadow host,而不是 shadow DOM 内部的元素
 const activeElement = useActiveElement({ deep: false })
 ```
 
-### Track Element Removal
+### 跟踪元素移除
 
-Set `triggerOnRemoval: true` to update the active element when the currently active element is removed from the DOM. This uses a `MutationObserver` under the hood.
+设置 `triggerOnRemoval: true` 以在当前活动元素从 DOM 中移除时更新活动元素。这在底层使用 `MutationObserver`。
 
 ```ts
 import { useActiveElement } from '@vueuse/core'
@@ -42,7 +42,7 @@ import { useActiveElement } from '@vueuse/core'
 const activeElement = useActiveElement({ triggerOnRemoval: true })
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -52,20 +52,20 @@ const activeElement = useActiveElement({ triggerOnRemoval: true })
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseActiveElementOptions
   extends ConfigurableWindow, ConfigurableDocumentOrShadowRoot {
   /**
-   * Search active element deeply inside shadow dom
+   * 在 shadow dom 内深度搜索活动元素
    *
    * @default true
    */
   deep?: boolean
   /**
-   * Track active element when it's removed from the DOM
-   * Using a MutationObserver under the hood
+   * 当活动元素从 DOM 中移除时跟踪活动元素
+   * 在底层使用 MutationObserver
    * @default false
    */
   triggerOnRemoval?: boolean
@@ -73,7 +73,7 @@ export interface UseActiveElementOptions
 export type UseActiveElementReturn<T extends HTMLElement = HTMLElement> =
   ShallowRef<T | null | undefined>
 /**
- * Reactive `document.activeElement`
+ * 响应式 `document.activeElement`
  *
  * @see https://vueuse.org/useActiveElement
  * @param options

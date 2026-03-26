@@ -5,9 +5,9 @@ alias: useDebounce, debouncedRef
 
 # refDebounced
 
-Debounce execution of a ref value.
+防抖 ref 值的执行。
 
-## Usage
+## 用法
 
 ```ts {5}
 import { refDebounced } from '@vueuse/core'
@@ -28,7 +28,7 @@ function sleep(ms: number) {
 }
 ```
 
-An example with object ref.
+对象 ref 的示例。
 
 ```js
 import { refDebounced } from '@vueuse/core'
@@ -54,28 +54,28 @@ await sleep(1100)
 console.log(debounced.value) // { name: 'bar', age: 18 }
 ```
 
-You can also pass an optional 3rd parameter including maxWait option. See `useDebounceFn` for details.
+您还可以传递包括 maxWait 选项的可选第 3 个参数。有关详细信息,请参阅 `useDebounceFn`。
 
-## Recommended Reading
+## 推荐阅读
 
-- [**Debounce vs Throttle**: Definitive Visual Guide](https://kettanaito.com/blog/debounce-vs-throttle)
+- [**防抖 vs 节流**: 决定性视觉指南](https://kettanaito.com/blog/debounce-vs-throttle)
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type RefDebouncedReturn<T = any> = Readonly<Ref<T>>
 /**
- * Debounce updates of a ref.
+ * 防抖 ref 的更新。
  *
- * @return A new debounced ref.
+ * @return 一个新的防抖 ref。
  */
 export declare function refDebounced<T>(
   value: Ref<T>,
   ms?: MaybeRefOrGetter<number>,
   options?: DebounceFilterOptions,
 ): RefDebouncedReturn<T>
-/** @deprecated use `refDebounced` instead */
+/** @deprecated 使用 `refDebounced` 代替 */
 export declare const debouncedRef: typeof refDebounced
-/** @deprecated use `refDebounced` instead */
+/** @deprecated 使用 `refDebounced` 代替 */
 export declare const useDebounce: typeof refDebounced
 ```

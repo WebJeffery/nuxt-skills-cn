@@ -4,9 +4,9 @@ category: Sensors
 
 # useParallax
 
-Create parallax effect easily. It uses `useDeviceOrientation` and fallback to `useMouse` if orientation is not supported.
+轻松创建视差效果。它使用 `useDeviceOrientation`，如果不支持方向，则回退到 `useMouse`。
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -21,7 +21,7 @@ const { tilt, roll, source } = useParallax(container)
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseParallaxOptions extends ConfigurableWindow {
@@ -32,21 +32,20 @@ export interface UseParallaxOptions extends ConfigurableWindow {
 }
 export interface UseParallaxReturn {
   /**
-   * Roll value. Scaled to `-0.5 ~ 0.5`
+   * Roll 值。缩放为 `-0.5 ~ 0.5`
    */
   roll: ComputedRef<number>
   /**
-   * Tilt value. Scaled to `-0.5 ~ 0.5`
+   * Tilt 值。缩放为 `-0.5 ~ 0.5`
    */
   tilt: ComputedRef<number>
   /**
-   * Sensor source, can be `mouse` or `deviceOrientation`
+   * 传感器源，可以是 `mouse` 或 `deviceOrientation`
    */
   source: ComputedRef<"deviceOrientation" | "mouse">
 }
 /**
- * Create parallax effect easily. It uses `useDeviceOrientation` and fallback to `useMouse`
- * if orientation is not supported.
+ * 轻松创建视差效果。它使用 `useDeviceOrientation`，如果不支持方向，则回退到 `useMouse`。
  *
  * @param target
  * @param options

@@ -4,9 +4,9 @@ category: Reactivity
 
 # toReactive
 
-Converts ref to reactive. Also made possible to create a "swapable" reactive object.
+将 ref 转换为 reactive。还可以创建一个"可交换"的响应式对象。
 
-## Usage
+## 用法
 
 ```ts
 import { toReactive } from '@vueuse/core'
@@ -26,14 +26,14 @@ console.log(state.foo) // => undefined
 console.log(state.bar) // => 'foo'
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Converts ref to reactive.
+ * 将 ref 转换为 reactive。
  *
  * @see https://vueuse.org/toReactive
- * @param objectRef A ref of object
+ * @param objectRef 对象的 ref
  */
 export declare function toReactive<T extends object>(
   objectRef: MaybeRef<T>,

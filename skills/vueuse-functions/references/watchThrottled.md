@@ -1,15 +1,14 @@
 ---
 category: Watch
-alias: throttledWatch
 ---
 
 # watchThrottled
 
-Throttled watch. The callback will be invoked at most once per specified duration.
+节流 watch。回调最多在指定持续时间内调用一次。
 
-## Usage
+## 用法
 
-Similar to `watch`, but offering extra options `throttle`, `trailing`, and `leading` which will be applied to the callback function.
+与 `watch` 类似，但提供额外的选项 `throttle`、`trailing` 和 `leading`，这些选项将应用于回调函数。
 
 ```ts
 import { watchThrottled } from '@vueuse/core'
@@ -21,31 +20,31 @@ watchThrottled(
 )
 ```
 
-### Options
+### 选项
 
-| Option     | Type                       | Default | Description                               |
+| 选项     | 类型                       | 默认值 | 描述                               |
 | ---------- | -------------------------- | ------- | ----------------------------------------- |
-| `throttle` | `MaybeRefOrGetter<number>` | `0`     | Throttle interval in ms (can be reactive) |
-| `trailing` | `boolean`                  | `true`  | Invoke on the trailing edge               |
-| `leading`  | `boolean`                  | `true`  | Invoke on the leading edge                |
+| `throttle` | `MaybeRefOrGetter<number>` | `0`     | 节流间隔（毫秒，可以是响应式的） |
+| `trailing` | `boolean`                  | `true`  | 在尾部边缘调用               |
+| `leading`  | `boolean`                  | `true`  | 在头部边缘调用                |
 
-All standard `watch` options (`deep`, `immediate`, `flush`, etc.) are also supported.
+所有标准的 `watch` 选项（`deep`、`immediate`、`flush` 等）也都支持。
 
-### Leading and Trailing
+### 头部和尾部
 
-Control when the callback is invoked:
+控制何时调用回调：
 
 ```ts
 import { watchThrottled } from '@vueuse/core'
 
-// Only invoke at the start of each throttle period
+// 仅在每个节流周期的开始时调用
 watchThrottled(source, callback, {
   throttle: 500,
   leading: true,
   trailing: false,
 })
 
-// Only invoke at the end of each throttle period
+// 仅在每个节流周期的结束时调用
 watchThrottled(source, callback, {
   throttle: 500,
   leading: false,
@@ -53,9 +52,9 @@ watchThrottled(source, callback, {
 })
 ```
 
-## How It Works
+## 工作原理
 
-It's essentially a shorthand for the following code:
+它本质上是以下代码的简写：
 
 ```ts
 import { throttleFilter, watchWithFilter } from '@vueuse/core'
@@ -69,7 +68,7 @@ watchWithFilter(
 )
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface WatchThrottledOptions<
@@ -103,6 +102,6 @@ export declare function watchThrottled<
   cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
   options?: WatchThrottledOptions<Immediate>,
 ): WatchHandle
-/** @deprecated use `watchThrottled` instead */
+/** @deprecated 请改用 `watchThrottled` */
 export declare const throttledWatch: typeof watchThrottled
 ```

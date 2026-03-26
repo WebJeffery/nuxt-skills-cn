@@ -1,13 +1,13 @@
 ---
 name: transformer-directives
-description: CSS directives @apply, @screen, theme(), and icon()
+description: CSS 指令 @apply、@screen、theme() 和 icon()
 ---
 
 # Transformer Directives
 
-Enables `@apply`, `@screen`, `theme()`, and `icon()` directives in CSS.
+在 CSS 中启用 `@apply`、`@screen`、`theme()` 和 `icon()` 指令。
 
-## Installation
+## 安装
 
 ```ts
 import { defineConfig, transformerDirectives } from 'unocss'
@@ -21,22 +21,22 @@ export default defineConfig({
 
 ## @apply
 
-Apply utility classes in CSS:
+在 CSS 中应用工具类：
 
 ```css
 .custom-btn {
   @apply py-2 px-4 font-semibold rounded-lg;
 }
 
-/* With variants - use quotes */
+/* 带变体 - 使用引号 */
 .custom-btn {
   @apply 'hover:bg-blue-600 focus:ring-2';
 }
 ```
 
-### CSS Custom Property Alternative
+### CSS 自定义属性替代方案
 
-For vanilla CSS compatibility:
+对于原生 CSS 兼容性：
 
 ```css
 .custom-div {
@@ -44,20 +44,20 @@ For vanilla CSS compatibility:
 }
 ```
 
-Supported aliases: `--at-apply`, `--uno-apply`, `--uno`
+支持的别名：`--at-apply`、`--uno-apply`、`--uno`
 
-Configure aliases:
+配置别名：
 
 ```ts
 transformerDirectives({
   applyVariable: ['--at-apply', '--uno-apply', '--uno'],
-  // or disable: applyVariable: false
+  // 或禁用：applyVariable: false
 })
 ```
 
 ## @screen
 
-Create breakpoint media queries:
+创建断点媒体查询：
 
 ```css
 .grid {
@@ -78,15 +78,15 @@ Create breakpoint media queries:
 }
 ```
 
-### Breakpoint Variants
+### 断点变体
 
 ```css
-/* Less than breakpoint */
+/* 小于断点 */
 @screen lt-sm {
   .item { display: none; }
 }
 
-/* At specific breakpoint only */
+/* 仅在特定断点 */
 @screen at-md {
   .item { width: 50%; }
 }
@@ -94,7 +94,7 @@ Create breakpoint media queries:
 
 ## theme()
 
-Access theme values in CSS:
+在 CSS 中访问主题值：
 
 ```css
 .btn-blue {
@@ -104,29 +104,29 @@ Access theme values in CSS:
 }
 ```
 
-Dot notation paths into your theme config.
+点符号路径到您的主题配置。
 
 ## icon()
 
-Convert icon utility to SVG (requires preset-icons):
+将图标工具类转换为 SVG（需要 preset-icons）：
 
 ```css
 .icon-sun {
   background-image: icon('i-carbon-sun');
 }
 
-/* With custom color */
+/* 使用自定义颜色 */
 .icon-moon {
   background-image: icon('i-carbon-moon', '#fff');
 }
 
-/* Using theme color */
+/* 使用主题颜色 */
 .icon-alert {
   background-image: icon('i-carbon-warning', 'theme("colors.red.500")');
 }
 ```
 
-## Complete Example
+## 完整示例
 
 ```css
 .card {
@@ -151,7 +151,7 @@ Convert icon utility to SVG (requires preset-icons):
 }
 ```
 
-<!-- 
-Source references:
+<!--
+源参考：
 - https://unocss.dev/transformers/directives
 -->

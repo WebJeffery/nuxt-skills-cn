@@ -4,9 +4,9 @@ category: Utilities
 
 # useAsyncQueue
 
-Executes each asynchronous task sequentially and passes the current task result to the next task.
+按顺序执行每个异步任务,并将当前任务结果传递给下一个任务。
 
-## Usage
+## 用法
 
 ```ts
 import { useAsyncQueue } from '@vueuse/core'
@@ -29,14 +29,14 @@ function p2(result: number) {
 
 const { activeIndex, result } = useAsyncQueue([p1, p2])
 
-console.log(activeIndex.value) // current pending task index
+console.log(activeIndex.value) // 当前待处理任务的索引
 
-console.log(result) // the tasks result
+console.log(result) // 任务结果
 ```
 
-### Result State
+### 结果状态
 
-Each task in the result array has a `state` and `data` property:
+result 数组中的每个任务都有一个 `state` 和 `data` 属性:
 
 ```ts
 interface UseAsyncQueueResult<T> {
@@ -45,32 +45,32 @@ interface UseAsyncQueueResult<T> {
 }
 ```
 
-### Interrupt on Failure
+### 失败时中断
 
-By default, if a task fails, subsequent tasks will not be executed. Set `interrupt: false` to continue executing even after failures.
+默认情况下,如果任务失败,则不会执行后续任务。设置 `interrupt: false` 以在失败后继续执行。
 
 ```ts
 const { result } = useAsyncQueue([p1, p2], {
-  interrupt: false, // continue even if p1 fails
+  interrupt: false, // 即使 p1 失败也继续
 })
 ```
 
-### Callbacks
+### 回调
 
 ```ts
 const { result } = useAsyncQueue([p1, p2], {
   onError() {
-    console.log('A task failed')
+    console.log('任务失败')
   },
   onFinished() {
-    console.log('All tasks completed (or interrupted)')
+    console.log('所有任务完成(或中断)')
   },
 })
 ```
 
-### Abort Signal
+### 中止信号
 
-You can pass an `AbortSignal` to cancel the queue execution.
+您可以传递 `AbortSignal` 来取消队列执行。
 
 ```ts
 const controller = new AbortController()
@@ -79,11 +79,11 @@ const { result } = useAsyncQueue([p1, p2], {
   signal: controller.signal,
 })
 
-// Later, abort the queue
+// 稍后,中止队列
 controller.abort()
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UseAsyncQueueTask<T> = (...args: any[]) => T | Promise<T>
@@ -100,28 +100,28 @@ export interface UseAsyncQueueReturn<T> {
 }
 export interface UseAsyncQueueOptions {
   /**
-   * Interrupt tasks when current task fails.
+   * 当前任务失败时中断任务。
    *
    * @default true
    */
   interrupt?: boolean
   /**
-   * Trigger it when the tasks fails.
+   * 任务失败时触发它。
    *
    */
   onError?: () => void
   /**
-   * Trigger it when the tasks ends.
+   * 任务结束时触发它。
    *
    */
   onFinished?: () => void
   /**
-   * A AbortSignal that can be used to abort the task.
+   * 可用于中止任务的 AbortSignal。
    */
   signal?: AbortSignal
 }
 /**
- * Asynchronous queue task controller.
+ * 异步队列任务控制器。
  *
  * @see https://vueuse.org/useAsyncQueue
  * @param tasks

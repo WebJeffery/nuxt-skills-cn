@@ -4,9 +4,9 @@ category: Sensors
 
 # usePointerLock
 
-Reactive [pointer lock](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_Lock_API).
+响应式 [pointer lock](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_Lock_API)。
 
-## Basic Usage
+## 基本用法
 
 ```ts
 import { usePointerLock } from '@vueuse/core'
@@ -20,7 +20,7 @@ const {
 } = usePointerLock()
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -33,7 +33,7 @@ const {
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UsePointerLockOptions extends ConfigurableDocument {}
@@ -44,7 +44,7 @@ export interface UsePointerLockReturn extends Supportable {
   unlock: () => Promise<boolean>
 }
 /**
- * Reactive pointer lock.
+ * 响应式指针锁定。
  *
  * @see https://vueuse.org/usePointerLock
  * @param target

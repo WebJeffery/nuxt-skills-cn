@@ -4,9 +4,9 @@ category: Sensors
 
 # useOnline
 
-Reactive online state. A wrapper of `useNetwork`.
+响应式在线状态。`useNetwork` 的包装器。
 
-## Usage
+## 用法
 
 ```ts
 import { useOnline } from '@vueuse/core'
@@ -14,7 +14,7 @@ import { useOnline } from '@vueuse/core'
 const online = useOnline()
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -24,11 +24,11 @@ const online = useOnline()
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Reactive online state.
+ * 响应式在线状态。
  *
  * @see https://vueuse.org/useOnline
  * @param options

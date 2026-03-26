@@ -4,11 +4,11 @@ category: Browser
 
 # useBrowserLocation
 
-Reactive browser location
+响应式浏览器位置
 
-> NOTE: If you're using Vue Router, use [`useRoute`](https://router.vuejs.org/guide/advanced/composition-api.html) provided by Vue Router instead.
+> 注意:如果您使用 Vue Router,请改用 Vue Router 提供的 [`useRoute`](https://router.vuejs.org/guide/advanced/composition-api.html)。
 
-## Usage
+## 用法
 
 ```ts
 import { useBrowserLocation } from '@vueuse/core'
@@ -16,7 +16,7 @@ import { useBrowserLocation } from '@vueuse/core'
 const location = useBrowserLocation()
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <UseBrowserLocation v-slot="location">
@@ -24,7 +24,7 @@ const location = useBrowserLocation()
 </UseBrowserLocation>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseBrowserLocationOptions extends ConfigurableWindow {}
@@ -44,7 +44,7 @@ export interface BrowserLocationState {
 }
 export type UseBrowserLocationReturn = Ref<BrowserLocationState>
 /**
- * Reactive browser location.
+ * 响应式浏览器位置。
  *
  * @see https://vueuse.org/useBrowserLocation
  *

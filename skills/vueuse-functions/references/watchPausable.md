@@ -5,21 +5,21 @@ alias: pausableWatch
 
 # watchPausable
 
-Pausable watch
+可暂停的 watch
 
 ::: info
-This function will be removed in future version.
+此函数将在未来版本中移除。
 :::
 
 ::: tip
 
-[Pausable Watcher](https://vuejs.org/api/reactivity-core.html#watch) has been added to Vue [since 3.5](https://github.com/vuejs/core/pull/9651), use `const { stop, pause, resume } = watch(watchSource, callback)` instead.
+[可暂停的监听器](https://vuejs.org/api/reactivity-core.html#watch) 已在 Vue [3.5 版本起](https://github.com/vuejs/core/pull/9651) 添加，请改用 `const { stop, pause, resume } = watch(watchSource, callback)`。
 
 :::
 
-## Usage
+## 用法
 
-Use as normal the `watch`, but return extra `pause()` and `resume()` functions to control.
+像普通 `watch` 一样使用，但返回额外的 `pause()` 和 `resume()` 函数来控制。
 
 ```ts
 import { watchPausable } from '@vueuse/core'
@@ -38,7 +38,7 @@ await nextTick() // Changed to bar!
 pause()
 
 source.value = 'foobar'
-await nextTick() // (nothing happend)
+await nextTick() // (什么都没发生）
 
 resume()
 
@@ -46,7 +46,7 @@ source.value = 'hello'
 await nextTick() // Changed to hello!
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface WatchPausableReturn extends Pausable {
@@ -54,7 +54,7 @@ export interface WatchPausableReturn extends Pausable {
 }
 export type WatchPausableOptions<Immediate> =
   WatchWithFilterOptions<Immediate> & PausableFilterOptions
-/** @deprecated Use Vue's built-in `watch` instead. This function will be removed in future version. */
+/** @deprecated 请改用 Vue 内置的 `watch`。此函数将在未来版本中移除。 */
 export declare function watchPausable<
   T extends Readonly<MultiWatchSources>,
   Immediate extends Readonly<boolean> = false,
@@ -63,7 +63,7 @@ export declare function watchPausable<
   cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>,
   options?: WatchPausableOptions<Immediate>,
 ): WatchPausableReturn
-/** @deprecated Use Vue's built-in `watch` instead. This function will be removed in future version. */
+/** @deprecated 请改用 Vue 内置的 `watch`。此函数将在未来版本中移除。 */
 export declare function watchPausable<
   T,
   Immediate extends Readonly<boolean> = false,
@@ -72,7 +72,7 @@ export declare function watchPausable<
   cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
   options?: WatchPausableOptions<Immediate>,
 ): WatchPausableReturn
-/** @deprecated Use Vue's built-in `watch` instead. This function will be removed in future version. */
+/** @deprecated 请改用 Vue 内置的 `watch`。此函数将在未来版本中移除。 */
 export declare function watchPausable<
   T extends object,
   Immediate extends Readonly<boolean> = false,
@@ -81,6 +81,6 @@ export declare function watchPausable<
   cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
   options?: WatchPausableOptions<Immediate>,
 ): WatchPausableReturn
-/** @deprecated Use Vue's built-in `watch` instead. This function will be removed in future version. */
+/** @deprecated 请改用 Vue 内置的 `watch`。此函数将在未来版本中移除。 */
 export declare const pausableWatch: typeof watchPausable
 ```

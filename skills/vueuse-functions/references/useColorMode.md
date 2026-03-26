@@ -8,9 +8,9 @@ related:
 
 # useColorMode
 
-Reactive color mode (dark / light / customs) with auto data persistence.
+响应式颜色模式(暗/亮/自定义),具有自动数据持久化。
 
-## Basic Usage
+## 基本用法
 
 ```ts
 import { useColorMode } from '@vueuse/core'
@@ -18,7 +18,7 @@ import { useColorMode } from '@vueuse/core'
 const mode = useColorMode() // Ref<'dark' | 'light'>
 ```
 
-By default, it will match with users' browser preference using `usePreferredDark` (a.k.a `auto` mode). When reading the ref, it will by default return the current color mode (`dark`, `light` or your custom modes). The `auto` mode can be included in the returned modes by enabling the `emitAuto` option. When writing to the ref, it will trigger DOM updates and persist the color mode to local storage (or your custom storage). You can pass `auto` to set back to auto mode.
+默认情况下,它将使用 `usePreferredDark`(即 `auto` 模式)与用户的浏览器偏好匹配。当读取 ref 时,默认情况下它将返回当前颜色模式(`dark`、`light` 或您的自定义模式)。通过启用 `emitAuto` 选项,`auto` 模式可以包含在返回的模式中。当写入 ref 时,它将触发 DOM 更新并将颜色模式持久化到本地存储(或您的自定义存储)。您可以传递 `auto` 以设置回自动模式。
 
 ```ts
 import { useColorMode } from '@vueuse/core'
@@ -27,12 +27,12 @@ const mode = useColorMode()
 // ---cut---
 mode.value // 'dark' | 'light'
 
-mode.value = 'dark' // change to dark mode and persist
+mode.value = 'dark' // 更改为暗模式并持久化
 
-mode.value = 'auto' // change to auto mode
+mode.value = 'auto' // 更改为自动模式
 ```
 
-## Config
+## 配置
 
 ```ts
 import { useColorMode } from '@vueuse/core'
@@ -40,16 +40,16 @@ import { useColorMode } from '@vueuse/core'
 const mode = useColorMode({
   attribute: 'theme',
   modes: {
-    // custom colors
+    // 自定义颜色
     dim: 'dim',
     cafe: 'cafe',
   },
 }) // Ref<'dark' | 'light' | 'dim' | 'cafe'>
 ```
 
-## Advanced Usage
+## 高级用法
 
-You can also explicit access to the system preference and storaged user override mode.
+您还可以显式访问系统偏好和存储的用户覆盖模式。
 
 ```ts
 import { useColorMode } from '@vueuse/core'
@@ -62,19 +62,19 @@ store.value // 'dark' | 'light' | 'auto'
 const myColorMode = computed(() => store.value === 'auto' ? system.value : store.value)
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
   <UseColorMode v-slot="color">
     <button @click="color.mode = color.mode === 'dark' ? 'light' : 'dark'">
-      Mode {{ color.mode }}
+      模式 {{ color.mode }}
     </button>
   </UseColorMode>
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type BasicColorMode = "light" | "dark"
@@ -83,30 +83,30 @@ export interface UseColorModeOptions<
   T extends string = BasicColorMode,
 > extends UseStorageOptions<T | BasicColorMode> {
   /**
-   * CSS Selector for the target element applying to
+   * 应用到的目标元素的 CSS 选择器
    *
    * @default 'html'
    */
   selector?: string | MaybeElementRef
   /**
-   * HTML attribute applying the target element
+   * 应用到目标元素的 HTML 属性
    *
    * @default 'class'
    */
   attribute?: string
   /**
-   * The initial color mode
+   * 初始颜色模式
    *
    * @default 'auto'
    */
   initialValue?: MaybeRefOrGetter<T | BasicColorSchema>
   /**
-   * Prefix when adding value to the attribute
+   * 将值添加到属性时使用的前缀
    */
   modes?: Partial<Record<T | BasicColorSchema, string>>
   /**
-   * A custom handler for handle the updates.
-   * When specified, the default behavior will be overridden.
+   * 用于处理更新的自定义处理程序。
+   * 当指定时,将覆盖默认行为。
    *
    * @default undefined
    */
@@ -115,38 +115,38 @@ export interface UseColorModeOptions<
     defaultHandler: (mode: T | BasicColorMode) => void,
   ) => void
   /**
-   * Custom storage ref
+   * 自定义存储 ref
    *
-   * When provided, `useStorage` will be skipped
+   * 当提供时,`useStorage` 将被跳过
    */
   storageRef?: Ref<T | BasicColorSchema>
   /**
-   * Key to persist the data into localStorage/sessionStorage.
+   * 用于将数据持久化到 localStorage/sessionStorage 的键。
    *
-   * Pass `null` to disable persistence
+   * 传递 `null` 以禁用持久化
    *
    * @default 'vueuse-color-scheme'
    */
   storageKey?: string | null
   /**
-   * Storage object, can be localStorage or sessionStorage
+   * 存储对象,可以是 localStorage 或 sessionStorage
    *
    * @default localStorage
    */
   storage?: StorageLike
   /**
-   * Emit `auto` mode from state
+   * 从状态发出 `auto` 模式
    *
-   * When set to `true`, preferred mode won't be translated into `light` or `dark`.
-   * This is useful when the fact that `auto` mode was selected needs to be known.
+   * 当设置为 `true` 时,首选模式不会被转换为 `light` 或 `dark`。
+   * 当需要知道选择了 `auto` 模式这一事实时,这很有用。
    *
    * @default undefined
-   * @deprecated use `store.value` when `auto` mode needs to be known
+   * @deprecated 当需要知道 `auto` 模式时使用 `store.value`
    * @see https://vueuse.org/core/useColorMode/#advanced-usage
    */
   emitAuto?: boolean
   /**
-   * Disable transition on switch
+   * 在切换时禁用过渡
    *
    * @see https://paco.me/writing/disable-theme-transitions
    * @default true
@@ -161,7 +161,7 @@ export type UseColorModeReturn<T extends string = BasicColorMode> = Ref<
   state: ComputedRef<T | BasicColorMode>
 }
 /**
- * Reactive color mode with auto data persistence.
+ * 具有自动数据持久化的响应式颜色模式。
  *
  * @see https://vueuse.org/useColorMode
  * @param options

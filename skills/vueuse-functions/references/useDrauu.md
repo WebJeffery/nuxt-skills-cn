@@ -4,15 +4,15 @@ category: '@Integrations'
 
 # useDrauu
 
-Reactive instance for [drauu](https://github.com/antfu/drauu).
+[drauu](https://github.com/antfu/drauu) 的响应式实例。
 
-## Install
+## 安装
 
 ```bash
 npm i drauu@^0
 ```
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -30,7 +30,7 @@ const { color, size } = toRefs(brush)
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UseDrauuOptions = Omit<Options, "el">
@@ -52,11 +52,11 @@ export interface UseDrauuReturn {
   onCanceled: EventHookOn
 }
 /**
- * Reactive drauu
+ * 响应式 drauu
  *
  * @see https://vueuse.org/useDrauu
- * @param target The target svg element
- * @param options Drauu Options
+ * @param target 目标 svg 元素
+ * @param options Drauu 选项
  */
 export declare function useDrauu(
   target: MaybeComputedElementRef,

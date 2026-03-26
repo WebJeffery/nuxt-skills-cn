@@ -4,9 +4,9 @@ category: Sensors
 
 # onStartTyping
 
-Fires when users start typing on non-editable elements. Useful for auto-focusing an input field when the user starts typing anywhere on the page.
+当用户在不可编辑元素上开始输入时触发。当用户在页面上的任何位置开始输入时,对于自动聚焦输入字段很有用。
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -26,21 +26,21 @@ onStartTyping(() => {
 </template>
 ```
 
-## How It Works
+## 工作原理
 
-The callback only fires when:
+回调仅在以下情况下触发:
 
-- No editable element (`<input>`, `<textarea>`, or `contenteditable`) is focused
-- The pressed key is alphanumeric (A-Z, 0-9)
-- No modifier keys (Ctrl, Alt, Meta) are held
+- 没有可编辑元素(`<input>`、`<textarea>` 或 `contenteditable`)被聚焦
+- 按下的键是字母数字(A-Z, 0-9)
+- 没有按住修饰键(Ctrl、Alt、Meta)
 
-This allows users to start typing anywhere on the page without accidentally triggering the callback when using keyboard shortcuts or interacting with form fields.
+这允许用户在页面上的任何位置开始输入,而不会在使用键盘快捷键或与表单字段交互时意外触发回调。
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Fires when users start typing on non-editable elements.
+ * 当用户在不可编辑元素上开始输入时触发。
  *
  * @see https://vueuse.org/onStartTyping
  * @param callback

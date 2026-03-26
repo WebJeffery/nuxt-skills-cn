@@ -4,9 +4,9 @@ category: Component
 
 # tryOnScopeDispose
 
-Safe `onScopeDispose`. Call `onScopeDispose()` if it's inside an effect scope lifecycle, if not, do nothing
+安全的 `onScopeDispose`。如果它在 effect scope 生命周期内,则调用 `onScopeDispose()`,否则,什么都不做
 
-## Usage
+## 用法
 
 ```ts
 import { tryOnScopeDispose } from '@vueuse/core'
@@ -16,11 +16,11 @@ tryOnScopeDispose(() => {
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Call onScopeDispose() if it's inside an effect scope lifecycle, if not, do nothing
+ * 如果它在 effect scope 生命周期内,则调用 onScopeDispose(),否则,什么都不做
  *
  * @param fn
  */

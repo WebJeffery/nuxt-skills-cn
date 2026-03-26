@@ -4,14 +4,14 @@ category: Browser
 
 # useWebNotification
 
-Reactive [Notification](https://developer.mozilla.org/en-US/docs/Web/API/notification)
+响应式 [Notification](https://developer.mozilla.org/en-US/docs/Web/API/notification)
 
-The Web Notification interface of the Notifications API is used to configure and display desktop notifications to the user.
+Notifications API 的 Web Notification 接口用于配置和向用户显示桌面通知。
 
-## Usage
+## 用法
 
 ::: tip
-Before an app can send a notification, the user must grant the application the right to do so. The user's OS settings may also prevent expected notification behaviour.
+在应用可以发送通知之前，用户必须授予应用程序执行此操作的权限。用户的操作系统设置也可能阻止预期的通知行为。
 :::
 
 ```ts
@@ -39,7 +39,7 @@ if (isSupported.value && permissionGranted.value)
   show()
 ```
 
-This composable also utilizes the createEventHook utility from '@vueuse/shared`:
+此组合式函数还利用了来自 `@vueuse/shared` 的 createEventHook 工具：
 
 ```ts
 import { useWebNotification } from '@vueuse/core'
@@ -47,93 +47,80 @@ import { useWebNotification } from '@vueuse/core'
 const { onClick, onShow, onError, onClose, } = useWebNotification()
 // ---cut---
 onClick((evt: Event) => {
-  // Do something with the notification on:click event...
+  // 对通知 on:click 事件执行某些操作...
 })
 
 onShow((evt: Event) => {
-  // Do something with the notification on:show event...
+  // 对通知 on:show 事件执行某些操作...
 })
 
 onError((evt: Event) => {
-  // Do something with the notification on:error event...
+  // 对通知 on:error 事件执行某些操作...
 })
 
 onClose((evt: Event) => {
-  // Do something with the notification on:close event...
+  // 对通知 on:close 事件执行某些操作...
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface WebNotificationOptions {
   /**
-   * The title read-only property of the Notification interface indicates
-   * the title of the notification
+   * Notification 接口的 title 只读属性指示
+   * 通知的标题
    *
    * @default ''
    */
   title?: string
   /**
-   * The body string of the notification as specified in the constructor's
-   * options parameter.
+   * 在构造函数的 options 参数中指定的通知的 body 字符串。
    *
    * @default ''
    */
   body?: string
   /**
-   * The text direction of the notification as specified in the constructor's
-   * options parameter.
+   * 在构造函数的 options 参数中指定的通知的文本方向。
    *
    * @default ''
    */
   dir?: "auto" | "ltr" | "rtl"
   /**
-   * The language code of the notification as specified in the constructor's
-   * options parameter.
+   * 在构造函数的 options 参数中指定的通知的语言代码。
    *
    * @default DOMString
    */
   lang?: string
   /**
-   * The ID of the notification(if any) as specified in the constructor's options
-   * parameter.
+   * 通知的 ID（如果有），在构造函数的 options 参数中指定。
    *
    * @default ''
    */
   tag?: string
   /**
-   * The URL of the image used as an icon of the notification as specified
-   * in the constructor's options parameter.
-   *
-   * @default ''
-   */
-  icon?: string
-  /**
-   * Specifies whether the user should be notified after a new notification
-   * replaces an old one.
+   * 指定在新通知替换旧通知时是否应通知用户。
    *
    * @default false
    */
   renotify?: boolean
   /**
-   * A boolean value indicating that a notification should remain active until the
-   * user clicks or dismisses it, rather than closing automatically.
+   * 一个布尔值，指示通知应保持活动状态，直到
+   * 用户点击或关闭它，而不是自动关闭。
    *
    * @default false
    */
   requireInteraction?: boolean
   /**
-   * The silent read-only property of the Notification interface specifies
-   * whether the notification should be silent, i.e., no sounds or vibrations
-   * should be issued, regardless of the device settings.
+   * Notification 接口的 silent 只读属性指定
+   * 通知是否应为静音的，即无论设备设置如何，都不应发出声音或振动。
    *
    * @default false
    */
   silent?: boolean
   /**
-   * Specifies a vibration pattern for devices with vibration hardware to emit.
-   * A vibration pattern, as specified in the Vibration API spec
+   * 为具有振动硬件的设备指定要发射的振动模式。
+   * 振动模式，如 Vibration API 规范中所指定
    *
    * @see https://w3c.github.io/vibration/
    */
@@ -142,9 +129,9 @@ export interface WebNotificationOptions {
 export interface UseWebNotificationOptions
   extends ConfigurableWindow, WebNotificationOptions {
   /**
-   * Request for permissions onMounted if it's not granted.
+   * 如果未授予权限，则在 onMounted 时请求权限。
    *
-   * Can be disabled and calling `ensurePermissions` to grant afterwords.
+   * 可以禁用并在之后调用 `ensurePermissions` 来授予权限。
    *
    * @default true
    */
@@ -164,7 +151,7 @@ export interface UseWebNotificationReturn extends Supportable {
   onClose: EventHookOn<Event>
 }
 /**
- * Reactive useWebNotification
+ * 响应式 useWebNotification
  *
  * @see https://vueuse.org/useWebNotification
  * @see https://developer.mozilla.org/en-US/docs/Web/API/notification

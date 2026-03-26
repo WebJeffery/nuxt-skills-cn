@@ -4,9 +4,9 @@ category: Sensors
 
 # useNetwork
 
-Reactive [Network status](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API). The Network Information API provides information about the system's connection in terms of general connection type (e.g., 'wifi', 'cellular', etc.). This can be used to select high definition content or low definition content based on the user's connection. The entire API consists of the addition of the NetworkInformation interface and a single property to the Navigator interface: Navigator.connection.
+响应式 [网络状态](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API)。网络信息 API 提供有关系统连接的信息，包括一般连接类型（例如，'wifi'、'cellular' 等）。这可用于根据用户的连接选择高清晰度内容或低清晰度内容。整个 API 由 NetworkInformation 接口的添加和 Navigator 接口的单个属性组成：Navigator.connection。
 
-## Usage
+## 用法
 
 ```ts
 import { useNetwork } from '@vueuse/core'
@@ -16,7 +16,7 @@ const { isOnline, offlineAt, downlink, downlinkMax, effectiveType, saveData, typ
 console.log(isOnline.value)
 ```
 
-To use as an object, wrap it with `reactive()`
+要作为对象使用，请用 `reactive()` 包装它
 
 ```ts
 import { useNetwork } from '@vueuse/core'
@@ -28,7 +28,7 @@ const network = reactive(useNetwork())
 console.log(network.isOnline)
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -39,7 +39,7 @@ console.log(network.isOnline)
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseNetworkOptions extends ConfigurableWindow {}
@@ -55,45 +55,45 @@ export type NetworkType =
 export type NetworkEffectiveType = "slow-2g" | "2g" | "3g" | "4g" | undefined
 export interface NetworkState extends Supportable {
   /**
-   * If the user is currently connected.
+   * 如果用户当前已连接。
    */
   isOnline: Readonly<ShallowRef<boolean>>
   /**
-   * The time since the user was last connected.
+   * 自用户上次连接以来的时间。
    */
   offlineAt: Readonly<ShallowRef<number | undefined>>
   /**
-   * At this time, if the user is offline and reconnects
+   * 此时，如果用户离线并重新连接
    */
   onlineAt: Readonly<ShallowRef<number | undefined>>
   /**
-   * The download speed in Mbps.
+   * 下载速度，以 Mbps 为单位。
    */
   downlink: Readonly<ShallowRef<number | undefined>>
   /**
-   * The max reachable download speed in Mbps.
+   * 最大可达到的下载速度，以 Mbps 为单位。
    */
   downlinkMax: Readonly<ShallowRef<number | undefined>>
   /**
-   * The detected effective speed type.
+   * 检测到的有效速度类型。
    */
   effectiveType: Readonly<ShallowRef<NetworkEffectiveType | undefined>>
   /**
-   * The estimated effective round-trip time of the current connection.
+   * 当前连接的估计有效往返时间。
    */
   rtt: Readonly<ShallowRef<number | undefined>>
   /**
-   * If the user activated data saver mode.
+   * 如果用户激活了数据节省模式。
    */
   saveData: Readonly<ShallowRef<boolean | undefined>>
   /**
-   * The detected connection/network type.
+   * 检测到的连接/网络类型。
    */
   type: Readonly<ShallowRef<NetworkType>>
 }
 export type UseNetworkReturn = Readonly<NetworkState>
 /**
- * Reactive Network status.
+ * 响应式网络状态。
  *
  * @see https://vueuse.org/useNetwork
  * @param options

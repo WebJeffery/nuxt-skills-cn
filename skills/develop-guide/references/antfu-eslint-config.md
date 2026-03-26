@@ -1,47 +1,47 @@
 ---
 name: antfu-eslint-config
-description: Configuring @antfu/eslint-config for framework support, formatters, and rule overrides. Use when adding React/Vue/Svelte/Astro support, customizing rules, or setting up VS Code integration.
+description: 配置 @antfu/eslint-config 以支持框架、格式化程序和规则覆盖。用于添加 React/Vue/Svelte/Astro 支持、自定义规则或设置 VS Code 集成时。
 ---
 
 # @antfu/eslint-config
 
-Handles both linting and formatting (no Prettier needed). Auto-detects TypeScript and Vue.
+处理 linting 和格式化（不需要 Prettier）。自动检测 TypeScript 和 Vue。
 
-**Style**: Single quotes, no semicolons, sorted imports, dangling commas.
+**样式**：单引号、无分号、排序导入、尾随逗号。
 
-## Configuration Options
+## 配置选项
 
 ```js
 import antfu from '@antfu/eslint-config'
 
 export default antfu({
-  // Project type: 'lib' for libraries, 'app' (default) for applications
+  // 项目类型：'lib' 用于库，'app'（默认）用于应用程序
   type: 'lib',
 
-  // Global ignores (extends defaults, doesn't override)
+  // 全局忽略（扩展默认值，不覆盖）
   ignores: ['**/fixtures', '**/dist'],
 
-  // Stylistic options
+  // 样式选项
   stylistic: {
-    indent: 2,        // 2, 4, or 'tab'
-    quotes: 'single', // or 'double'
+    indent: 2,        // 2, 4, 或 'tab'
+    quotes: 'single', // 或 'double'
   },
 
-  // Framework support (auto-detected, but can be explicit)
+  // 框架支持（自动检测，但可以显式）
   typescript: true,
   vue: true,
 
-  // Disable specific language support
+  // 禁用特定语言支持
   jsonc: false,
   yaml: false,
 })
 ```
 
-## Framework Support
+## 框架支持
 
 ### Vue
 
-Vue accessibility:
+Vue 可访问性：
 
 ```js
 export default antfu({
@@ -49,7 +49,7 @@ export default antfu({
     a11y: true
   },
 })
-// Requires: pnpm add -D eslint-plugin-vuejs-accessibility
+// 需要：pnpm add -D eslint-plugin-vuejs-accessibility
 ```
 
 ### React
@@ -58,7 +58,7 @@ export default antfu({
 export default antfu({
   react: true,
 })
-// Requires: pnpm add -D @eslint-react/eslint-plugin eslint-plugin-react-hooks eslint-plugin-react-refresh
+// 需要：pnpm add -D @eslint-react/eslint-plugin eslint-plugin-react-hooks eslint-plugin-react-refresh
 ```
 
 ### Next.js
@@ -67,7 +67,7 @@ export default antfu({
 export default antfu({
   nextjs: true,
 })
-// Requires: pnpm add -D @next/eslint-plugin-next
+// 需要：pnpm add -D @next/eslint-plugin-next
 ```
 
 ### Svelte
@@ -76,7 +76,7 @@ export default antfu({
 export default antfu({
   svelte: true,
 })
-// Requires: pnpm add -D eslint-plugin-svelte
+// 需要：pnpm add -D eslint-plugin-svelte
 ```
 
 ### Astro
@@ -85,7 +85,7 @@ export default antfu({
 export default antfu({
   astro: true,
 })
-// Requires: pnpm add -D eslint-plugin-astro
+// 需要：pnpm add -D eslint-plugin-astro
 ```
 
 ### Solid
@@ -94,7 +94,7 @@ export default antfu({
 export default antfu({
   solid: true,
 })
-// Requires: pnpm add -D eslint-plugin-solid
+// 需要：pnpm add -D eslint-plugin-solid
 ```
 
 ### UnoCSS
@@ -103,34 +103,34 @@ export default antfu({
 export default antfu({
   unocss: true,
 })
-// Requires: pnpm add -D @unocss/eslint-plugin
+// 需要：pnpm add -D @unocss/eslint-plugin
 ```
 
-## Formatters (CSS, HTML, Markdown)
+## 格式化程序（CSS、HTML、Markdown）
 
-For files ESLint doesn't handle natively:
+对于 ESLint 本身不处理的文件：
 
 ```js
 export default antfu({
   formatters: {
-    css: true,      // Format CSS, LESS, SCSS (uses Prettier)
-    html: true,     // Format HTML (uses Prettier)
-    markdown: 'prettier' // or 'dprint'
+    css: true,      // 格式化 CSS、LESS、SCSS（使用 Prettier）
+    html: true,     // 格式化 HTML（使用 Prettier）
+    markdown: 'prettier' // 或 'dprint'
   }
 })
-// Requires: pnpm add -D eslint-plugin-format
+// 需要：pnpm add -D eslint-plugin-format
 ```
 
-## Rule Overrides
+## 规则覆盖
 
-### Global overrides
+### 全局覆盖
 
 ```js
 export default antfu(
   {
-    // First argument: antfu config options
+    // 第一个参数：antfu 配置选项
   },
-  // Additional arguments: ESLint flat configs
+  // 附加参数：ESLint 平面配置
   {
     rules: {
       'style/semi': ['error', 'never'],
@@ -139,7 +139,7 @@ export default antfu(
 )
 ```
 
-### Per-integration overrides
+### 每个集成覆盖
 
 ```js
 export default antfu({
@@ -156,7 +156,7 @@ export default antfu({
 })
 ```
 
-### File-specific overrides
+### 文件特定覆盖
 
 ```js
 export default antfu(
@@ -170,11 +170,11 @@ export default antfu(
 )
 ```
 
-## Plugin Prefix Renaming
+## 插件前缀重命名
 
-The config renames plugin prefixes for consistency:
+配置重命名插件前缀以保持一致性：
 
-| New Prefix | Original |
+| 新前缀 | 原始 |
 |------------|----------|
 | `ts/*` | `@typescript-eslint/*` |
 | `style/*` | `@stylistic/*` |
@@ -184,16 +184,16 @@ The config renames plugin prefixes for consistency:
 | `test/*` | `vitest/*` |
 | `next/*` | `@next/next` |
 
-Use the new prefix when overriding or disabling rules:
+在覆盖或禁用规则时使用新前缀：
 
 ```ts
 // eslint-disable-next-line ts/consistent-type-definitions
 type Foo = { bar: 2 }
 ```
 
-## Type-Aware Rules
+## 类型感知规则
 
-Enable TypeScript type checking:
+启用 TypeScript 类型检查：
 
 ```js
 export default antfu({
@@ -203,13 +203,13 @@ export default antfu({
 })
 ```
 
-## Config Composer API
+## 配置组合器 API
 
-Chain methods for flexible composition:
+链接方法以灵活组合：
 
 ```js
 export default antfu()
-  .prepend(/* configs before main */)
+  .prepend(/* 主配置之前的配置 */)
   .override('antfu/stylistic/rules', {
     rules: {
       'style/generator-star-spacing': ['error', { after: true, before: false }],
@@ -220,9 +220,9 @@ export default antfu()
   })
 ```
 
-## Less Opinionated Mode
+## 较少固执模式
 
-Disable Anthony's most opinionated rules:
+禁用 Anthony 最固执的规则：
 
 ```js
 export default antfu({
@@ -230,7 +230,7 @@ export default antfu({
 })
 ```
 
-## Lint-Staged Setup
+## Lint-Staged 设置
 
 ```json
 {
@@ -248,9 +248,9 @@ pnpm add -D lint-staged simple-git-hooks
 npx simple-git-hooks
 ```
 
-## VS Code Settings
+## VS Code 设置
 
-Add to `.vscode/settings.json`:
+添加到 `.vscode/settings.json`：
 
 ```jsonc
 {
@@ -294,8 +294,8 @@ Add to `.vscode/settings.json`:
 }
 ```
 
-<!-- 
-Source references:
+<!--
+源参考：
 - https://github.com/antfu/eslint-config
 - https://raw.githubusercontent.com/antfu/eslint-config/refs/heads/main/README.md
 -->

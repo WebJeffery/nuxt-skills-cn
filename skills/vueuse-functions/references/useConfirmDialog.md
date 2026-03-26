@@ -4,19 +4,19 @@ category: Utilities
 
 # useConfirmDialog
 
-Creates event hooks to support modals and confirmation dialog chains.
+创建事件挂钩以支持模态框和确认对话框链。
 
-Functions can be used on the template, and hooks are a handy skeleton for the business logic of modals dialog or other actions that require user confirmation.
+函数可以在模板上使用,而挂钩是模态框对话框或其他需要用户确认的操作的业务逻辑的方便骨架。
 
-## Functions and hooks
+## 函数和挂钩
 
-- `reveal()` - triggers `onReveal` hook and sets `revealed.value` to `true`. Returns promise that resolves by `confirm()` or `cancel()`.
-- `confirm()` - sets `isRevealed.value` to `false` and triggers `onConfirm` hook.
-- `cancel()` - sets `isRevealed.value` to `false` and triggers `onCancel` hook.
+- `reveal()` - 触发 `onReveal` 挂钩并将 `revealed.value` 设置为 `true`。返回由 `confirm()` 或 `cancel()` 解析的 promise。
+- `confirm()` - 将 `isRevealed.value` 设置为 `false` 并触发 `onConfirm` 挂钩。
+- `cancel()` - 将 `isRevealed.value` 设置为 `false` 并触发 `onCancel` 挂钩。
 
-## Basic Usage
+## 基本用法
 
-### Using hooks
+### 使用挂钩
 
 ```vue
 <script setup lang="ts">
@@ -28,18 +28,18 @@ const { isRevealed, reveal, confirm, cancel, onReveal, onConfirm, onCancel }
 
 <template>
   <button @click="reveal">
-    Reveal Modal
+    显示模态框
   </button>
 
   <teleport to="body">
     <div v-if="isRevealed" class="modal-bg">
       <div class="modal">
-        <h2>Confirm?</h2>
+        <h2>确认?</h2>
         <button @click="confirm">
-          Yes
+          是
         </button>
         <button @click="cancel">
-          Cancel
+          取消
         </button>
       </div>
     </div>
@@ -49,7 +49,7 @@ const { isRevealed, reveal, confirm, cancel, onReveal, onConfirm, onCancel }
 
 ### Promise
 
-If you prefer working with promises:
+如果您更喜欢使用 promise:
 
 ```vue
 <script setup lang="ts">
@@ -71,18 +71,18 @@ async function openDialog() {
 
 <template>
   <button @click="openDialog">
-    Show Modal
+    显示模态框
   </button>
 
   <teleport to="body">
     <div v-if="isRevealed" class="modal-layout">
       <div class="modal">
-        <h2>Confirm?</h2>
+        <h2>确认?</h2>
         <button @click="confirm(true)">
-          Yes
+          是
         </button>
         <button @click="confirm(false)">
-          No
+          否
         </button>
       </div>
     </div>
@@ -90,7 +90,7 @@ async function openDialog() {
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UseConfirmDialogRevealResult<C, D> =
@@ -104,48 +104,48 @@ export type UseConfirmDialogRevealResult<C, D> =
     }
 export interface UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
   /**
-   * Revealing state
+   * 显示状态
    */
   isRevealed: ComputedRef<boolean>
   /**
-   * Opens the dialog.
-   * Create promise and return it. Triggers `onReveal` hook.
+   * 打开对话框。
+   * 创建 promise 并返回它。触发 `onReveal` 挂钩。
    */
   reveal: (
     data?: RevealData,
   ) => Promise<UseConfirmDialogRevealResult<ConfirmData, CancelData>>
   /**
-   * Confirms and closes the dialog. Triggers a callback inside `onConfirm` hook.
-   * Resolves promise from `reveal()` with `data` and `isCanceled` ref with `false` value.
-   * Can accept any data and to pass it to `onConfirm` hook.
+   * 确认并关闭对话框。触发 `onConfirm` 挂钩内的回调。
+   * 使用 `data` 和 `isCanceled` ref 的 `false` 值解析来自 `reveal()` 的 promise。
+   * 可以接受任何数据并将其传递给 `onConfirm` 挂钩。
    */
   confirm: (data?: ConfirmData) => void
   /**
-   * Cancels and closes the dialog. Triggers a callback inside `onCancel` hook.
-   * Resolves promise from `reveal()` with `data` and `isCanceled` ref with `true` value.
-   * Can accept any data and to pass it to `onCancel` hook.
+   * 取消并关闭对话框。触发 `onCancel` 挂钩内的回调。
+   * 使用 `data` 和 `isCanceled` ref 的 `true` 值解析来自 `reveal()` 的 promise。
+   * 可以接受任何数据并将其传递给 `onCancel` 挂钩。
    */
   cancel: (data?: CancelData) => void
   /**
-   * Event Hook to be triggered right before dialog creating.
+   * 在对话框创建之前立即触发的事件挂钩。
    */
   onReveal: EventHookOn<RevealData>
   /**
-   * Event Hook to be called on `confirm()`.
-   * Gets data object from `confirm` function.
+   * 在 `confirm()` 上调用的事件挂钩。
+   * 从 `confirm` 函数获取数据对象。
    */
   onConfirm: EventHookOn<ConfirmData>
   /**
-   * Event Hook to be called on `cancel()`.
-   * Gets data object from `cancel` function.
+   * 在 `cancel()` 上调用的事件挂钩。
+   * 从 `cancel` 函数获取数据对象。
    */
   onCancel: EventHookOn<CancelData>
 }
 /**
- * Hooks for creating confirm dialogs. Useful for modal windows, popups and logins.
+ * 用于创建确认对话框的挂钩。对于模态窗口、弹出窗口和登录很有用。
  *
  * @see https://vueuse.org/useConfirmDialog/
- * @param revealed `boolean` `ref` that handles a modal window
+ * @param revealed 处理模态窗口的 `boolean` `ref`
  *
  * @__NO_SIDE_EFFECTS__
  */

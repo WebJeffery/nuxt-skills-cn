@@ -4,11 +4,11 @@ category: Reactivity
 
 # extendRef
 
-Add extra attributes to Ref.
+向 Ref 添加额外的属性。
 
-## Usage
+## 用法
 
-> Please note the extra attribute will not be accessible in Vue's template.
+> 请注意,额外的属性在 Vue 的模板中无法访问。
 
 ```ts
 import { extendRef } from '@vueuse/core'
@@ -22,7 +22,7 @@ extended.value === 'content'
 extended.foo === 'extra data'
 ```
 
-Refs will be unwrapped and be reactive
+Refs 将被解包并且是响应式的
 
 ```ts
 import { extendRef } from '@vueuse/core'
@@ -35,30 +35,30 @@ const extended = extendRef(myRef, { extra: extraRef })
 extended.value === 'content'
 extended.extra === 'extra'
 
-extended.extra = 'new data' // will trigger update
+extended.extra = 'new data' // 将触发更新
 extraRef.value === 'new data'
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type ExtendRefReturn<T = any> = Ref<T>
 export interface ExtendRefOptions<Unwrap extends boolean = boolean> {
   /**
-   * Is the extends properties enumerable
+   * 扩展属性是否可枚举
    *
    * @default false
    */
   enumerable?: boolean
   /**
-   * Unwrap for Ref properties
+   * 解包 Ref 属性
    *
    * @default true
    */
   unwrap?: Unwrap
 }
 /**
- * Overload 1: Unwrap set to false
+ * 重载 1: Unwrap 设置为 false
  */
 export declare function extendRef<
   R extends Ref<any>,
@@ -66,7 +66,7 @@ export declare function extendRef<
   Options extends ExtendRefOptions<false>,
 >(ref: R, extend: Extend, options?: Options): ShallowUnwrapRef<Extend> & R
 /**
- * Overload 2: Unwrap unset or set to true
+ * 重载 2: Unwrap 未设置或设置为 true
  */
 export declare function extendRef<
   R extends Ref<any>,

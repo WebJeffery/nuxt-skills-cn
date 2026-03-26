@@ -4,11 +4,11 @@ category: '@Math'
 
 # createGenericProjection
 
-Generic version of `createProjection`. Accepts a custom projector function to map arbitrary type of domains.
+`createProjection` 的通用版本。接受自定义投影函数来映射任意类型的域。
 
-Refer to `createProjection` and `useProjection`
+参考 `createProjection` 和 `useProjection`
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type ProjectorFunction<F, T> = (

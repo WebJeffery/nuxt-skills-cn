@@ -4,9 +4,9 @@ category: '@Math'
 
 # useFloor
 
-Reactive `Math.floor`.
+响应式 `Math.floor`。
 
-## Usage
+## 用法
 
 ```ts
 import { useFloor } from '@vueuse/math'
@@ -15,11 +15,11 @@ const value = ref(45.95)
 const result = useFloor(value) // 45
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Reactive `Math.floor`
+ * 响应式 `Math.floor`
  *
  * @see https://vueuse.org/useFloor
  *

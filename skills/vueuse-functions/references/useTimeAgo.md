@@ -4,9 +4,9 @@ category: Time
 
 # useTimeAgo
 
-Reactive time ago. Automatically update the time ago string when the time changes.
+响应式时间前缀。当时间更改时自动更新时间前缀字符串。
 
-## Usage
+## 用法
 
 ```ts
 import { useTimeAgo } from '@vueuse/core'
@@ -14,7 +14,7 @@ import { useTimeAgo } from '@vueuse/core'
 const timeAgo = useTimeAgo(new Date(2021, 0, 1))
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -24,9 +24,9 @@ const timeAgo = useTimeAgo(new Date(2021, 0, 1))
 </template>
 ```
 
-## Non-Reactivity Usage
+## 非响应式用法
 
-In case you don't need the reactivity, you can use the `formatTimeAgo` function to get the formatted string instead of a Ref.
+如果您不需要响应式，可以使用 `formatTimeAgo` 函数来获取格式化的字符串而不是 Ref。
 
 ```ts
 import { formatTimeAgo } from '@vueuse/core'
@@ -34,7 +34,7 @@ import { formatTimeAgo } from '@vueuse/core'
 const timeAgo = formatTimeAgo(new Date(2021, 0, 1)) // string
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UseTimeAgoFormatter<T = number> = (
@@ -63,33 +63,33 @@ export interface FormatTimeAgoOptions<
   UnitNames extends string = UseTimeAgoUnitNamesDefault,
 > {
   /**
-   * Maximum unit (of diff in milliseconds) to display the full date instead of relative
+   * 要显示完整日期而不是相对日期的最大单位（以毫秒为单位的差值）
    *
    * @default undefined
    */
   max?: UnitNames | number
   /**
-   * Formatter for full date
+   * 完整日期的格式化程序
    */
   fullDateFormatter?: (date: Date) => string
   /**
-   * Messages for formatting the string
+   * 用于格式化字符串的消息
    */
   messages?: UseTimeAgoMessages<UnitNames>
   /**
-   * Minimum display time unit (default is minute)
+   * 最小显示时间单位（默认为分钟）
    *
    * @default false
    */
   showSecond?: boolean
   /**
-   * Rounding method to apply.
+   * 要应用的舍入方法。
    *
    * @default 'round'
    */
   rounding?: "round" | "ceil" | "floor" | number
   /**
-   * Custom units
+   * 自定义单位
    */
   units?: UseTimeAgoUnit<UnitNames>[]
 }
@@ -99,15 +99,15 @@ export interface UseTimeAgoOptions<
 >
   extends FormatTimeAgoOptions<UnitNames>, ConfigurableScheduler {
   /**
-   * Expose more controls
+   * 暴露更多控制
    *
    * @default false
    */
   controls?: Controls
   /**
-   * Intervals to update, set 0 to disable auto update
+   * 更新间隔，设置 0 以禁用自动更新
    *
-   * @deprecated Please use `scheduler` option instead
+   * @deprecated 请改用 `scheduler` 选项
    * @default 30_000
    */
   updateInterval?: number
@@ -126,7 +126,7 @@ export type UseTimeAgoReturn<Controls extends boolean = false> =
       } & Pausable
     : ComputedRef<string>
 /**
- * Reactive time ago formatter.
+ * 响应式时间前缀格式化程序。
  *
  * @see https://vueuse.org/useTimeAgo
  *

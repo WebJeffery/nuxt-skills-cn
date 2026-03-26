@@ -4,9 +4,9 @@ category: Sensors
 
 # onClickOutside
 
-Listen for clicks outside of an element. Useful for modals or dropdowns.
+监听元素外部的点击。适用于模态框或下拉菜单。
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -26,20 +26,20 @@ onClickOutside(target, event => console.log(event))
 </template>
 ```
 
-### Return Value
+### 返回值
 
-By default, `onClickOutside` returns a `stop` function to remove the event listeners.
+默认情况下,`onClickOutside` 返回一个 `stop` 函数来移除事件监听器。
 
 ```ts
 const stop = onClickOutside(target, handler)
 
-// Later, stop listening
+// 稍后,停止监听
 stop()
 ```
 
-### Controls
+### 控制
 
-If you need more control over triggering the handler, you can use the `controls` option. This returns an object with `stop`, `cancel`, and `trigger` functions.
+如果您需要更多控制触发处理程序,可以使用 `controls` 选项。这将返回一个包含 `stop`、`cancel` 和 `trigger` 函数的对象。
 
 ```ts
 const { stop, cancel, trigger } = onClickOutside(
@@ -50,19 +50,19 @@ const { stop, cancel, trigger } = onClickOutside(
   { controls: true },
 )
 
-// cancel prevents the next click from triggering the handler
+// cancel 阻止下一次点击触发处理程序
 cancel()
 
-// trigger manually fires the handler
+// trigger 手动触发处理程序
 trigger(event)
 
-// stop removes all event listeners
+// stop 移除所有事件监听器
 stop()
 ```
 
-### Ignore Elements
+### 忽略元素
 
-Use the `ignore` option to prevent certain elements from triggering the handler. Provide elements as an array of Refs or CSS selectors.
+使用 `ignore` 选项来阻止某些元素触发处理程序。将元素作为 Ref 数组或 CSS 选择器提供。
 
 ```ts
 const ignoreElRef = useTemplateRef('ignoreEl')
@@ -74,23 +74,23 @@ onClickOutside(
 )
 ```
 
-### Capture Phase
+### 捕获阶段
 
-By default, the event listener uses the capture phase (`capture: true`). Set `capture: false` to use the bubbling phase instead.
+默认情况下,事件监听器使用捕获阶段(`capture: true`)。设置 `capture: false` 以改用冒泡阶段。
 
 ```ts
 onClickOutside(target, handler, { capture: false })
 ```
 
-### Detect Iframe Clicks
+### 检测 Iframe 点击
 
-Clicks inside an iframe are not detected by default. Enable `detectIframe` to also trigger the handler when focus moves to an iframe.
+默认情况下,不会检测 iframe 内部的点击。启用 `detectIframe` 以在焦点移动到 iframe 时也触发处理程序。
 
 ```ts
 onClickOutside(target, handler, { detectIframe: true })
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -102,7 +102,7 @@ onClickOutside(target, handler, { detectIframe: true })
 </template>
 ```
 
-## Directive Usage
+## 指令用法
 
 ```vue
 <script setup lang="ts">
@@ -125,7 +125,7 @@ function closeModal() {
 </template>
 ```
 
-You can also set the handler as an array to set the configuration items of the instruction.
+您还可以将处理程序设置为数组来设置指令的配置项。
 
 ```vue
 <script setup lang="ts">
@@ -160,29 +160,29 @@ const onClickOutsideHandler = [
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface OnClickOutsideOptions<
   Controls extends boolean = false,
 > extends ConfigurableWindow {
   /**
-   * List of elements that should not trigger the event,
-   * provided as Refs or CSS Selectors.
+   * 不应触发事件的元素列表,
+   * 作为 Refs 或 CSS 选择器提供。
    */
   ignore?: MaybeRefOrGetter<(MaybeElementRef | string)[]>
   /**
-   * Use capturing phase for internal event listener.
+   * 对内部事件监听器使用捕获阶段。
    * @default true
    */
   capture?: boolean
   /**
-   * Run handler function if focus moves to an iframe.
+   * 如果焦点移动到 iframe,则运行处理程序函数。
    * @default false
    */
   detectIframe?: boolean
   /**
-   * Use controls to cancel/trigger listener.
+   * 使用控件来取消/触发监听器。
    * @default false
    */
   controls?: Controls
@@ -204,7 +204,7 @@ export type OnClickOutsideReturn<Controls extends boolean = false> =
         trigger: (event: Event) => void
       }
 /**
- * Listen for clicks outside of an element.
+ * 监听元素外部的点击。
  *
  * @see https://vueuse.org/onClickOutside
  * @param target

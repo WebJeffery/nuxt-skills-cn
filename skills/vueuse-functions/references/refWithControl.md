@@ -6,11 +6,11 @@ related: computedWithControl
 
 # refWithControl
 
-Fine-grained controls over ref and its reactivity.
+对 ref 及其响应性进行细粒度控制。
 
-## Usage
+## 用法
 
-`refWithControl` uses `extendRef` to provide two extra functions `get` and `set` to have better control over when it should track/trigger the reactivity.
+`refWithControl` 使用 `extendRef` 提供两个额外的函数 `get` 和 `set`,以便更好地控制何时应该跟踪/触发响应性。
 
 ```ts
 import { refWithControl } from '@vueuse/core'
@@ -18,28 +18,28 @@ import { refWithControl } from '@vueuse/core'
 const num = refWithControl(0)
 const doubled = computed(() => num.value * 2)
 
-// just like normal ref
+// 就像普通 ref 一样
 num.value = 42
 console.log(num.value) // 42
 console.log(doubled.value) // 84
 
-// set value without triggering the reactivity
+// 在不触发响应性的情况下设置值
 num.set(30, false)
 console.log(num.value) // 30
-console.log(doubled.value) // 84 (doesn't update)
+console.log(doubled.value) // 84 (不更新)
 
-// get value without tracking the reactivity
+// 在不跟踪响应性的情况下获取值
 watchEffect(() => {
   console.log(num.peek())
 }) // 30
 
-num.value = 50 // watch effect wouldn't be triggered since it collected nothing.
-console.log(doubled.value) // 100 (updated again since it's a reactive set)
+num.value = 50 // watch effect 不会被触发,因为它没有收集任何内容。
+console.log(doubled.value) // 100 (再次更新,因为它是响应式设置)
 ```
 
 ### `peek`, `lay`, `untrackedGet`, `silentSet`
 
-We also provide some shorthands for doing the get/set without track/triggering the reactivity system. The following lines are equivalent.
+我们还提供了一些简写,用于在不跟踪/触发响应性系统的情况下进行 get/set。以下行是等效的。
 
 ```ts
 import { refWithControl } from '@vueuse/core'
@@ -52,10 +52,10 @@ import { refWithControl } from '@vueuse/core'
 
 const foo = refWithControl('foo')
 // ---cut---
-// getting
+// 获取
 foo.get(false)
 foo.untrackedGet()
-foo.peek() // an alias for `untrackedGet`
+foo.peek() // `untrackedGet` 的别名
 ```
 
 ```ts
@@ -63,26 +63,26 @@ import { refWithControl } from '@vueuse/core'
 
 const foo = refWithControl('foo')
 // ---cut---
-// setting
+// 设置
 foo.set('bar', false)
 foo.silentSet('bar')
-foo.lay('bar') // an alias for `silentSet`
+foo.lay('bar') // `silentSet` 的别名
 ```
 
-## Configurations
+## 配置
 
 ### `onBeforeChange()`
 
-`onBeforeChange` option is offered to give control over if a new value should be accepted. For example:
+提供 `onBeforeChange` 选项来控制是否应该接受新值。例如:
 
 ```ts
 import { refWithControl } from '@vueuse/core'
 // ---cut---
 const num = refWithControl(0, {
   onBeforeChange(value, oldValue) {
-    // disallow changes larger then ±5 in one operation
+    // 不允许在一次操作中更改大于 ±5
     if (Math.abs(value - oldValue) > 5)
-      return false // returning `false` to dismiss the change
+      return false // 返回 `false` 以拒绝更改
   },
 })
 
@@ -90,12 +90,12 @@ num.value += 1
 console.log(num.value) // 1
 
 num.value += 6
-console.log(num.value) // 1 (change been dismissed)
+console.log(num.value) // 1 (更改已被拒绝)
 ```
 
 ### `onChanged()`
 
-`onChanged` option offers a similar functionally as Vue's `watch` but being synchronized with less overhead compared to `watch`.
+`onChanged` 选项提供了类似于 Vue 的 `watch` 的功能,但与 `watch` 相比开销更小。
 
 ```ts
 import { refWithControl } from '@vueuse/core'
@@ -107,25 +107,25 @@ const num = refWithControl(0, {
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface ControlledRefOptions<T> {
   /**
-   * Callback function before the ref changing.
+   * ref 更改之前的回调函数。
    *
-   * Returning `false` to dismiss the change.
+   * 返回 `false` 以拒绝更改。
    */
   onBeforeChange?: (value: T, oldValue: T) => void | boolean
   /**
-   * Callback function after the ref changed
+   * ref 更改之后的回调函数
    *
-   * This happens synchronously, with less overhead compare to `watch`
+   * 这同步发生,与 `watch` 相比开销更小
    */
   onChanged?: (value: T, oldValue: T) => void
 }
 /**
- * Fine-grained controls over ref and its reactivity.
+ * 对 ref 及其响应性进行细粒度控制。
  *
  * @__NO_SIDE_EFFECTS__
  */
@@ -141,6 +141,6 @@ export declare function refWithControl<T>(
   lay: (v: T) => void
 }> &
   Ref<T, T>
-/** @deprecated use `refWithControl` instead */
+/** @deprecated 使用 `refWithControl` 代替 */
 export declare const controlledRef: typeof refWithControl
 ```

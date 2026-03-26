@@ -7,11 +7,11 @@ related:
 
 # useDebouncedRefHistory
 
-Shorthand for `useRefHistory` with debounced filter.
+`useRefHistory` 的简写，带有防抖过滤器。
 
-## Usage
+## 用法
 
-This function takes a snapshot of your counter after 1000ms when the value of it starts to change.
+此函数在计数器的值开始更改后 1000ms 对计数器进行快照。
 
 ```ts
 import { useDebouncedRefHistory } from '@vueuse/core'
@@ -21,11 +21,11 @@ const counter = shallowRef(0)
 const { history, undo, redo } = useDebouncedRefHistory(counter, { deep: true, debounce: 1000 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Shorthand for [useRefHistory](https://vueuse.org/useRefHistory) with debounce filter.
+ * [useRefHistory](https://vueuse.org/useRefHistory) 的简写，带有防抖过滤器。
  *
  * @see https://vueuse.org/useDebouncedRefHistory
  * @param source

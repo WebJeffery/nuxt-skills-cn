@@ -4,9 +4,9 @@ category: Component
 
 # tryOnUnmounted
 
-Safe `onUnmounted`. Call `onUnmounted()` if it's inside a component lifecycle, if not, do nothing
+安全的 `onUnmounted`。如果它在组件生命周期内,则调用 `onUnmounted()`,否则,什么都不做
 
-## Usage
+## 用法
 
 ```ts
 import { tryOnUnmounted } from '@vueuse/core'
@@ -16,11 +16,11 @@ tryOnUnmounted(() => {
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Call onUnmounted() if it's inside a component lifecycle, if not, do nothing
+ * 如果它在组件生命周期内,则调用 onUnmounted(),否则,什么都不做
  *
  * @param fn
  * @param target

@@ -4,9 +4,9 @@ category: Sensors
 
 # usePointerSwipe
 
-Reactive swipe detection based on [PointerEvents](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent).
+基于 [PointerEvents](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent) 的响应式滑动检测。
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -24,7 +24,7 @@ const { isSwiping, direction } = usePointerSwipe(el)
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UsePointerSwipeOptions {
@@ -33,25 +33,25 @@ export interface UsePointerSwipeOptions {
    */
   threshold?: number
   /**
-   * Callback on swipe start.
+   * 滑动开始时的回调。
    */
   onSwipeStart?: (e: PointerEvent) => void
   /**
-   * Callback on swipe move.
+   * 滑动移动时的回调。
    */
   onSwipe?: (e: PointerEvent) => void
   /**
-   * Callback on swipe end.
+   * 滑动结束时的回调。
    */
   onSwipeEnd?: (e: PointerEvent, direction: UseSwipeDirection) => void
   /**
-   * Pointer types to listen to.
+   * 要监听的指针类型。
    *
    * @default ['mouse', 'touch', 'pen']
    */
   pointerTypes?: PointerType[]
   /**
-   * Disable text selection on swipe.
+   * 禁用滑动时的文本选择。
    *
    * @default false
    */
@@ -67,7 +67,7 @@ export interface UsePointerSwipeReturn {
   stop: () => void
 }
 /**
- * Reactive swipe detection based on PointerEvents.
+ * 基于 PointerEvents 的响应式滑动检测。
  *
  * @see https://vueuse.org/usePointerSwipe
  * @param target

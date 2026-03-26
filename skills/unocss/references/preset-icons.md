@@ -1,19 +1,19 @@
 ---
 name: preset-icons
-description: Pure CSS icons using Iconify with any icon set
+description: 使用 Iconify 的纯 CSS 图标，支持任何图标集
 ---
 
-# Preset Icons
+# 预设 Icons
 
-Use any icon as a pure CSS class, powered by Iconify.
+将任何图标用作纯 CSS 类，由 Iconify 提供支持。
 
-## Installation
+## 安装
 
 ```bash
 pnpm add -D @unocss/preset-icons @iconify-json/[collection-name]
 ```
 
-Example: `@iconify-json/mdi` for Material Design Icons, `@iconify-json/carbon` for Carbon icons.
+示例：`@iconify-json/mdi` 用于 Material Design Icons，`@iconify-json/carbon` 用于 Carbon 图标。
 
 ```ts
 import { defineConfig, presetIcons } from 'unocss'
@@ -25,68 +25,68 @@ export default defineConfig({
 })
 ```
 
-## Usage
+## 用法
 
-Two naming conventions:
+两种命名约定：
 - `<prefix><collection>-<icon>` → `i-ph-anchor-simple-thin`
 - `<prefix><collection>:<icon>` → `i-ph:anchor-simple-thin`
 
 ```html
-<!-- Phosphor anchor icon -->
+<!-- Phosphor anchor 图标 -->
 <div class="i-ph-anchor-simple-thin" />
 
-<!-- Material Design alarm with color -->
+<!-- Material Design alarm 带颜色 -->
 <div class="i-mdi-alarm text-orange-400" />
 
-<!-- Large Vue logo -->
+<!-- 大 Vue logo -->
 <div class="i-logos-vue text-3xl" />
 
-<!-- Dynamic: Sun in light mode, Moon in dark -->
+<!-- 动态：亮色模式下为 Sun，暗色模式下为 Moon -->
 <button class="i-carbon-sun dark:i-carbon-moon" />
 
-<!-- Hover effect -->
+<!-- 悬停效果 -->
 <div class="i-twemoji-grinning-face-with-smiling-eyes hover:i-twemoji-face-with-tears-of-joy" />
 ```
 
-Browse icons at [icones.js.org](https://icones.js.org/) or [Iconify](https://icon-sets.iconify.design/).
+在 [icones.js.org](https://icones.js.org/) 或 [Iconify](https://icon-sets.iconify.design/) 浏览图标。
 
-## Icon Modes
+## 图标模式
 
-Icons automatically choose between `mask` (monochrome) and `background-img` (colorful).
+图标自动在 `mask`（单色）和 `background-img`（彩色）之间选择。
 
-### Force Specific Mode
+### 强制特定模式
 
-- `?mask` - Render as mask (colorable with `currentColor`)
-- `?bg` - Render as background image (preserves original colors)
+- `?mask` - 渲染为 mask（可通过 `currentColor` 着色）
+- `?bg` - 渲染为背景图像（保留原始颜色）
 
 ```html
-<!-- Original with colors -->
+<!-- 原始带颜色 -->
 <div class="i-vscode-icons:file-type-light-pnpm" />
 
-<!-- Force mask mode, apply custom color -->
+<!-- 强制 mask 模式，应用自定义颜色 -->
 <div class="i-vscode-icons:file-type-light-pnpm?mask text-red-300" />
 ```
 
-## Options
+## 选项
 
 ```ts
 presetIcons({
-  scale: 1.2,              // Scale relative to font size
-  prefix: 'i-',            // Class prefix (default)
+  scale: 1.2,              // 相对于字体大小的缩放
+  prefix: 'i-',            // 类前缀（默认）
   mode: 'auto',            // 'auto' | 'mask' | 'bg'
   extraProperties: {
     'display': 'inline-block',
     'vertical-align': 'middle',
   },
-  warn: true,              // Warn on missing icons
-  autoInstall: true,       // Auto-install missing icon sets
-  cdn: 'https://esm.sh/',  // CDN for browser usage
+  warn: true,              // 警告缺失的图标
+  autoInstall: true,       // 自动安装缺失的图标集
+  cdn: 'https://esm.sh/',  // 用于浏览器使用的 CDN
 })
 ```
 
-## Custom Icon Collections
+## 自定义图标集
 
-### Inline SVGs
+### 内联 SVG
 
 ```ts
 presetIcons({
@@ -98,9 +98,9 @@ presetIcons({
 })
 ```
 
-Usage: `<span class="i-custom:circle"></span>`
+用法：`<span class="i-custom:circle"></span>`
 
-### File System Loader
+### 文件系统加载器
 
 ```ts
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
@@ -115,7 +115,7 @@ presetIcons({
 })
 ```
 
-### Dynamic Import (Browser)
+### 动态导入（浏览器）
 
 ```ts
 import presetIcons from '@unocss/preset-icons/browser'
@@ -127,22 +127,22 @@ presetIcons({
 })
 ```
 
-## Icon Customization
+## 图标自定义
 
 ```ts
 presetIcons({
   customizations: {
-    // Transform SVG
+    // 转换 SVG
     transform(svg, collection, icon) {
       return svg.replace(/#fff/, 'currentColor')
     },
-    // Global sizing
+    // 全局大小
     customize(props) {
       props.width = '2em'
       props.height = '2em'
       return props
     },
-    // Per-collection
+    // 每个集合
     iconCustomizer(collection, icon, props) {
       if (collection === 'mdi') {
         props.width = '2em'
@@ -152,9 +152,9 @@ presetIcons({
 })
 ```
 
-## CSS Directive
+## CSS 指令
 
-Use `icon()` in CSS (requires transformer-directives):
+在 CSS 中使用 `icon()`（需要 transformer-directives）：
 
 ```css
 .icon {
@@ -165,20 +165,20 @@ Use `icon()` in CSS (requires transformer-directives):
 }
 ```
 
-## Accessibility
+## 可访问性
 
 ```html
-<!-- With label -->
+<!-- 带标签 -->
 <a href="/profile" aria-label="Profile" class="i-ph:user-duotone"></a>
 
-<!-- Decorative -->
+<!-- 装饰性 -->
 <a href="/profile">
   <span aria-hidden="true" class="i-ph:user-duotone"></span>
   My Profile
 </a>
 ```
 
-<!-- 
-Source references:
+<!--
+源参考：
 - https://unocss.dev/presets/icons
 -->

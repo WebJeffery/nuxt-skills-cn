@@ -1,64 +1,60 @@
 ---
 name: unocss
-description: UnoCSS instant atomic CSS engine, superset of Tailwind CSS. Use when configuring UnoCSS, writing utility rules, shortcuts, or working with presets like Wind, Icons, Attributify.
-metadata:
-  author: Anthony Fu
-  version: "2026.1.28"
-  source: Generated from https://github.com/unocss/unocss, scripts located at https://github.com/antfu/skills
+description: UnoCSS 即时原子化 CSS 引擎，Tailwind CSS 的超集。用于配置 UnoCSS、编写工具规则、快捷方式或使用 Wind、Icons、Attributify 等预设时。
 ---
 
-UnoCSS is an instant atomic CSS engine designed to be flexible and extensible. The core is un-opinionated - all CSS utilities are provided via presets. It's a superset of Tailwind CSS, so you can reuse your Tailwind knowledge for basic syntax usage.
+UnoCSS 是一个即时原子化 CSS 引擎，旨在灵活和可扩展。核心是非固执的 - 所有 CSS 工具类都通过预设提供。它是 Tailwind CSS 的超集，因此您可以重用您的 Tailwind 知识来进行基本语法使用。
 
-**Important:** Before writing UnoCSS code, agents should check for `uno.config.*` or `unocss.config.*` files in the project root to understand what presets, rules, and shortcuts are available. If the project setup is unclear, avoid using attributify mode and other advanced features - stick to basic `class` usage.
+**重要提示：** 在编写 UnoCSS 代码之前，代理应该检查项目根目录中的 `uno.config.*` 或 `unocss.config.*` 文件，以了解可用的预设、规则和快捷方式。如果项目设置不清楚，避免使用 attributify 模式和其他高级功能 - 坚持使用基本的 `class` 用法。
 
-> The skill is based on UnoCSS 66.x, generated at 2026-01-28.
+> 该技能基于 UnoCSS 66.x，生成于 2026-01-28。
 
-## Core
+## 核心
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Configuration | Config file setup and all configuration options | [core-config](references/core-config.md) |
-| Rules | Static and dynamic rules for generating CSS utilities | [core-rules](references/core-rules.md) |
-| Shortcuts | Combine multiple rules into single shorthands | [core-shortcuts](references/core-shortcuts.md) |
-| Theme | Theming system for colors, breakpoints, and design tokens | [core-theme](references/core-theme.md) |
-| Variants | Apply variations like hover:, dark:, responsive to rules | [core-variants](references/core-variants.md) |
-| Extracting | How UnoCSS extracts utilities from source code | [core-extracting](references/core-extracting.md) |
-| Safelist & Blocklist | Force include or exclude specific utilities | [core-safelist](references/core-safelist.md) |
-| Layers & Preflights | CSS layer ordering and raw CSS injection | [core-layers](references/core-layers.md) |
+| 配置 | 配置文件设置和所有配置选项 | [core-config](references/core-config.md) |
+| 规则 | 用于生成 CSS 工具类的静态和动态规则 | [core-rules](references/core-rules.md) |
+| 快捷方式 | 将多个规则组合成单个简写 | [core-shortcuts](references/core-shortcuts.md) |
+| 主题 | 颜色、断点和设计令牌的主题系统 | [core-theme](references/core-theme.md) |
+| 变体 | 将 hover:、dark:、responsive 等变体应用于规则 | [core-variants](references/core-variants.md) |
+| 提取 | UnoCSS 如何从源代码中提取工具类 | [core-extracting](references/core-extracting.md) |
+| 安全列表和阻止列表 | 强制包含或排除特定工具类 | [core-safelist](references/core-safelist.md) |
+| 图层和预置 | CSS 图层排序和原始 CSS 注入 | [core-layers](references/core-layers.md) |
 
-## Presets
+## 预设
 
-### Main Presets
+### 主要预设
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Preset Wind3 | Tailwind CSS v3 / Windi CSS compatible preset (most common) | [preset-wind3](references/preset-wind3.md) |
-| Preset Wind4 | Tailwind CSS v4 compatible preset with modern CSS features | [preset-wind4](references/preset-wind4.md) |
-| Preset Mini | Minimal preset with essential utilities for custom builds | [preset-mini](references/preset-mini.md) |
+| 预设 Wind3 | Tailwind CSS v3 / Windi CSS 兼容预设（最常用） | [preset-wind3](references/preset-wind3.md) |
+| 预设 Wind4 | 具有现代 CSS 功能的 Tailwind CSS v4 兼容预设 | [preset-wind4](references/preset-wind4.md) |
+| 预设 Mini | 具有基本工具类的最小预设，用于自定义构建 | [preset-mini](references/preset-mini.md) |
 
-### Feature Presets
+### 功能预设
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Preset Icons | Pure CSS icons using Iconify with any icon set | [preset-icons](references/preset-icons.md) |
-| Preset Attributify | Group utilities in HTML attributes instead of class | [preset-attributify](references/preset-attributify.md) |
-| Preset Typography | Prose classes for typographic defaults | [preset-typography](references/preset-typography.md) |
-| Preset Web Fonts | Easy Google Fonts and other web fonts integration | [preset-web-fonts](references/preset-web-fonts.md) |
-| Preset Tagify | Use utilities as HTML tag names | [preset-tagify](references/preset-tagify.md) |
-| Preset Rem to Px | Convert rem units to px for utilities | [preset-rem-to-px](references/preset-rem-to-px.md) |
+| 预设 Icons | 使用 Iconify 的纯 CSS 图标，支持任何图标集 | [preset-icons](references/preset-icons.md) |
+| 预设 Attributify | 在 HTML 属性中组合工具类而不是 class | [preset-attributify](references/preset-attributify.md) |
+| 预设 Typography | 用于排版默认值的散文类 | [preset-typography](references/preset-typography.md) |
+| 预设 Web Fonts | 轻松集成 Google 字体和其他 Web 字体 | [preset-web-fonts](references/preset-web-fonts.md) |
+| 预设 Tagify | 将工具类用作 HTML 标签名称 | [preset-tagify](references/preset-tagify.md) |
+| 预设 Rem to Px | 将 rem 单位转换为 px 用于工具类 | [preset-rem-to-px](references/preset-rem-to-px.md) |
 
-## Transformers
+## 转换器
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Variant Group | Shorthand for grouping utilities with common prefixes | [transformer-variant-group](references/transformer-variant-group.md) |
-| Directives | CSS directives: @apply, @screen, theme(), icon() | [transformer-directives](references/transformer-directives.md) |
-| Compile Class | Compile multiple classes into one hashed class | [transformer-compile-class](references/transformer-compile-class.md) |
-| Attributify JSX | Support valueless attributify in JSX/TSX | [transformer-attributify-jsx](references/transformer-attributify-jsx.md) |
+| 变体组 | 使用公共前缀组合工具类的简写 | [transformer-variant-group](references/transformer-variant-group.md) |
+| 指令 | CSS 指令：@apply、@screen、theme()、icon() | [transformer-directives](references/transformer-directives.md) |
+| 编译类 | 将多个类编译为一个哈希类 | [transformer-compile-class](references/transformer-compile-class.md) |
+| Attributify JSX | 在 JSX/TSX 中支持无值的 attributify | [transformer-attributify-jsx](references/transformer-attributify-jsx.md) |
 
-## Integrations
+## 集成
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Vite Integration | Setting up UnoCSS with Vite and framework-specific tips | [integrations-vite](references/integrations-vite.md) |
-| Nuxt Integration | UnoCSS module for Nuxt applications | [integrations-nuxt](references/integrations-nuxt.md) |
+| Vite 集成 | 使用 Vite 设置 UnoCSS 和特定框架的提示 | [integrations-vite](references/integrations-vite.md) |
+| Nuxt 集成 | 用于 Nuxt 应用程序的 UnoCSS 模块 | [integrations-nuxt](references/integrations-nuxt.md) |

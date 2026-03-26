@@ -4,9 +4,9 @@ category: Utilities
 
 # useOffsetPagination
 
-Reactive offset pagination.
+响应式偏移分页。
 
-## Usage
+## 用法
 
 ```ts
 import { useOffsetPagination } from '@vueuse/core'
@@ -34,7 +34,7 @@ const {
 })
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -90,9 +90,9 @@ const {
 </template>
 ```
 
-Component event supported props event callback and event listener.
+组件事件支持 props 事件回调和事件监听器。
 
-event listener:
+事件监听器：
 
 ```vue
 <template>
@@ -111,12 +111,12 @@ event listener:
     @page-size-change="fetchData"
     @page-count-change="onPageCountChange"
   >
-    <!-- your code -->
+    <!-- 您的代码 -->
   </UseOffsetPagination>
 </template>
 ```
 
-or props event callback:
+或 props 事件回调：
 
 ```vue
 <template>
@@ -135,43 +135,43 @@ or props event callback:
     :on-page-size-change="fetchData"
     :on-page-count-change="onPageCountChange"
   >
-    <!-- your code -->
+    <!-- 您的代码 -->
   </UseOffsetPagination>
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseOffsetPaginationOptions {
   /**
-   * Total number of items.
+   * 项目总数。
    */
   total?: MaybeRefOrGetter<number>
   /**
-   * The number of items to display per page.
+   * 每页显示的项目数。
    * @default 10
    */
   pageSize?: MaybeRefOrGetter<number>
   /**
-   * The current page number.
+   * 当前页码。
    * @default 1
    */
   page?: MaybeRef<number>
   /**
-   * Callback when the `page` change.
+   * 当 `page` 更改时的回调。
    */
   onPageChange?: (
     returnValue: UnwrapNestedRefs<UseOffsetPaginationReturn>,
   ) => unknown
   /**
-   * Callback when the `pageSize` change.
+   * 当 `pageSize` 更改时的回调。
    */
   onPageSizeChange?: (
     returnValue: UnwrapNestedRefs<UseOffsetPaginationReturn>,
   ) => unknown
   /**
-   * Callback when the `pageCount` change.
+   * 当 `pageCount` 更改时的回调。
    */
   onPageCountChange?: (
     returnValue: UnwrapNestedRefs<UseOffsetPaginationReturn>,

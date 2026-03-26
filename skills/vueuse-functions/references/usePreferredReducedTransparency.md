@@ -4,9 +4,9 @@ category: Browser
 
 # usePreferredReducedTransparency
 
-Reactive [prefers-reduced-transparency](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-transparency) media query.
+响应式 [prefers-reduced-transparency](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-transparency) 媒体查询。
 
-## Usage
+## 用法
 
 ```ts
 import { usePreferredReducedTransparency } from '@vueuse/core'
@@ -14,7 +14,7 @@ import { usePreferredReducedTransparency } from '@vueuse/core'
 const preferredTransparency = usePreferredReducedTransparency()
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -24,12 +24,12 @@ const preferredTransparency = usePreferredReducedTransparency()
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type ReducedTransparencyType = "reduce" | "no-preference"
 /**
- * Reactive prefers-reduced-transparency media query.
+ * 响应式 prefers-reduced-transparency 媒体查询。
  *
  * @see https://vueuse.org/usePreferredReducedTransparency
  * @param [options]

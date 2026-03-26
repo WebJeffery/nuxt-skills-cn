@@ -4,9 +4,9 @@ category: Utilities
 
 # useCached
 
-Cache a ref with a custom comparator.
+使用自定义比较器缓存 ref。
 
-## Usage
+## 用法
 
 ```ts
 import { useCached } from '@vueuse/core'
@@ -22,20 +22,20 @@ const cached = useCached(source, (a, b) => a.value === b.value)
 
 source.value = {
   value: 42,
-  extra: 1,
+  extra:1,
 }
 
 console.log(cached.value) // { value: 42, extra: 0 }
 
 source.value = {
   value: 43,
-  extra: 1,
+  extra:1,
 }
 
 console.log(cached.value) // { value: 43, extra: 1 }
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseCachedOptions<D extends boolean = true>

@@ -4,9 +4,9 @@ category: Animation
 
 # useRafFn
 
-Call function on every `requestAnimationFrame`. With controls of pausing and resuming.
+在每个 `requestAnimationFrame` 上调用函数。具有暂停和恢复的控制。
 
-## Usage
+## 用法
 
 ```ts
 import { useRafFn } from '@vueuse/core'

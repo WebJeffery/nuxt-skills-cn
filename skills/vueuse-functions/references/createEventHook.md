@@ -4,11 +4,11 @@ category: Utilities
 
 # createEventHook
 
-Utility for creating event hooks
+用于创建事件钩子的工具
 
-## Usage
+## 用法
 
-Creating a function that uses `createEventHook`
+创建一个使用 `createEventHook` 的函数
 
 ```ts
 import { createEventHook } from '@vueuse/core'
@@ -28,7 +28,7 @@ export function useMyFetch(url) {
 }
 ```
 
-Using a function that uses `createEventHook`
+使用一个使用 `createEventHook` 的函数
 
 ```vue
 <script setup lang="ts">
@@ -46,11 +46,11 @@ onError((error) => {
 </script>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * The source code for this function was inspired by vue-apollo's `useEventHook` util
+ * 此函数的源代码灵感来自 vue-apollo 的 `useEventHook` 工具
  * https://github.com/vuejs/vue-apollo/blob/v4/packages/vue-apollo-composable/src/util/useEventHook.ts
  */
 type Callback<T> =
@@ -76,7 +76,7 @@ export interface EventHook<T = any> {
 }
 export type EventHookReturn<T> = EventHook<T>
 /**
- * Utility for creating event hooks
+ * 用于创建事件钩子的工具
  *
  * @see https://vueuse.org/createEventHook
  *

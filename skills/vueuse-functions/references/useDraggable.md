@@ -4,9 +4,9 @@ category: Elements
 
 # useDraggable
 
-Make elements draggable.
+使元素可拖动。
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -15,7 +15,7 @@ import { useTemplateRef } from 'vue'
 
 const el = useTemplateRef('el')
 
-// `style` will be a helper computed for `left: ?px; top: ?px;`
+// `style` 将是 `left: ?px; top: ?px;` 的辅助计算属性
 const { x, y, style } = useDraggable(el, {
   initialValue: { x: 40, y: 40 },
 })
@@ -23,61 +23,61 @@ const { x, y, style } = useDraggable(el, {
 
 <template>
   <div ref="el" :style="style" style="position: fixed">
-    Drag me! I am at {{ x }}, {{ y }}
+    拖动我！我在 {{ x }}, {{ y }}
   </div>
 </template>
 ```
 
-### Return Values
+### 返回值
 
-| Property     | Type                   | Description                             |
+| 属性     | 类型                   | 描述                             |
 | ------------ | ---------------------- | --------------------------------------- |
-| `x`          | `Ref<number>`          | Current x position                      |
-| `y`          | `Ref<number>`          | Current y position                      |
-| `position`   | `Ref<{x, y}>`          | Current position object                 |
-| `isDragging` | `ComputedRef<boolean>` | Whether currently dragging              |
-| `style`      | `ComputedRef<string>`  | CSS style string `left: ?px; top: ?px;` |
+| `x`          | `Ref<number>`          | 当前 x 位置                      |
+| `y`          | `Ref<number>`          | 当前 y 位置                      |
+| `position`   | `Ref<{x, y}>`          | 当前位置对象                 |
+| `isDragging` | `ComputedRef<boolean>` | 是否正在拖动              |
+| `style`      | `ComputedRef<string>`  | CSS 样式字符串 `left: ?px; top: ?px;` |
 
-### Options
+### 选项
 
 ```ts
 useDraggable(el, {
-  // Initial position (default: { x: 0, y: 0 })
+  // 初始位置（默认：{ x: 0, y: 0 }）
   initialValue: { x: 40, y: 40 },
-  // Restrict dragging to specific axis: 'x', 'y', or 'both' (default)
+  // 将拖动限制为特定轴：'x'、'y' 或 'both'（默认）
   axis: 'both',
-  // Only trigger when clicking directly on the element (default: false)
+  // 仅在直接点击元素时触发（默认：false）
   exact: false,
-  // Prevent default browser behavior (default: false)
+  // 防止默认浏览器行为（默认：false）
   preventDefault: true,
-  // Stop event propagation (default: false)
+  // 停止事件传播（默认：false）
   stopPropagation: false,
-  // Use capture phase for events (default: true)
+  // 对事件使用捕获阶段（默认：true）
   capture: true,
-  // Disable dragging (default: false)
+  // 禁用拖动（默认：false）
   disabled: false,
-  // Mouse buttons that trigger drag (default: [0] - left button)
+  // 触发拖动的鼠标按钮（默认：[0] - 左键）
   buttons: [0],
-  // Pointer types to listen to (default: ['mouse', 'touch', 'pen'])
+  // 要监听的指针类型（默认：['mouse', 'touch', 'pen']）
   pointerTypes: ['mouse', 'touch', 'pen'],
-  // Custom drag handle element (default: target element)
+  // 自定义拖动句柄元素（默认：目标元素）
   handle: handleRef,
-  // Container element for bounds (default: none)
+  // 边界的容器元素（默认：无）
   containerElement: containerRef,
-  // Element to attach pointermove/pointerup events (default: window)
+  // 要附加 pointermove/pointerup 事件的元素（默认：window）
   draggingElement: window,
-  // Callbacks
+  // 回调
   onStart: (position, event) => {
-    // Return false to prevent dragging
+    // 返回 false 以防止拖动
   },
   onMove: (position, event) => {},
   onEnd: (position, event) => {},
 })
 ```
 
-### Prevent Default
+### 防止默认
 
-Set `preventDefault: true` to override the default drag-and-drop behavior of certain elements in the browser (e.g., images).
+设置 `preventDefault: true` 以覆盖浏览器中某些元素的默认拖放行为（例如，图像）。
 
 ```ts
 import { useDraggable } from '@vueuse/core'
@@ -87,9 +87,9 @@ const { x, y, style } = useDraggable(el, {
 })
 ```
 
-### Container Bounds
+### 容器边界
 
-Use `containerElement` to constrain dragging within a container.
+使用 `containerElement` 将拖动限制在容器内。
 
 ```ts
 import { useDraggable } from '@vueuse/core'
@@ -99,68 +99,68 @@ const { x, y } = useDraggable(el, {
 })
 ```
 
-Set `autoScroll: true` to enable auto-scroll when dragging near the edges.
+设置 `autoScroll: true` 以在拖动到边缘附近时启用自动滚动。
 
 ```ts
 const { x, y, style } = useDraggable(el, {
   autoScroll: {
-    speed: 2, // Control the speed of auto-scroll.
-    margin: 30, // Set the margin from the edge that triggers auto-scroll.
-    direction: 'both' // Determine the direction of auto-scroll.
+    speed:2, // 控制自动滚动的速度。
+    margin: 30, // 设置从边缘触发自动滚动的边距。
+    direction: 'both' // 确定自动滚动的方向。
   },
 })
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
   <UseDraggable v-slot="{ x, y }" :initial-value="{ x: 10, y: 10 }">
-    Drag me! I am at {{ x }}, {{ y }}
+    拖动我！我在 {{ x }}, {{ y }}
   </UseDraggable>
 </template>
 ```
 
-For component usage, additional props `storageKey` and `storageType` can be passed to the component and enable the persistence of the element position.
+对于组件用法，可以将其他属性 `storageKey` 和 `storageType` 传递给组件并启用元素位置的持久化。
 
 ```vue
 <template>
   <UseDraggable storage-key="vueuse-draggable" storage-type="session">
-    Refresh the page and I am still in the same position!
+    刷新页面，我仍然在相同位置！
   </UseDraggable>
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseDraggableOptions {
   /**
-   * Only start the dragging when click on the element directly
+   * 仅在直接点击元素时开始拖动
    *
    * @default false
    */
   exact?: MaybeRefOrGetter<boolean>
   /**
-   * Prevent events defaults
+   * 防止事件默认值
    *
    * @default false
    */
   preventDefault?: MaybeRefOrGetter<boolean>
   /**
-   * Prevent events propagation
+   * 防止事件传播
    *
    * @default false
    */
   stopPropagation?: MaybeRefOrGetter<boolean>
   /**
-   * Whether dispatch events in capturing phase
+   * 是否在捕获阶段调度事件
    *
    * @default true
    */
   capture?: boolean
   /**
-   * Element to attach `pointermove` and `pointerup` events to.
+   * 要附加 `pointermove` 和 `pointerup` 事件的元素。
    *
    * @default window
    */
@@ -168,7 +168,7 @@ export interface UseDraggableOptions {
     HTMLElement | SVGElement | Window | Document | null | undefined
   >
   /**
-   * Element for calculating bounds (If not set, it will use the event's target).
+   * 用于计算边界的元素（如果未设置，它将使用事件的目标）。
    *
    * @default undefined
    */
@@ -176,71 +176,71 @@ export interface UseDraggableOptions {
     HTMLElement | SVGElement | null | undefined
   >
   /**
-   * Handle that triggers the drag event
+   * 触发拖动事件的句柄
    *
    * @default target
    */
   handle?: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>
   /**
-   * Pointer types that listen to.
+   * 要监听的指针类型。
    *
    * @default ['mouse', 'touch', 'pen']
    */
   pointerTypes?: PointerType[]
   /**
-   * Initial position of the element.
+   * 元素的初始位置。
    *
    * @default { x: 0, y: 0 }
    */
   initialValue?: MaybeRefOrGetter<Position>
   /**
-   * Callback when the dragging starts. Return `false` to prevent dragging.
+   * 开始拖动时的回调。返回 `false` 以防止拖动。
    */
   onStart?: (position: Position, event: PointerEvent) => void | false
   /**
-   * Callback during dragging.
+   * 拖动期间的回调。
    */
   onMove?: (position: Position, event: PointerEvent) => void
   /**
-   * Callback when dragging end.
+   * 拖动结束时的回调。
    */
   onEnd?: (position: Position, event: PointerEvent) => void
   /**
-   * Axis to drag on.
+   * 要拖动的轴。
    *
    * @default 'both'
    */
   axis?: "x" | "y" | "both"
   /**
-   * Disabled drag and drop.
+   * 禁用拖放。
    *
    * @default false
    */
   disabled?: MaybeRefOrGetter<boolean>
   /**
-   * Mouse buttons that are allowed to trigger drag events.
+   * 允许触发拖动事件的鼠标按钮。
    *
-   * - `0`: Main button, usually the left button or the un-initialized state
-   * - `1`: Auxiliary button, usually the wheel button or the middle button (if present)
-   * - `2`: Secondary button, usually the right button
-   * - `3`: Fourth button, typically the Browser Back button
-   * - `4`: Fifth button, typically the Browser Forward button
+   * - `0`: 主按钮，通常为左键或未初始化状态
+   * - `1`: 辅助按钮，通常为滚轮按钮或中键（如果存在）
+   * - `2`: 次要按钮，通常为右键
+   * - `3`: 第四按钮，通常为浏览器后退按钮
+   * - `4`: 第五按钮，通常为浏览器前进按钮
    *
    * @see https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button#value
    * @default [0]
    */
   buttons?: MaybeRefOrGetter<number[]>
   /**
-   * Whether to restrict dragging within the visible area of the container.
+   * 是否将拖动限制在容器的可见区域内。
    *
-   * If enabled, the draggable element will not leave the visible area of its container,
-   * ensuring it remains within the viewport of the container during the drag.
+   * 如果启用，可拖动元素将不会离开其容器的可见区域，
+   * 确保它在拖动期间保持在容器的视口内。
    *
    * @default false
    */
   restrictInView?: MaybeRefOrGetter<boolean>
   /**
-   * Whether to enable auto-scroll when dragging near the edges.
+   * 是否在拖动到边缘附近时启用自动滚动。
    *
    * @default false
    */
@@ -248,19 +248,19 @@ export interface UseDraggableOptions {
     | boolean
     | {
         /**
-         * Speed of auto-scroll.
+         * 自动滚动的速度。
          *
          * @default 2
          */
         speed?: MaybeRefOrGetter<number | Position>
         /**
-         * Margin from the edge to trigger auto-scroll.
+         * 从边缘触发自动滚动的边距。
          *
          * @default 30
          */
         margin?: MaybeRefOrGetter<number | Position>
         /**
-         * Direction of auto-scroll.
+         * 自动滚动的方向。
          *
          * @default 'both'
          */
@@ -276,7 +276,7 @@ export interface UseDraggableReturn {
   style: ComputedRef<string>
 }
 /**
- * Make elements draggable.
+ * 使元素可拖动。
  *
  * @see https://vueuse.org/useDraggable
  * @param target

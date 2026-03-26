@@ -4,9 +4,9 @@ category: Sensors
 
 # useMouse
 
-Reactive mouse position
+响应式鼠标位置
 
-## Basic Usage
+## 基本用法
 
 ```ts twoslash
 import { useMouse } from '@vueuse/core'
@@ -14,8 +14,8 @@ import { useMouse } from '@vueuse/core'
 const { x, y, sourceType } = useMouse()
 ```
 
-Touch is enabled by default. To only detect mouse changes, set `touch` to `false`.
-The `dragover` event is used to track mouse position while dragging.
+默认情况下启用触摸功能。要仅检测鼠标更改，请将 `touch` 设置为 `false`。
+使用 `dragover` 事件在拖动时跟踪鼠标位置。
 
 ```ts twoslash
 import { useMouse } from '@vueuse/core'
@@ -23,9 +23,9 @@ import { useMouse } from '@vueuse/core'
 const { x, y } = useMouse({ touch: false })
 ```
 
-## Custom Extractor
+## 自定义提取器
 
-It's also possible to provide a custom extractor function to get the position from the event.
+还可以提供自定义提取器函数以从事件中获取位置。
 
 ```ts twoslash
 import type { UseMouseEventExtractor } from '@vueuse/core'
@@ -42,7 +42,7 @@ const extractor: UseMouseEventExtractor = event => (
 const { x, y, sourceType } = useMouse({ target: parentEl, type: extractor })
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -53,7 +53,7 @@ const { x, y, sourceType } = useMouse({ target: parentEl, type: extractor })
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UseMouseCoordType = "page" | "client" | "screen" | "movement"
@@ -64,37 +64,37 @@ export type UseMouseEventExtractor = (
 export interface UseMouseOptions
   extends ConfigurableWindow, ConfigurableEventFilter {
   /**
-   * Mouse position based by page, client, screen, or relative to previous position
+   * 基于页面、客户端、屏幕或相对于先前位置的鼠标位置
    *
    * @default 'page'
    */
   type?: UseMouseCoordType | UseMouseEventExtractor
   /**
-   * Listen events on `target` element
+   * 在 `target` 元素上监听事件
    *
    * @default 'Window'
    */
   target?: MaybeRefOrGetter<Window | EventTarget | null | undefined>
   /**
-   * Listen to `touchmove` events
+   * 监听 `touchmove` 事件
    *
    * @default true
    */
   touch?: boolean
   /**
-   * Listen to `scroll` events on window, only effective on type `page`
+   * 在窗口上监听 `scroll` 事件，仅在类型 `page` 上有效
    *
    * @default true
    */
   scroll?: boolean
   /**
-   * Reset to initial value when `touchend` event fired
+   * 当触发 `touchend` 事件时重置为初始值
    *
    * @default false
    */
   resetOnTouchEnds?: boolean
   /**
-   * Initial values
+   * 初始值
    */
   initialValue?: Position
 }
@@ -104,7 +104,7 @@ export interface UseMouseReturn {
   sourceType: ShallowRef<UseMouseSourceType>
 }
 /**
- * Reactive mouse position.
+ * 响应式鼠标位置。
  *
  * @see https://vueuse.org/useMouse
  * @param options

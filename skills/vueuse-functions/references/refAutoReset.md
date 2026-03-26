@@ -5,9 +5,9 @@ alias: autoResetRef
 
 # refAutoReset
 
-A ref which will be reset to the default value after some time.
+一个 ref,它将在一段时间后重置为默认值。
 
-## Usage
+## 用法
 
 ```ts
 import { refAutoReset } from '@vueuse/core'
@@ -15,32 +15,32 @@ import { refAutoReset } from '@vueuse/core'
 const message = refAutoReset('default message', 1000)
 
 function setMessage() {
-  // here the value will change to 'message has set' but after 1000ms, it will change to 'default message'
+  // 这里,value 将更改为 'message has set',但在 1000ms 后,它将更改为 'default message'
   message.value = 'message has set'
 }
 ```
 
 ::: info
-You can reassign the entire object to trigger updates after making deep mutations to the inner value.
+您可以在对内部值进行深度更改后重新分配整个对象以触发更新。
 
-[Learn more about shallow refs →](https://vuejs.org/api/reactivity-advanced#shallowref)
+[了解更多关于浅 refs →](https://vuejs.org/api/reactivity-advanced#shallowref)
 :::
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type RefAutoResetReturn<T = any> = Ref<T>
 /**
- * Create a ref which will be reset to the default value after some time.
+ * 创建一个 ref,它将在一段时间后重置为默认值。
  *
  * @see https://vueuse.org/refAutoReset
- * @param defaultValue The value which will be set.
- * @param afterMs      A zero-or-greater delay in milliseconds.
+ * @param defaultValue 将设置的值。
+ * @param afterMs      以毫秒为单位的零或更大的延迟。
  */
 export declare function refAutoReset<T>(
   defaultValue: MaybeRefOrGetter<T>,
   afterMs?: MaybeRefOrGetter<number>,
 ): RefAutoResetReturn<T>
-/** @deprecated use `refAutoReset` instead */
+/** @deprecated 使用 `refAutoReset` 代替 */
 export declare const autoResetRef: typeof refAutoReset
 ```

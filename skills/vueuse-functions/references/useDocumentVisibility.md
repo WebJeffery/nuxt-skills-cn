@@ -4,9 +4,9 @@ category: Elements
 
 # useDocumentVisibility
 
-Reactively track [`document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)
+响应式跟踪 [`document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -16,7 +16,7 @@ const visibility = useDocumentVisibility()
 </script>
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -26,13 +26,13 @@ const visibility = useDocumentVisibility()
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseDocumentVisibilityOptions extends ConfigurableDocument {}
 export type UseDocumentVisibilityReturn = ShallowRef<DocumentVisibilityState>
 /**
- * Reactively track `document.visibilityState`.
+ * 响应式跟踪 `document.visibilityState`。
  *
  * @see https://vueuse.org/useDocumentVisibility
  *

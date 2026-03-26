@@ -4,9 +4,9 @@ category: Sensors
 
 # onKeyStroke
 
-Listen for keyboard keystrokes. By default, listens on `keydown` events on `window`.
+监听键盘按键。默认情况下,在 `window` 上监听 `keydown` 事件。
 
-## Usage
+## 用法
 
 ```ts
 import { onKeyStroke } from '@vueuse/core'
@@ -16,20 +16,20 @@ onKeyStroke('ArrowDown', (e) => {
 })
 ```
 
-See [this table](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values) for all key codes.
+有关所有键代码,请参阅[此表](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values)。
 
-### Return Value
+### 返回值
 
-Returns a stop function to remove the event listener.
+返回一个停止函数来移除事件监听器。
 
 ```ts
 const stop = onKeyStroke('Escape', handler)
 
-// Later, stop listening
+// 稍后,停止监听
 stop()
 ```
 
-### Listen To Multiple Keys
+### 监听多个键
 
 ```ts
 import { onKeyStroke } from '@vueuse/core'
@@ -38,7 +38,7 @@ onKeyStroke(['s', 'S', 'ArrowDown'], (e) => {
   e.preventDefault()
 })
 
-// listen to all keys by passing `true` or skipping the key parameter
+// 通过传递 `true` 或跳过 key 参数来监听所有键
 onKeyStroke(true, (e) => {
   e.preventDefault()
 })
@@ -47,9 +47,9 @@ onKeyStroke((e) => {
 })
 ```
 
-### Custom Key Predicate
+### 自定义键谓词
 
-You can pass a custom function to determine which keys should trigger the handler.
+您可以传递自定义函数来确定哪些键应该触发处理程序。
 
 ```ts
 import { onKeyStroke } from '@vueuse/core'
@@ -62,7 +62,7 @@ onKeyStroke(
 )
 ```
 
-### Custom Event Target
+### 自定义事件目标
 
 ```ts
 import { onKeyStroke } from '@vueuse/core'
@@ -72,9 +72,9 @@ onKeyStroke('A', (e) => {
 }, { target: document })
 ```
 
-### Ignore Repeated Events
+### 忽略重复事件
 
-The callback will trigger only once when pressing `A` and **holding down**. The `dedupe` option can also be a reactive ref.
+当按下 `A` 并**按住**时,回调只会触发一次。`dedupe` 选项也可以是响应式 ref。
 
 ```ts
 import { onKeyStroke } from '@vueuse/core'
@@ -84,11 +84,11 @@ onKeyStroke('A', (e) => {
 }, { dedupe: true })
 ```
 
-Reference: [KeyboardEvent.repeat](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/repeat)
+参考: [KeyboardEvent.repeat](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/repeat)
 
-### Passive Mode
+### 被动模式
 
-Set `passive: true` to use a passive event listener.
+设置 `passive: true` 以使用被动事件监听器。
 
 ```ts
 import { onKeyStroke } from '@vueuse/core'
@@ -96,116 +96,4 @@ import { onKeyStroke } from '@vueuse/core'
 onKeyStroke('A', handler, { passive: true })
 ```
 
-## Directive Usage
-
-```vue
-<script setup lang="ts">
-import { vOnKeyStroke } from '@vueuse/components'
-
-function onUpdate(e: KeyboardEvent) {
-  // impl...
-}
-</script>
-
-<template>
-  <input v-on-key-stroke:c,v="onUpdate" type="text">
-  <!-- with options -->
-  <input v-on-key-stroke:c,v="[onUpdate, { eventName: 'keyup' }]" type="text">
-</template>
-```
-
-### Custom Keyboard Event
-
-```ts
-import { onKeyStroke } from '@vueuse/core'
-// ---cut---
-onKeyStroke('Shift', (e) => {
-  console.log('Shift key up')
-}, { eventName: 'keyup' })
-```
-
-Or
-
-```ts
-import { onKeyUp } from '@vueuse/core'
-// ---cut---
-onKeyUp('Shift', () => console.log('Shift key up'))
-```
-
-## Shorthands
-
-- `onKeyDown` - alias for `onKeyStroke(key, handler, {eventName: 'keydown'})`
-- `onKeyPressed` - alias for `onKeyStroke(key, handler, {eventName: 'keypress'})`
-- `onKeyUp` - alias for `onKeyStroke(key, handler, {eventName: 'keyup'})`
-
-## Type Declarations
-
-```ts
-export type KeyPredicate = (event: KeyboardEvent) => boolean
-export type KeyFilter = true | string | string[] | KeyPredicate
-export type KeyStrokeEventName = "keydown" | "keypress" | "keyup"
-export interface OnKeyStrokeOptions {
-  eventName?: KeyStrokeEventName
-  target?: MaybeRefOrGetter<EventTarget | null | undefined>
-  passive?: boolean
-  /**
-   * Set to `true` to ignore repeated events when the key is being held down.
-   *
-   * @default false
-   */
-  dedupe?: MaybeRefOrGetter<boolean>
-}
-/**
- * Listen for keyboard keystrokes.
- *
- * @see https://vueuse.org/onKeyStroke
- */
-export declare function onKeyStroke(
-  key: KeyFilter,
-  handler: (event: KeyboardEvent) => void,
-  options?: OnKeyStrokeOptions,
-): () => void
-export declare function onKeyStroke(
-  handler: (event: KeyboardEvent) => void,
-  options?: OnKeyStrokeOptions,
-): () => void
-/**
- * Listen to the keydown event of the given key.
- *
- * @see https://vueuse.org/onKeyStroke
- * @param key
- * @param handler
- * @param options
- */
-export declare function onKeyDown(
-  key: KeyFilter,
-  handler: (event: KeyboardEvent) => void,
-  options?: Omit<OnKeyStrokeOptions, "eventName">,
-): () => void
-/**
- * Listen to the keypress event of the given key.
- *
- * @see https://vueuse.org/onKeyStroke
- * @param key
- * @param handler
- * @param options
- */
-export declare function onKeyPressed(
-  key: KeyFilter,
-  handler: (event: KeyboardEvent) => void,
-  options?: Omit<OnKeyStrokeOptions, "eventName">,
-): () => void
-/**
- * Listen to the keyup event of the given key.
- *
- * @see https://vueuse.org/onKeyStroke
- * @param key
- * @param handler
- * @param options
- */
-export declare function onKeyUp(
-  key: KeyFilter,
-  handler: (event: KeyboardEvent) => void,
-  options?: Omit<OnKeyStrokeOptions, "eventName">,
-): () => void
-```
+## 指令用法

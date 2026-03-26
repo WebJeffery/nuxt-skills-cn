@@ -4,9 +4,9 @@ category: Browser
 
 # useEyeDropper
 
-Reactive [EyeDropper API](https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper_API)
+响应式 [EyeDropper API](https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper_API)
 
-## Usage
+## 用法
 
 ```ts
 import { useEyeDropper } from '@vueuse/core'
@@ -14,7 +14,7 @@ import { useEyeDropper } from '@vueuse/core'
 const { isSupported, open, sRGBHex } = useEyeDropper()
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -26,7 +26,7 @@ const { isSupported, open, sRGBHex } = useEyeDropper()
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface EyeDropperOpenOptions {
@@ -44,7 +44,7 @@ export interface EyeDropper {
 }
 export interface UseEyeDropperOptions {
   /**
-   * Initial sRGBHex.
+   * 初始 sRGBHex。
    *
    * @default ''
    */
@@ -60,7 +60,7 @@ export interface UseEyeDropperReturn extends Supportable {
   >
 }
 /**
- * Reactive [EyeDropper API](https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper_API)
+ * 响应式 [EyeDropper API](https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper_API)
  *
  * @see https://vueuse.org/useEyeDropper
  *
@@ -70,3 +70,8 @@ export declare function useEyeDropper(
   options?: UseEyeDropperOptions,
 ): UseEyeDropperReturn
 ```
+
+<!--
+Source references:
+- https://vueuse.org/core/useEyeDropper/
+-->

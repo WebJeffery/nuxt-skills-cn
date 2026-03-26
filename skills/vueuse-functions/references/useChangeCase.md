@@ -4,27 +4,27 @@ category: '@Integrations'
 
 # useChangeCase
 
-Reactive wrapper for [`change-case`](https://github.com/blakeembrey/change-case).
+[`change-case`](https://github.com/blakeembrey/change-case) 的响应式包装器。
 
-Subsitutes `useCamelCase`, `usePascalCase`, `useSnakeCase`, `useSentenceCase`, `useCapitalize`, etc.
+替代 `useCamelCase`、`usePascalCase`、`useSnakeCase`、`useSentenceCase`、`useCapitalize` 等。
 
-## Install
+## 安装
 
 ```bash
 npm i change-case@^5
 ```
 
-## Usage
+## 用法
 
 ```ts
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
 
-// `changeCase` will be a computed
+// `changeCase` 将是一个 computed
 const changeCase = useChangeCase('hello world', 'camelCase')
 changeCase.value // helloWorld
 changeCase.value = 'vue use'
 changeCase.value // vueUse
-// Supported methods
+// 支持的方法
 // export {
 //   camelCase,
 //   capitalCase,
@@ -40,9 +40,9 @@ changeCase.value // vueUse
 // } from 'change-case'
 ```
 
-or passing a `ref` to it, the returned `computed` will change along with the source ref's changes.
+或者将 `ref` 传递给它,返回的 `computed` 将随着源 ref 的更改而更改。
 
-Can be passed into `options` for customization
+可以传递到 `options` 进行自定义
 
 ```ts
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
@@ -57,7 +57,7 @@ input.value = 'vue use'
 changeCase.value // vue-Use
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 type EndsWithCase<T> = T extends `${infer _}Case` ? T : never

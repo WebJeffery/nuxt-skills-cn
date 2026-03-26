@@ -4,11 +4,11 @@ category: Component
 
 # computedInject
 
-Combine `computed` and `inject`. Useful for creating a computed property based on an injected value.
+结合 `computed` 和 `inject`。用于基于注入的值创建计算属性。
 
-## Usage
+## 用法
 
-In Provider Component
+在提供者组件中
 
 ```ts twoslash include main
 import type { InjectionKey, Ref } from 'vue'
@@ -26,7 +26,7 @@ const array = ref([{ key: 1, value: '1' }, { key: 2, value: '2' }, { key: 3, val
 provide(ArrayKey, array)
 ```
 
-In Receiver Component
+在接收者组件中
 
 ```ts
 // @filename: provider.ts
@@ -43,25 +43,9 @@ const computedArray = computedInject(ArrayKey, (source) => {
 })
 ```
 
-### Default Value
+### 默认值
 
-You can provide a default value that will be used if the injection key is not provided by a parent component.
-
-```ts
-import { computedInject } from '@vueuse/core'
-
-const computedArray = computedInject(
-  ArrayKey,
-  (source) => {
-    return source.value.map(item => item.value)
-  },
-  ref([]), // default source value
-)
-```
-
-### Factory Default
-
-Pass `true` as the fourth argument to treat the default value as a factory function.
+您可以提供一个默认值,如果父组件没有提供注入键,则使用该默认值。
 
 ```ts
 import { computedInject } from '@vueuse/core'
@@ -71,14 +55,30 @@ const computedArray = computedInject(
   (source) => {
     return source.value.map(item => item.value)
   },
-  () => ref([]), // factory function for default
-  true, // treat default as factory
+  ref([]), // 默认源值
 )
 ```
 
-### Writable Computed
+### 工厂默认值
 
-You can also create a writable computed property by passing an object with `get` and `set` functions.
+将 `true` 作为第四个参数传递,将默认值视为工厂函数。
+
+```ts
+import { computedInject } from '@vueuse/core'
+
+const computedArray = computedInject(
+  ArrayKey,
+  (source) => {
+    return source.value.map(item => item.value)
+  },
+  () => ref([]), // 默认值的工厂函数
+  true, // 将默认值视为工厂
+)
+```
+
+### 可写计算
+
+您还可以通过传递带有 `get` 和 `set` 函数的对象来创建可写计算属性。
 
 ```ts
 import { computedInject } from '@vueuse/core'
@@ -88,13 +88,13 @@ const computedArray = computedInject(ArrayKey, {
     return source.value.map(item => item.value)
   },
   set(value) {
-    // handle setting the value
+    // 处理设置值
     console.log('Setting value:', value)
   },
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type ComputedInjectGetter<T, K> = (

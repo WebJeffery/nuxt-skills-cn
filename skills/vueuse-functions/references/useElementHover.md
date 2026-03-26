@@ -4,9 +4,9 @@ category: Sensors
 
 # useElementHover
 
-Reactive element's hover state.
+响应式元素的悬停状态。
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -24,7 +24,7 @@ const isHovered = useElementHover(myHoverableElement)
 </template>
 ```
 
-## Directive Usage
+## 指令用法
 
 ```vue
 <script setup lang="ts">
@@ -39,12 +39,12 @@ function onHover(state: boolean) {
 
 <template>
   <button v-element-hover="onHover">
-    {{ isHovered ? 'Thank you!' : 'Hover me' }}
+    {{ isHovered ? '谢谢!' : '悬停我' }}
   </button>
 </template>
 ```
 
-You can also provide hover options:
+您还可以提供悬停选项：
 
 ```vue
 <script setup lang="ts">
@@ -59,12 +59,12 @@ function onHover(hovered: boolean) {
 
 <template>
   <button v-element-hover="[onHover, { delayEnter: 1000 }]">
-    <span>{{ isHovered ? 'Thank you!' : 'Hover me' }}</span>
+    <span>{{ isHovered ? '谢谢!' : '悬停我' }}</span>
   </button>
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseElementHoverOptions extends ConfigurableWindow {
@@ -77,3 +77,8 @@ export declare function useElementHover(
   options?: UseElementHoverOptions,
 ): ShallowRef<boolean>
 ```
+
+<!--
+Source references:
+- https://vueuse.org/core/useElementHover/
+-->

@@ -4,11 +4,11 @@ category: '@RxJS'
 
 # useSubject
 
-Bind an RxJS [`Subject`](https://rxjs.dev/guide/subject) to a `ref` and propagate value changes both ways.
+将 RxJS [`Subject`](https://rxjs.dev/guide/subject) 绑定到 `ref` 并双向传播值更改。
 
-## Usage
+## 用法
 
-<!-- TODO: import rxjs error if enable twoslash -->
+<!-- TODO: 如果启用 twoslash，则导入 rxjs 错误 -->
 
 ```ts no-twoslash
 import { useSubject } from '@vueuse/rxjs'
@@ -19,16 +19,16 @@ const subject = new Subject()
 // setup()
 const subjectRef = useSubject(subject)
 
-// Changes to subjectRef.value will be pushed to the subject
+// 对 subjectRef.value 的更改将被推送到 subject
 subjectRef.value = 'new value'
 
-// Values emitted by the subject will update subjectRef
+// subject 发出的值将更新 subjectRef
 subject.next('from subject')
 ```
 
-### With BehaviorSubject
+### 使用 BehaviorSubject
 
-When using a `BehaviorSubject`, the returned ref is initialized with the subject's current value and the type does not include `undefined`:
+当使用 `BehaviorSubject` 时，返回的 ref 使用 subject 的当前值初始化，并且类型不包括 `undefined`：
 
 ```ts no-twoslash
 import { useSubject } from '@vueuse/rxjs'
@@ -37,13 +37,13 @@ import { BehaviorSubject } from 'rxjs'
 const subject = new BehaviorSubject('initial')
 
 // setup()
-const subjectRef = useSubject(subject) // Ref<string>, not Ref<string | undefined>
+const subjectRef = useSubject(subject) // Ref<string>，而不是 Ref<string | undefined>
 console.log(subjectRef.value) // 'initial'
 ```
 
-### Error Handling
+### 错误处理
 
-If you want to add custom error handling to a Subject that might error, you can supply an optional `onError` configuration. Without this, RxJS will treat any error in the supplied observable as an "unhandled error" and it will be thrown in a new call stack and reported to `window.onerror` (or `process.on('error')` if you happen to be in node).
+如果您想为可能出错的 Subject 添加自定义错误处理，可以提供一个可选的 `onError` 配置。如果没有此配置，RxJS 将把提供的 observable 中的任何错误视为"未处理的错误"，并将在新的调用堆栈中抛出并报告给 `window.onerror`（如果您恰好处于 node 中，则报告给 `process.on('error')`）。
 
 ```ts no-twoslash
 import { useSubject } from '@vueuse/rxjs'
@@ -59,7 +59,7 @@ const subjectRef = useSubject(subject, {
 },)
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseSubjectOptions<I = undefined> extends Omit<

@@ -4,128 +4,57 @@ category: Browser
 
 # useStyleTag
 
-Inject reactive `style` element in head.
+将样式标签注入到文档中。
 
-## Usage
-
-### Basic usage
-
-Provide a CSS string, then `useStyleTag` will automatically generate an id and inject it in `<head>`.
+## 用法
 
 ```ts
 import { useStyleTag } from '@vueuse/core'
 
-const {
-  id,
-  css,
-  load,
-  unload,
-  isLoaded,
-} = useStyleTag('.foo { margin-top: 32px; }')
+const { id, load, unload, isLoaded } = useStyleTag('.foo { color: red; }')
 
-// Later you can modify styles
-css.value = '.foo { margin-top: 64px; }'
+load()
 ```
 
-This code will be injected to `<head>`:
-
-```html
-<style id="vueuse_styletag_1">
-  .foo {
-    margin-top: 64px;
-  }
-</style>
-```
-
-### Custom ID
-
-If you need to define your own id, you can pass `id` as first argument.
-
-```ts
-import { useStyleTag } from '@vueuse/core'
-// ---cut---
-useStyleTag('.foo { margin-top: 32px; }', { id: 'custom-id' })
-```
-
-```html
-<!-- injected to <head> -->
-<style id="custom-id">
-  .foo {
-    margin-top: 32px;
-  }
-</style>
-```
-
-### Media query
-
-You can pass media attributes as last argument within object.
-
-```ts
-import { useStyleTag } from '@vueuse/core'
-// ---cut---
-useStyleTag('.foo { margin-top: 32px; }', { media: 'print' })
-```
-
-```html
-<!-- injected to <head> -->
-<style id="vueuse_styletag_1" media="print">
-  .foo {
-    margin-top: 32px;
-  }
-</style>
-```
-
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseStyleTagOptions extends ConfigurableDocument {
   /**
-   * Media query for styles to apply
+   * 样式标签的媒体属性
    */
   media?: string
   /**
-   * Load the style immediately
-   *
-   * @default true
+   * 样式标签的 nonce 属性
    */
-  immediate?: boolean
+  nonce?: string
   /**
-   * Manual controls the timing of loading and unloading
-   *
-   * @default false
-   */
-  manual?: boolean
-  /**
-   * DOM id of the style tag
-   *
-   * @default auto-incremented
+   * 样式标签的 id 属性
    */
   id?: string
   /**
-   * Nonce value for CSP (Content Security Policy)
+   * 样式标签的 type 属性
    *
-   * @default undefined
+   * @default 'text/css'
    */
-  nonce?: string
+  type?: string
 }
 export interface UseStyleTagReturn {
   id: string
-  css: ShallowRef<string>
-  load: () => void
+  css: Ref<string>
+  load: (css: string, options?: UseStyleTagOptions) => void
   unload: () => void
-  isLoaded: Readonly<ShallowRef<boolean>>
+  isLoaded: Ref<boolean>
 }
 /**
- * Inject <style> element in head.
- *
- * Overload: Omitted id
+ * 将样式标签注入到文档中。
  *
  * @see https://vueuse.org/useStyleTag
  * @param css
  * @param options
  */
 export declare function useStyleTag(
-  css: MaybeRef<string>,
+  css: MaybeRefOrGetter<string>,
   options?: UseStyleTagOptions,
 ): UseStyleTagReturn
 ```

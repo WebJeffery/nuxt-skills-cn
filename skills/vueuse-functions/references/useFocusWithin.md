@@ -4,9 +4,9 @@ category: Sensors
 
 # useFocusWithin
 
-Reactive utility to track if an element or one of its decendants has focus. It is meant to match the behavior of the `:focus-within` CSS pseudo-class. A common use case would be on a form element to see if any of its inputs currently have focus.
+响应式实用程序，用于跟踪元素或其后代之一是否具有焦点。它旨在匹配 `:focus-within` CSS 伪类的行为。一个常见的用例是在表单元素上，以查看其任何输入当前是否具有焦点。
 
-## Basic Usage
+## 基本用法
 
 ```vue
 <script setup lang="ts">
@@ -18,9 +18,9 @@ const { focused } = useFocusWithin(target)
 
 watch(focused, (focused) => {
   if (focused)
-    console.log('Target contains the focused element')
+    console.log('Target contains focused element')
   else
-    console.log('Target does NOT contain the focused element')
+    console.log('Target does NOT contain focused element')
 })
 </script>
 
@@ -34,21 +34,21 @@ watch(focused, (focused) => {
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseFocusWithinReturn {
   /**
-   * True if the element or any of its descendants are focused
+   * 如果元素或其任何后代具有焦点，则为 true
    */
   focused: ComputedRef<boolean>
 }
 /**
- * Track if focus is contained within the target element
+ * 跟踪焦点是否包含在目标元素内
  *
  * @see https://vueuse.org/useFocusWithin
- * @param target The target element to track
- * @param options Focus within options
+ * @param target 要跟踪的目标元素
+ * @param options Focus within 选项
  */
 export declare function useFocusWithin(
   target: MaybeElementRef,

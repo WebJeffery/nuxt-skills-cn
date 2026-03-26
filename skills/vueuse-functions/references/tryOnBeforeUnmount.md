@@ -4,9 +4,9 @@ category: Component
 
 # tryOnBeforeUnmount
 
-Safe `onBeforeUnmount`. Call `onBeforeUnmount()` if it's inside a component lifecycle, if not, do nothing
+安全的 `onBeforeUnmount`。如果它在组件生命周期内,则调用 `onBeforeUnmount()`,否则,什么都不做
 
-## Usage
+## 用法
 
 ```ts
 import { tryOnBeforeUnmount } from '@vueuse/core'
@@ -16,11 +16,11 @@ tryOnBeforeUnmount(() => {
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Call onBeforeUnmount() if it's inside a component lifecycle, if not, do nothing
+ * 如果它在组件生命周期内,则调用 onBeforeUnmount(),否则,什么都不做
  *
  * @param fn
  * @param target

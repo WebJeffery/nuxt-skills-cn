@@ -5,9 +5,9 @@ alias: not
 
 # logicNot
 
-`NOT` condition for ref.
+ref 的 `NOT` 条件。
 
-## Usage
+## 用法
 
 ```ts
 import { whenever } from '@vueuse/core'
@@ -20,17 +20,17 @@ whenever(logicNot(a), () => {
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * `NOT` conditions for refs.
+ * Ref 的 `NOT` 条件。
  *
  * @see https://vueuse.org/logicNot
  *
  * @__NO_SIDE_EFFECTS__
  */
 export declare function logicNot(v: MaybeRefOrGetter<any>): ComputedRef<boolean>
-/** @deprecated use `logicNot` instead */
+/** @deprecated 使用 `logicNot` 代替 */
 export declare const not: typeof logicNot
 ```

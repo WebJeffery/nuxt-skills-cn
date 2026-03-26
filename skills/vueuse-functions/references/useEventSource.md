@@ -4,9 +4,9 @@ category: Network
 
 # useEventSource
 
-An [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) or [Server-Sent-Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) instance opens a persistent connection to an HTTP server, which sends events in text/event-stream format.
+[EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) 或 [Server-Sent-Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) 实例打开与 HTTP 服务器的持久连接，该服务器以 text/event-stream 格式发送事件。
 
-## Usage
+## 用法
 
 ```ts
 import { useEventSource } from '@vueuse/core'
@@ -14,11 +14,11 @@ import { useEventSource } from '@vueuse/core'
 const { status, data, error, close } = useEventSource('https://event-source-url')
 ```
 
-See the [Type Declarations](#type-declarations) for more options.
+有关更多选项，请参见 [类型声明](#类型声明)。
 
-### Named Events
+### 命名事件
 
-You can define named events with the second parameter
+您可以使用第二个参数定义命名事件
 
 ```ts
 import { useEventSource } from '@vueuse/core'
@@ -31,19 +31,19 @@ const { event, data } = useEventSource(
 
 ### immediate
 
-Enable by default.
+默认启用。
 
-Establish the connection immediately when the composable is called.
+在调用组合式函数时立即建立连接。
 
 ### autoConnect
 
-Enable by default.
+默认启用。
 
-If url is provided as a ref, when the url changes, it will automatically reconnect to the new url.
+如果 url 作为 ref 提供，当 url 更改时，它将自动重新连接到新的 url。
 
-### Auto Reconnection on Errors
+### 错误时自动重新连接
 
-Reconnect on errors automatically (disabled by default).
+在错误时自动重新连接（默认禁用）。
 
 ```ts
 import { useEventSource } from '@vueuse/core'
@@ -57,7 +57,7 @@ const { status, data, close } = useEventSource(
 )
 ```
 
-Or with more controls over its behavior:
+或者对其行为进行更多控制：
 
 ```ts
 import { useEventSource } from '@vueuse/core'
@@ -67,7 +67,7 @@ const { status, data, close } = useEventSource(
   [],
   {
     autoReconnect: {
-      retries: 3,
+      retries:3,
       delay: 1000,
       onFailed() {
         alert('Failed to connect EventSource after 3 retries')
@@ -77,9 +77,9 @@ const { status, data, close } = useEventSource(
 )
 ```
 
-### Data Serialization
+### 数据序列化
 
-Apply custom transformations to incoming data using a serialization function.
+使用序列化函数对传入的数据应用自定义转换。
 
 ```ts
 import { useEventSource } from '@vueuse/core'
@@ -94,17 +94,17 @@ const { data } = useEventSource(
   }
 )
 
-// If server sends: '{"name":"John","age":30}'
-// data.value will be: { name: 'John', age: 30 }
+// 如果服务器发送: '{"name":"John","age":30}'
+// data.value 将是: { name: 'John', age: 30 }
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type EventSourceStatus = "CONNECTING" | "OPEN" | "CLOSED"
 export interface UseEventSourceOptions<Data> extends EventSourceInit {
   /**
-   * Enabled auto reconnect
+   * 启用自动重新连接
    *
    * @default false
    */
@@ -112,38 +112,38 @@ export interface UseEventSourceOptions<Data> extends EventSourceInit {
     | boolean
     | {
         /**
-         * Maximum retry times.
+         * 最大重试次数。
          *
-         * Or you can pass a predicate function (which returns true if you want to retry).
+         * 或者您可以传递一个谓词函数（如果您想重试，则返回 true）。
          *
          * @default -1
          */
         retries?: number | (() => boolean)
         /**
-         * Delay for reconnect, in milliseconds
+         * 重新连接的延迟，以毫秒为单位
          *
          * @default 1000
          */
         delay?: number
         /**
-         * On maximum retry times reached.
+         * 达到最大重试次数时。
          */
         onFailed?: Fn
       }
   /**
-   * Immediately open the connection when calling this composable
+   * 调用此组合式函数时立即打开连接
    *
    * @default true
    */
   immediate?: boolean
   /**
-   * Automatically connect to the websocket when URL changes
+   * 当 URL 更改时自动连接到 websocket
    *
    * @default true
    */
   autoConnect?: boolean
   /**
-   * Custom data serialization
+   * 自定义数据序列化
    */
   serializer?: {
     read: (v?: string) => Data
@@ -151,44 +151,44 @@ export interface UseEventSourceOptions<Data> extends EventSourceInit {
 }
 export interface UseEventSourceReturn<Events extends string[], Data = any> {
   /**
-   * Reference to the latest data received via the EventSource,
-   * can be watched to respond to incoming messages
+   * 对通过 EventSource 接收的最新数据的引用，
+   * 可以被监视以响应传入的消息
    */
   data: ShallowRef<Data | null>
   /**
-   * The current state of the connection, can be only one of:
+   * 连接的当前状态，只能是以下之一：
    * 'CONNECTING', 'OPEN' 'CLOSED'
    */
   status: ShallowRef<EventSourceStatus>
   /**
-   * The latest named event
+   * 最新的命名事件
    */
   event: ShallowRef<Events[number] | null>
   /**
-   * The current error
+   * 当前错误
    */
   error: ShallowRef<Event | null>
   /**
-   * Closes the EventSource connection gracefully.
+   * 优雅地关闭 EventSource 连接。
    */
   close: EventSource["close"]
   /**
-   * Reopen the EventSource connection.
-   * If there the current one is active, will close it before opening a new one.
+   * 重新打开 EventSource 连接。
+   * 如果当前有一个处于活动状态，将在打开新连接之前关闭它。
    */
   open: Fn
   /**
-   * Reference to the current EventSource instance.
+   * 对当前 EventSource 实例的引用。
    */
   eventSource: Ref<EventSource | null>
   /**
-   * The last event ID string, for server-sent events.
+   * 最后一个事件 ID 字符串，用于服务器发送的事件。
    * @see https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent/lastEventId
    */
   lastEventId: ShallowRef<string | null>
 }
 /**
- * Reactive wrapper for EventSource.
+ * EventSource 的响应式包装器。
  *
  * @see https://vueuse.org/useEventSource
  * @see https://developer.mozilla.org/en-US/docs/Web/API/EventSource/EventSource EventSource
@@ -202,3 +202,8 @@ export declare function useEventSource<Events extends string[], Data = any>(
   options?: UseEventSourceOptions<Data>,
 ): UseEventSourceReturn<Events, Data>
 ```
+
+<!--
+Source references:
+- https://vueuse.org/core/useEventSource/
+-->

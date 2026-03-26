@@ -1,26 +1,26 @@
 ---
 name: preset-typography
-description: Prose classes for typographic defaults on vanilla HTML content
+description: 用于原生 HTML 内容的排版默认值的 Prose 类
 ---
 
-# Preset Typography
+# 预设 Typography
 
-Prose classes for adding typographic defaults to vanilla HTML content.
+用于为原生 HTML 内容添加排版默认值的 Prose 类。
 
-## Installation
+## 安装
 
 ```ts
 import { defineConfig, presetTypography, presetWind3 } from 'unocss'
 
 export default defineConfig({
   presets: [
-    presetWind3(), // Required!
+    presetWind3(), // 必需！
     presetTypography(),
   ],
 })
 ```
 
-## Basic Usage
+## 基本用法
 
 ```html
 <article class="prose">
@@ -29,7 +29,7 @@ export default defineConfig({
 </article>
 ```
 
-## Sizes
+## 大小
 
 ```html
 <article class="prose prose-sm">Small</article>
@@ -39,14 +39,14 @@ export default defineConfig({
 <article class="prose prose-2xl">2X large</article>
 ```
 
-Responsive:
+响应式：
 ```html
 <article class="prose prose-sm md:prose-base lg:prose-lg">
   Responsive typography
 </article>
 ```
 
-## Colors
+## 颜色
 
 ```html
 <article class="prose prose-gray">Gray (default)</article>
@@ -54,7 +54,7 @@ Responsive:
 <article class="prose prose-blue">Blue</article>
 ```
 
-## Dark Mode
+## 暗色模式
 
 ```html
 <article class="prose dark:prose-invert">
@@ -62,7 +62,7 @@ Responsive:
 </article>
 ```
 
-## Excluding Elements
+## 排除元素
 
 ```html
 <article class="prose">
@@ -73,15 +73,15 @@ Responsive:
 </article>
 ```
 
-**Note:** `not-prose` only works as a class.
+**注意：** `not-prose` 只能作为类使用。
 
-## Options
+## 选项
 
 ```ts
 presetTypography({
-  selectorName: 'prose',      // Custom selector
-  cssVarPrefix: '--un-prose', // CSS variable prefix
-  important: false,           // Make !important
+  selectorName: 'prose',      // 自定义选择器
+  cssVarPrefix: '--un-prose', // CSS 变量前缀
+  important: false,           // 使 !important
   cssExtend: {
     'code': { color: '#8b5cf6' },
     'a:hover': { color: '#f43f5e' },
@@ -89,7 +89,7 @@ presetTypography({
 })
 ```
 
-<!-- 
-Source references:
+<!--
+源参考：
 - https://unocss.dev/presets/typography
 -->

@@ -4,100 +4,54 @@ category: Utilities
 
 # useToggle
 
-A boolean switcher with utility functions.
+切换布尔值或两个值之间切换的实用函数。
 
-## Usage
-
-```ts
-import { useToggle } from '@vueuse/core'
-
-const [value, toggle] = useToggle()
-```
-
-When you pass a ref, `useToggle` will return a simple toggle function instead:
-
-```ts
-import { useDark, useToggle } from '@vueuse/core'
-
-const isDark = useDark()
-const toggleDark = useToggle(isDark)
-```
-
-### Toggle Function
-
-The toggle function can be called in two ways:
-
-```ts
-const [value, toggle] = useToggle()
-
-toggle() // toggle between true and false
-toggle(true) // set to specific value
-
-// The toggle function returns the new value
-const newValue = toggle() // returns the new value after toggling
-```
-
-### Custom Values
-
-You can use custom truthy and falsy values instead of `true` and `false`:
+## 用法
 
 ```ts
 import { useToggle } from '@vueuse/core'
 
-const [value, toggle] = useToggle('on', {
-  truthyValue: 'on',
-  falsyValue: 'off',
-})
+const [value, toggle] = useToggle(true)
 
-toggle() // 'off'
-toggle() // 'on'
+value.value // true
+
+toggle()
+value.value // false
+
+toggle(true)
+value.value // true
 ```
 
-The custom values can also be reactive:
+### 在两个值之间切换
 
 ```ts
 import { useToggle } from '@vueuse/core'
-import { ref } from 'vue'
 
-const truthy = ref('yes')
-const falsy = ref('no')
+const [value, toggle] = useToggle('Yes', 'No')
 
-const [value, toggle] = useToggle('yes', {
-  truthyValue: truthy,
-  falsyValue: falsy,
-})
+value.value // 'Yes'
+
+toggle()
+value.value // 'No'
+
+toggle('Yes')
+value.value // 'Yes'
 ```
 
-## Caution
-
-Be aware that the toggle function accepts the first argument as the override value. You might want to avoid directly passing the function to events in the template, as the event object will be passed in.
-
-```html
-<!-- caution: $event will be passed in -->
-<button @click="toggleDark" />
-<!-- recommended to do this -->
-<button @click="toggleDark()" />
-```
-
-## Type Declarations
+## 类型声明
 
 ```ts
-export type ToggleFn = (value?: boolean) => void
-export type UseToggleReturn = [ShallowRef<boolean>, ToggleFn] | ToggleFn
-export interface UseToggleOptions<Truthy, Falsy> {
-  truthyValue?: MaybeRefOrGetter<Truthy>
-  falsyValue?: MaybeRefOrGetter<Falsy>
-}
-export declare function useToggle<Truthy, Falsy, T = Truthy | Falsy>(
-  initialValue: Ref<T>,
-  options?: UseToggleOptions<Truthy, Falsy>,
-): (value?: T) => T
-export declare function useToggle<
-  Truthy = true,
-  Falsy = false,
-  T = Truthy | Falsy,
->(
+/**
+ * 切换布尔值或两个值之间切换的实用函数。
+ *
+ * @see https://vueuse.org/useToggle
+ * @param [initialValue] - 初始值
+ * @param [falseValue] - 当初始值为真值时使用的值
+ *
+ * @__NO_SIDE_EFFECTS__
+ */
+export declare function useToggle<T = boolean>(
   initialValue?: T,
-  options?: UseToggleOptions<Truthy, Falsy>,
-): [ShallowRef<T>, (value?: T) => T]
+  falseValue?: T,
+): [Ref<T>, (value?: T) => T]
 ```

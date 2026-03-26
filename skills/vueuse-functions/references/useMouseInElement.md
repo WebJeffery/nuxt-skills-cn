@@ -4,9 +4,9 @@ category: Elements
 
 # useMouseInElement
 
-Reactive mouse position related to an element
+与元素相关的响应式鼠标位置
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -25,7 +25,7 @@ const { x, y, isOutside } = useMouseInElement(target)
 </template>
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -37,7 +37,7 @@ const { x, y, isOutside } = useMouseInElement(target)
 </template>
 ```
 
-## Directive Usage
+## 指令用法
 
 ```vue
 <script setup lang="ts">
@@ -67,30 +67,30 @@ function onMouseInElement({ x, y, sourceType, elementX, elementY, elementPositio
 
 <template>
   <textarea v-mouse-in-element="onMouseInElement" />
-  <!-- with options -->
+  <!-- 带选项 -->
   <textarea v-mouse-in-element="[onMouseInElement, options]" />
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface MouseInElementOptions extends UseMouseOptions {
   /**
-   * Whether to handle mouse events when the cursor is outside the target element.
-   * When enabled, mouse position will continue to be tracked even when outside the element bounds.
+   * 当光标在目标元素之外时是否处理鼠标事件。
+   * 启用后，即使鼠标在元素边界之外，也会继续跟踪鼠标位置。
    *
    * @default true
    */
   handleOutside?: boolean
   /**
-   * Listen to window resize event
+   * 监听窗口调整大小事件
    *
    * @default true
    */
   windowScroll?: boolean
   /**
-   * Listen to window scroll event
+   * 监听窗口滚动事件
    *
    * @default true
    */
@@ -107,7 +107,7 @@ export interface UseMouseInElementReturn extends UseMouseReturn {
   stop: () => void
 }
 /**
- * Reactive mouse position related to an element.
+ * 与元素相关的响应式鼠标位置。
  *
  * @see https://vueuse.org/useMouseInElement
  * @param target

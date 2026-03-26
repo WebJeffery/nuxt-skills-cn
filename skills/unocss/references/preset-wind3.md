@@ -1,13 +1,13 @@
 ---
 name: preset-wind3
-description: Tailwind CSS / Windi CSS compatible preset for UnoCSS
+description: UnoCSS 的 Tailwind CSS / Windi CSS 兼容预设
 ---
 
-# Preset Wind3
+# 预设 Wind3
 
-The Tailwind CSS / Windi CSS compatible preset. Most commonly used preset for UnoCSS.
+Tailwind CSS / Windi CSS 兼容预设。UnoCSS 最常用的预设。
 
-## Installation
+## 安装
 
 ```ts
 import { defineConfig, presetWind3 } from 'unocss'
@@ -19,27 +19,27 @@ export default defineConfig({
 })
 ```
 
-**Note:** `@unocss/preset-uno` and `@unocss/preset-wind` are deprecated and renamed to `@unocss/preset-wind3`.
+**注意：** `@unocss/preset-uno` 和 `@unocss/preset-wind` 已弃用并重命名为 `@unocss/preset-wind3`。
 
-## Features
+## 功能
 
-- Full Tailwind CSS v3 compatibility
-- Dark mode (`dark:`, `@dark:`)
-- All responsive variants (`sm:`, `md:`, `lg:`, `xl:`, `2xl:`)
-- All standard utilities (flex, grid, spacing, colors, typography, etc.)
-- Animation support (includes Animate.css animations)
+- 完全兼容 Tailwind CSS v3
+- 暗色模式（`dark:`、`@dark:`）
+- 所有响应式变体（`sm:`、`md:`、`lg:`、`xl:`、`2xl:`）
+- 所有标准工具类（flex、grid、spacing、colors、typography 等）
+- 动画支持（包括 Animate.css 动画）
 
-## Dark Mode
+## 暗色模式
 
-### Class-based (default)
+### 基于类（默认）
 
 ```html
 <div class="dark:bg-gray-800">
 ```
 
-Generates: `.dark .dark\:bg-gray-800 { ... }`
+生成：`.dark .dark\:bg-gray-800 { ... }`
 
-### Media Query Based
+### 基于媒体查询
 
 ```ts
 presetWind3({
@@ -47,43 +47,43 @@ presetWind3({
 })
 ```
 
-Generates: `@media (prefers-color-scheme: dark) { ... }`
+生成：`@media (prefers-color-scheme: dark) { ... }`
 
-### Opt-in Media Query
+### 选择性媒体查询
 
-Use `@dark:` regardless of config:
+无论配置如何，使用 `@dark:`：
 
 ```html
 <div class="@dark:bg-gray-800">
 ```
 
-## Options
+## 选项
 
 ```ts
 presetWind3({
-  // Dark mode strategy
+  // 暗色模式策略
   dark: 'class', // 'class' | 'media' | { light: '.light', dark: '.dark' }
   
-  // Generate pseudo selector as [group=""] instead of .group
+  // 生成伪选择器为 [group=""] 而不是 .group
   attributifyPseudo: false,
   
-  // CSS custom properties prefix
+  // CSS 自定义属性前缀
   variablePrefix: 'un-',
   
-  // Utils prefix
+  // 工具类前缀
   prefix: '',
   
-  // Generate preflight CSS
+  // 生成预置 CSS
   preflight: true, // true | false | 'on-demand'
   
-  // Mark all utilities as !important
+  // 将所有工具类标记为 !important
   important: false, // boolean | string (selector)
 })
 ```
 
-### Important Option
+### Important 选项
 
-Make all utilities `!important`:
+使所有工具类 `!important`：
 
 ```ts
 presetWind3({
@@ -91,7 +91,7 @@ presetWind3({
 })
 ```
 
-Or scope with selector to increase specificity without `!important`:
+或使用选择器作用域以提高特异性而不使用 `!important`：
 
 ```ts
 presetWind3({
@@ -99,25 +99,25 @@ presetWind3({
 })
 ```
 
-Output: `#app :is(.dark .dark\:bg-blue) { ... }`
+输出：`#app :is(.dark .dark\:bg-blue) { ... }`
 
-## Differences from Tailwind CSS
+## 与 Tailwind CSS 的区别
 
-### Quotes Not Supported
+### 不支持引号
 
-Template quotes don't work due to extractor:
+由于提取器原因，模板引号不起作用：
 
 ```html
-<!-- Won't work -->
+<!-- 不起作用 -->
 <div class="before:content-['']">
 
-<!-- Use shortcut instead -->
+<!-- 改用快捷方式 -->
 <div class="before:content-empty">
 ```
 
-### Background Position
+### 背景位置
 
-Use `position:` prefix for custom values:
+使用 `position:` 前缀表示自定义值：
 
 ```html
 <!-- Tailwind -->
@@ -127,14 +127,14 @@ Use `position:` prefix for custom values:
 <div class="bg-[position:center_top_1rem]">
 ```
 
-### Animations
+### 动画
 
-UnoCSS integrates Animate.css. Use `-alt` suffix for Animate.css versions when names conflict:
+UnoCSS 集成了 Animate.css。当名称冲突时，使用 `-alt` 后缀表示 Animate.css 版本：
 
-- `animate-bounce` - Tailwind version
-- `animate-bounce-alt` - Animate.css version
+- `animate-bounce` - Tailwind 版本
+- `animate-bounce-alt` - Animate.css 版本
 
-Custom animations:
+自定义动画：
 
 ```ts
 theme: {
@@ -155,7 +155,7 @@ theme: {
 }
 ```
 
-## Differences from Windi CSS
+## 与 Windi CSS 的区别
 
 | Windi CSS | UnoCSS |
 |-----------|--------|
@@ -163,7 +163,7 @@ theme: {
 | `@lg:p-1` | `at-lg:p-1` |
 | `>xl:p-1` | `xl:p-1` |
 
-Bracket syntax uses `_` instead of `,`:
+括号语法使用 `_` 而不是 `,`：
 
 ```html
 <!-- Windi CSS -->
@@ -173,22 +173,22 @@ Bracket syntax uses `_` instead of `,`:
 <div class="grid-cols-[1fr_10px_max-content]">
 ```
 
-## Experimental: Media Hover
+## 实验性：媒体悬停
 
-Addresses sticky hover on touch devices:
+解决触摸设备上的粘滞悬停：
 
 ```html
 <div class="@hover-text-red">
 ```
 
-Generates:
+生成：
 ```css
 @media (hover: hover) and (pointer: fine) {
   .\@hover-text-red:hover { ... }
 }
 ```
 
-<!-- 
-Source references:
+<!--
+源参考：
 - https://unocss.dev/presets/wind3
 -->

@@ -5,9 +5,9 @@ alias: asyncComputed
 
 # computedAsync
 
-Computed for async functions.
+用于异步函数的计算属性。
 
-## Usage
+## 用法
 
 ```ts
 import { computedAsync } from '@vueuse/core'
@@ -19,13 +19,13 @@ const userInfo = computedAsync(
   async () => {
     return await mockLookUp(name.value)
   },
-  null, // initial state
+  null, // 初始状态
 )
 ```
 
-### Evaluation State
+### 评估状态
 
-Pass a ref to track if the async function is currently evaluating.
+传递一个 ref 来跟踪异步函数当前是否正在评估。
 
 ```ts
 import { computedAsync } from '@vueuse/core'
@@ -34,15 +34,15 @@ import { shallowRef } from 'vue'
 const evaluating = shallowRef(false)
 
 const userInfo = computedAsync(
-  async () => { /* your logic */ },
+  async () => { /* 你的逻辑 */ },
   null,
-  evaluating, // can also be passed via options: { evaluating }
+  evaluating, // 也可以通过选项传递: { evaluating }
 )
 ```
 
 ### onCancel
 
-When the computed source changes before the previous async function resolves, you may want to cancel the previous one. Here is an example showing how to incorporate with the fetch API.
+当计算源在上一个异步函数解析之前发生变化时,您可能想要取消上一个函数。以下示例展示了如何与 fetch API 结合使用。
 
 ```ts
 import { computedAsync } from '@vueuse/core'
@@ -64,9 +64,9 @@ const downloads = computedAsync(async (onCancel) => {
 }, 0)
 ```
 
-### Lazy
+### 懒加载
 
-By default, `computedAsync` will start resolving immediately on creation. Specify `lazy: true` to make it start resolving on the first access.
+默认情况下,`computedAsync` 会在创建时立即开始解析。指定 `lazy: true` 使其在首次访问时才开始解析。
 
 ```ts
 import { computedAsync } from '@vueuse/core'
@@ -75,15 +75,15 @@ import { shallowRef } from 'vue'
 const evaluating = shallowRef(false)
 
 const userInfo = computedAsync(
-  async () => { /* your logic */ },
+  async () => { /* 你的逻辑 */ },
   null,
   { lazy: true, evaluating },
 )
 ```
 
-### Error Handling
+### 错误处理
 
-Use the `onError` callback to handle errors from the async function.
+使用 `onError` 回调来处理异步函数中的错误。
 
 ```ts
 import { computedAsync } from '@vueuse/core'
@@ -104,9 +104,9 @@ const userInfo = computedAsync(
 )
 ```
 
-### Shallow Ref
+### 浅层 Ref
 
-By default, `computedAsync` uses `shallowRef` internally. Set `shallow: false` to use a deep ref instead.
+默认情况下,`computedAsync` 在内部使用 `shallowRef`。设置 `shallow: false` 以使用深层 ref。
 
 ```ts
 import { computedAsync } from '@vueuse/core'
@@ -119,56 +119,56 @@ const userInfo = computedAsync(
     return await fetchNestedData(name.value)
   },
   null,
-  { shallow: false }, // enables deep reactivity
+  { shallow: false }, // 启用深度响应式
 )
 ```
 
-## Caveats
+## 注意事项
 
-- Just like Vue's built-in `computed` function, `computedAsync` does dependency tracking and is automatically re-evaluated when dependencies change. Note however that only dependencies referenced in the first call stack are considered for this. In other words: **Dependencies that are accessed asynchronously will not trigger re-evaluation of the async computed value.**
+- 就像 Vue 内置的 `computed` 函数一样,`computedAsync` 会进行依赖跟踪,并在依赖项发生变化时自动重新评估。但是请注意,只有第一次调用堆栈中引用的依赖项才会被考虑。换句话说:**异步访问的依赖项不会触发异步计算值的重新评估。**
 
-- As opposed to Vue's built-in `computed` function, re-evaluation of the async computed value is triggered whenever dependencies are changing, regardless of whether its result is currently being tracked or not.
+- 与 Vue 内置的 `computed` 函数相反,无论其结果当前是否被跟踪,只要依赖项发生变化,就会触发异步计算值的重新评估。
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Handle overlapping async evaluations.
+ * 处理重叠的异步评估。
  *
- * @param cancelCallback The provided callback is invoked when a re-evaluation of the computed value is triggered before the previous one finished
+ * @param cancelCallback 当在之前的评估完成之前触发计算值的重新评估时调用提供的回调
  */
 export type AsyncComputedOnCancel = (cancelCallback: Fn) => void
 export interface AsyncComputedOptions<
   Lazy = boolean,
 > extends ConfigurableFlushSync {
   /**
-   * Should value be evaluated lazily
+   * 是否应该懒加载评估值
    *
    * @default false
    */
   lazy?: Lazy
   /**
-   * Ref passed to receive the updated of async evaluation
+   * 传递 ref 以接收异步评估的更新
    */
   evaluating?: Ref<boolean>
   /**
-   * Use shallowRef
+   * 使用 shallowRef
    *
    * @default true
    */
   shallow?: boolean
   /**
-   * Callback when error is caught.
+   * 捕获错误时的回调。
    */
   onError?: (e: unknown) => void
 }
 /**
- * Create an asynchronous computed dependency.
+ * 创建异步计算依赖。
  *
  * @see https://vueuse.org/computedAsync
- * @param evaluationCallback     The promise-returning callback which generates the computed value
- * @param initialState           The initial state, used until the first evaluation finishes
- * @param optionsOrRef           Additional options or a ref passed to receive the updates of the async evaluation
+ * @param evaluationCallback     生成计算值的返回 promise 的回调
+ * @param initialState           初始状态,在第一次评估完成之前使用
+ * @param optionsOrRef           附加选项或传递的 ref 以接收异步评估的更新
  */
 export declare function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
@@ -190,6 +190,6 @@ export declare function computedAsync<T>(
   initialState?: undefined,
   optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
 ): Ref<T | undefined>
-/** @deprecated use `computedAsync` instead */
+/** @deprecated 使用 `computedAsync` 代替 */
 export declare const asyncComputed: typeof computedAsync
 ```

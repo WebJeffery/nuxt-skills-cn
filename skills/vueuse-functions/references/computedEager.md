@@ -5,24 +5,24 @@ alias: eagerComputed
 
 # computedEager
 
-Eager computed without lazy evaluation.
+没有懒加载评估的急切计算。
 
 ::: info
-This function will be removed in future version.
+此函数将在未来版本中被移除。
 :::
 
 ::: tip
-Note💡: If you are using Vue 3.4+, you can use `computed` right away, you no longer need this function.
-In Vue 3.4+, if the computed new value does not change, `computed`, `effect`, `watch`, `watchEffect`, `render` dependencies will not be triggered.
-See: https://github.com/vuejs/core/pull/5912
+注意💡: 如果您使用的是 Vue 3.4+,您可以直接使用 `computed`,不再需要此函数。
+在 Vue 3.4+ 中,如果计算的新值没有改变,`computed`、`effect`、`watch`、`watchEffect`、`render` 依赖项将不会被触发。
+参见: https://github.com/vuejs/core/pull/5912
 :::
 
-Learn more at [Vue: When a computed property can be the wrong tool](https://dev.to/linusborg/vue-when-a-computed-property-can-be-the-wrong-tool-195j).
+在 [Vue: When a computed property can be the wrong tool](https://dev.to/linusborg/vue-when-a-computed-property-can-be-the-wrong-tool-195j) 了解更多信息。
 
-- Use `computed()` when you have a complex calculation going on, which can actually profit from caching and lazy evaluation and should only be (re-)calculated if really necessary.
-- Use `computedEager()` when you have a simple operation, with a rarely changing return value – often a boolean.
+- 当您进行复杂的计算时,使用 `computed()`,这实际上可以从缓存和懒加载中受益,并且只有在真正必要时才应该(重新)计算。
+- 当您进行简单的操作,且返回值很少变化时,使用 `computedEager()` - 通常是一个布尔值。
 
-## Usage
+## 用法
 
 ```ts
 import { computedEager } from '@vueuse/core'
@@ -31,25 +31,25 @@ const todos = ref([])
 const hasOpenTodos = computedEager(() => !!todos.length)
 
 console.log(hasOpenTodos.value) // false
-toTodos.value.push({ title: 'Learn Vue' })
+toDos.value.push({ title: 'Learn Vue' })
 console.log(hasOpenTodos.value) // true
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type ComputedEagerOptions = WatchOptionsBase
 export type ComputedEagerReturn<T = any> = Readonly<ShallowRef<T>>
 /**
  *
- * @deprecated This function will be removed in future version.
+ * @deprecated 此函数将在未来版本中被移除。
  *
- * Note: If you are using Vue 3.4+, you can straight use computed instead.
- * Because in Vue 3.4+, if computed new value does not change,
- * computed, effect, watch, watchEffect, render dependencies will not be triggered.
- * refer: https://github.com/vuejs/core/pull/5912
+ * 注意: 如果您使用的是 Vue 3.4+,您可以直接使用 computed 代替。
+ * 因为在 Vue 3.4+ 中,如果计算的新值没有改变,
+ * computed、effect、watch、watchEffect、render 依赖项将不会被触发。
+ * 参考: https://github.com/vuejs/core/pull/5912
  *
- * @param fn effect function
+ * @param fn effect 函数
  * @param options WatchOptionsBase
  * @returns readonly shallowRef
  */
@@ -57,6 +57,6 @@ export declare function computedEager<T>(
   fn: () => T,
   options?: ComputedEagerOptions,
 ): ComputedEagerReturn<T>
-/** @deprecated use `computedEager` instead */
+/** @deprecated 使用 `computedEager` 代替 */
 export declare const eagerComputed: typeof computedEager
 ```

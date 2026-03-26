@@ -4,9 +4,9 @@ category: Reactivity
 
 # reactiveComputed
 
-Computed reactive object. Instead of returning a ref that `computed` does, `reactiveComputed` returns a reactive object.
+计算响应式对象。`reactiveComputed` 返回响应式对象,而不是像 `computed` 那样返回 ref。
 
-## Usage
+## 用法
 
 ```ts
 import { reactiveComputed } from '@vueuse/core'
@@ -21,12 +21,12 @@ const state = reactiveComputed(() => {
 state.bar // 'baz'
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type ReactiveComputedReturn<T extends object> = UnwrapNestedRefs<T>
 /**
- * Computed reactive object.
+ * 计算响应式对象。
  */
 export declare function reactiveComputed<T extends object>(
   fn: ComputedGetter<T>,

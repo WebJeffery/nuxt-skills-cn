@@ -4,9 +4,9 @@ category: State
 
 # injectLocal
 
-Extended `inject` with ability to call `provideLocal` to provide the value in the same component.
+扩展的 `inject`,具有在同一组件中调用 `provideLocal` 以提供值的能力。
 
-## Usage
+## 用法
 
 ```vue
 <script setup>
@@ -17,11 +17,11 @@ const injectedValue = injectLocal('MyInjectionKey') // injectedValue === 1
 </script>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * On the basis of `inject`, it is allowed to directly call inject to obtain the value after call provide in the same component.
+ * 在 `inject` 的基础上,允许在同一组件中调用 provide 后直接调用 inject 获取值。
  *
  * @example
  * ```ts

@@ -4,26 +4,26 @@ category: Watch
 
 # watchImmediate
 
-Shorthand for watching value with `{immediate: true}`
+使用 `{immediate: true}` 监视值的简写
 
-## Usage
+## 用法
 
-Similar to `watch`, but with `{ immediate: true }`
+与 `watch` 类似，但使用 `{ immediate: true }`
 
 ```ts
 import { watchImmediate } from '@vueuse/core'
 
 const obj = ref('vue-use')
 
-// changing the value from some external store/composables
+// 从某个外部存储/composables 更改值
 obj.value = 'VueUse'
 
 watchImmediate(obj, (updated) => {
-  console.log(updated) // Console.log will be logged twice
+  console.log(updated) // console.log 将被记录两次
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export declare function watchImmediate<T extends Readonly<MultiWatchSources>>(

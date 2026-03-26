@@ -4,9 +4,9 @@ category: Array
 
 # useArrayFind
 
-Reactive `Array.find`.
+响应式 `Array.find`。
 
-## Usage
+## 用法
 
 ```ts
 import { useArrayFind } from '@vueuse/core'
@@ -16,7 +16,7 @@ const positive = useArrayFind(list, val => val > 0)
 // positive.value: 1
 ```
 
-### Use with reactive array
+### 与响应式数组一起使用
 
 ```ts
 import { useArrayFind } from '@vueuse/core'
@@ -28,18 +28,18 @@ list.push(1)
 // positive.value: 1
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UseArrayFindReturn<T = any> = ComputedRef<T | undefined>
 /**
- * Reactive `Array.find`
+ * 响应式 `Array.find`
  *
  * @see https://vueuse.org/useArrayFind
- * @param list - the array was called upon.
- * @param fn - a function to test each element.
+ * @param list - 被调用的数组。
+ * @param fn - 测试每个元素的函数。
  *
- * @returns the first element in the array that satisfies the provided testing function. Otherwise, undefined is returned.
+ * @returns 数组中满足所提供测试函数的第一个元素。否则,返回 undefined。
  *
  * @__NO_SIDE_EFFECTS__
  */

@@ -4,9 +4,9 @@ category: Utilities
 
 # useBase64
 
-Reactive base64 transforming. Supports plain text, buffer, files, canvas, objects, maps, sets and images.
+响应式 base64 转换。支持纯文本、缓冲区、文件、画布、对象、映射、集合和图像。
 
-## Usage
+## 用法
 
 ```ts
 import { useBase64 } from '@vueuse/core'
@@ -17,48 +17,48 @@ const text = shallowRef('')
 const { base64, promise, execute } = useBase64(text)
 ```
 
-### Supported Input Types
+### 支持的输入类型
 
-- `string` - Plain text
-- `Blob` - File or blob data
-- `ArrayBuffer` - Binary data
-- `HTMLCanvasElement` - Canvas element
-- `HTMLImageElement` - Image element
-- `Object` / `Array` / `Map` / `Set` - Serialized to JSON
+- `string` - 纯文本
+- `Blob` - 文件或 blob 数据
+- `ArrayBuffer` - 二进制数据
+- `HTMLCanvasElement` - 画布元素
+- `HTMLImageElement` - 图像元素
+- `Object` / `Array` / `Map` / `Set` - 序列化为 JSON
 
-### Return Values
+### 返回值
 
-| Property  | Description                               |
+| 属性  | 描述                               |
 | --------- | ----------------------------------------- |
-| `base64`  | The resulting base64 string               |
-| `promise` | The promise of the current transformation |
-| `execute` | Manually trigger the transformation       |
+| `base64`  | 结果 base64 字符串               |
+| `promise` | 当前转换的 promise |
+| `execute` | 手动触发转换       |
 
-### Data URL Format
+### 数据 URL 格式
 
-By default, the output is in Data URL format (e.g., `data:text/plain;base64,...`). Set `dataUrl: false` to get raw base64.
+默认情况下,输出为数据 URL 格式(例如,`data:text/plain;base64,...`)。设置 `dataUrl: false` 以获取原始 base64。
 
 ```ts
 const { base64 } = useBase64(text, { dataUrl: false })
-// Returns raw base64 without the data URL prefix
+// 返回没有数据 URL 前缀的原始 base64
 ```
 
-### Canvas and Image Options
+### 画布和图像选项
 
-When transforming canvas or image elements, you can specify the MIME type and quality.
+转换画布或图像元素时,您可以指定 MIME 类型和质量。
 
 ```ts
 const canvas = document.querySelector('canvas')
 
 const { base64 } = useBase64(canvas, {
-  type: 'image/jpeg', // MIME type
-  quality: 0.8, // Image quality (0-1, for jpeg/webp)
+  type: 'image/jpeg', // MIME 类型
+  quality: 0.8, // 图像质量(0-1,用于 jpeg/webp)
 })
 ```
 
-### Custom Serializer
+### 自定义序列化器
 
-For objects, arrays, maps and sets, you can provide a custom serializer. Otherwise, the data will be serialized using `JSON.stringify` (maps are converted to objects, sets to arrays).
+对于对象、数组、映射和集合,您可以提供自定义序列化器。否则,数据将使用 `JSON.stringify` 序列化(映射转换为对象,集合转换为数组)。
 
 ```ts
 const data = shallowRef({ foo: 'bar' })
@@ -68,12 +68,12 @@ const { base64 } = useBase64(data, {
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseBase64Options {
   /**
-   * Output as Data URL format
+   * 输出为数据 URL 格式
    *
    * @default true
    */
@@ -81,11 +81,11 @@ export interface UseBase64Options {
 }
 export interface ToDataURLOptions extends UseBase64Options {
   /**
-   * MIME type
+   * MIME 类型
    */
   type?: string | undefined
   /**
-   * Image quality of jpeg or webp
+   * jpeg 或 webp 的图像质量
    */
   quality?: any
 }

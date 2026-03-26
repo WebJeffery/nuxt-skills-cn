@@ -4,9 +4,9 @@ category: Sensors
 
 # useElementByPoint
 
-Reactive element by point.
+根据坐标点获取响应式元素。
 
-## Usage
+## 用法
 
 ```ts
 import { useElementByPoint, useMouse } from '@vueuse/core'
@@ -15,7 +15,7 @@ const { x, y } = useMouse({ type: 'client' })
 const { element } = useElementByPoint({ x, y })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseElementByPointOptions<Multiple extends boolean = false>
@@ -23,9 +23,9 @@ export interface UseElementByPointOptions<Multiple extends boolean = false>
   x: MaybeRefOrGetter<number>
   y: MaybeRefOrGetter<number>
   multiple?: MaybeRefOrGetter<Multiple>
-  /** @deprecated Please use `scheduler` option instead */
+  /** @deprecated 请改用 `scheduler` 选项 */
   immediate?: boolean
-  /** @deprecated Please use `scheduler` option instead */
+  /** @deprecated 请改用 `scheduler` 选项 */
   interval?: "requestAnimationFrame" | number
 }
 export interface UseElementByPointReturn<Multiple extends boolean = false>
@@ -35,7 +35,7 @@ export interface UseElementByPointReturn<Multiple extends boolean = false>
   >
 }
 /**
- * Reactive element by point.
+ * 根据坐标点获取响应式元素。
  *
  * @see https://vueuse.org/useElementByPoint
  * @param options - UseElementByPointOptions
@@ -44,3 +44,8 @@ export declare function useElementByPoint<M extends boolean = false>(
   options: UseElementByPointOptions<M>,
 ): UseElementByPointReturn<M>
 ```
+
+<!--
+Source references:
+- https://vueuse.org/core/useElementByPoint/
+-->

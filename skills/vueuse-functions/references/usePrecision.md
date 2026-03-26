@@ -4,9 +4,9 @@ category: '@Math'
 
 # usePrecision
 
-Reactively set the precision of a number.
+响应式设置数字的精度。
 
-## Usage
+## 用法
 
 ```ts
 import { usePrecision } from '@vueuse/math'
@@ -23,19 +23,19 @@ const floorResult = usePrecision(value, 3, {
 }) // 3.141
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UsePrecisionOptions {
   /**
-   * Method to use for rounding
+   * 用于舍入的方法
    *
    * @default 'round'
    */
   math?: "floor" | "ceil" | "round"
 }
 /**
- * Reactively set the precision of a number.
+ * 响应式设置数字的精度。
  *
  * @see https://vueuse.org/usePrecision
  *

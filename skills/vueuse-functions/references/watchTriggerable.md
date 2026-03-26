@@ -4,11 +4,11 @@ category: Watch
 
 # watchTriggerable
 
-Watch that can be triggered manually
+可以手动触发的 watch
 
-## Usage
+## 用法
 
-A `watch` wrapper that supports manual triggering of `WatchCallback`, which returns an additional `trigger` to execute a `WatchCallback` immediately.
+一个 `watch` 包装器，支持手动触发 `WatchCallback`，它返回一个额外的 `trigger` 来立即执行 `WatchCallback`。
 
 ```ts
 import { watchTriggerable } from '@vueuse/core'
@@ -22,17 +22,17 @@ const { trigger, ignoreUpdates } = watchTriggerable(
 )
 
 source.value = 'bar'
-await nextTick() // logs: Changed to bar!
+await nextTick() // 日志：Changed to bar!
 
-// Execution of WatchCallback via `trigger` does not require waiting
-trigger() // logs: Changed to bar!
+// 通过 `trigger` 执行 WatchCallback 不需要等待
+trigger() // 日志：Changed to bar!
 ```
 
 ### `onCleanup`
 
-When you want to manually call a `watch` that uses the onCleanup parameter; simply taking the `WatchCallback` out and calling it doesn't make it easy to implement the `onCleanup` parameter.
+当你想要手动调用一个使用 onCleanup 参数的 `watch`；简单地取出 `WatchCallback` 并调用它并不能很容易实现 `onCleanup` 参数。
 
-Using `watchTriggerable` will solve this problem.
+使用 `watchTriggerable` 将解决这个问题。
 
 ```ts
 import { watchTriggerable } from '@vueuse/core'
@@ -54,17 +54,17 @@ const { trigger } = watchTriggerable(
   },
 )
 
-source.value = 1 // no log
-await trigger() // logs (after 500 ms): The value is "1"
+source.value = 1 // 无日志
+await trigger() // 日志（500ms 后）：The value is "1"
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface WatchTriggerableReturn<
   FnReturnT = void,
 > extends WatchIgnorableReturn {
-  /** Execute `WatchCallback` immediately */
+  /** 立即执行 `WatchCallback` */
   trigger: () => FnReturnT
 }
 type OnCleanup = (cleanupFn: () => void) => void

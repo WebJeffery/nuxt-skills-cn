@@ -4,13 +4,13 @@ category: Utilities
 
 # useMemoize
 
-Cache results of functions depending on arguments and keep it reactive. It can also be used for asynchronous functions and will reuse existing promises to avoid fetching the same data at the same time.
+根据参数缓存函数结果并保持响应性。它也可以用于异步函数，并将重用现有的 promise 以避免同时获取相同的数据。
 
 ::: tip
-The results are not cleared automatically. Call `clear()` in case you no longer need the results or use own caching mechanism to avoid memory leaks.
+结果不会自动清除。如果不再需要结果，请调用 `clear()` 或使用自己的缓存机制以避免内存泄漏。
 :::
 
-## Usage
+## 用法
 
 ```ts
 import { useMemoize } from '@vueuse/core'
@@ -20,20 +20,20 @@ const getUser = useMemoize(
     axios.get(`users/${userId}`).then(({ data }) => data),
 )
 
-const user1 = await getUser(1) // Request users/1
-const user2 = await getUser(2) // Request users/2
+const user1 = await getUser(1) // 请求 users/1
+const user2 = await getUser(2) // 请求 users/2
 // ...
-const user1 = await getUser(1) // Retrieve from cache
+const user1 = await getUser(1) // 从缓存中检索
 
 // ...
-const user1 = await getUser.load(1) // Request users/1
+const user1 = await getUser.load(1) // 请求 users/1
 
 // ...
-getUser.delete(1) // Delete cache from user 1
-getUser.clear() // Clear full cache
+getUser.delete(1) // 删除用户 1 的缓存
+getUser.clear() // 清除完整缓存
 ```
 
-Combine with `computed` or `computedAsync` to achieve reactivity:
+与 `computed` 或 `computedAsync` 结合使用以实现响应性：
 
 ```ts
 import { computedAsync, useMemoize } from '@vueuse/core'
@@ -45,19 +45,19 @@ const getUser = useMemoize(
 // ---cut---
 const user1 = computedAsync(() => getUser(1))
 // ...
-await getUser.load(1) // Will also update user1
+await getUser.load(1) // 也将更新 user1
 ```
 
-### Resolving cache key
+### 解析缓存键
 
-The key for caching is determined by the arguments given to the function and will be serialized by default with `JSON.stringify`.
-This will allow equal objects to receive the same cache key. In case you want to customize the key you can pass `getKey`
+缓存的键由函数的参数决定，默认情况下将使用 `JSON.stringify` 进行序列化。
+这将允许相等的对象获得相同的缓存键。如果您想自定义键，可以传递 `getKey`
 
-::: warning Performance Consideration
-Using `JSON.stringify` as the default key generator can be **slow for large or complex objects**. For better performance with complex arguments, it's highly recommended to provide a custom `getKey` function that generates keys based on primitive values or unique identifiers.
+::: warning 性能考虑
+使用 `JSON.stringify` 作为默认键生成器对于大型或复杂对象可能**很慢**。对于复杂参数，强烈建议提供自定义的 `getKey` 函数，该函数基于原始值或唯一标识符生成键。
 :::
 
-#### Basic Example
+#### 基本示例
 
 ```ts
 import { useMemoize } from '@vueuse/core'
@@ -66,96 +66,96 @@ const getUser = useMemoize(
   async (userId: number, headers: AxiosRequestHeaders): Promise<UserData> =>
     axios.get(`users/${userId}`, { headers }).then(({ data }) => data),
   {
-    // Use only userId to get/set cache and ignore headers
+    // 仅使用 userId 来获取/设置缓存并忽略 headers
     getKey: (userId, headers) => userId,
   },
 )
 ```
 
-### Customize cache mechanism
+### 自定义缓存机制
 
-By default, the results are cached within a `Map`. You can implement your own mechanism by passing `cache` as options with following structure:
+默认情况下，结果缓存在 `Map` 中。您可以通过传递具有以下结构的 `cache` 作为选项来实现自己的机制：
 
 ```ts
 export interface MemoizeCache<Key, Value> {
   /**
-   * Get value for key
+   * 获取键的值
    */
   get: (key: Key) => Value | undefined
   /**
-   * Set value for key
+   * 设置键的值
    */
   set: (key: Key, value: Value) => void
   /**
-   * Return flag if key exists
+   * 如果键存在则返回标志
    */
   has: (key: Key) => boolean
   /**
-   * Delete value for key
+   * 删除键的值
    */
   delete: (key: Key) => void
   /**
-   * Clear cache
+   * 清除缓存
    */
   clear: () => void
 }
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 type CacheKey = any
 /**
- * Custom memoize cache handler
+ * 自定义 memoize 缓存处理程序
  */
 export interface UseMemoizeCache<Key, Value> {
   /**
-   * Get value for key
+   * 获取键的值
    */
   get: (key: Key) => Value | undefined
   /**
-   * Set value for key
+   * 设置键的值
    */
   set: (key: Key, value: Value) => void
   /**
-   * Return flag if key exists
+   * 如果键存在则返回标志
    */
   has: (key: Key) => boolean
   /**
-   * Delete value for key
+   * 删除键的值
    */
   delete: (key: Key) => void
   /**
-   * Clear cache
+   * 清除缓存
    */
   clear: () => void
 }
 /**
- * Memoized function
+ * Memoized 函数
  */
 export interface UseMemoizeReturn<Result, Args extends unknown[]> {
   /**
-   * Get result from cache or call memoized function
+   * 从缓存获取结果或调用 memoized 函数
    */
   (...args: Args): Result
   /**
-   * Call memoized function and update cache
+   * 调用 memoized 函数并更新缓存
    */
   load: (...args: Args) => Result
   /**
-   * Delete cache of given arguments
+   * 删除给定参数的缓存
    */
   delete: (...args: Args) => void
   /**
-   * Clear cache
+   * 清除缓存
    */
   clear: () => void
   /**
-   * Generate cache key for given arguments
+   * 为给定参数生成缓存键
    */
   generateKey: (...args: Args) => CacheKey
   /**
-   * Cache container
+   * 缓存容器
    */
   cache: UseMemoizeCache<CacheKey, Result>
 }
@@ -164,7 +164,7 @@ export interface UseMemoizeOptions<Result, Args extends unknown[]> {
   cache?: UseMemoizeCache<CacheKey, Result>
 }
 /**
- * Reactive function result cache based on arguments
+ * 基于参数的响应式函数结果缓存
  *
  * @__NO_SIDE_EFFECTS__
  */

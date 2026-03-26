@@ -4,9 +4,9 @@ category: Browser
 
 # usePermission
 
-Reactive [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API). The Permissions API provides the tools to allow developers to implement a better user experience as far as permissions are concerned.
+响应式 [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API)。Permissions API 提供了工具，允许开发人员在权限方面实现更好的用户体验。
 
-## Usage
+## 用法
 
 ```ts
 import { usePermission } from '@vueuse/core'
@@ -14,7 +14,7 @@ import { usePermission } from '@vueuse/core'
 const microphoneAccess = usePermission('microphone')
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 type DescriptorNamePolyfill =
@@ -43,7 +43,7 @@ export interface UsePermissionOptions<
   Controls extends boolean,
 > extends ConfigurableNavigator {
   /**
-   * Expose more controls
+   * 暴露更多控制
    *
    * @default false
    */
@@ -57,7 +57,7 @@ export interface UsePermissionReturnWithControls extends Supportable {
   query: () => Promise<PermissionStatus | undefined>
 }
 /**
- * Reactive Permissions API.
+ * 响应式 Permissions API。
  *
  * @see https://vueuse.org/usePermission
  *

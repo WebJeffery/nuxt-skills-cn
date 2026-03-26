@@ -4,11 +4,11 @@ category: Watch
 
 # until
 
-Promised one-time watch for changes
+承诺的一次性更改观察
 
-## Usage
+## 用法
 
-#### Wait for some async data to be ready
+#### 等待一些异步数据准备就绪
 
 ```ts
 import { until, useAsyncState } from '@vueuse/core'
@@ -16,18 +16,18 @@ import { until, useAsyncState } from '@vueuse/core'
 const { state, isReady } = useAsyncState(
   fetch('https://jsonplaceholder.typicode.com/todos/1').then(t => t.json()),
   {},
-)
+}
 
 ;(async () => {
   await until(isReady).toBe(true)
 
-  console.log(state) // state is now ready!
+  console.log(state) // state 现在准备好了!
 })()
 ```
 
-#### Wait for custom conditions
+#### 等待自定义条件
 
-> You can use `invoke` to call the async function.
+> 您可以使用 `invoke` 来调用异步函数。
 
 ```ts
 import { invoke, until, useCounter } from '@vueuse/core'
@@ -37,29 +37,29 @@ const { count } = useCounter()
 invoke(async () => {
   await until(count).toMatch(v => v > 7)
 
-  alert('Counter is now larger than 7!')
+  alert('Counter 现在大于 7!')
 })
 ```
 
-#### Timeout
+#### 超时
 
 ```ts
 import { until } from '@vueuse/core'
 // ---cut---
-// will be resolve until ref.value === true or 1000ms passed
+// 将解析直到 ref.value === true 或 1000ms 过去
 await until(ref).toBe(true, { timeout: 1000 })
 
-// will throw if timeout
+// 如果超时将抛出错误
 try {
   await until(ref).toBe(true, { timeout: 1000, throwOnTimeout: true })
   // ref.value === true
 }
 catch (e) {
-  // timeout
+  // 超时
 }
 ```
 
-#### More Examples
+#### 更多示例
 
 ```ts
 import { until } from '@vueuse/core'
@@ -75,25 +75,25 @@ await until(ref).not.toBeNull()
 await until(ref).not.toBeTruthy()
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UntilToMatchOptions extends ConfigurableFlushSync {
   /**
-   * Milliseconds timeout for promise to resolve/reject if the when condition does not meet.
-   * 0 for never timed out
+   * 如果条件不满足,promise 解析/拒绝的毫秒超时时间。
+   * 0 表示永不超时
    *
    * @default 0
    */
   timeout?: number
   /**
-   * Reject the promise when timeout
+   * 超时时拒绝 promise
    *
    * @default false
    */
   throwOnTimeout?: boolean
   /**
-   * `deep` option for internal watch
+   * 内部 watch 的 `deep` 选项
    *
    * @default 'false'
    */
@@ -140,7 +140,7 @@ export interface UntilArrayInstance<T> extends UntilBaseInstance<T> {
   ) => Promise<T>
 }
 /**
- * Promised one-time watch for changes
+ * 承诺的一次性更改观察
  *
  * @see https://vueuse.org/until
  * @example
@@ -149,7 +149,7 @@ export interface UntilArrayInstance<T> extends UntilBaseInstance<T> {
  *
  * await until(count).toMatch(v => v > 7)
  *
- * alert('Counter is now larger than 7!')
+ * alert('Counter 现在大于 7!')
  * ```
  */
 export declare function until<T extends unknown[]>(

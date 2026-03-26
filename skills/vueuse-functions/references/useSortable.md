@@ -4,23 +4,23 @@ category: '@Integrations'
 
 # useSortable
 
-Wrapper for [`sortable`](https://github.com/SortableJS/Sortable).
+[`sortable`](https://github.com/SortableJS/Sortable) 的包装器。
 
-For more information on what options can be passed, see [`Sortable.options`](https://github.com/SortableJS/Sortable#options) in the `Sortable` documentation.
+有关可以传递哪些选项的更多信息，请参阅 `Sortable` 文档中的 [`Sortable.options`](https://github.com/SortableJS/Sortable#options)。
 
 ::: warning
-Currently, `useSortable` only implements drag-and-drop sorting for a single list.
+目前，`useSortable` 仅实现单个列表的拖放排序。
 :::
 
-## Install
+## 安装
 
 ```bash
 npm i sortablejs@^1
 ```
 
-## Usage
+## 用法
 
-### Use template ref
+### 使用模板 ref
 
 ```vue
 <script setup lang="ts">
@@ -42,7 +42,7 @@ useSortable(el, list)
 </template>
 ```
 
-### Use specifies the selector to operate on
+### 使用指定的选择器进行操作
 
 ```vue
 <script setup lang="ts">
@@ -56,11 +56,11 @@ const animation = 200
 
 const { option } = useSortable(el, list, {
   handle: '.handle',
-  // or option set
+  // 或选项设置
   // animation
 })
 
-// You can use the option method to set and get the option of Sortable
+// 您可以使用 option 方法来设置和获取 Sortable 的选项
 option('animation', animation)
 // option('animation') // 200
 </script>
@@ -75,7 +75,7 @@ option('animation', animation)
 </template>
 ```
 
-### Use a selector to get the root element
+### 使用选择器获取根元素
 
 ```vue
 <script setup lang="ts">
@@ -96,69 +96,69 @@ useSortable('#dv', list)
 </template>
 ```
 
-### Return Values
+### 返回值
 
-| Property | Description                                                      |
+| 属性 | 描述                                                      |
 | -------- | ---------------------------------------------------------------- |
-| `start`  | Initialize the Sortable instance (called automatically on mount) |
-| `stop`   | Destroy the Sortable instance                                    |
-| `option` | Get or set Sortable options at runtime                           |
+| `start`  | 初始化 Sortable 实例（在挂载时自动调用） |
+| `stop`   | 销毁 Sortable 实例                                    |
+| `option` | 在运行时获取或设置 Sortable 选项                           |
 
 ```ts
 const { start, stop, option } = useSortable(el, list)
 
-// Stop sorting
+// 停止排序
 stop()
 
-// Start sorting again
+// 再次开始排序
 start()
 
-// Get/set options
-option('animation', 200) // set
-const animation = option('animation') // get
+// 获取/设置选项
+option('animation', 200) // 设置
+const animation = option('animation') // 获取
 ```
 
-### Watch Element Changes
+### 监视元素更改
 
-Use the `watchElement` option to automatically reinitialize Sortable when the element changes (useful with `v-if`).
+使用 `watchElement` 选项在元素更改时自动重新初始化 Sortable（对 `v-if` 有用）。
 
 ```ts
 import { useSortable } from '@vueuse/integrations/useSortable'
 
 useSortable(el, list, {
-  watchElement: true, // auto-reinitialize when element changes
+  watchElement: true, // 在元素更改时自动重新初始化
 })
 ```
 
-### Custom Update Handler
+### 自定义更新处理程序
 
-If you want to handle the `onUpdate` yourself, you can pass in `onUpdate` parameters, and we also exposed a function to move the item position.
+如果您想自己处理 `onUpdate`，可以传入 `onUpdate` 参数，我们还公开了一个函数来移动项目位置。
 
 ```ts
 import { moveArrayElement, useSortable } from '@vueuse/integrations/useSortable'
 
 useSortable(el, list, {
   onUpdate: (e) => {
-    // do something
+    // 做一些事情
     moveArrayElement(list, e.oldIndex, e.newIndex, e)
-    // nextTick required here as moveArrayElement is executed in a microtask
-    // so we need to wait until the next tick until that is finished.
+    // 这里需要 nextTick，因为 moveArrayElement 在微任务中执行
+    // 所以我们需要等待直到下一个刻度完成。
     nextTick(() => {
-      /* do something */
+      /* 做一些事情 */
     })
   }
 })
 ```
 
-### Helper Functions
+### 辅助函数
 
-The following helper functions are also exported:
+还导出了以下辅助函数：
 
-| Function                                   | Description                                           |
+| 函数                                   | 描述                                           |
 | ------------------------------------------ | ----------------------------------------------------- |
-| `moveArrayElement(list, from, to, event?)` | Move an element in an array from one index to another |
-| `insertNodeAt(parent, element, index)`     | Insert a DOM node at a specific index                 |
-| `removeNode(node)`                         | Remove a DOM node from its parent                     |
+| `moveArrayElement(list, from, to, event?)` | 将数组中的元素从一个索引移动到另一个索引 |
+| `insertNodeAt(parent, element, index)`     | 在特定索引处插入 DOM 节点                 |
+| `removeNode(node)`                         | 从其父级中删除 DOM 节点                     |
 
 ## Type Declarations
 

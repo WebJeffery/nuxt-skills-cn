@@ -5,37 +5,37 @@ related: useThrottleFn
 
 # useDebounceFn
 
-Debounce execution of a function.
+防抖函数执行。
 
-> Debounce is an overloaded waiter: if you keep asking, your requests will be ignored until you stop and give them some time to think about your latest inquiry.
+> 防抖是一个过载服务员：如果您一直询问，您的请求将被忽略，直到您停止并给他们一些时间来考虑您的最新询问。
 
-## Usage
+## 用法
 
 ```ts
 import { useDebounceFn, useEventListener } from '@vueuse/core'
 
 const debouncedFn = useDebounceFn(() => {
-  // do something
+  // 做一些事情
 }, 1000)
 
 useEventListener(window, 'resize', debouncedFn)
 ```
 
-You can also pass a 3rd parameter to this, with a maximum wait time, similar to [lodash debounce](https://lodash.com/docs/4.17.15#debounce)
+您还可以传递第三个参数，最大等待时间，类似于 [lodash debounce](https://lodash.com/docs/4.17.15#debounce)
 
 ```ts
 import { useDebounceFn, useEventListener } from '@vueuse/core'
 
-// If no invokation after 5000ms due to repeated input,
-// the function will be called anyway.
+// 如果由于重复输入在 5000ms 后没有调用，
+// 函数无论如何都会被调用。
 const debouncedFn = useDebounceFn(() => {
-  // do something
+  // 做一些事情
 }, 1000, { maxWait: 5000 })
 
 useEventListener(window, 'resize', debouncedFn)
 ```
 
-Optionally, you can get the return value of the function using promise operations.
+或者，您可以使用 promise 操作获取函数的返回值。
 
 ```ts
 import { useDebounceFn } from '@vueuse/core'
@@ -46,14 +46,14 @@ debouncedRequest().then((value) => {
   console.log(value) // 'response'
 })
 
-// or use async/await
+// 或使用 async/await
 async function doRequest() {
   const value = await debouncedRequest()
   console.log(value) // 'response'
 }
 ```
 
-Since unhandled rejection error is quite annoying when developer doesn't need the return value, the promise will **NOT** be rejected if the function is canceled **by default**. You need to specify the option `rejectOnCancel: true` to capture the rejection.
+由于未处理的拒绝错误在开发人员不需要返回值时非常烦人，因此如果函数被取消，promise 将**不会**被拒绝**默认情况下**。您需要指定选项 `rejectOnCancel: true` 来捕获拒绝。
 
 ```ts
 import { useDebounceFn } from '@vueuse/core'
@@ -62,33 +62,33 @@ const debouncedRequest = useDebounceFn(() => 'response', 1000, { rejectOnCancel:
 
 debouncedRequest()
   .then((value) => {
-    // do something
+    // 做一些事情
   })
   .catch(() => {
-    // do something when canceled
+    // 取消时做一些事情
   })
 
-// calling it again will cancel the previous request and gets rejected
+// 再次调用它将取消先前的请求并被拒绝
 setTimeout(debouncedRequest, 500)
 ```
 
-## Recommended Reading
+## 推荐阅读
 
-- [**Debounce vs Throttle**: Definitive Visual Guide](https://kettanaito.com/blog/debounce-vs-throttle)
+- [**防抖 vs 节流**：权威视觉指南](https://kettanaito.com/blog/debounce-vs-throttle)
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UseDebounceFnReturn<T extends FunctionArgs> = PromisifyFn<T>
 /**
- * Debounce execution of a function.
+ * 防抖函数执行。
  *
  * @see https://vueuse.org/useDebounceFn
- * @param  fn          A function to be executed after delay milliseconds debounced.
- * @param  ms          A zero-or-greater delay in milliseconds. For event callbacks, values around 100 or 250 (or even higher) are most useful.
- * @param  options     Options
+ * @param  fn          在延迟毫秒后要执行的函数。
+ * @param  ms          零或更大的延迟（毫秒）。对于事件回调，100 或 250（甚至更高）左右的值最有用。
+ * @param  options     选项
  *
- * @return A new, debounce, function.
+ * @return 一个新的、防抖的函数。
  *
  * @__NO_SIDE_EFFECTS__
  */

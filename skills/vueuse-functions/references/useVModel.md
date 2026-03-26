@@ -4,11 +4,11 @@ category: Component
 
 # useVModel
 
-Shorthand for v-model binding, props + emit -> ref
+v-model 绑定的简写，props + emit -> ref
 
-> We encourage you to use Vue's [`defineModel`](https://vuejs.org/api/sfc-script-setup.html#definemodel) over this composable, however there are some edge-cases like using `TSX` or the `deep: true` option that `defineModel` doesn't support.
+> 我们鼓励您在此组合式函数上使用 Vue 的 [`defineModel`](https://vuejs.org/api/sfc-script-setup.html#definemodel)，但是在使用 `TSX` 或 `deep: true` 选项等一些边缘情况下，`defineModel` 不支持。
 
-## Usage
+## 用法
 
 ```ts
 import { useVModel } from '@vueuse/core'
@@ -36,11 +36,11 @@ export default {
 }
 ```
 
-## Options
+## 选项
 
 ### Passive Mode
 
-By default, `useVModel` returns a computed ref. In passive mode, it creates a local ref that syncs with the prop via `watch`, allowing deep reactivity tracking.
+默认情况下，`useVModel` 返回一个计算 ref。在被动模式下，它创建一个本地 ref，通过 `watch` 与 prop 同步，允许深度响应式跟踪。
 
 ```ts
 const data = useVModel(props, 'modelValue', emit, { passive: true })
@@ -48,7 +48,7 @@ const data = useVModel(props, 'modelValue', emit, { passive: true })
 
 ### Deep Watching
 
-When using `passive: true`, you can enable deep watching for nested object changes:
+使用 `passive: true` 时，可以为嵌套对象更改启用深度监视：
 
 ```ts
 const data = useVModel(props, 'modelValue', emit, {
@@ -59,19 +59,19 @@ const data = useVModel(props, 'modelValue', emit, {
 
 ### Clone Values
 
-Clone the prop value to avoid mutating the original object. Set to `true` to use `JSON.parse(JSON.stringify())` or provide a custom clone function.
+克隆 prop 值以避免变异原始对象。设置为 `true` 以使用 `JSON.parse(JSON.stringify())` 或提供自定义克隆函数。
 
 ```ts
 const data = useVModel(props, 'modelValue', emit, {
   clone: true,
-  // or provide custom clone function
+  // 或提供自定义克隆函数
   // clone: (val) => structuredClone(val),
 })
 ```
 
 ### Default Value
 
-Provide a default value when the prop is undefined:
+当 prop 未定义时提供默认值：
 
 ```ts
 const data = useVModel(props, 'modelValue', emit, {
@@ -81,7 +81,7 @@ const data = useVModel(props, 'modelValue', emit, {
 
 ### Custom Event Name
 
-Override the default `update:propName` event name:
+覆盖默认的 `update:propName` 事件名称：
 
 ```ts
 const data = useVModel(props, 'value', emit, {
@@ -91,65 +91,65 @@ const data = useVModel(props, 'value', emit, {
 
 ### Emit Validation
 
-Use `shouldEmit` to validate before emitting. Return `false` to prevent the emit:
+使用 `shouldEmit` 在发出之前进行验证。返回 `false` 以防止发出：
 
 ```ts
 const data = useVModel(props, 'modelValue', emit, {
   shouldEmit: (value) => {
-    // Only emit if value is valid
+    // 仅在值有效时发出
     return value.length > 0
   },
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseVModelOptions<T, Passive extends boolean = false> {
   /**
-   * When passive is set to `true`, it will use `watch` to sync with props and ref.
-   * Instead of relying on the `v-model` or `.sync` to work.
+   * 当 passive 设置为 `true` 时，它将使用 `watch` 与 props 和 ref 同步。
+   * 而不是依赖 `v-model` 或 `.sync` 来工作。
    *
    * @default false
    */
   passive?: Passive
   /**
-   * When eventName is set, it's value will be used to overwrite the emit event name.
+   * 当设置 eventName 时，其值将用于覆盖 emit 事件名称。
    *
    * @default undefined
    */
   eventName?: string
   /**
-   * Attempting to check for changes of properties in a deeply nested object or array.
-   * Apply only when `passive` option is set to `true`
+   * 尝试检查深度嵌套对象或数组中的属性更改。
+   * 仅在设置 `passive` 选项为 `true` 时应用
    *
    * @default false
    */
   deep?: boolean
   /**
-   * Defining default value for return ref when no value is passed.
+   * 为返回的 ref 定义默认值，当没有传递值时。
    *
    * @default undefined
    */
   defaultValue?: T
   /**
-   * Clone the props.
-   * Accepts a custom clone function.
-   * When setting to `true`, it will use `JSON.parse(JSON.stringify(value))` to clone.
+   * 克隆 props。
+   * 接受自定义克隆函数。
+   * 当设置为 `true` 时，它将使用 `JSON.parse(JSON.stringify(value))` 来克隆。
    *
    * @default false
    */
   clone?: boolean | CloneFn<T>
   /**
-   * The hook before triggering the emit event can be used for form validation.
-   * if false is returned, the emit event will not be triggered.
+   * 在触发 emit 事件之前的钩子可用于表单验证。
+   * 如果返回 false，则不会触发 emit 事件。
    *
    * @default undefined
    */
   shouldEmit?: (v: T) => boolean
 }
 /**
- * Shorthand for v-model binding, props + emit -> ref
+ * v-model 绑定的简写，props + emit -> ref
  *
  * @see https://vueuse.org/useVModel
  * @param props

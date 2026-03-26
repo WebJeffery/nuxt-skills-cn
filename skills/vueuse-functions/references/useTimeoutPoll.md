@@ -4,9 +4,9 @@ category: Utilities
 
 # useTimeoutPoll
 
-Use timeout to poll something. It will trigger callback after last task is done.
+使用超时来轮询某些内容。它将在最后一个任务完成后触发回调。
 
-## Usage
+## 用法
 
 ```ts
 import { useTimeoutPoll } from '@vueuse/core'
@@ -18,22 +18,22 @@ async function fetchData() {
   count.value++
 }
 
-// Only trigger after last fetch is done
+// 仅在上一次获取完成后触发
 const { isActive, pause, resume } = useTimeoutPoll(fetchData, 1000)
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseTimeoutPollOptions {
   /**
-   * Start the timer immediately
+   * 立即启动计时器
    *
    * @default true
    */
   immediate?: boolean
   /**
-   * Execute the callback immediately after calling `resume`
+   * 在调用 `resume` 后立即执行回调
    *
    * @default false
    */

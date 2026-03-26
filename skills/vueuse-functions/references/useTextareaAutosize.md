@@ -4,11 +4,11 @@ category: Browser
 
 # useTextareaAutosize
 
-Automatically update the height of a textarea depending on the content.
+根据内容自动更新 textarea 的高度。
 
-## Usage
+## 用法
 
-### Simple example
+### 简单示例
 
 ```vue
 <script setup lang="ts">
@@ -29,7 +29,7 @@ const { textarea, input } = useTextareaAutosize()
 
 ::: info
 
-It's recommended to reset the scrollbar styles for the textarea element to avoid incorrect height values for large amounts of text.
+建议重置 textarea 元素的滚动条样式，以避免大量文本时出现不正确的高度值。
 
 ```css
 textarea {
@@ -44,9 +44,9 @@ textarea::-webkit-scrollbar {
 
 :::
 
-### With `rows` attribute
+### 带有 `rows` 属性
 
-If you need support for the rows attribute on a textarea element, then you should set the `styleProp` option to `minHeight`.
+如果您需要在 textarea 元素上支持 rows 属性，则应该将 `styleProp` 选项设置为 `minHeight`。
 
 ```vue
 <script setup lang="ts">
@@ -66,21 +66,21 @@ const { textarea, input } = useTextareaAutosize({ styleProp: 'minHeight' })
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseTextareaAutosizeOptions extends ConfigurableWindow {
-  /** Textarea element to autosize. */
+  /** 要自动调整大小的 Textarea 元素。 */
   element?: MaybeRef<HTMLTextAreaElement | undefined | null>
-  /** Textarea content. */
+  /** Textarea 内容。 */
   input?: MaybeRef<string>
-  /** Watch sources that should trigger a textarea resize. */
+  /** 应触发 textarea 调整大小的监视源。 */
   watch?: WatchSource | MultiWatchSources
-  /** Function called when the textarea size changes. */
+  /** 当 textarea 大小更改时调用的函数。 */
   onResize?: () => void
-  /** Specify style target to apply the height based on textarea content. If not provided it will use textarea it self.  */
+  /** 指定样式目标以根据 textarea 内容应用高度。如果未提供，它将使用 textarea 本身。  */
   styleTarget?: MaybeRef<HTMLElement | undefined>
-  /** Specify the style property that will be used to manipulate height. Can be `height | minHeight`. Default value is `height`. */
+  /** 指定用于操作高度的样式属性。可以是 `height | minHeight`。默认值为 `height`。 */
   styleProp?: "height" | "minHeight"
 }
 export interface UseTextareaAutosizeReturn {

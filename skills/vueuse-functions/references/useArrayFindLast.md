@@ -1,52 +1,52 @@
 ---
-category: Array
+name: useArrayFindLast
+description: 响应式数组的 findLast 实现
 ---
 
 # useArrayFindLast
 
-Reactive `Array.findLast`.
+`useArrayFindLast` 是 `Array.prototype.findLast` 的响应式版本。它返回一个计算属性，包含数组中最后一个满足提供的测试函数的元素的值。如果没有找到匹配的元素，则返回 `undefined`。
 
-## Usage
-
-```ts
-import { useArrayFindLast } from '@vueuse/core'
-
-const list = [ref(1), ref(-1), ref(2)]
-const positive = useArrayFindLast(list, val => val > 0)
-// positive.value: 2
-```
-
-### Use with reactive array
+## 用法
 
 ```ts
 import { useArrayFindLast } from '@vueuse/core'
 
-const list = reactive([-1, -2])
-const positive = useArrayFindLast(list, val => val > 0)
-// positive.value: undefined
-list.push(10)
-// positive.value: 10
-list.push(5)
-// positive.value: 5
+const list = ref([
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+  { id: 3, name: 'Charlie' },
+])
+
+const item = useArrayFindLast(
+  list,
+  (item) => item.id > 1,
+)
+
+console.log(item.value) // { id: 3, name: 'Charlie' }
 ```
 
-## Type Declarations
+## 类型定义
 
 ```ts
 export type UseArrayFindLastReturn<T = any> = ComputedRef<T | undefined>
-/**
- * Reactive `Array.findLast`
- *
- * @see https://vueuse.org/useArrayFindLast
- * @param list - the array was called upon.
- * @param fn - a function to test each element.
- *
- * @returns the last element in the array that satisfies the provided testing function. Otherwise, undefined is returned.
- *
- * @__NO_SIDE_EFFECTS__
- */
+
 export declare function useArrayFindLast<T>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   fn: (element: T, index: number, array: MaybeRefOrGetter<T>[]) => boolean,
 ): UseArrayFindLastReturn<T>
 ```
+
+## 参数
+
+- `list`: 要搜索的数组，可以是 ref、getter 或普通数组
+- `fn`: 测试函数，对数组中的每个元素执行，返回 `true` 表示找到匹配
+
+## 返回值
+
+返回一个计算属性，包含最后一个满足测试函数的元素的值。如果没有找到，返回 `undefined`。
+
+<!--
+Source references:
+- https://vueuse.org/core/useArrayFindLast/
+-->

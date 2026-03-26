@@ -4,20 +4,19 @@ category: Network
 
 # useFetch
 
-Reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) provides the ability to abort requests, intercept requests before
-they are fired, automatically refetch requests when the url changes, and create your own `useFetch` with predefined options.
+响应式 [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)，提供中止请求、在请求发送前拦截请求、当 url 更改时自动重新获取请求以及使用预定义选项创建您自己的 `useFetch` 的能力。
 
-<CourseLink href="https://vueschool.io/lessons/vueuse-utilities-usefetch-and-reactify?friend=vueuse">Learn useFetch with this FREE video lesson from Vue School!</CourseLink>
+<CourseLink href="https://vueschool.io/lessons/vueuse-utilities-usefetch-and-reactify?friend=vueuse">通过 Vue School 的这个免费视频课程学习 useFetch！</CourseLink>
 
 ::: tip
-When using with Nuxt 3, this function will **NOT** be auto imported in favor of Nuxt's built-in [`useFetch()`](https://v3.nuxtjs.org/api/composables/use-fetch). Use explicit import if you want to use the function from VueUse.
+当与 Nuxt 3 一起使用时，此函数将**不会**自动导入，以支持 Nuxt 内置的 [`useFetch()`](https://v3.nuxtjs.org/api/composables/use-fetch)。如果您想使用 VueUse 中的函数，请使用显式导入。
 :::
 
-## Usage
+## 用法
 
-### Basic Usage
+### 基本用法
 
-The `useFetch` function can be used by simply providing a url. The url can be either a string or a `ref`. The `data` object will contain the result of the request, the `error` object will contain any errors, and the `isFetching` object will indicate if the request is loading.
+只需提供 url 即可使用 `useFetch` 函数。url 可以是字符串或 `ref`。`data` 对象将包含请求结果，`error` 对象将包含任何错误，`isFetching` 对象将指示请求是否正在加载。
 
 ```ts
 import { useFetch } from '@vueuse/core'
@@ -25,10 +24,9 @@ import { useFetch } from '@vueuse/core'
 const { isFetching, error, data } = useFetch(url)
 ```
 
-### Asynchronous Usage
+### 异步用法
 
-`useFetch` can also be awaited just like a normal fetch. Note that whenever a component is asynchronous, whatever component that uses
-it must wrap the component in a `<Suspense>` tag. You can read more about the suspense api in the [Official Vue 3 Docs](https://vuejs.org/guide/built-ins/suspense.html)
+`useFetch` 也可以像普通的 fetch 一样被等待。请注意，每当组件是异步的，使用它的任何组件都必须将组件包装在 `<Suspense>` 标签中。您可以在 [Vue 3 官方文档](https://vuejs.org/guide/built-ins/suspense.html) 中阅读更多关于 suspense api 的信息。
 
 ```ts
 import { useFetch } from '@vueuse/core'
@@ -36,9 +34,9 @@ import { useFetch } from '@vueuse/core'
 const { isFetching, error, data } = await useFetch(url)
 ```
 
-### Refetching on URL change
+### URL 更改时重新获取
 
-Using a `ref` for the url parameter will allow the `useFetch` function to automatically trigger another request when the url is changed.
+为 url 参数使用 `ref` 将允许 `useFetch` 函数在 url 更改时自动触发另一个请求。
 
 ```ts
 import { useFetch } from '@vueuse/core'
@@ -47,12 +45,12 @@ const url = ref('https://my-api.com/user/1')
 
 const { data } = useFetch(url, { refetch: true })
 
-url.value = 'https://my-api.com/user/2' // Will trigger another request
+url.value = 'https://my-api.com/user/2' // 将触发另一个请求
 ```
 
-### Prevent request from firing immediately
+### 防止请求立即触发
 
-Setting the `immediate` option to false will prevent the request from firing until the `execute` function is called.
+将 `immediate` 选项设置为 false 将防止请求触发，直到调用 `execute` 函数。
 
 ```ts
 import { useFetch } from '@vueuse/core'
@@ -62,9 +60,9 @@ const { execute } = useFetch(url, { immediate: false })
 execute()
 ```
 
-### Aborting a request
+### 中止请求
 
-A request can be aborted by using the `abort` function from the `useFetch` function. The `canAbort` property indicates if the request can be aborted.
+可以使用 `useFetch` 函数中的 `abort` 函数中止请求。`canAbort` 属性指示请求是否可以中止。
 
 ```ts
 import { useFetch } from '@vueuse/core'
@@ -77,7 +75,7 @@ setTimeout(() => {
 }, 100)
 ```
 
-A request can also be aborted automatically by using `timeout` property. It will call `abort` function when the given timeout is reached.
+还可以通过使用 `timeout` 属性自动中止请求。当达到给定的超时时间时，它将调用 `abort` 函数。
 
 ```ts
 import { useFetch } from '@vueuse/core'
@@ -85,9 +83,9 @@ import { useFetch } from '@vueuse/core'
 const { data } = useFetch(url, { timeout: 100 })
 ```
 
-### Intercepting a request
+### 拦截请求
 
-The `beforeFetch` option can intercept a request before it is sent and modify the request options and url.
+`beforeFetch` 选项可以在请求发送之前拦截请求并修改请求选项和 url。
 
 ```ts
 import { useFetch } from '@vueuse/core'
@@ -111,7 +109,7 @@ const { data } = useFetch(url, {
 })
 ```
 
-The `afterFetch` option can intercept the response data before it is updated.
+`afterFetch` 选项可以在响应数据更新之前拦截响应数据。
 
 ```ts
 import { useFetch } from '@vueuse/core'
@@ -119,14 +117,14 @@ import { useFetch } from '@vueuse/core'
 const { data } = useFetch(url, {
   afterFetch(ctx) {
     if (ctx.data.title === 'HxH')
-      ctx.data.title = 'Hunter x Hunter' // Modifies the response data
+      ctx.data.title = 'Hunter x Hunter' // 修改响应数据
 
     return ctx
   },
 })
 ```
 
-The `onFetchError` option can intercept the response data and error before it is updated when `updateDataOnError` is set to `true`.
+当 `updateDataOnError` 设置为 `true` 时，`onFetchError` 选项可以在响应数据和错误更新之前拦截它们。
 
 ```ts
 import { useFetch } from '@vueuse/core'
@@ -134,11 +132,11 @@ import { useFetch } from '@vueuse/core'
 const { data } = useFetch(url, {
   updateDataOnError: true,
   onFetchError(ctx) {
-    // ctx.data can be null when 5xx response
+    // 当 5xx 响应时 ctx.data 可能为 null
     if (ctx.data === null)
-      ctx.data = { title: 'Hunter x Hunter' } // Modifies the response data
+      ctx.data = { title: 'Hunter x Hunter' } // 修改响应数据
 
-    ctx.error = new Error('Custom Error') // Modifies the error
+    ctx.error = new Error('Custom Error') // 修改错误
     return ctx
   },
 })
@@ -146,28 +144,28 @@ const { data } = useFetch(url, {
 console.log(data.value) // { title: 'Hunter x Hunter' }
 ```
 
-### Setting the request method and return type
+### 设置请求方法和返回类型
 
-The request method and return type can be set by adding the appropriate methods to the end of `useFetch`
+可以通过在 `useFetch` 末尾添加适当的方法来设置请求方法和返回类型。
 
 ```ts
 import { useFetch } from '@vueuse/core'
 // ---cut---
-// Request will be sent with GET method and data will be parsed as JSON
+// 请求将使用 GET 方法发送，数据将被解析为 JSON
 const { data } = useFetch(url).get().json()
 
-// Request will be sent with POST method and data will be parsed as text
+// 请求将使用 POST 方法发送，数据将被解析为文本
 const { data } = useFetch(url).post().text()
 
-// Or set the method using the options
+// 或者使用选项设置方法
 
-// Request will be sent with GET method and data will be parsed as blob
+// 请求将使用 GET 方法发送，数据将被解析为 blob
 const { data } = useFetch(url, { method: 'GET' }, { refetch: true }).blob()
 ```
 
-### Creating a Custom Instance
+### 创建自定义实例
 
-The `createFetch` function will return a useFetch function with whatever pre-configured options that are provided to it. This is useful for interacting with API's throughout an application that uses the same base URL or needs Authorization headers.
+`createFetch` 函数将返回一个 useFetch 函数，其中包含提供给它的任何预配置选项。这对于在整个应用程序中与使用相同基本 URL 或需要 Authorization 标头的 API 交互非常有用。
 
 ```ts
 import { createFetch } from '@vueuse/core'
@@ -190,7 +188,7 @@ const useMyFetch = createFetch({
 const { isFetching, error, data } = useMyFetch('users')
 ```
 
-If you want to control the behavior of `beforeFetch`, `afterFetch`, `onFetchError` between the pre-configured instance and newly spawned instance. You can provide a `combination` option to toggle between `overwrite` or `chaining`.
+如果您想在预配置实例和新生成的实例之间控制 `beforeFetch`、`afterFetch`、`onFetchError` 的行为。您可以提供 `combination` 选项以在 `overwrite` 或 `chaining` 之间切换。
 
 ```ts
 import { createFetch } from '@vueuse/core'
@@ -199,7 +197,7 @@ const useMyFetch = createFetch({
   baseUrl: 'https://my-api.com',
   combination: 'overwrite',
   options: {
-    // beforeFetch in pre-configured instance will only run when the newly spawned instance do not pass beforeFetch
+    // 预配置实例中的 beforeFetch 仅在新生成的实例不传递 beforeFetch 时运行
     async beforeFetch({ options }) {
       const myToken = await getMyToken()
       options.headers.Authorization = `Bearer ${myToken}`
@@ -209,10 +207,10 @@ const useMyFetch = createFetch({
   },
 })
 
-// use useMyFetch beforeFetch
+// 使用 useMyFetch beforeFetch
 const { isFetching, error, data } = useMyFetch('users')
 
-// use custom beforeFetch
+// 使用自定义 beforeFetch
 const { isFetching, error, data } = useMyFetch('users', {
   async beforeFetch({ url, options, cancel }) {
     const myToken = await getMyToken()
@@ -232,7 +230,7 @@ const { isFetching, error, data } = useMyFetch('users', {
 })
 ```
 
-You can re-execute the request by calling the `execute` method in `afterFetch` or `onFetchError`. Here is a simple example of refreshing a token:
+您可以通过在 `afterFetch` 或 `onFetchError` 中调用 `execute` 方法来重新执行请求。这是一个刷新令牌的简单示例：
 
 ```ts
 import { createFetch } from '@vueuse/core'
@@ -261,7 +259,7 @@ const useMyFetch = createFetch({
             }
             else {
               refreshSubscribers.length = 0
-              // handle refresh token error
+              // 处理刷新令牌错误
             }
           })
         }
@@ -277,10 +275,10 @@ const useMyFetch = createFetch({
 
       return { data, response }
     },
-    // or use onFetchError with updateDataOnError
+    // 或使用带有 updateDataOnError 的 onFetchError
     updateDataOnError: true,
     onFetchError({ error, data, response, context, execute }) {
-      // same as afterFetch
+      // 与 afterFetch 相同
       return { error, data }
     },
   },
@@ -310,9 +308,9 @@ function addRefreshSubscriber(callback: () => void) {
 const { isFetching, error, data } = useMyFetch('users')
 ```
 
-### Events
+### 事件
 
-The `onFetchResponse` and `onFetchError` will fire on fetch request responses and errors respectively.
+`onFetchResponse` 和 `onFetchError` 将分别在 fetch 请求响应和错误时触发。
 
 ```ts
 import { useFetch } from '@vueuse/core'
@@ -328,61 +326,61 @@ onFetchError((error) => {
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseFetchReturn<T> {
   /**
-   * Indicates if the fetch request has finished
+   * 指示 fetch 请求是否已完成
    */
   isFinished: Readonly<ShallowRef<boolean>>
   /**
-   * The statusCode of the HTTP fetch response
+   * HTTP fetch 响应的状态码
    */
   statusCode: ShallowRef<number | null>
   /**
-   * The raw response of the fetch response
+   * fetch 响应的原始响应
    */
   response: ShallowRef<Response | null>
   /**
-   * Any fetch errors that may have occurred
+   * 可能发生的任何 fetch 错误
    */
   error: ShallowRef<any>
   /**
-   * The fetch response body on success, may either be JSON or text
+   * 成功时的 fetch 响应体，可能是 JSON 或文本
    */
   data: ShallowRef<T | null>
   /**
-   * Indicates if the request is currently being fetched.
+   * 指示请求当前是否正在获取
    */
   isFetching: Readonly<ShallowRef<boolean>>
   /**
-   * Indicates if the fetch request is able to be aborted
+   * 指示 fetch 请求是否可以中止
    */
   canAbort: ComputedRef<boolean>
   /**
-   * Indicates if the fetch request was aborted
+   * 指示 fetch 请求是否已中止
    */
   aborted: ShallowRef<boolean>
   /**
-   * Abort the fetch request
+   * 中止 fetch 请求
    */
   abort: (reason?: any) => void
   /**
-   * Manually call the fetch
-   * (default not throwing error)
+   * 手动调用 fetch
+   * （默认不抛出错误）
    */
   execute: (throwOnFailed?: boolean) => Promise<any>
   /**
-   * Fires after the fetch request has finished
+   * 在 fetch 请求完成后触发
    */
   onFetchResponse: EventHookOn<Response>
   /**
-   * Fires after a fetch request error
+   * 在 fetch 请求错误后触发
    */
   onFetchError: EventHookOn
   /**
-   * Fires after a fetch has completed
+   * 在 fetch 完成后触发
    */
   onFetchFinally: EventHookOn
   get: () => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
@@ -422,15 +420,15 @@ export interface UseFetchReturn<T> {
 type Combination = "overwrite" | "chain"
 export interface BeforeFetchContext {
   /**
-   * The computed url of the current request
+   * 当前请求的计算 url
    */
   url: string
   /**
-   * The request options of the current request
+   * 当前请求的请求选项
    */
   options: RequestInit
   /**
-   * Cancels the current request
+   * 取消当前请求
    */
   cancel: Fn
 }
@@ -449,44 +447,44 @@ export interface OnFetchErrorContext<T = any, E = any> {
 }
 export interface UseFetchOptions {
   /**
-   * Fetch function
+   * Fetch 函数
    */
   fetch?: typeof window.fetch
   /**
-   * Will automatically run fetch when `useFetch` is used
+   * 使用 `useFetch` 时将自动运行 fetch
    *
    * @default true
    */
   immediate?: boolean
   /**
-   * Will automatically refetch when:
-   * - the URL is changed if the URL is a ref
-   * - the payload is changed if the payload is a ref
+   * 当以下情况时将自动重新获取：
+   * - 如果 URL 是 ref，则 URL 更改
+   * - 如果 payload 是 ref，则 payload 更改
    *
    * @default false
    */
   refetch?: MaybeRefOrGetter<boolean>
   /**
-   * Initial data before the request finished
+   * 请求完成之前的初始数据
    *
    * @default null
    */
   initialData?: any
   /**
-   * Timeout for abort request after number of millisecond
-   * `0` means use browser default
+   * 在给定毫秒数后中止请求的超时时间
+   * `0` 表示使用浏览器默认值
    *
    * @default 0
    */
   timeout?: number
   /**
-   * Allow update the `data` ref when fetch error whenever provided, or mutated in the `onFetchError` callback
+   * 允许在 fetch 错误时更新 `data` ref，无论是否提供，或在 `onFetchError` 回调中修改
    *
    * @default false
    */
   updateDataOnError?: boolean
   /**
-   * Will run immediately before the fetch request is dispatched
+   * 将在 fetch 请求调度之前立即运行
    */
   beforeFetch?: (
     ctx: BeforeFetchContext,
@@ -495,15 +493,15 @@ export interface UseFetchOptions {
     | Partial<BeforeFetchContext>
     | void
   /**
-   * Will run immediately after the fetch request is returned.
-   * Runs after any 2xx response
+   * 将在 fetch 请求返回后立即运行。
+   * 在任何 2xx 响应后运行
    */
   afterFetch?: (
     ctx: AfterFetchContext,
   ) => Promise<Partial<AfterFetchContext>> | Partial<AfterFetchContext>
   /**
-   * Will run immediately after the fetch request is returned.
-   * Runs after any 4xx and 5xx response
+   * 将在 fetch 请求返回后立即运行。
+   * 在任何 4xx 和 5xx 响应后运行
    */
   onFetchError?: (
     ctx: OnFetchErrorContext,
@@ -511,20 +509,20 @@ export interface UseFetchOptions {
 }
 export interface CreateFetchOptions {
   /**
-   * The base URL that will be prefixed to all urls unless urls are absolute
+   * 将前缀到所有 url 的基本 URL，除非 url 是绝对的
    */
   baseUrl?: MaybeRefOrGetter<string>
   /**
-   * Determine the inherit behavior for beforeFetch, afterFetch, onFetchError
+   * 确定 beforeFetch、afterFetch、onFetchError 的继承行为
    * @default 'chain'
    */
   combination?: Combination
   /**
-   * Default Options for the useFetch function
+   * useFetch 函数的默认选项
    */
   options?: UseFetchOptions
   /**
-   * Options for the fetch request
+   * fetch 请求的选项
    */
   fetchOptions?: RequestInit
 }

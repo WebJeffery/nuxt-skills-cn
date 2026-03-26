@@ -5,15 +5,14 @@ related: reactify
 
 # createUnrefFn
 
-Make a plain function accepting ref and raw values as arguments.
-Returns the same value the unconverted function returns, with proper typing.
+使普通函数接受 ref 和原始值作为参数。
+返回与未转换函数相同的值,具有适当的类型。
 
 ::: tip
-Make sure you're using the right tool for the job. Using `reactify`
-might be more pertinent in some cases where you want to evaluate the function on each changes of it's arguments.
+确保您使用正确的工具。在某些情况下,您希望在参数的每次更改时评估函数,使用 `reactify` 可能更相关。
 :::
 
-## Usage
+## 用法
 
 ```ts
 import { createUnrefFn } from '@vueuse/core'
@@ -27,11 +26,11 @@ function post(url, data) {
 }
 const unrefPost = createUnrefFn(post)
 
-post(url, data) /* ❌ Will throw an error because the arguments are refs */
-unrefPost(url, data) /* ✔️ Will Work because the arguments will be auto unref */
+post(url, data) /* ❌ 将抛出错误,因为参数是 refs */
+unrefPost(url, data) /* ✔️ 将工作,因为参数将自动 unref */
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UnrefFn<T> = T extends (...args: infer A) => infer R
@@ -42,8 +41,8 @@ export type UnrefFn<T> = T extends (...args: infer A) => infer R
     ) => R
   : never
 /**
- * Make a plain function accepting ref and raw values as arguments.
- * Returns the same value the unconverted function returns, with proper typing.
+ * 使普通函数接受 ref 和原始值作为参数。
+ * 返回与未转换函数相同的值,具有适当的类型。
  *
  * @__NO_SIDE_EFFECTS__
  */

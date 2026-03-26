@@ -5,9 +5,9 @@ related: createGenericProjection
 
 # useProjection
 
-Reactive numeric projection from one domain to another.
+从一个域到另一个域的响应式数值投影。
 
-## Usage
+## 用法
 
 ```ts
 import { useProjection } from '@vueuse/math'
@@ -19,11 +19,11 @@ input.value = 5 // projected.value === 50
 input.value = 10 // projected.value === 100
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Reactive numeric projection from one domain to another.
+ * 从一个域到另一个域的响应式数值投影。
  *
  * @see https://vueuse.org/useProjection
  *

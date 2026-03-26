@@ -4,9 +4,9 @@ category: Sensors
 
 # useDeviceOrientation
 
-Reactive [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent). Provide web developers with information from the physical orientation of the device running the web page.
+响应式 [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent)。为 Web 开发人员提供运行 Web 页面的设备的物理方向信息。
 
-## Usage
+## 用法
 
 ```ts
 import { useDeviceOrientation } from '@vueuse/core'
@@ -19,16 +19,16 @@ const {
 } = useDeviceOrientation()
 ```
 
-| State      | Type      | Description                                                                                                                |
+| 状态      | 类型      | 描述                                                                                                                |
 | ---------- | --------- | -------------------------------------------------------------------------------------------------------------------------- |
-| isAbsolute | `boolean` | A boolean that indicates whether or not the device is providing orientation data absolutely.                               |
-| alpha      | `number`  | A number representing the motion of the device around the z axis, express in degrees with values ranging from 0 to 360.    |
-| beta       | `number`  | A number representing the motion of the device around the x axis, express in degrees with values ranging from -180 to 180. |
-| gamma      | `number`  | A number representing the motion of the device around the y axis, express in degrees with values ranging from -90 to 90.   |
+| isAbsolute | `boolean` | 一个布尔值，指示设备是否绝对提供方向数据。                               |
+| alpha      | `number`  | 一个数字，表示设备围绕 z 轴的运动，以度为单位表示，值范围从 0 到 360。    |
+| beta       | `number`  | 一个数字，表示设备围绕 x 轴的运动，以度为单位表示，值范围从 -180 到 180。 |
+| gamma      | `number`  | 一个数字，表示设备围绕 y 轴的运动，以度为单位表示，值范围从 -90 到 90。   |
 
-You can find [more information about the state on the MDN](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent#instance_properties).
+您可以在 [MDN 上找到有关状态的更多信息](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent#instance_properties)。
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -40,7 +40,7 @@ You can find [more information about the state on the MDN](https://developer.moz
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseDeviceOrientationOptions extends ConfigurableWindow {}
@@ -51,7 +51,7 @@ export interface UseDeviceOrientationReturn extends Supportable {
   gamma: Ref<number | null, number | null>
 }
 /**
- * Reactive DeviceOrientationEvent.
+ * 响应式 DeviceOrientationEvent。
  *
  * @see https://vueuse.org/useDeviceOrientation
  * @param options

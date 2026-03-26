@@ -4,11 +4,11 @@ category: Array
 
 # useArrayFilter
 
-Reactive `Array.filter`
+响应式 `Array.filter`
 
-## Usage
+## 用法
 
-### Use with array of multiple refs
+### 与多个 ref 的数组一起使用
 
 ```ts
 import { useArrayFilter } from '@vueuse/core'
@@ -25,7 +25,7 @@ item2.value = 1
 // result.value: [0, 4, 6, 8]
 ```
 
-### Use with reactive array
+### 与响应式数组一起使用
 
 ```ts
 import { useArrayFilter } from '@vueuse/core'
@@ -37,18 +37,18 @@ list.value.shift()
 // result.value: [2, 4, 6, 8]
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UseArrayFilterReturn<T = any> = ComputedRef<T[]>
 /**
- * Reactive `Array.filter`
+ * 响应式 `Array.filter`
  *
  * @see https://vueuse.org/useArrayFilter
- * @param list - the array was called upon.
- * @param fn - a function that is called for every element of the given `list`. Each time `fn` executes, the returned value is added to the new array.
+ * @param list - 被调用的数组。
+ * @param fn - 为给定 `list` 的每个元素调用的函数。每次 `fn` 执行时,返回的值都会添加到新数组中。
  *
- * @returns a shallow copy of a portion of the given array, filtered down to just the elements from the given array that pass the test implemented by the provided function. If no elements pass the test, an empty array will be returned.
+ * @returns 给定数组的部分的浅拷贝,过滤到仅包含通过所提供函数实现的测试的给定数组中的元素。如果没有元素通过测试,将返回一个空数组。
  *
  * @__NO_SIDE_EFFECTS__
  */

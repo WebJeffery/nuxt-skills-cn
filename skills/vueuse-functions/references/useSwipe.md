@@ -4,9 +4,9 @@ category: Sensors
 
 # useSwipe
 
-Reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent).
+基于 [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent) 响应式滑动检测。
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -24,13 +24,13 @@ const { isSwiping, direction } = useSwipe(el)
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UseSwipeDirection = "up" | "down" | "left" | "right" | "none"
 export interface UseSwipeOptions extends ConfigurableWindow {
   /**
-   * Register events as passive
+   * 将事件注册为被动
    *
    * @default true
    */
@@ -40,15 +40,15 @@ export interface UseSwipeOptions extends ConfigurableWindow {
    */
   threshold?: number
   /**
-   * Callback on swipe start
+   * 滑动开始时的回调
    */
   onSwipeStart?: (e: TouchEvent) => void
   /**
-   * Callback on swipe moves
+   * 滑动移动时的回调
    */
   onSwipe?: (e: TouchEvent) => void
   /**
-   * Callback on swipe ends
+   * 滑动结束时的回调
    */
   onSwipeEnd?: (e: TouchEvent, direction: UseSwipeDirection) => void
 }
@@ -62,7 +62,7 @@ export interface UseSwipeReturn {
   stop: () => void
 }
 /**
- * Reactive swipe detection.
+ * 响应式滑动检测。
  *
  * @see https://vueuse.org/useSwipe
  * @param target

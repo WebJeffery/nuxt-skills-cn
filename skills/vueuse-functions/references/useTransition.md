@@ -4,11 +4,11 @@ category: Animation
 
 # useTransition
 
-Transition between values
+值之间的过渡
 
-## Usage
+## 用法
 
-Define a source value to follow, and when changed the output will transition to the new value. If the source changes while a transition is in progress, a new transition will begin from where the previous one was interrupted.
+定义一个要跟踪的源值，当更改时，输出将过渡到新值。如果在过渡进行时源更改，新的过渡将从上一个过渡被中断的地方开始。
 
 ```ts
 import { TransitionPresets, useTransition } from '@vueuse/core'
@@ -22,7 +22,7 @@ const output = useTransition(source, {
 })
 ```
 
-Transition easing can be customized using [cubic bezier curves](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function/cubic-bezier#description).
+可以使用 [三次贝塞尔曲线](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function/cubic-bezier#description) 自定义过渡缓动。
 
 ```ts
 import { useTransition } from '@vueuse/core'
@@ -32,7 +32,7 @@ useTransition(source, {
 })
 ```
 
-The following transitions are available via the `TransitionPresets` constant.
+以下过渡可通过 `TransitionPresets` 常量获得。
 
 - [`linear`](https://cubic-bezier.com/#0,0,1,1)
 - [`easeInSine`](https://cubic-bezier.com/#.12,0,.39,0)
@@ -60,7 +60,7 @@ The following transitions are available via the `TransitionPresets` constant.
 - [`easeOutBack`](https://cubic-bezier.com/#.34,1.56,.64,1)
 - [`easeInOutBack`](https://cubic-bezier.com/#.68,-.6,.32,1.6)
 
-For more complex easing, a custom function can be provided.
+对于更复杂的缓动，可以提供自定义函数。
 
 ```ts
 import { useTransition } from '@vueuse/core'
@@ -78,7 +78,7 @@ useTransition(source, {
 })
 ```
 
-By default the `source` must be a number, or array of numbers. For more complex values, define a custom `interpolation` function. For example, the following would transition a Three.js rotation.
+默认情况下，`source` 必须是数字或数字数组。对于更复杂的值，定义自定义 `interpolation` 函数。例如，以下将过渡 Three.js 旋转。
 
 ```ts
 import { useTransition } from '@vueuse/core'
@@ -92,7 +92,7 @@ const output = useTransition(source, {
 })
 ```
 
-To control when a transition starts, set a `delay` value. To choreograph behavior around a transition, define `onStarted` or `onFinished` callbacks.
+要控制过渡何时开始，设置 `delay` 值。要在过渡周围编排行为，定义 `onStarted` 或 `onFinished` 回调。
 
 ```ts
 import { useTransition } from '@vueuse/core'
@@ -100,17 +100,17 @@ import { useTransition } from '@vueuse/core'
 useTransition(source, {
   delay: 1000,
   onStarted() {
-    // called after the transition starts
+    // 在过渡开始后调用
   },
   onFinished() {
-    // called after the transition ends
+    // 在过渡结束后调用
   },
 })
 ```
 
-To stop transitioning, define a boolean `disabled` property. Be aware, this is not the same a `duration` of `0`. Disabled transitions track the source value **_synchronously_**. They do not respect a `delay`, and do not fire `onStarted` or `onFinished` callbacks.
+要停止过渡，定义一个布尔 `disabled` 属性。请注意，这与 `duration` 为 `0` 不同。禁用的过渡**同步**跟踪源值。它们不遵守 `delay`，并且不会触发 `onStarted` 或 `onFinished` 回调。
 
-For even more control, transitions can be executed manually via the `transition` function. This function returns a promise that resolves when the transition is complete. Manual transitions can be cancelled by defining an `abort` function that returns a truthy value.
+为了获得更多控制，可以通过 `transition` 函数手动执行过渡。此函数返回一个在过渡完成时解析的 promise。可以通过定义返回真值的 `abort` 函数来取消手动过渡。
 
 ```ts
 import { transition } from '@vueuse/core'
@@ -123,62 +123,62 @@ await transition(source, from, to, {
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Cubic bezier points
+ * 三次贝塞尔点
  */
 export type CubicBezierPoints = [number, number, number, number]
 /**
- * Easing function
+ * 缓动函数
  */
 export type EasingFunction = (n: number) => number
 /**
- * Interpolation function
+ * 插值函数
  */
 export type InterpolationFunction<T> = (from: T, to: T, t: number) => T
 /**
- * Transition options
+ * 过渡选项
  */
 export interface TransitionOptions<T> extends ConfigurableWindow {
   /**
-   * Manually abort a transition
+   * 手动中止过渡
    */
   abort?: () => any
   /**
-   * Transition duration in milliseconds
+   * 过渡持续时间，以毫秒为单位
    */
   duration?: MaybeRef<number>
   /**
-   * Easing function or cubic bezier points to calculate transition progress
+   * 缓动函数或三次贝塞尔点来计算过渡进度
    */
   easing?: MaybeRef<EasingFunction | CubicBezierPoints>
   /**
-   * Custom interpolation function
+   * 自定义插值函数
    */
   interpolation?: InterpolationFunction<T>
   /**
-   * Easing function or cubic bezier points to calculate transition progress
-   * @deprecated The `transition` option is deprecated, use `easing` instead.
+   * 缓动函数或三次贝塞尔点来计算过渡进度
+   * @deprecated `transition` 选项已弃用，请改用 `easing`。
    */
   transition?: MaybeRef<EasingFunction | CubicBezierPoints>
 }
 export interface UseTransitionOptions<T> extends TransitionOptions<T> {
   /**
-   * Milliseconds to wait before starting transition
+   * 开始过渡前等待的毫秒数
    */
   delay?: MaybeRef<number>
   /**
-   * Disables the transition
+   * 禁用过渡
    */
   disabled?: MaybeRef<boolean>
   /**
-   * Callback to execute after transition finishes
+   * 过渡结束后执行的回调
    */
   onFinished?: () => void
   /**
-   * Callback to execute after transition starts
+   * 过渡开始后执行的回调
    */
   onStarted?: () => void
 }
@@ -209,7 +209,7 @@ declare const _TransitionPresets: {
   readonly easeInOutBack: readonly [0.68, -0.6, 0.32, 1.6]
 }
 /**
- * Common transitions
+ * 常见过渡
  *
  * @see https://easings.net
  */
@@ -220,7 +220,7 @@ export declare const TransitionPresets: Record<
   linear: EasingFunction
 }
 /**
- * Transition from one value to another.
+ * 从一个值过渡到另一个值。
  *
  * @param source
  * @param from
@@ -234,8 +234,8 @@ export declare function transition<T>(
   options?: TransitionOptions<T>,
 ): PromiseLike<void>
 /**
- * Transition from one value to another.
- * @deprecated The `executeTransition` function is deprecated, use `transition` instead.
+ * 从一个值过渡到另一个值。
+ * @deprecated `executeTransition` 函数已弃用，请改用 `transition`。
  *
  * @param source
  * @param from

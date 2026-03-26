@@ -5,9 +5,9 @@ related: useDevicesList, usePermission
 
 # useUserMedia
 
-Reactive [`mediaDevices.getUserMedia`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia) streaming.
+响应式 [`mediaDevices.getUserMedia`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia) 流式传输。
 
-## Usage
+## 用法
 
 ```vue
 <script setup lang="ts">
@@ -19,7 +19,7 @@ start()
 
 const videoRef = useTemplateRef('video')
 watchEffect(() => {
-  // preview on a video element
+  // 在视频元素上预览
   videoRef.value.srcObject = stream.value
 })
 </script>
@@ -29,7 +29,7 @@ watchEffect(() => {
 </template>
 ```
 
-### Devices
+### 设备
 
 ```ts
 import { useDevicesList, useUserMedia } from '@vueuse/core'
@@ -52,24 +52,24 @@ const { stream } = useUserMedia({
 })
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseUserMediaOptions extends ConfigurableNavigator {
   /**
-   * If the stream is enabled
+   * 是否启用了流
    * @default false
    */
   enabled?: MaybeRef<boolean>
   /**
-   * Recreate stream when deviceIds or constraints changed
+   * 当 deviceIds 或 constraints 更改时重新创建流
    *
    * @default true
    */
   autoSwitch?: MaybeRef<boolean>
   /**
-   * MediaStreamConstraints to be applied to the requested MediaStream
-   * If provided, the constraints will override videoDeviceId and audioDeviceId
+   * 要应用于请求的 MediaStream 的 MediaStreamConstraints
+   * 如果提供，constraints 将覆盖 videoDeviceId 和 audioDeviceId
    *
    * @default {}
    */
@@ -85,7 +85,7 @@ export interface UseUserMediaReturn extends Supportable {
   autoSwitch: ShallowRef<boolean>
 }
 /**
- * Reactive `mediaDevices.getUserMedia` streaming
+ * 响应式 `mediaDevices.getUserMedia` 流式传输
  *
  * @see https://vueuse.org/useUserMedia
  * @param options

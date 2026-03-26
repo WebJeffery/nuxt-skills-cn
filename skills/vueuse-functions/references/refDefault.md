@@ -4,9 +4,9 @@ category: Reactivity
 
 # refDefault
 
-Apply default value to a ref.
+将默认值应用于 ref。
 
-## Usage
+## 用法
 
 ```ts
 import { refDefault, useStorage } from '@vueuse/core'
@@ -21,11 +21,11 @@ raw.value = undefined
 console.log(state.value) // default
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 /**
- * Apply default value to a ref.
+ * 将默认值应用于 ref。
  *
  * @__NO_SIDE_EFFECTS__
  */

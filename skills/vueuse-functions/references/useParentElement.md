@@ -4,11 +4,11 @@ category: Elements
 
 # useParentElement
 
-Get parent element of the given element
+获取给定元素的父元素
 
-## Usage
+## 用法
 
-When no argument is passed, it will return the parent element of the current component.
+当不传递参数时，它将返回当前组件的父元素。
 
 ```vue
 <script setup lang="ts">
@@ -22,7 +22,7 @@ onMounted(() => {
 </script>
 ```
 
-It can also accept a `ref` as the first argument.
+它也可以接受一个 `ref` 作为第一个参数。
 
 ```vue
 <script setup lang="ts">
@@ -45,7 +45,7 @@ onMounted(() => {
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export declare function useParentElement(

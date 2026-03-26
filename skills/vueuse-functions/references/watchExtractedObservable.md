@@ -4,13 +4,13 @@ category: '@RxJS'
 
 # watchExtractedObservable
 
-Watch the values of an RxJS [`Observable`](https://rxjs.dev/guide/observable) as extracted from one or more composables.
+监视从组合式函数中提取的 RxJS [`Observable`](https://rxjs.dev/guide/observable) 的值。
 
-Automatically unsubscribe on observable change, and automatically unsubscribe from it when the component is unmounted.
+在 observable 更改时自动取消订阅，并在组件卸载时自动取消订阅。
 
-Supports all overloads of [`watch`](https://vuejs.org/guide/essentials/watchers.html#basic-example).
+支持 [`watch`](https://vuejs.org/guide/essentials/watchers.html#basic-example) 的所有重载。
 
-## Usage
+## 用法
 
 <!-- TODO: import rxjs error if enable twoslash -->
 
@@ -32,9 +32,9 @@ watchExtractedObservable(player, p => p.progress$, (percentage) => {
 })
 ```
 
-If you want to add custom error handling to an `Observable` that might error, you can supply an optional `onError` configuration. Without this, RxJS will treat any error in the supplied `Observable` as an "unhandled error" and it will be thrown in a new call stack and reported to `window.onerror` (or `process.on('error')` if you happen to be in Node).
+如果你想为可能出错的 `Observable` 添加自定义错误处理，可以提供可选的 `onError` 配置。没有这个配置，RxJS 会将提供的 `Observable` 中的任何错误视为"未处理的错误"，并在新的调用堆栈中抛出并报告给 `window.onerror`（如果你恰好在使用 Node，则报告给 `process.on('error')`）。
 
-You can also supply an optional `onComplete` configuration if you need to attach special behavior when the watched observable completes.
+如果你需要在被监视的 observable 完成时附加特殊行为，也可以提供可选的 `onComplete` 配置。
 
 ```ts no-twoslash
 import { watchExtractedObservable } from '@vueuse/rxjs'
@@ -56,12 +56,12 @@ watchExtractedObservable(player, p => p.progress$, (percentage) => {
     console.error(err)
   },
   onComplete: () => {
-    state.progress = 100 // or 0, or whatever
+    state.progress = 100 // 或 0，或其他任何值
   },
 })
 ```
 
-If you want, you can also pass `watch` options as the last argument:
+如果你愿意，也可以将 `watch` 选项作为最后一个参数传递：
 
 ```ts no-twoslash
 import { watchExtractedObservable } from '@vueuse/rxjs'
@@ -87,16 +87,16 @@ watchExtractedObservable(player, p => p.progress$, (percentage) => {
 })
 ```
 
-## Subscription Options
+## 订阅选项
 
-| Option       | Type                     | Description                          |
+| 选项       | 类型                     | 描述                          |
 | ------------ | ------------------------ | ------------------------------------ |
-| `onError`    | `(err: unknown) => void` | Error handler for Observable errors  |
-| `onComplete` | `() => void`             | Called when the Observable completes |
+| `onError`    | `(err: unknown) => void` | Observable 错误的错误处理程序  |
+| `onComplete` | `() => void`             | 当 Observable 完成时调用 |
 
-## Return Value
+## 返回值
 
-Returns a `WatchHandle` that can be used to stop watching:
+返回一个可用于停止监视的 `WatchHandle`：
 
 ```ts no-twoslash
 import { watchExtractedObservable } from '@vueuse/rxjs'
@@ -108,11 +108,11 @@ const stop = watchExtractedObservable(source, s => s.data$, (data) => {
   console.log(data)
 })
 
-// Later, stop watching
+// 稍后，停止监视
 stop()
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type OnCleanup = (cleanupFn: () => void) => void

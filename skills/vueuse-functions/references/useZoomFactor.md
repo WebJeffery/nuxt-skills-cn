@@ -4,22 +4,22 @@ category: '@Electron'
 
 # useZoomFactor
 
-Reactive [WebFrame](https://www.electronjs.org/docs/api/web-frame#webframe) zoom factor.
+响应式 [WebFrame](https://www.electronjs.org/docs/api/web-frame#webframe) 缩放因子。
 
-## Usage
+## 用法
 
 ```ts
 import { useZoomFactor } from '@vueuse/electron'
 
-// enable nodeIntegration if you don't provide webFrame explicitly
-// see: https://www.electronjs.org/docs/api/webview-tag#nodeintegration
-// Ref result will return
+// 如果没有显式提供 webFrame，请启用 nodeIntegration
+// 参见：https://www.electronjs.org/docs/api/webview-tag#nodeintegration
+// Ref 结果将返回
 const factor = useZoomFactor()
-console.log(factor.value) // print current zoom factor
-factor.value = 2 // change current zoom factor
+console.log(factor.value) // 打印当前缩放因子
+factor.value = 2 // 更改当前缩放因子
 ```
 
-Set initial zoom factor immediately
+立即设置初始缩放因子
 
 ```ts
 import { useZoomFactor } from '@vueuse/electron'
@@ -27,7 +27,7 @@ import { useZoomFactor } from '@vueuse/electron'
 const factor = useZoomFactor(2)
 ```
 
-Pass a `ref` and the factor will be updated when the source ref changes
+传递一个 `ref`，当源 ref 更改时，因子将更新
 
 ```ts
 import { useZoomFactor } from '@vueuse/electron'
@@ -35,12 +35,12 @@ import { shallowRef } from 'vue'
 
 const factor = shallowRef(1)
 
-useZoomFactor(factor) // zoom factor will match with the ref
+useZoomFactor(factor) // 缩放因子将与 ref 匹配
 
-factor.value = 2 // zoom factor will change
+factor.value = 2 // 缩放因子将更改
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export declare function useZoomFactor(factor: MaybeRef<number>): Ref<number>

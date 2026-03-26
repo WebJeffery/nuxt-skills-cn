@@ -4,9 +4,9 @@ category: Browser
 
 # useTextDirection
 
-Reactive [dir](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir) of the element's text.
+元素文本的响应式 [dir](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir)。
 
-## Usage
+## 用法
 
 ```ts
 import { useTextDirection } from '@vueuse/core'
@@ -14,7 +14,7 @@ import { useTextDirection } from '@vueuse/core'
 const dir = useTextDirection() // Ref<'ltr' | 'rtl' | 'auto'>
 ```
 
-By default, it returns `rtl` direction when dir `rtl` is applied to the `html` tag, for example:
+默认情况下，当 `html` 标签应用了 dir `rtl` 时，它返回 `rtl` 方向，例如：
 
 ```html
 <!--ltr-->
@@ -28,7 +28,7 @@ By default, it returns `rtl` direction when dir `rtl` is applied to the `html` t
 </html>
 ```
 
-## Options
+## 选项
 
 ```ts
 import { useTextDirection } from '@vueuse/core'
@@ -38,32 +38,32 @@ const mode = useTextDirection({
 }) // Ref<'ltr' | 'rtl' | 'auto'>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type UseTextDirectionValue = "ltr" | "rtl" | "auto"
 export interface UseTextDirectionOptions extends ConfigurableDocument {
   /**
-   * CSS Selector for the target element applying to
+   * 要应用到的目标元素的 CSS 选择器
    *
    * @default 'html'
    */
   selector?: string
   /**
-   * Observe `document.querySelector(selector)` changes using MutationObserve
+   * 使用 MutationObserve 观察 `document.querySelector(selector)` 更改
    *
    * @default false
    */
   observe?: boolean
   /**
-   * Initial value
+   * 初始值
    *
    * @default 'ltr'
    */
   initialValue?: UseTextDirectionValue
 }
 /**
- * Reactive dir of the element's text.
+ * 元素文本的响应式 dir。
  *
  * @see https://vueuse.org/useTextDirection
  *

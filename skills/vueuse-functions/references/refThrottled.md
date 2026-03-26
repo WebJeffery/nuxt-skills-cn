@@ -5,9 +5,9 @@ alias: useThrottle, throttledRef
 
 # refThrottled
 
-Throttle changing of a ref value.
+节流 ref 值的更改。
 
-## Usage
+## 用法
 
 ```ts
 import { refThrottled } from '@vueuse/core'
@@ -17,7 +17,7 @@ const input = shallowRef('')
 const throttled = refThrottled(input, 1000)
 ```
 
-An example with object ref.
+对象 ref 的示例。
 
 ```js
 import { refThrottled } from '@vueuse/core'
@@ -29,24 +29,24 @@ const data = shallowRef({
 })
 const throttled = refThrottled(data, 1000)
 
-data.value = { count: 1, name: 'foo' }
-console.log(throttled.value) // { count: 1, name: 'foo' } (immediate)
+data.value = { count:1, name: 'foo' }
+console.log(throttled.value) // { count: 1, name: 'foo' } (立即)
 
 data.value = { count: 2, name: 'bar' }
 data.value = { count: 3, name: 'baz' }
 data.value = { count: 4, name: 'qux' }
-console.log(throttled.value) // { count: 1, name: 'foo' } (still first value)
+console.log(throttled.value) // { count: 1, name: 'foo' } (仍然是第一个值)
 
-// After 1000ms, next change will be applied
+// 1000ms 后,下一个更改将被应用
 await sleep(1100)
 data.value = { count: 5, name: 'final' }
 await nextTick()
-console.log(throttled.value) // { count: 5, name: 'final' } (updated)
+console.log(throttled.value) // { count: 5, name: 'final' } (已更新)
 ```
 
 ### Trailing
 
-If you don't want to watch trailing changes, set 3rd param `false` (it's `true` by default):
+如果您不想观察尾随更改,设置第 3 个参数 `false`(默认为 `true`):
 
 ```ts
 import { refThrottled } from '@vueuse/core'
@@ -58,7 +58,7 @@ const throttled = refThrottled(input, 1000, false)
 
 ### Leading
 
-Allows the callback to be invoked immediately (on the leading edge of the `ms` timeout). If you don't want this behavior, set the 4th param `false` (it's `true` by default):
+允许回调立即调用(在 `ms` 超时的前缘)。如果您不想要此行为,设置第 4 个参数 `false`(默认为 `true`):
 
 ```ts
 import { refThrottled } from '@vueuse/core'
@@ -68,23 +68,22 @@ const input = shallowRef('')
 const throttled = refThrottled(input, 1000, undefined, false)
 ```
 
-## Recommended Reading
+## 推荐阅读
 
-- [Debounce vs Throttle: Definitive Visual Guide](https://kettanaito.com/blog/debounce-vs-throttle)
-- [Debouncing and Throttling Explained Through Examples](https://css-tricks.com/debouncing-throttling-explained-examples/)
+- [防抖 vs 节流: 决定性视觉指南](https://kettanaito.com/blog/debounce-vs-throttle)
+- [通过示例解释防抖和节流](https://css-tricks.com/debouncing-throttling-explained-examples/)
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export type RefThrottledReturn<T = any> = Ref<T>
 /**
- * Throttle execution of a function. Especially useful for rate limiting
- * execution of handlers on events like resize and scroll.
+ * 节流函数的执行。特别适用于限制事件处理程序的执行频率,如 resize 和 scroll。
  *
- * @param value Ref value to be watched with throttle effect
- * @param  delay  A zero-or-greater delay in milliseconds. For event callbacks, values around 100 or 250 (or even higher) are most useful.
- * @param trailing if true, update the value again after the delay time is up
- * @param leading if true, update the value on the leading edge of the ms timeout
+ * @param value 要用节流效果观察的 Ref 值
+ * @param delay  以毫秒为单位的零或更大的延迟。对于事件回调,大约 100 或 250(或甚至更高)的值最有用。
+ * @param trailing 如果为 true,则在延迟时间结束后再次更新值
+ * @param leading 如果为 true,则在 ms 超时的前缘更新值
  */
 export declare function refThrottled<T = any>(
   value: Ref<T>,
@@ -92,8 +91,8 @@ export declare function refThrottled<T = any>(
   trailing?: boolean,
   leading?: boolean,
 ): RefThrottledReturn<T>
-/** @deprecated use `refThrottled` instead */
+/** @deprecated 使用 `refThrottled` 代替 */
 export declare const throttledRef: typeof refThrottled
-/** @deprecated use `refThrottled` instead */
+/** @deprecated 使用 `refThrottled` 代替 */
 export declare const useThrottle: typeof refThrottled
 ```

@@ -4,62 +4,56 @@ category: Browser
 
 # useVibrate
 
-Reactive [Vibration API](https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API)
+响应式 [Vibration API](https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API)
 
-Most modern mobile devices include vibration hardware, which lets software
-code provides physical feedback to the user by causing the device to shake.
+大多数现代移动设备都包含振动硬件，这使得软件代码能够通过使设备震动来向用户提供物理反馈。
 
-The Vibration API offers Web apps the ability to access this hardware,
-if it exists, and does nothing if the device doesn't support it.
+Vibration API 为 Web 应用程序提供了访问此硬件的能力（如果存在），如果设备不支持它，则不执行任何操作。
 
-## Usage
+## 用法
 
-Vibration is described as a pattern of on-off pulses, which may be of varying
-lengths.
+振动被描述为开关脉冲的模式，这些脉冲的长度可以不同。
 
-The pattern may consist of either a single integer describing the
-number of milliseconds to vibrate, or an array of integers describing
-a pattern of vibrations and pauses.
+该模式可以由描述振动毫秒数的单个整数，或描述振动和暂停模式的整数数组组成。
 
 ```ts
 import { useVibrate } from '@vueuse/core'
 
-// This vibrates the device for 300 ms
-// then pauses for 100 ms before vibrating the device again for another 300 ms:
+// 这将使设备振动 300 毫秒
+// 然后暂停 100 毫秒，然后再使设备振动 300 毫秒：
 const { vibrate, stop, isSupported } = useVibrate({ pattern: [300, 100, 300] })
 
-// Start the vibration, it will automatically stop when the pattern is complete:
+// 开始振动，它将在模式完成时自动停止：
 vibrate()
 
-// But if you want to stop it, you can:
+// 但如果您想停止它，可以：
 stop()
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseVibrateOptions
   extends ConfigurableNavigator, ConfigurableScheduler {
   /**
    *
-   * Vibration Pattern
+   * 振动模式
    *
-   * An array of values describes alternating periods in which the
-   * device is vibrating and not vibrating. Each value in the array
-   * is converted to an integer, then interpreted alternately as
-   * the number of milliseconds the device should vibrate and the
-   * number of milliseconds it should not be vibrating
+   * 值数组描述设备振动和不振动的交替周期。数组中的每个值
+   * 都被转换为整数，然后交替解释为
+   * 设备应振动的毫秒数和
+   * 设备不应振动的毫秒数
    *
    * @default []
    *
    */
   pattern?: MaybeRefOrGetter<Arrayable<number>>
   /**
-   * Interval to run a persistent vibration, in ms
+   * 运行持久振动的间隔，以毫秒为单位
    *
-   * Pass `0` to disable
+   * 传递 `0` 以禁用
    *
-   * @deprecated Please use `scheduler` option instead
+   * @deprecated 请改用 `scheduler` 选项
    * @default 0
    *
    */
@@ -72,7 +66,7 @@ export interface UseVibrateReturn extends Supportable {
   stop: () => void
 }
 /**
- * Reactive vibrate
+ * 响应式振动
  *
  * @see https://vueuse.org/useVibrate
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API

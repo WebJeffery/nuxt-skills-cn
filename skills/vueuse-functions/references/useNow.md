@@ -4,9 +4,9 @@ category: Animation
 
 # useNow
 
-Reactive current Date instance.
+响应式当前 Date 实例。
 
-## Usage
+## 用法
 
 ```ts
 import { useNow } from '@vueuse/core'
@@ -20,7 +20,7 @@ import { useNow } from '@vueuse/core'
 const { now, pause, resume } = useNow({ controls: true })
 ```
 
-## Component Usage
+## 组件用法
 
 ```vue
 <template>
@@ -36,29 +36,29 @@ const { now, pause, resume } = useNow({ controls: true })
 </template>
 ```
 
-## Type Declarations
+## 类型声明
 
 ```ts
 export interface UseNowOptions<
   Controls extends boolean,
 > extends ConfigurableScheduler {
   /**
-   * Expose more controls
+   * 暴露更多控制
    *
    * @default false
    */
   controls?: Controls
   /**
-   * Start the clock immediately
+   * 立即启动时钟
    *
-   * @deprecated Please use `scheduler` option instead
+   * @deprecated 请改用 `scheduler` 选项
    * @default true
    */
   immediate?: boolean
   /**
-   * Update interval in milliseconds, or use requestAnimationFrame
+   * 更新间隔（以毫秒为单位），或使用 requestAnimationFrame
    *
-   * @deprecated Please use `scheduler` option instead
+   * @deprecated 请改用 `scheduler` 选项
    * @default requestAnimationFrame
    */
   interval?: "requestAnimationFrame" | number
@@ -69,7 +69,7 @@ export type UseNowReturn<Controls extends boolean> = Controls extends true
     } & Pausable
   : Ref<Date>
 /**
- * Reactive current Date instance.
+ * 响应式当前 Date 实例。
  *
  * @see https://vueuse.org/useNow
  * @param options
