@@ -1,15 +1,15 @@
 ---
 name: pnpm-ci-cd-setup
-description: Optimizing pnpm for continuous integration and deployment workflows
+description: 优化 pnpm 用于持续集成和部署工作流
 ---
 
-# pnpm CI/CD Setup
+# pnpm CI/CD 设置
 
-Best practices for using pnpm in CI/CD environments for fast, reliable builds.
+在 CI/CD 环境中使用 pnpm 的最佳实践，以实现快速、可靠的构建。
 
 ## GitHub Actions
 
-### Basic Setup
+### 基本设置
 
 ```yaml
 name: CI
@@ -36,9 +36,9 @@ jobs:
       - run: pnpm build
 ```
 
-### With Store Caching
+### 使用存储缓存
 
-For larger projects, cache the pnpm store:
+对于较大的项目，缓存 pnpm 存储：
 
 ```yaml
 - uses: pnpm/action-setup@v4
@@ -61,7 +61,7 @@ For larger projects, cache the pnpm store:
 - run: pnpm install --frozen-lockfile
 ```
 
-### Matrix Testing
+### 矩阵测试
 
 ```yaml
 jobs:
@@ -124,29 +124,29 @@ build:
 
 ## Docker
 
-### Multi-Stage Build
+### 多阶段构建
 
 ```dockerfile
-# Build stage
+# 构建阶段
 FROM node:20-slim AS builder
 
-# Enable corepack for pnpm
+# 启用 corepack 以使用 pnpm
 RUN corepack enable
 
 WORKDIR /app
 
-# Copy package files first for layer caching
+# 首先复制包文件以进行层缓存
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY packages/*/package.json ./packages/
 
-# Install dependencies
+# 安装依赖
 RUN pnpm install --frozen-lockfile
 
-# Copy source and build
+# 复制源代码并构建
 COPY . .
 RUN pnpm build
 
-# Production stage
+# 生产阶段
 FROM node:20-slim AS runner
 
 RUN corepack enable
@@ -156,41 +156,41 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/pnpm-lock.yaml ./
 
-# Production install
+# 生产安装
 RUN pnpm install --frozen-lockfile --prod
 
 CMD ["node", "dist/index.js"]
 ```
 
-### Optimized for Monorepos
+### 为 Monorepo 优化
 
 ```dockerfile
 FROM node:20-slim AS builder
 RUN corepack enable
 WORKDIR /app
 
-# Copy workspace config
+# 复制工作区配置
 COPY pnpm-lock.yaml pnpm-workspace.yaml ./
 
-# Copy all package.json files maintaining structure
+# 复制所有 package.json 文件并保持结构
 COPY packages/core/package.json ./packages/core/
 COPY packages/api/package.json ./packages/api/
 
-# Install all dependencies
+# 安装所有依赖
 RUN pnpm install --frozen-lockfile
 
-# Copy source
+# 复制源代码
 COPY . .
 
-# Build specific package
+# 构建特定包
 RUN pnpm --filter @myorg/api build
 ```
 
-## Key CI Flags
+## 关键 CI 标志
 
 ### --frozen-lockfile
 
-**Always use in CI.** Fails if `pnpm-lock.yaml` needs updates:
+**始终在 CI 中使用。** 如果 `pnpm-lock.yaml` 需要更新则失败：
 
 ```bash
 pnpm install --frozen-lockfile
@@ -198,7 +198,7 @@ pnpm install --frozen-lockfile
 
 ### --prefer-offline
 
-Use cached packages when available:
+在可用时使用缓存的包：
 
 ```bash
 pnpm install --frozen-lockfile --prefer-offline
@@ -206,15 +206,15 @@ pnpm install --frozen-lockfile --prefer-offline
 
 ### --ignore-scripts
 
-Skip lifecycle scripts for faster installs (use cautiously):
+跳过生命周期脚本以加快安装（谨慎使用）：
 
 ```bash
 pnpm install --frozen-lockfile --ignore-scripts
 ```
 
-## Corepack Integration
+## Corepack 集成
 
-Use Corepack to manage pnpm version:
+使用 Corepack 管理 pnpm 版本：
 
 ```json
 // package.json
@@ -229,9 +229,9 @@ Use Corepack to manage pnpm version:
 - run: pnpm install --frozen-lockfile
 ```
 
-## Monorepo CI Strategies
+## Monorepo CI 策略
 
-### Build Changed Packages Only
+### 仅构建更改的包
 
 ```yaml
 - name: Build changed packages
@@ -239,7 +239,7 @@ Use Corepack to manage pnpm version:
     pnpm --filter "...[origin/main]" build
 ```
 
-### Parallel Jobs per Package
+### 每个包的并行作业
 
 ```yaml
 jobs:
@@ -269,17 +269,17 @@ jobs:
       - run: pnpm --filter ${{ matrix.package }} test
 ```
 
-## Best Practices Summary
+## 最佳实践总结
 
-1. **Always use `--frozen-lockfile`** in CI
-2. **Cache the pnpm store** for faster installs
-3. **Use Corepack** for consistent pnpm versions
-4. **Specify `packageManager`** in package.json
-5. **Use `--filter`** in monorepos to build only what changed
-6. **Multi-stage Docker builds** for smaller images
+1. **始终使用 `--frozen-lockfile`** 在 CI 中
+2. **缓存 pnpm 存储** 以加快安装
+3. **使用 Corepack** 以获得一致的 pnpm 版本
+4. **在 package.json 中指定 `packageManager`**
+5. **在 monorepo 中使用 `--filter`** 仅构建更改的内容
+6. **多阶段 Docker 构建** 以获得更小的镜像
 
-<!-- 
-Source references:
+<!--
+源引用:
 - https://pnpm.io/continuous-integration
 - https://github.com/pnpm/action-setup
 -->

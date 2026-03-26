@@ -1,42 +1,38 @@
 ---
 name: pnpm
-description: Node.js package manager with strict dependency resolution. Use when running pnpm specific commands, configuring workspaces, or managing dependencies with catalogs, patches, or overrides.
-metadata:
-  author: Anthony Fu
-  version: "2026.1.28"
-  source: Generated from https://github.com/pnpm/pnpm, scripts located at https://github.com/antfu/skills
+description: 具有严格依赖解析的 Node.js 包管理器。在运行 pnpm 特定命令、配置工作区或使用目录、补丁或覆盖管理依赖时使用。
 ---
 
-pnpm is a fast, disk space efficient package manager. It uses a content-addressable store to deduplicate packages across all projects on a machine, saving significant disk space. pnpm enforces strict dependency resolution by default, preventing phantom dependencies. Configuration should preferably be placed in `pnpm-workspace.yaml` for pnpm-specific settings.
+pnpm 是一个快速、节省磁盘空间的包管理器。它使用内容寻址存储在机器上的所有项目中去重包，从而节省大量磁盘空间。pnpm 默认强制执行严格的依赖解析，防止幽灵依赖。配置最好放在 `pnpm-workspace.yaml` 中用于 pnpm 特定设置。
 
-**Important:** When working with pnpm projects, agents should check for `pnpm-workspace.yaml` and `.npmrc` files to understand workspace structure and configuration. Always use `--frozen-lockfile` in CI environments.
+**重要提示：** 在处理 pnpm 项目时，代理应该检查 `pnpm-workspace.yaml` 和 `.npmrc` 文件以了解工作区结构和配置。始终在 CI 环境中使用 `--frozen-lockfile`。
 
-> The skill is based on pnpm 10.x, generated at 2026-01-28.
+> 该技能基于 pnpm 10.x，生成于 2026-01-28。
 
-## Core
+## 核心
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| CLI Commands | Install, add, remove, update, run, exec, dlx, and workspace commands | [core-cli](references/core-cli.md) |
-| Configuration | pnpm-workspace.yaml, .npmrc settings, and package.json fields | [core-config](references/core-config.md) |
-| Workspaces | Monorepo support with filtering, workspace protocol, and shared lockfile | [core-workspaces](references/core-workspaces.md) |
-| Store | Content-addressable storage, hard links, and disk efficiency | [core-store](references/core-store.md) |
+| CLI 命令 | 安装、添加、删除、更新、运行、执行、dlx 和工作区命令 | [core-cli](references/core-cli.md) |
+| 配置 | pnpm-workspace.yaml、.npmrc 设置和 package.json 字段 | [core-config](references/core-config.md) |
+| 工作区 | 具有过滤、工作区协议和共享锁文件的 monorepo 支持 | [core-workspaces](references/core-workspaces.md) |
+| 存储 | 内容寻址存储、硬链接和磁盘效率 | [core-store](references/core-store.md) |
 
-## Features
+## 功能特性
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Catalogs | Centralized dependency version management for workspaces | [features-catalogs](references/features-catalogs.md) |
-| Overrides | Force specific versions of dependencies including transitive | [features-overrides](references/features-overrides.md) |
-| Patches | Modify third-party packages with custom fixes | [features-patches](references/features-patches.md) |
-| Aliases | Install packages under custom names using npm: protocol | [features-aliases](references/features-aliases.md) |
-| Hooks | Customize resolution with .pnpmfile.cjs hooks | [features-hooks](references/features-hooks.md) |
-| Peer Dependencies | Auto-install, strict mode, and dependency rules | [features-peer-deps](references/features-peer-deps.md) |
+| 目录 | 工作区的集中式依赖版本管理 | [features-catalogs](references/features-catalogs.md) |
+| 覆盖 | 强制依赖的特定版本，包括传递依赖 | [features-overrides](references/features-overrides.md) |
+| 补丁 | 使用自定义修复修改第三方包 | [features-patches](references/features-patches.md) |
+| 别名 | 使用 npm: 协议在自定义名称下安装包 | [features-aliases](references/features-aliases.md) |
+| 钩子 | 使用 .pnpmfile.cjs 钩子自定义解析 | [features-hooks](references/features-hooks.md) |
+| 同伴依赖 | 自动安装、严格模式和依赖规则 | [features-peer-deps](references/features-peer-deps.md) |
 
-## Best Practices
+## 最佳实践
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| CI/CD Setup | GitHub Actions, GitLab CI, Docker, and caching strategies | [best-practices-ci](references/best-practices-ci.md) |
-| Migration | Migrating from npm/Yarn, handling phantom deps, monorepo migration | [best-practices-migration](references/best-practices-migration.md) |
-| Performance | Install optimizations, store caching, workspace parallelization | [best-practices-performance](references/best-practices-performance.md) |
+| CI/CD 设置 | GitHub Actions、GitLab CI、Docker 和缓存策略 | [best-practices-ci](references/best-practices-ci.md) |
+| 迁移 | 从 npm/Yarn 迁移、处理幽灵依赖、monorepo 迁移 | [best-practices-migration](references/best-practices-migration.md) |
+| 性能 | 安装优化、存储缓存、工作区并行化 | [best-practices-performance](references/best-practices-performance.md) |

@@ -1,15 +1,15 @@
 ---
 name: pnpm-catalogs
-description: Centralized dependency version management for workspaces
+description: 工作区的集中式依赖版本管理
 ---
 
-# pnpm Catalogs
+# pnpm 目录
 
-Catalogs provide a centralized way to manage dependency versions across a workspace. Define versions once, use everywhere.
+目录提供了一种在工作区中集中管理依赖版本的方法。定义一次，随处使用。
 
-## Basic Usage
+## 基本用法
 
-Define a catalog in `pnpm-workspace.yaml`:
+在 `pnpm-workspace.yaml` 中定义目录：
 
 ```yaml
 packages:
@@ -22,7 +22,7 @@ catalog:
   vite: ^5.0.0
 ```
 
-Reference in `package.json` with `catalog:`:
+在 `package.json` 中使用 `catalog:` 引用：
 
 ```json
 {
@@ -37,19 +37,19 @@ Reference in `package.json` with `catalog:`:
 }
 ```
 
-## Named Catalogs
+## 命名目录
 
-Create multiple catalogs for different scenarios:
+为不同场景创建多个目录：
 
 ```yaml
 packages:
   - 'packages/*'
 
-# Default catalog
+# 默认目录
 catalog:
   lodash: ^4.17.21
 
-# Named catalogs
+# 命名目录
 catalogs:
   react17:
     react: ^17.0.2
@@ -64,7 +64,7 @@ catalogs:
     "@testing-library/react": ^14.0.0
 ```
 
-Reference named catalogs:
+引用命名目录：
 
 ```json
 {
@@ -78,35 +78,35 @@ Reference named catalogs:
 }
 ```
 
-## Benefits
+## 优势
 
-1. **Single source of truth**: Update version in one place
-2. **Consistency**: All packages use the same version
-3. **Easy upgrades**: Change version once, affects entire workspace
-4. **Type-safe**: TypeScript support in pnpm-workspace.yaml
+1. **单一事实来源**：在一处更新版本
+2. **一致性**：所有包使用相同版本
+3. **轻松升级**：更改一次版本，影响整个工作区
+4. **类型安全**：pnpm-workspace.yaml 中的 TypeScript 支持
 
-## Catalog vs Overrides
+## 目录与覆盖
 
-| Feature | Catalogs | Overrides |
+| 功能 | 目录 | 覆盖 |
 |---------|----------|-----------|
-| Purpose | Define versions for direct dependencies | Force versions for any dependency |
-| Scope | Direct dependencies only | All dependencies (including transitive) |
-| Usage | `"pkg": "catalog:"` | Applied automatically |
-| Opt-in | Explicit per package.json | Global to workspace |
+| 目的 | 定义直接依赖的版本 | 强制任何依赖的版本 |
+| 范围 | 仅直接依赖 | 所有依赖（包括传递依赖） |
+| 用法 | `"pkg": "catalog:"` | 自动应用 |
+| 选择加入 | 每个 package.json 显式 | 工作区全局 |
 
-## Publishing with Catalogs
+## 使用目录发布
 
-When publishing, `catalog:` references are replaced with actual versions:
+发布时，`catalog:` 引用被替换为实际版本：
 
 ```json
-// Before publish (source)
+// 发布前（源）
 {
   "dependencies": {
     "react": "catalog:"
   }
 }
 
-// After publish (published package)
+// 发布后（已发布的包）
 {
   "dependencies": {
     "react": "^18.2.0"
@@ -114,46 +114,46 @@ When publishing, `catalog:` references are replaced with actual versions:
 }
 ```
 
-## Migration from Overrides
+## 从覆盖迁移
 
-If you're using overrides for version consistency:
+如果您使用覆盖进行版本一致性：
 
 ```yaml
-# Before (using overrides)
+# 之前（使用覆盖）
 overrides:
   react: ^18.2.0
   react-dom: ^18.2.0
 ```
 
-Migrate to catalogs for cleaner dependency management:
+迁移到目录以进行更清晰的依赖管理：
 
 ```yaml
-# After (using catalogs)
+# 之后（使用目录）
 catalog:
   react: ^18.2.0
   react-dom: ^18.2.0
 ```
 
-Then update package.json files to use `catalog:`.
+然后更新 package.json 文件以使用 `catalog:`。
 
-## Best Practices
+## 最佳实践
 
-1. **Use default catalog** for commonly shared dependencies
-2. **Use named catalogs** for version variants (e.g., different React versions)
-3. **Keep catalog minimal** - only include shared dependencies
-4. **Combine with workspace protocol** for internal packages
+1. **使用默认目录** 用于常用共享依赖
+2. **使用命名目录** 用于版本变体（例如，不同的 React 版本）
+3. **保持目录最小化** - 仅包含共享依赖
+4. **与工作区协议结合** 用于内部包
 
 ```yaml
 catalog:
-  # External shared dependencies
+  # 外部共享依赖
   lodash: ^4.17.21
   zod: ^3.22.0
 
-# Internal packages use workspace: protocol instead
+# 内部包使用 workspace: 协议代替
 # "dependencies": { "@myorg/utils": "workspace:^" }
 ```
 
-<!-- 
-Source references:
+<!--
+源引用:
 - https://pnpm.io/catalogs
 -->

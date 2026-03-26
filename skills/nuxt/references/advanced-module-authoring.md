@@ -1,33 +1,33 @@
 ---
 name: module-authoring
-description: Complete guide to creating publishable Nuxt modules with best practices
+description: 创建可发布 Nuxt 模块的完整指南，包含最佳实践
 ---
 
-# Module Authoring
+# 模块开发
 
-This guide covers creating publishable Nuxt modules with proper structure, type safety, and best practices.
+本指南介绍如何创建具有正确结构、类型安全和最佳实践的可发布 Nuxt 模块。
 
-## Module Structure
+## 模块结构
 
-Recommended structure for a publishable module:
+可发布模块的推荐结构：
 
 ```
 my-nuxt-module/
 ├── src/
-│   ├── module.ts          # Module entry
+│   ├── module.ts          # 模块入口
 │   └── runtime/
-│       ├── components/    # Vue components
-│       ├── composables/   # Composables
-│       ├── plugins/       # Nuxt plugins
-│       └── server/        # Server handlers
-├── playground/            # Development app
+│       ├── components/    # Vue 组件
+│       ├── composables/   # 组合式函数
+│       ├── plugins/       # Nuxt 插件
+│       └── server/        # 服务器处理程序
+├── playground/            # 开发应用
 ├── package.json
 └── tsconfig.json
 ```
 
-## Module Definition
+## 模块定义
 
-### Basic Module with Type-safe Options
+### 基本模块与类型安全选项
 
 ```ts
 // src/module.ts
@@ -56,14 +56,14 @@ export default defineNuxtModule<ModuleOptions>({
 
     const { resolve } = createResolver(import.meta.url)
 
-    // Module setup logic here
+    // 模块设置逻辑在这里
   },
 })
 ```
 
-### Using `.with()` for Strict Type Inference
+### 使用 `.with()` 进行严格类型推断
 
-When you need TypeScript to infer that default values are always present:
+当需要 TypeScript 推断默认值始终存在时：
 
 ```ts
 import { defineNuxtModule } from '@nuxt/kit'
@@ -84,15 +84,15 @@ export default defineNuxtModule<ModuleOptions>().with({
     timeout: 5000,
   },
   setup(resolvedOptions, nuxt) {
-    // resolvedOptions.baseURL is guaranteed to be string (not undefined)
-    // resolvedOptions.timeout is guaranteed to be number (not undefined)
+    // resolvedOptions.baseURL 保证是 string（不是 undefined）
+    // resolvedOptions.timeout 保证是 number（不是 undefined）
   },
 })
 ```
 
-## Adding Runtime Assets
+## 添加运行时资源
 
-### Components
+### 组件
 
 ```ts
 import { addComponent, addComponentsDir, createResolver } from '@nuxt/kit'
@@ -101,13 +101,13 @@ export default defineNuxtModule({
   setup() {
     const { resolve } = createResolver(import.meta.url)
 
-    // Single component
+    // 单个组件
     addComponent({
       name: 'MyButton',
       filePath: resolve('./runtime/components/MyButton.vue'),
     })
 
-    // Component directory with prefix
+    // 带前缀的组件目录
     addComponentsDir({
       path: resolve('./runtime/components'),
       prefix: 'My',
@@ -117,7 +117,7 @@ export default defineNuxtModule({
 })
 ```
 
-### Composables and Auto-imports
+### 组合式函数和自动导入
 
 ```ts
 import { addImports, addImportsDir, createResolver } from '@nuxt/kit'
@@ -126,19 +126,19 @@ export default defineNuxtModule({
   setup() {
     const { resolve } = createResolver(import.meta.url)
 
-    // Single import
+    // 单个导入
     addImports({
       name: 'useMyUtil',
       from: resolve('./runtime/composables/useMyUtil'),
     })
 
-    // Directory of composables
+    // 组合式函数目录
     addImportsDir(resolve('./runtime/composables'))
   },
 })
 ```
 
-### Plugins
+### 插件
 
 ```ts
 import { addPlugin, addPluginTemplate, createResolver } from '@nuxt/kit'
@@ -147,13 +147,13 @@ export default defineNuxtModule({
   setup(options) {
     const { resolve } = createResolver(import.meta.url)
 
-    // Static plugin file
+    // 静态插件文件
     addPlugin({
       src: resolve('./runtime/plugins/myPlugin'),
-      mode: 'client', // 'client', 'server', or 'all'
+      mode: 'client', // 'client'、'server' 或 'all'
     })
 
-    // Dynamic plugin with generated code
+    // 带生成代码的动态插件
     addPluginTemplate({
       filename: 'my-module-plugin.mjs',
       getContents: () => `
@@ -163,7 +163,7 @@ export default defineNuxtPlugin({
   name: 'my-module',
   setup() {
     const config = ${JSON.stringify(options)}
-    // Plugin logic
+    // 插件逻辑
   }
 })`,
     })
@@ -171,9 +171,9 @@ export default defineNuxtPlugin({
 })
 ```
 
-## Server Extensions
+## 服务器扩展
 
-### Server Handlers
+### 服务器处理程序
 
 ```ts
 import { addServerHandler, addServerScanDir, createResolver } from '@nuxt/kit'
@@ -182,19 +182,19 @@ export default defineNuxtModule({
   setup() {
     const { resolve } = createResolver(import.meta.url)
 
-    // Single handler
+    // 单个处理程序
     addServerHandler({
       route: '/api/my-endpoint',
       handler: resolve('./runtime/server/api/my-endpoint'),
     })
 
-    // Scan entire server directory (api/, routes/, middleware/, utils/)
+    // 扫描整个服务器目录（api/、routes/、middleware/、utils/）
     addServerScanDir(resolve('./runtime/server'))
   },
 })
 ```
 
-### Server Composables
+### 服务器组合式函数
 
 ```ts
 import { addServerImports, addServerImportsDir, createResolver } from '@nuxt/kit'
@@ -203,19 +203,19 @@ export default defineNuxtModule({
   setup() {
     const { resolve } = createResolver(import.meta.url)
 
-    // Single server import
+    // 单个服务器导入
     addServerImports({
       name: 'useServerUtil',
       from: resolve('./runtime/server/utils/useServerUtil'),
     })
 
-    // Server composables directory
+    // 服务器组合式函数目录
     addServerImportsDir(resolve('./runtime/server/composables'))
   },
 })
 ```
 
-### Nitro Plugin
+### Nitro 插件
 
 ```ts
 import { addServerPlugin, createResolver } from '@nuxt/kit'
@@ -234,14 +234,14 @@ import { defineNitroPlugin } from 'nitropack/runtime'
 
 export default defineNitroPlugin((nitroApp) => {
   nitroApp.hooks.hook('request', (event) => {
-    console.log('Request:', event.path)
+    console.log('请求:', event.path)
   })
 })
 ```
 
-## Templates and Virtual Files
+## 模板和虚拟文件
 
-### Generate Virtual Files
+### 生成虚拟文件
 
 ```ts
 import { addTemplate, addTypeTemplate, addServerTemplate, createResolver } from '@nuxt/kit'
@@ -250,13 +250,13 @@ export default defineNuxtModule({
   setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
 
-    // Client/build virtual file (accessible via #build/my-config.mjs)
+    // 客户端/构建虚拟文件（通过 #build/my-config.mjs 访问）
     addTemplate({
       filename: 'my-config.mjs',
       getContents: () => `export default ${JSON.stringify(options)}`,
     })
 
-    // Type declarations
+    // 类型声明
     addTypeTemplate({
       filename: 'types/my-module.d.ts',
       getContents: () => `
@@ -267,7 +267,7 @@ declare module '#my-module' {
 }`,
     })
 
-    // Nitro virtual file (accessible in server routes)
+    // Nitro 虚拟文件（在服务器路由中可访问）
     addServerTemplate({
       filename: '#my-module/config.mjs',
       getContents: () => `export const config = ${JSON.stringify(options)}`,
@@ -276,18 +276,18 @@ declare module '#my-module' {
 })
 ```
 
-### Access Virtual Files
+### 访问虚拟文件
 
 ```ts
-// In runtime plugin
-// @ts-expect-error - virtual file
+// 在运行时插件中
+// @ts-expect-error - 虚拟文件
 import config from '#build/my-config.mjs'
 
-// In server routes
+// 在服务器路由中
 import { config } from '#my-module/config.js'
 ```
 
-## Extending Pages and Routes
+## 扩展页面和路由
 
 ```ts
 import { extendPages, extendRouteRules, addRouteMiddleware, createResolver } from '@nuxt/kit'
@@ -296,7 +296,7 @@ export default defineNuxtModule({
   setup() {
     const { resolve } = createResolver(import.meta.url)
 
-    // Add pages
+    // 添加页面
     extendPages((pages) => {
       pages.push({
         name: 'my-page',
@@ -305,12 +305,12 @@ export default defineNuxtModule({
       })
     })
 
-    // Add route rules (caching, redirects, etc.)
+    // 添加路由规则（缓存、重定向等）
     extendRouteRules('/api/**', {
       cache: { maxAge: 60 },
     })
 
-    // Add middleware
+    // 添加中间件
     addRouteMiddleware({
       name: 'my-middleware',
       path: resolve('./runtime/middleware/myMiddleware'),
@@ -320,9 +320,9 @@ export default defineNuxtModule({
 })
 ```
 
-## Module Dependencies
+## 模块依赖
 
-Declare dependencies on other modules with version constraints:
+声明对其他模块的依赖及版本约束：
 
 ```ts
 export default defineNuxtModule({
@@ -332,29 +332,29 @@ export default defineNuxtModule({
   moduleDependencies: {
     '@nuxtjs/tailwindcss': {
       version: '>=6.0.0',
-      // Set defaults (user can override)
+      // 设置默认值（用户可以覆盖）
       defaults: {
         exposeConfig: true,
       },
-      // Force specific options
+      // 强制特定选项
       overrides: {
         viewer: false,
       },
     },
     '@nuxtjs/i18n': {
-      optional: true, // Won't fail if not installed
+      optional: true, // 如果未安装不会失败
       defaults: {
         defaultLocale: 'en',
       },
     },
   },
   setup() {
-    // Dependencies are guaranteed to be set up before this runs
+    // 依赖项保证在此运行之前设置
   },
 })
 ```
 
-### Dynamic Dependencies
+### 动态依赖
 
 ```ts
 moduleDependencies(nuxt) {
@@ -370,9 +370,9 @@ moduleDependencies(nuxt) {
 }
 ```
 
-## Lifecycle Hooks
+## 生命周期钩子
 
-Requires `meta.name` and `meta.version`:
+需要 `meta.name` 和 `meta.version`：
 
 ```ts
 export default defineNuxtModule({
@@ -381,48 +381,48 @@ export default defineNuxtModule({
     version: '1.2.0',
   },
   onInstall(nuxt) {
-    // First-time setup
-    console.log('Module installed for the first time')
+    // 首次设置
+    console.log('模块首次安装')
   },
   onUpgrade(nuxt, options, previousVersion) {
-    // Version upgrade migrations
-    console.log(`Upgrading from ${previousVersion}`)
+    // 版本升级迁移
+    console.log(`从 ${previousVersion} 升级`)
   },
   setup(options, nuxt) {
-    // Regular setup runs every build
+    // 常规设置每次构建都运行
   },
 })
 ```
 
-## Extending Configuration
+## 扩展配置
 
 ```ts
 export default defineNuxtModule({
   setup(options, nuxt) {
-    // Add CSS
+    // 添加 CSS
     nuxt.options.css.push('my-module/styles.css')
 
-    // Add runtime config
+    // 添加运行时配置
     nuxt.options.runtimeConfig.public.myModule = {
       apiUrl: options.apiUrl,
     }
 
-    // Extend Vite config
+    // 扩展 Vite 配置
     nuxt.options.vite.optimizeDeps ||= {}
     nuxt.options.vite.optimizeDeps.include ||= []
     nuxt.options.vite.optimizeDeps.include.push('some-package')
 
-    // Add build transpile
+    // 添加构建转译
     nuxt.options.build.transpile.push('my-package')
   },
 })
 ```
 
-## Using Hooks
+## 使用钩子
 
 ```ts
 export default defineNuxtModule({
-  // Declarative hooks
+  // 声明式钩子
   hooks: {
     'components:dirs': (dirs) => {
       dirs.push({ path: '~/extra' })
@@ -430,9 +430,9 @@ export default defineNuxtModule({
   },
 
   setup(options, nuxt) {
-    // Programmatic hooks
+    // 编程式钩子
     nuxt.hook('pages:extend', (pages) => {
-      // Modify pages
+      // 修改页面
     })
 
     nuxt.hook('imports:extend', (imports) => {
@@ -440,32 +440,32 @@ export default defineNuxtModule({
     })
 
     nuxt.hook('nitro:config', (config) => {
-      // Modify Nitro config
+      // 修改 Nitro 配置
     })
 
     nuxt.hook('vite:extendConfig', (config) => {
-      // Modify Vite config
+      // 修改 Vite 配置
     })
   },
 })
 ```
 
-## Path Resolution
+## 路径解析
 
 ```ts
 import { createResolver, resolvePath, findPath } from '@nuxt/kit'
 
 export default defineNuxtModule({
   async setup(options, nuxt) {
-    // Resolver relative to module
+    // 相对于模块的解析器
     const { resolve } = createResolver(import.meta.url)
 
     const pluginPath = resolve('./runtime/plugin')
 
-    // Resolve with extensions and aliases
+    // 使用扩展名和别名解析
     const entrypoint = await resolvePath('@some/package')
 
-    // Find first existing file
+    // 查找第一个存在的文件
     const configPath = await findPath([
       resolve('./config.ts'),
       resolve('./config.js'),
@@ -474,7 +474,7 @@ export default defineNuxtModule({
 })
 ```
 
-## Module Package.json
+## 模块 Package.json
 
 ```json
 {
@@ -506,40 +506,293 @@ export default defineNuxtModule({
 }
 ```
 
-## Disabling Modules
+## 禁用模块
 
-Users can disable a module via config key:
+用户可以通过配置键禁用模块：
 
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  // Disable entirely
+  // 完全禁用
   myModule: false,
 
-  // Or with options
+  // 或使用选项
   myModule: {
     enabled: false,
   },
 })
 ```
 
-## Development Workflow
+## 开发工作流
 
-1. **Create module**: `npx nuxi init -t module my-module`
-2. **Develop**: `npm run dev` (runs playground)
-3. **Build**: `npm run build`
-4. **Test**: `npm run test`
+1. **创建模块**：`npx nuxi init -t module my-module`
+2. **开发**：`npm run dev`（运行 playground）
+3. **构建**：`npm run build`
+4. **测试**：`npm run test`
 
-## Best Practices
+## 最佳实践
 
-- Use `createResolver(import.meta.url)` for all path resolution
-- Prefix components to avoid naming conflicts
-- Make options type-safe with `ModuleOptions` interface
-- Use `moduleDependencies` instead of `installModule`
-- Provide sensible defaults for all options
-- Add compatibility requirements in `meta.compatibility`
-- Use virtual files for dynamic configuration
-- Separate client/server plugins appropriately
+- 对所有路径解析使用 `createResolver(import.meta.url)`
+- 为组件添加前缀以避免命名冲突
+- 使用 `ModuleOptions` 接口使选项类型安全
+- 使用 `moduleDependencies` 而不是 `installModule`
+- 为所有选项提供合理的默认值
+- 在 `meta.compatibility` 中添加兼容性要求
+- 使用虚拟文件进行动态配置
+- 适当地分离客户端/服务器插件
+
+## 模块开发最佳实践
+
+### 处理异步设置
+
+Nuxt 模块可以是异步的，但要小心异步行为，因为 Nuxt 会等待模块设置完成才继续到下一个模块和启动开发服务器。如果耗时超过 1 秒，Nuxt 会发出警告。
+
+```ts
+import { defineNuxtModule } from '@nuxt/kit'
+
+export default defineNuxtModule({
+  setup(options, nuxt) {
+    // ❌ 不好的做法：在 setup 中执行耗时操作
+    // await longRunningOperation()
+
+    // ✅ 好的做法：延迟到 hooks
+    nuxt.hook('app:generated', async () => {
+      await longRunningOperation()
+    })
+  },
+})
+```
+
+### 为导出添加前缀
+
+Nuxt 模块应该为任何暴露的配置、插件、API、composable、组件或服务器路由提供明确的前缀，以避免与其他模块、Nuxt 内部或用户定义的代码冲突。
+
+```ts
+// ❌ 避免：通用名称
+| 类型 | 避免 | 推荐 |
+| --- | --- | --- |
+| 组件 | `<Button>`, `<Modal>` | `<FooButton>`, `<FooModal>` |
+| Composables | `useData()`, `useModal()` | `useFooData()`, `useFooModal()` |
+| 服务器路由 | `/api/track`, `/api/data` | `/api/_foo/track`, `/api/_foo/data` |
+
+// ✅ 推荐：带模块名称前缀
+// 组件
+<FooButton />
+<FooModal />
+
+// Composables
+const { data } = useFooData()
+const modal = useFooModal()
+
+// 服务器路由
+/api/_foo/track
+/api/_foo/data
+```
+
+### 使用 TypeScript
+
+Nuxt 具有一流的 TypeScript 集成以提供最佳开发体验。即使不直接使用 TypeScript 的用户也能从类型中受益。
+
+```ts
+// 为模块选项提供完整类型
+export interface ModuleOptions {
+  apiKey?: string
+  baseURL?: string
+  timeout?: number
+  features?: {
+    analytics?: boolean
+    tracking?: boolean
+  }
+}
+
+export default defineNuxtModule<ModuleOptions>({
+  defaults: {
+    timeout: 5000,
+    features: {
+      analytics: true,
+    },
+  },
+})
+```
+
+### 使用 ESM 语法
+
+Nuxt 依赖于原生 ESM。请使用 `.ts` 或 `.mjs` 文件扩展名。
+
+```json
+{
+  "name": "my-nuxt-module",
+  "type": "module",
+  "main": "./dist/module.mjs",
+  "module": "./dist/module.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/module.mjs"
+    }
+  }
+}
+```
+
+### 文档化模块
+
+在 README 文件中记录模块使用：
+
+```markdown
+# @nuxtjs/my-module
+
+## 为什么使用这个模块？
+
+- 提供 X 功能
+- 集成 Y 服务
+- 优化性能
+
+## 如何使用？
+
+### 安装
+
+```bash
+npm install @nuxtjs/my-module
+```
+
+### 配置
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  myModule: {
+    apiKey: 'your-api-key',
+    timeout: 5000,
+  },
+})
+```
+
+## 模块做什么？
+
+- 添加 X 组件
+- 自动导入 Y composables
+- 配置 Z 服务
+```
+
+### 提供 Demo
+
+创建一个最小化的 playground 并提供 StackBlitz 链接。这不仅为潜在用户提供了快速实验模块的方法，也是他们遇到问题时创建最小化重现的简单方式。
+
+### 保持版本无关性
+
+使用 "适用于 Nuxt" 而不是 "适用于 Nuxt 3"，以避免生态系统碎片化。使用 `meta.compatibility` 设置 Nuxt 版本约束。
+
+### 遵循启动器约定
+
+模块启动器提供了一组默认工具和配置（如 ESLint 配置）。如果你计划开源模块，坚持使用这些默认设置可以确保你的模块与其他社区模块共享一致的编码风格，使其他人更容易贡献。
+
+### 测试模块
+
+```ts
+// tests/module.test.ts
+import { describe, it, expect } from 'vitest'
+import { setup, $fetch, createPage } from '@nuxt/test-utils/e2e'
+
+describe('my-module', () => {
+  it('注册组件', async () => {
+    const { page } = await setup({
+      rootDir: './fixtures/basic',
+    })
+
+    const html = await page.render('/')
+    expect(html).toContain('<FooButton')
+  })
+
+  it('自动导入 composables', async () => {
+    const { page } = await setup({
+      rootDir: './fixtures/basic',
+    })
+
+    const { useMyModule } = await page.render('/').context
+    expect(typeof useMyModule).toBe('function')
+  })
+})
+```
+
+### 调试模块
+
+```ts
+// 在开发模式下启用详细日志
+export default defineNuxtModule({
+  setup(options, nuxt) {
+    if (import.meta.dev) {
+      console.log('🔧 Module options:', options)
+      console.log('📁 Module root:', nuxt.options.rootDir)
+      console.log('📦 Module srcDir:', nuxt.options.srcDir)
+    }
+  },
+})
+```
+
+### 错误处理
+
+```ts
+export default defineNuxtModule({
+  setup(options, nuxt) {
+    try {
+      validateOptions(options)
+    } catch (error) {
+      // 提供清晰的错误信息
+      console.error('❌ Module configuration error:', error.message)
+      console.error('Please check your nuxt.config.ts')
+      throw error
+    }
+  },
+})
+
+function validateOptions(options: ModuleOptions) {
+  if (options.enabled && !options.apiKey) {
+    throw new Error('apiKey is required when module is enabled')
+  }
+}
+```
+
+### 性能优化
+
+```ts
+export default defineNuxtModule({
+  setup(options, nuxt) {
+    // ❌ 不好的做法：同步阻塞操作
+    // const data = readFileSync('large-file.json')
+
+    // ✅ 好的做法：异步操作
+    // const data = await readFile('large-file.json')
+
+    // 延迟非关键设置
+    nuxt.hook('build:done', () => {
+      console.log('Build completed')
+    })
+  },
+})
+```
+
+### 条件功能
+
+```ts
+export default defineNuxtModule({
+  setup(options, nuxt) {
+    // 基于 SSR 模式启用/禁用功能
+    if (nuxt.options.ssr) {
+      addServerPlugin('./plugins/ssr')
+    }
+
+    if (import.meta.dev) {
+      addPlugin('./plugins/devtools')
+    }
+
+    if (options.features?.analytics) {
+      addServerHandler({
+        route: '/api/_my-module/analytics',
+        handler: './api/analytics',
+      })
+    }
+  },
+})
+```
 
 <!--
 Source references:

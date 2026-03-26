@@ -1,59 +1,53 @@
 ---
 name: pinia
-description: Pinia official Vue state management library, type-safe and extensible. Use when defining stores, working with state/getters/actions, or implementing store patterns in Vue apps.
-metadata:
-  author: Anthony Fu
-  version: "2026.1.28"
-  source: Generated from https://github.com/vuejs/pinia, scripts located at https://github.com/antfu/skills
+description: Pinia 官方 Vue 状态管理库，类型安全且可扩展。用于定义 store、处理 state/getters/actions 或在 Vue 应用中实现 store 模式。
 ---
 
 # Pinia
 
-Pinia is the official state management library for Vue, designed to be intuitive and type-safe. It supports both Options API and Composition API styles, with first-class TypeScript support and devtools integration.
+Pinia 是 Vue 的官方状态管理库，设计直观且类型安全。它支持 Options API 和 Composition API 两种风格，具有一流的 TypeScript 支持和 devtools 集成。
 
-> The skill is based on Pinia v3.0.4, generated at 2026-01-28.
+## 核心参考
 
-## Core References
-
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Stores | Defining stores, state, getters, actions, storeToRefs, subscriptions | [core-stores](references/core-stores.md) |
+| Stores | 定义 store、state、getters、actions、storeToRefs、订阅 | [core-stores](references/core-stores.md) |
 
-## Features
+## 功能特性
 
-### Extensibility
+### 可扩展性
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Plugins | Extend stores with custom properties, state, and behavior | [features-plugins](references/features-plugins.md) |
+| 插件 | 使用自定义属性、状态和行为扩展 store | [features-plugins](references/features-plugins.md) |
 
-### Composability
+### 可组合性
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Composables | Using Vue composables within stores (VueUse, etc.) | [features-composables](references/features-composables.md) |
-| Composing Stores | Store-to-store communication, avoiding circular dependencies | [features-composing-stores](references/features-composing-stores.md) |
+| Composables | 在 store 中使用 Vue composables (VueUse 等) | [features-composables](references/features-composables.md) |
+| 组合 Stores | Store 间通信，避免循环依赖 | [features-composing-stores](references/features-composing-stores.md) |
 
-## Best Practices
+## 最佳实践
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Testing | Unit testing with @pinia/testing, mocking, stubbing | [best-practices-testing](references/best-practices-testing.md) |
-| Outside Components | Using stores in navigation guards, plugins, middlewares | [best-practices-outside-component](references/best-practices-outside-component.md) |
+| 测试 | 使用 @pinia/testing 进行单元测试、mock 和 stub | [best-practices-testing](references/best-practices-testing.md) |
+| 组件外使用 | 在导航守卫、插件、中间件中使用 store | [best-practices-outside-component](references/best-practices-outside-component.md) |
 
-## Advanced
+## 高级主题
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| SSR | Server-side rendering, state hydration | [advanced-ssr](references/advanced-ssr.md) |
-| Nuxt | Nuxt integration, auto-imports, SSR best practices | [advanced-nuxt](references/advanced-nuxt.md) |
-| HMR | Hot module replacement for development | [advanced-hmr](references/advanced-hmr.md) |
+| SSR | 服务端渲染、状态水合 | [advanced-ssr](references/advanced-ssr.md) |
+| Nuxt | Nuxt 集成、自动导入、SSR 最佳实践 | [advanced-nuxt](references/advanced-nuxt.md) |
+| HMR | 开发时的热模块替换 | [advanced-hmr](references/advanced-hmr.md) |
 
-## Key Recommendations
+## 关键建议
 
-- **Prefer Setup Stores** for complex logic, composables, and watchers
-- **Use `storeToRefs()`** when destructuring state/getters to preserve reactivity
-- **Actions can be destructured directly** - they're bound to the store
-- **Call stores inside functions** not at module scope, especially for SSR
-- **Add HMR support** to each store for better development experience
-- **Use `@pinia/testing`** for component tests with mocked stores
+- **优先使用 Setup Stores** 用于复杂逻辑、composables 和 watchers
+- **使用 `storeToRefs()`** 在解构 state/getters 时保持响应性
+- **Actions 可以直接解构** - 它们已绑定到 store
+- **在函数内调用 store** 而不是在模块作用域，特别是对于 SSR
+- **为每个 store 添加 HMR 支持** 以获得更好的开发体验
+- **使用 `@pinia/testing`** 进行带有 mock store 的组件测试

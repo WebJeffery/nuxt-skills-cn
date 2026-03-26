@@ -1,26 +1,26 @@
 ---
 name: server-side-rendering
-description: SSR setup, state hydration, and avoiding cross-request state pollution
+description: SSR 设置、状态水合和避免跨请求状态污染
 ---
 
-# Server Side Rendering (SSR)
+# 服务端渲染 (SSR)
 
-Pinia works with SSR when stores are called at the top of `setup`, getters, or actions.
+Pinia 在 stores 于 `setup`、getters 或 actions 顶部调用时与 SSR 协作。
 
-> **Using Nuxt?** See the [Nuxt integration](advanced-nuxt.md) instead.
+> **使用 Nuxt?** 请参阅 [Nuxt 集成](advanced-nuxt.md)。
 
-## Basic Usage
+## 基本用法
 
 ```vue
 <script setup>
-// ✅ Works - pinia knows the app context in setup
+// ✅ 有效 - pinia 在 setup 中知道应用上下文
 const main = useMainStore()
 </script>
 ```
 
-## Using Store Outside setup()
+## 在 setup() 外使用 Store
 
-Pass the `pinia` instance explicitly:
+显式传递 `pinia` 实例:
 
 ```ts
 const pinia = createPinia()
@@ -29,7 +29,7 @@ app.use(router)
 app.use(pinia)
 
 router.beforeEach((to) => {
-  // ✅ Pass pinia for correct SSR context
+  // ✅ 传递 pinia 以获得正确的 SSR 上下文
   const main = useMainStore(pinia)
 
   if (to.meta.requiresAuth && !main.isLoggedIn) {
@@ -40,7 +40,7 @@ router.beforeEach((to) => {
 
 ## serverPrefetch()
 
-Access pinia via `this.$pinia`:
+通过 `this.$pinia` 访问 pinia:
 
 ```ts
 export default {
@@ -53,7 +53,7 @@ export default {
 
 ## onServerPrefetch()
 
-Works normally:
+正常工作:
 
 ```vue
 <script setup>
@@ -65,13 +65,13 @@ onServerPrefetch(async () => {
 </script>
 ```
 
-## State Hydration
+## 状态水合
 
-Serialize state on server and hydrate on client.
+在服务器上序列化状态，在客户端水合。
 
-### Server Side
+### 服务端
 
-Use [devalue](https://github.com/Rich-Harris/devalue) for XSS-safe serialization:
+使用 [devalue](https://github.com/Rich-Harris/devalue) 进行 XSS 安全的序列化:
 
 ```ts
 import devalue from 'devalue'
@@ -82,40 +82,40 @@ const app = createApp(App)
 app.use(router)
 app.use(pinia)
 
-// After rendering, state is available
+// 渲染后，状态可用
 const serializedState = devalue(pinia.state.value)
-// Inject into HTML as global variable
+// 作为全局变量注入到 HTML
 ```
 
-### Client Side
+### 客户端
 
-Hydrate before any `useStore()` call:
+在任何 `useStore()` 调用之前水合:
 
 ```ts
 const pinia = createPinia()
 const app = createApp(App)
 app.use(pinia)
 
-// Hydrate from serialized state (e.g., from window.__pinia)
+// 从序列化状态水合 (例如，从 window.__pinia)
 if (typeof window !== 'undefined') {
   pinia.state.value = JSON.parse(window.__pinia)
 }
 ```
 
-## SSR Examples
+## SSR 示例
 
-- [Vitesse template](https://github.com/antfu/vitesse/blob/main/src/modules/pinia.ts)
+- [Vitesse 模板](https://github.com/antfu/vitesse/blob/main/src/modules/pinia.ts)
 - [vite-plugin-ssr](https://vite-plugin-ssr.com/pinia)
 
-## Key Points
+## 关键点
 
-1. Call stores inside functions, not at module scope
-2. Pass `pinia` instance when using stores outside components in SSR
-3. Hydrate state before calling any `useStore()`
-4. Use `devalue` or similar for safe serialization
-5. Avoid cross-request state pollution by creating fresh pinia per request
+1. 在函数内调用 store，而不是在模块作用域
+2. 在 SSR 中组件外使用 store 时传递 `pinia` 实例
+3. 在调用任何 `useStore()` 之前水合状态
+4. 使用 `devalue` 或类似工具进行安全序列化
+5. 通过为每个请求创建新的 pinia 来避免跨请求状态污染
 
 <!--
-Source references:
+源引用:
 - https://pinia.vuejs.org/ssr/
 -->

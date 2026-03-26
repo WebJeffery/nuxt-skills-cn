@@ -1,29 +1,29 @@
 ---
 name: pnpm-configuration
-description: Configuration options via pnpm-workspace.yaml and .npmrc settings
+description: 通过 pnpm-workspace.yaml 和 .npmrc 设置的配置选项
 ---
 
-# pnpm Configuration
+# pnpm 配置
 
-pnpm uses two main configuration files: `pnpm-workspace.yaml` for workspace and pnpm-specific settings, and `.npmrc` for npm-compatible and pnpm-specific settings.
+pnpm 使用两个主要配置文件：`pnpm-workspace.yaml` 用于工作区和 pnpm 特定设置，`.npmrc` 用于 npm 兼容和 pnpm 特定设置。
 
 ## pnpm-workspace.yaml
 
-The recommended location for pnpm-specific configurations. Place at project root.
+pnpm 特定配置的推荐位置。放置在项目根目录。
 
 ```yaml
-# Define workspace packages
+# 定义工作区包
 packages:
   - 'packages/*'
   - 'apps/*'
-  - '!**/test/**'  # Exclude pattern
+  - '!**/test/**'  # 排除模式
 
-# Catalog for shared dependency versions
+# 用于共享依赖版本的目录
 catalog:
   react: ^18.2.0
   typescript: ~5.3.0
 
-# Named catalogs for different dependency groups
+# 用于不同依赖组的命名目录
 catalogs:
   react17:
     react: ^17.0.2
@@ -32,12 +32,12 @@ catalogs:
     react: ^18.2.0
     react-dom: ^18.2.0
 
-# Override resolutions (preferred location)
+# 覆盖解析（首选位置）
 overrides:
   lodash: ^4.17.21
   'foo@^1.0.0>bar': ^2.0.0
 
-# pnpm settings (alternative to .npmrc)
+# pnpm 设置（.npmrc 的替代方案）
 settings:
   auto-install-peers: true
   strict-peer-dependencies: false
@@ -46,108 +46,108 @@ settings:
   shared-workspace-lockfile: true
 ```
 
-## .npmrc Settings
+## .npmrc 设置
 
-pnpm reads settings from `.npmrc` files. Create at project root or user home.
+pnpm 从 `.npmrc` 文件读取设置。在项目根目录或用户主目录创建。
 
-### Common pnpm Settings
+### 常见的 pnpm 设置
 
 ```ini
-# Automatically install peer dependencies
+# 自动安装同伴依赖
 auto-install-peers=true
 
-# Fail on peer dependency issues
+# 同伴依赖问题时失败
 strict-peer-dependencies=false
 
-# Hoist patterns for dependencies
+# 依赖的提升模式
 public-hoist-pattern[]=*types*
 public-hoist-pattern[]=*eslint*
 shamefully-hoist=false
 
-# Store location
+# 存储位置
 store-dir=~/.pnpm-store
 
-# Virtual store location  
+# 虚拟存储位置
 virtual-store-dir=node_modules/.pnpm
 
-# Lockfile settings
+# 锁文件设置
 lockfile=true
 prefer-frozen-lockfile=true
 
-# Side effects cache (speeds up rebuilds)
+# 副作用缓存（加速重新构建）
 side-effects-cache=true
 
-# Registry settings
+# 注册表设置
 registry=https://registry.npmjs.org/
 @myorg:registry=https://npm.myorg.com/
 ```
 
-### Workspace Settings
+### 工作区设置
 
 ```ini
-# Link workspace packages
+# 链接工作区包
 link-workspace-packages=true
 
-# Prefer workspace packages over registry
+# 优先使用工作区包而非注册表
 prefer-workspace-packages=true
 
-# Single lockfile for all packages
+# 所有包使用单个锁文件
 shared-workspace-lockfile=true
 
-# Save prefix for workspace dependencies
+# 工作区依赖的保存前缀
 save-workspace-protocol=rolling
 ```
 
-### Node.js Settings
+### Node.js 设置
 
 ```ini
-# Use specific Node.js version
+# 使用特定的 Node.js 版本
 use-node-version=20.10.0
 
-# Node.js version file
+# Node.js 版本文件
 node-version-file=.nvmrc
 
-# Manage Node.js versions
+# 管理 Node.js 版本
 manage-package-manager-versions=true
 ```
 
-### Security Settings
+### 安全设置
 
 ```ini
-# Ignore specific scripts
+# 忽略特定脚本
 ignore-scripts=false
 
-# Allow specific build scripts
+# 允许特定的构建脚本
 onlyBuiltDependencies[]=esbuild
 onlyBuiltDependencies[]=sharp
 
-# Package extensions for missing peer deps
+# 用于缺失同伴依赖的包扩展
 package-extensions[foo@1].peerDependencies.bar=*
 ```
 
-## Configuration Hierarchy
+## 配置层次结构
 
-Settings are read in order (later overrides earlier):
+设置按顺序读取（后面的覆盖前面的）：
 
-1. `/etc/npmrc` - Global config
-2. `~/.npmrc` - User config  
-3. `<project>/.npmrc` - Project config
-4. Environment variables: `npm_config_<key>=<value>`
-5. `pnpm-workspace.yaml` settings field
+1. `/etc/npmrc` - 全局配置
+2. `~/.npmrc` - 用户配置
+3. `<project>/.npmrc` - 项目配置
+4. 环境变量：`npm_config_<key>=<value>`
+5. `pnpm-workspace.yaml` settings 字段
 
-## Environment Variables
+## 环境变量
 
 ```bash
-# Set config via env
+# 通过环境变量设置配置
 npm_config_registry=https://registry.npmjs.org/
 
-# pnpm-specific env vars
+# pnpm 特定的环境变量
 PNPM_HOME=~/.local/share/pnpm
 ```
 
-## Package.json Fields
+## Package.json 字段
 
-pnpm reads specific fields from `package.json`:
+pnpm 从 `package.json` 读取特定字段：
 
 ```json
 {
@@ -173,15 +173,15 @@ pnpm reads specific fields from `package.json`:
 }
 ```
 
-## Key Differences from npm/yarn
+## 与 npm/yarn 的主要区别
 
-1. **Strict by default**: No phantom dependencies
-2. **Workspace protocol**: `workspace:*` for local packages
-3. **Catalogs**: Centralized version management
-4. **Content-addressable store**: Shared across projects
+1. **默认严格**：没有幽灵依赖
+2. **工作区协议**：`workspace:*` 用于本地包
+3. **目录**：集中式版本管理
+4. **内容寻址存储**：跨项目共享
 
-<!-- 
-Source references:
+<!--
+源引用:
 - https://pnpm.io/pnpm-workspace_yaml
 - https://pnpm.io/npmrc
 - https://pnpm.io/package_json

@@ -1,263 +1,264 @@
----
-name: cli-commands
-description: Nuxt CLI commands for development, building, and project management
----
+# CLI 命令
 
-# CLI Commands
+Nuxt 通过 `nuxi`（或 `npx nuxt`）提供 CLI 命令，用于开发、构建和项目管理。
 
-Nuxt provides CLI commands via `nuxi` (or `npx nuxt`) for development, building, and project management.
+## 项目初始化
 
-## Project Initialization
-
-### Create New Project
+### 创建新项目
 
 ```bash
-# Interactive project creation
+# 交互式项目创建
 npx nuxi@latest init my-app
 
-# With specific package manager
+# 使用特定包管理器
 npx nuxi@latest init my-app --packageManager pnpm
 
-# With modules
+# 使用模块
 npx nuxi@latest init my-app --modules "@nuxt/ui,@nuxt/image"
 
-# From template
+# 从模板创建
 npx nuxi@latest init my-app --template v3
 
-# Skip module selection prompt
+# 跳过模块选择提示
 npx nuxi@latest init my-app --no-modules
 ```
 
-**Options:**
-| Option | Description |
+**选项：**
+| 选项 | 描述 |
 |--------|-------------|
-| `-t, --template` | Template name |
-| `--packageManager` | npm, pnpm, yarn, or bun |
-| `-M, --modules` | Modules to install (comma-separated) |
-| `--gitInit` | Initialize git repository |
-| `--no-install` | Skip installing dependencies |
+| `-t, --template` | 模板名称 |
+| `--packageManager` | npm、pnpm、yarn 或 bun |
+| `-M, --modules` | 要安装的模块（逗号分隔） |
+| `--gitInit` | 初始化 git 仓库 |
+| `--no-install` | 跳过安装依赖 |
 
-## Development
+## 开发
 
-### Start Dev Server
+### 启动开发服务器
 
 ```bash
-# Start development server (default: http://localhost:3000)
+# 启动开发服务器（默认：http://localhost:3000）
 npx nuxt dev
 
-# Custom port
+# 自定义端口
 npx nuxt dev --port 4000
 
-# Open in browser
+# 在浏览器中打开
 npx nuxt dev --open
 
-# Listen on all interfaces (for mobile testing)
+# 监听所有接口（用于移动端测试）
 npx nuxt dev --host 0.0.0.0
 
-# With HTTPS
+# 启用 HTTPS
 npx nuxt dev --https
 
-# Clear console on restart
+# 重启时清空控制台
 npx nuxt dev --clear
 
-# Create public tunnel
+# 创建公共隧道
 npx nuxt dev --tunnel
 ```
 
-**Options:**
-| Option | Description |
+**选项：**
+| 选项 | 描述 |
 |--------|-------------|
-| `-p, --port` | Port to listen on |
-| `-h, --host` | Host to listen on |
-| `-o, --open` | Open in browser |
-| `--https` | Enable HTTPS |
-| `--tunnel` | Create public tunnel (via untun) |
-| `--qr` | Show QR code for mobile |
-| `--clear` | Clear console on restart |
+| `-p, --port` | 监听端口 |
+| `-h, --host` | 监听主机 |
+| `-o, --open` | 在浏览器中打开 |
+| `--https` | 启用 HTTPS |
+| `--tunnel` | 创建公共隧道（通过 untun） |
+| `--qr` | 显示移动端二维码 |
+| `--clear` | 重启时清空控制台 |
 
-**Environment Variables:**
-- `NUXT_PORT` or `PORT` - Default port
-- `NUXT_HOST` or `HOST` - Default host
+**环境变量：**
+- `NUXT_PORT` 或 `PORT` - 默认端口
+- `NUXT_HOST` 或 `HOST` - 默认主机
 
-## Building
+## 构建
 
-### Production Build
+### 生产环境构建
 
 ```bash
-# Build for production
+# 构建生产环境
 npx nuxt build
 
-# Build with prerendering
+# 预渲染构建
 npx nuxt build --prerender
 
-# Build with specific preset
+# 使用特定预设构建
 npx nuxt build --preset node-server
 npx nuxt build --preset cloudflare-pages
 npx nuxt build --preset vercel
 
-# Build with environment
+# 使用环境构建
 npx nuxt build --envName staging
 ```
 
-Output is created in `.output/` directory.
+**选项：**
+| 选项 | 描述 |
+|--------|-------------|
+| `--preset` | 构建预设（node-server、cloudflare-pages、vercel） |
+| `--prerender` | 启用预渲染 |
+| `--dotenv` | 环境配置文件 |
+| `--logLevel` | 日志级别 |
 
-### Static Generation
+## 生成静态站点
 
 ```bash
-# Generate static site (prerenders all routes)
+# 生成静态站点
 npx nuxt generate
-```
 
-Equivalent to `nuxt build --prerender`. Creates static HTML files for deployment to static hosting.
-
-### Preview Production Build
-
-```bash
-# Preview after build
+# 生成后预览
 npx nuxt preview
-
-# Custom port
-npx nuxt preview --port 4000
 ```
 
-## Utilities
-
-### Prepare (Type Generation)
+## 分析和检查
 
 ```bash
-# Generate TypeScript types and .nuxt directory
-npx nuxt prepare
-```
-
-Run after cloning or when types are missing.
-
-### Type Check
-
-```bash
-# Run TypeScript type checking
-npx nuxt typecheck
-```
-
-### Analyze Bundle
-
-```bash
-# Analyze production bundle
+# 分析包大小
 npx nuxt analyze
+
+# 类型检查
+npx nuxi typecheck
+
+# ESLint 检查
+npx nuxi lint
+
+# 检查项目状态
+npx nuxi prepare
 ```
 
-Opens visual bundle analyzer.
-
-### Cleanup
+## 开发工具
 
 ```bash
-# Remove generated files (.nuxt, .output, node_modules/.cache)
-npx nuxt cleanup
+# 添加模块
+npx nuxi module add <module-name>
+
+# 模块信息
+npx nuxi module info
+
+# 清理缓存
+npx nuxt clean
 ```
 
-### Info
+## 开发工作流最佳实践
+
+### 启动开发服务器
 
 ```bash
-# Show environment info (useful for bug reports)
-npx nuxt info
+# 推荐的开发服务器启动方式
+nuxt dev
 ```
 
-### Upgrade
+**最佳实践：**
+- 使用 `--clear` 避免控制台输出混乱
+- 使用 `--qr` 和 `--host` 进行移动端测试
+- 在 CI/CD 环境中使用环境变量配置端口
+
+### 开发环境配置
 
 ```bash
-# Upgrade Nuxt to latest version
-npx nuxt upgrade
+# 通过环境变量配置开发环境
+NUXT_PORT=3000 nuxt dev
+NUXT_HOST=0.0.0.0 nuxt dev
 
-# Upgrade to nightly release
-npx nuxt upgrade --nightly
+# 使用 .env 文件
+NUXT_PUBLIC_API_URL=http://localhost:4000/api nuxt dev
 ```
 
-## Module Commands
-
-### Add Module
+### 模块管理
 
 ```bash
-# Add a Nuxt module
-npx nuxt module add @nuxt/ui
-npx nuxt module add @nuxt/image
+# 使用 CLI 添加模块（推荐）
+npx nuxi module add @nuxt/icon
+npx nuxi module add @pinia/nuxt
+
+# 安装后自动更新 nuxt.config.ts
 ```
 
-Installs and adds to `nuxt.config.ts`.
-
-### Build Module (for module authors)
+### 调试和诊断
 
 ```bash
-# Build a Nuxt module
-npx nuxt build-module
+# 启用详细日志
+nuxt dev --logLevel verbose
+
+# 分析构建
+nuxt analyze
+
+# 检查类型
+npx nuxi typecheck
+
+# 检查 Lint
+npx nuxi lint
 ```
 
-## DevTools
+## Nuxi 命令
 
 ```bash
-# Enable DevTools globally
-npx nuxt devtools enable
+# 创建新项目
+nuxi init
 
-# Disable DevTools
-npx nuxt devtools disable
+# 启动开发服务器
+nuxi dev
+
+# 构建
+nuxi build
+
+# 生成
+nuxi generate
+
+# 预览
+nuxi preview
 ```
 
-## Common Workflows
+## 常见问题
 
-### Development
+### 端口被占用
 
 ```bash
-# Install dependencies and start dev
-pnpm install
-pnpm dev  # or npx nuxt dev
+# 自动使用下一个可用端口
+nuxt dev --port 0
+
+# 指定备用端口
+nuxt dev --port 3001
 ```
 
-### Production Deployment
+### 开发服务器性能问题
 
 ```bash
-# Build and preview locally
-pnpm build
-pnpm preview
-
-# Or for static hosting
-pnpm generate
+# 禁用某些功能以提高开发速度
+nuxt dev --no-clear
 ```
 
-### After Cloning
+### 缓存问题
 
 ```bash
-# Install deps and prepare types
-pnpm install
-npx nuxt prepare
+# 清理 .nuxt 缓存
+nuxt clean
+
+# 删除 node_modules/.cache
+rm -rf node_modules/.cache
 ```
 
-## Environment-specific Builds
+## CLI 命令速查表
 
-```bash
-# Development build
-npx nuxt build --envName development
-
-# Staging build
-npx nuxt build --envName staging
-
-# Production build (default)
-npx nuxt build --envName production
-```
-
-Corresponds to `$development`, `$env.staging`, `$production` in `nuxt.config.ts`.
-
-## Layer Extension
-
-```bash
-# Dev with additional layer
-npx nuxt dev --extends ./base-layer
-
-# Build with layer
-npx nuxt build --extends ./base-layer
-```
+| 命令 | 用途 | 常用选项 |
+|------|------|----------|
+| `nuxi init` | 创建新项目 | `--template`, `--packageManager` |
+| `nuxt dev` | 启动开发服务器 | `--port`, `--host`, `--https`, `--tunnel` |
+| `nuxt build` | 生产构建 | `--preset`, `--prerender` |
+| `nuxt generate` | 生成静态站点 | - |
+| `nuxt preview` | 预览生产构建 | `--port`, `--host` |
+| `nuxi module add` | 添加模块 | - |
+| `nuxt clean` | 清理缓存 | - |
+| `nuxt analyze` | 分析包大小 | - |
+| `nuxi typecheck` | 类型检查 | - |
+| `nuxi lint` | ESLint 检查 | --fix |
 
 <!-- 
-Source references:
-- https://nuxt.com/docs/api/commands/dev
-- https://nuxt.com/docs/api/commands/build
-- https://nuxt.com/docs/api/commands/generate
-- https://nuxt.com/docs/api/commands/init
+源码参考：
+- https://nuxt.com/docs/getting-started/installation
+- https://nuxt.com/docs/api/commands/nuxt
+- https://nuxt.com/docs/api/commands/nuxi
+- https://nuxt.com/docs/api/commands/nuxi-module
 -->

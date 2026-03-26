@@ -1,141 +1,141 @@
 ---
 name: pnpm-store
-description: Content-addressable storage system that makes pnpm fast and disk-efficient
+description: 使 pnpm 快速且节省磁盘空间的内容寻址存储系统
 ---
 
-# pnpm Store
+# pnpm 存储
 
-pnpm uses a content-addressable store to save disk space and speed up installations. All packages are stored once globally and hard-linked to project `node_modules`.
+pnpm 使用内容寻址存储来节省磁盘空间并加速安装。所有包在全局存储一次，并硬链接到项目的 `node_modules`。
 
-## How It Works
+## 工作原理
 
-1. **Global Store**: Packages are downloaded once to a central store
-2. **Hard Links**: Projects link to store instead of copying files
-3. **Content-Addressable**: Files are stored by content hash, deduplicating identical files
+1. **全局存储**：包下载一次到中央存储
+2. **硬链接**：项目链接到存储而不是复制文件
+3. **内容寻址**：文件按内容哈希存储，去重相同文件
 
-### Storage Layout
+### 存储布局
 
 ```
-~/.pnpm-store/              # Global store (default location)
+~/.pnpm-store/              # 全局存储（默认位置）
 └── v3/
     └── files/
-        └── <hash>/         # Files stored by content hash
+        └── <hash>/         # 按内容哈希存储的文件
 
 project/
 └── node_modules/
-    ├── .pnpm/              # Virtual store (hard links to global store)
+    ├── .pnpm/              # 虚拟存储（到全局存储的硬链接）
     │   ├── lodash@4.17.21/
     │   │   └── node_modules/
     │   │       └── lodash/
     │   └── express@4.18.2/
     │       └── node_modules/
     │           ├── express/
-    │           └── <deps>/  # Flat structure for dependencies
+    │           └── <deps>/  # 依赖的扁平结构
     ├── lodash -> .pnpm/lodash@4.17.21/node_modules/lodash
     └── express -> .pnpm/express@4.18.2/node_modules/express
 ```
 
-## Store Commands
+## 存储命令
 
 ```bash
-# Show store location
+# 显示存储位置
 pnpm store path
 
-# Remove unreferenced packages
+# 删除未引用的包
 pnpm store prune
 
-# Check store integrity
+# 检查存储完整性
 pnpm store status
 
-# Add package to store without installing
+# 将包添加到存储而不安装
 pnpm store add <pkg>
 ```
 
-## Configuration
+## 配置
 
-### Store Location
+### 存储位置
 
 ```ini
 # .npmrc
 store-dir=~/.pnpm-store
 
-# Or use environment variable
+# 或使用环境变量
 PNPM_HOME=~/.local/share/pnpm
 ```
 
-### Virtual Store
+### 虚拟存储
 
-The virtual store (`.pnpm` in `node_modules`) contains symlinks to the global store:
+虚拟存储（`node_modules` 中的 `.pnpm`）包含到全局存储的符号链接：
 
 ```ini
-# Customize virtual store location
+# 自定义虚拟存储位置
 virtual-store-dir=node_modules/.pnpm
 
-# Alternative flat layout
+# 替代扁平布局
 node-linker=hoisted
 ```
 
-## Disk Space Benefits
+## 磁盘空间优势
 
-pnpm saves significant disk space:
+pnpm 节省大量磁盘空间：
 
-- **Deduplication**: Same package version stored once across all projects
-- **Content deduplication**: Identical files across different packages stored once
-- **Hard links**: No copying, just linking
+- **去重**：相同包版本在所有项目中存储一次
+- **内容去重**：不同包中的相同文件存储一次
+- **硬链接**：不复制，只是链接
 
-### Check disk usage
+### 检查磁盘使用情况
 
 ```bash
-# Compare actual vs apparent size
-du -sh node_modules        # Apparent size
-du -sh --apparent-size node_modules  # With hard links counted
+# 比较实际大小与显示大小
+du -sh node_modules        # 显示大小
+du -sh --apparent-size node_modules  # 计算硬链接
 ```
 
-## Node Linker Modes
+## Node 链接器模式
 
-Configure how `node_modules` is structured:
+配置 `node_modules` 的结构：
 
 ```ini
-# Default: Symlinked structure (recommended)
+# 默认：符号链接结构（推荐）
 node-linker=isolated
 
-# Flat node_modules (npm-like, for compatibility)
+# 扁平 node_modules（类似 npm，用于兼容性）
 node-linker=hoisted
 
-# PnP mode (experimental, like Yarn PnP)
+# PnP 模式（实验性，类似 Yarn PnP）
 node-linker=pnp
 ```
 
-### Isolated Mode (Default)
+### 隔离模式（默认）
 
-- Strict dependency resolution
-- No phantom dependencies
-- Packages can only access declared dependencies
+- 严格的依赖解析
+- 没有幽灵依赖
+- 包只能访问声明的依赖
 
-### Hoisted Mode
+### 提升模式
 
-- Flat `node_modules` like npm
-- For compatibility with tools that don't support symlinks
-- Loses strictness benefits
+- 类似 npm 的扁平 `node_modules`
+- 用于不支持符号链接的工具的兼容性
+- 失去严格性优势
 
-## Side Effects Cache
+## 副作用缓存
 
-Cache build outputs for native modules:
+缓存原生模块的构建输出：
 
 ```ini
-# Enable side effects caching
+# 启用副作用缓存
 side-effects-cache=true
 
-# Store side effects in project (instead of global store)
+# 在项目中存储副作用（而不是全局存储）
 side-effects-cache-readonly=true
 ```
 
-## Shared Store Across Machines
+## 跨机器共享存储
 
-For CI/CD, you can share the store:
+对于 CI/CD，您可以共享存储：
 
 ```yaml
-# GitHub Actions example
+# GitHub Actions 示例
 - uses: pnpm/action-setup@v4
   with:
     run_install: false
@@ -150,29 +150,29 @@ For CI/CD, you can share the store:
     key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Store corruption
+### 存储损坏
 ```bash
-# Verify and fix store
+# 验证并修复存储
 pnpm store status
 pnpm store prune
 ```
 
-### Hard link issues (network drives, Docker)
+### 硬链接问题（网络驱动器、Docker）
 ```ini
-# Use copying instead of hard links
+# 使用复制而不是硬链接
 package-import-method=copy
 ```
 
-### Permission issues
+### 权限问题
 ```bash
-# Fix store permissions
+# 修复存储权限
 chmod -R u+w ~/.pnpm-store
 ```
 
-<!-- 
-Source references:
+<!--
+源引用:
 - https://pnpm.io/symlinked-node-modules-structure
 - https://pnpm.io/cli/store
 - https://pnpm.io/npmrc#store-dir

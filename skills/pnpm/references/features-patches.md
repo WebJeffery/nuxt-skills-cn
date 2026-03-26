@@ -1,48 +1,48 @@
 ---
 name: pnpm-patches
-description: Patch third-party packages directly with customized fixes
+description: 使用自定义修复直接修补第三方包
 ---
 
-# pnpm Patches
+# pnpm 补丁
 
-pnpm's patching feature lets you modify third-party packages directly. Useful for applying fixes before upstream releases or customizing package behavior.
+pnpm 的补丁功能允许您直接修改第三方包。用于在上游发布之前应用修复或自定义包行为。
 
-## Creating a Patch
+## 创建补丁
 
-### Step 1: Initialize Patch
+### 步骤 1：初始化补丁
 
 ```bash
 pnpm patch <pkg>@<version>
 
-# Example
+# 示例
 pnpm patch express@4.18.2
 ```
 
-This creates a temporary directory with the package source and outputs the path:
+这将创建一个包含包源代码的临时目录并输出路径：
 
 ```
 You can now edit the following folder: /tmp/abc123...
 ```
 
-### Step 2: Edit Files
+### 步骤 2：编辑文件
 
-Navigate to the temporary directory and make your changes:
+导航到临时目录并进行更改：
 
 ```bash
 cd /tmp/abc123...
-# Edit files as needed
+# 根据需要编辑文件
 ```
 
-### Step 3: Commit Patch
+### 步骤 3：提交补丁
 
 ```bash
 pnpm patch-commit <path-from-step-1>
 
-# Example
+# 示例
 pnpm patch-commit /tmp/abc123...
 ```
 
-This creates a `.patch` file in `patches/` and updates `package.json`:
+这会在 `patches/` 中创建一个 `.patch` 文件并更新 `package.json`：
 
 ```
 patches/
@@ -59,9 +59,9 @@ patches/
 }
 ```
 
-## Patch File Format
+## 补丁文件格式
 
-Patches use standard unified diff format:
+补丁使用标准统一差异格式：
 
 ```diff
 diff --git a/lib/router/index.js b/lib/router/index.js
@@ -69,49 +69,49 @@ index abc123..def456 100644
 --- a/lib/router/index.js
 +++ b/lib/router/index.js
 @@ -100,6 +100,7 @@ function createRouter() {
-   // Original code
+   // 原始代码
 -  const timeout = 30000;
-+  const timeout = 60000; // Extended timeout
++  const timeout = 60000; // 延长超时
    return router;
  }
 ```
 
-## Managing Patches
+## 管理补丁
 
-### List Patched Packages
+### 列出已修补的包
 
 ```bash
 pnpm list --depth=0
-# Shows (patched) marker for patched packages
+# 显示已修补包的 (patched) 标记
 ```
 
-### Update a Patch
+### 更新补丁
 
 ```bash
-# Edit existing patch
+# 编辑现有补丁
 pnpm patch express@4.18.2
 
-# After editing
+# 编辑后
 pnpm patch-commit <path>
 ```
 
-### Remove a Patch
+### 删除补丁
 
 ```bash
 pnpm patch-remove <pkg>@<version>
 
-# Example  
+# 示例
 pnpm patch-remove express@4.18.2
 ```
 
-Or manually:
-1. Delete the patch file from `patches/`
-2. Remove entry from `patchedDependencies` in `package.json`
-3. Run `pnpm install`
+或手动：
+1. 从 `patches/` 删除补丁文件
+2. 从 `package.json` 的 `patchedDependencies` 中删除条目
+3. 运行 `pnpm install`
 
-## Patch Configuration
+## 补丁配置
 
-### Custom Patches Directory
+### 自定义补丁目录
 
 ```json
 {
@@ -123,7 +123,7 @@ Or manually:
 }
 ```
 
-### Multiple Packages
+### 多个包
 
 ```json
 {
@@ -137,12 +137,12 @@ Or manually:
 }
 ```
 
-## Workspaces
+## 工作区
 
-Patches are shared across the workspace. Define in the root `package.json`:
+补丁在工作区之间共享。在根 `package.json` 中定义：
 
 ```json
-// Root package.json
+// 根 package.json
 {
   "pnpm": {
     "patchedDependencies": {
@@ -152,49 +152,49 @@ Patches are shared across the workspace. Define in the root `package.json`:
 }
 ```
 
-All workspace packages using `express@4.18.2` will have the patch applied.
+所有使用 `express@4.18.2` 的工作区包都将应用补丁。
 
-## Best Practices
+## 最佳实践
 
-1. **Version specificity**: Patches are tied to exact versions. Update patches when upgrading dependencies.
+1. **版本特定性**：补丁与确切版本绑定。升级依赖时更新补丁。
 
-2. **Document patches**: Add comments explaining why the patch exists:
+2. **记录补丁**：添加注释解释为什么补丁存在：
    ```bash
-   # In patches/README.md
+   # 在 patches/README.md 中
    ## express@4.18.2.patch
-   Fixes timeout issue. PR pending: https://github.com/expressjs/express/pull/1234
+   修复超时问题。PR 待定：https://github.com/expressjs/express/pull/1234
    ```
 
-3. **Minimize patches**: Keep patches small and focused. Large patches are hard to maintain.
+3. **最小化补丁**：保持补丁小而专注。大补丁难以维护。
 
-4. **Track upstream**: Note upstream issues/PRs so you can remove patches when fixed.
+4. **跟踪上游**：注意上游问题/PR，以便在修复后删除补丁。
 
-5. **Test patches**: Ensure patched code works correctly in your use case.
+5. **测试补丁**：确保修补的代码在您的用例中正常工作。
 
-## Troubleshooting
+## 故障排除
 
-### Patch fails to apply
+### 补丁应用失败
 
 ```
 ERR_PNPM_PATCH_FAILED  Cannot apply patch
 ```
 
-The package version changed. Recreate the patch:
+包版本已更改。重新创建补丁：
 ```bash
 pnpm patch-remove express@4.18.2
 pnpm patch express@4.18.2
-# Reapply changes
+# 重新应用更改
 pnpm patch-commit <path>
 ```
 
-### Patch not applied
+### 补丁未应用
 
-Ensure:
-1. Version in `patchedDependencies` matches installed version exactly
-2. Run `pnpm install` after adding patch configuration
+确保：
+1. `patchedDependencies` 中的版本与安装的版本完全匹配
+2. 添加补丁配置后运行 `pnpm install`
 
-<!-- 
-Source references:
+<!--
+源引用:
 - https://pnpm.io/cli/patch
 - https://pnpm.io/cli/patch-commit
 - https://pnpm.io/package_json#pnpmpatcheddependencies

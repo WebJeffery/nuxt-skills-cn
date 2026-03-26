@@ -1,39 +1,39 @@
 ---
 name: pnpm-peer-dependencies
-description: Handling peer dependencies with auto-install and resolution rules
+description: 使用自动安装和解析规则处理同伴依赖
 ---
 
-# pnpm Peer Dependencies
+# pnpm 同伴依赖
 
-pnpm has strict peer dependency handling by default. It provides configuration options to control how peer dependencies are resolved and reported.
+pnpm 默认具有严格的同伴依赖处理。它提供配置选项来控制同伴依赖的解析和报告方式。
 
-## Auto-Install Peer Dependencies
+## 自动安装同伴依赖
 
-By default, pnpm automatically installs peer dependencies:
+默认情况下，pnpm 自动安装同伴依赖：
 
 ```ini
-# .npmrc (default is true since pnpm v8)
+# .npmrc（pnpm v8 以来默认为 true）
 auto-install-peers=true
 ```
 
-When enabled, pnpm automatically adds missing peer dependencies based on the best matching version.
+启用后，pnpm 会根据最佳匹配版本自动添加缺失的同伴依赖。
 
-## Strict Peer Dependencies
+## 严格的同伴依赖
 
-Control whether peer dependency issues cause errors:
+控制同伴依赖问题是否导致错误：
 
 ```ini
-# Fail on peer dependency issues (default: false)
+# 同伴依赖问题时失败（默认：false）
 strict-peer-dependencies=true
 ```
 
-When strict, pnpm will fail if:
-- Peer dependency is missing
-- Installed version doesn't match required range
+严格时，如果出现以下情况，pnpm 将失败：
+- 同伴依赖缺失
+- 安装的版本不匹配所需范围
 
-## Peer Dependency Rules
+## 同伴依赖规则
 
-Configure peer dependency behavior in `package.json`:
+在 `package.json` 中配置同伴依赖行为：
 
 ```json
 {
@@ -51,7 +51,7 @@ Configure peer dependency behavior in `package.json`:
 
 ### ignoreMissing
 
-Suppress warnings for missing peer dependencies:
+抑制缺失同伴依赖的警告：
 
 ```json
 {
@@ -67,14 +67,14 @@ Suppress warnings for missing peer dependencies:
 }
 ```
 
-Use patterns:
-- `"react"` - exact package name
-- `"@babel/*"` - all packages in scope
-- `"*"` - all packages (not recommended)
+使用模式：
+- `"react"` - 精确包名
+- `"@babel/*"` - 作用域中的所有包
+- `"*"` - 所有包（不推荐）
 
 ### allowedVersions
 
-Allow specific versions that would otherwise cause warnings:
+允许否则会导致警告的特定版本：
 
 ```json
 {
@@ -92,7 +92,7 @@ Allow specific versions that would otherwise cause warnings:
 
 ### allowAny
 
-Allow any version for specified peer dependencies:
+允许指定同伴依赖的任何版本：
 
 ```json
 {
@@ -104,14 +104,14 @@ Allow any version for specified peer dependencies:
 }
 ```
 
-## Adding Peer Dependencies via Hooks
+## 通过钩子添加同伴依赖
 
-Use `.pnpmfile.cjs` to add missing peer dependencies:
+使用 `.pnpmfile.cjs` 添加缺失的同伴依赖：
 
 ```js
 // .pnpmfile.cjs
 function readPackage(pkg, context) {
-  // Add missing peer dependency
+  // 添加缺失的同伴依赖
   if (pkg.name === 'problematic-package') {
     pkg.peerDependencies = {
       ...pkg.peerDependencies,
@@ -128,9 +128,9 @@ module.exports = {
 }
 ```
 
-## Peer Dependencies in Workspaces
+## 工作区中的同伴依赖
 
-Workspace packages can satisfy peer dependencies:
+工作区包可以满足同伴依赖：
 
 ```json
 // packages/app/package.json
@@ -149,11 +149,11 @@ Workspace packages can satisfy peer dependencies:
 }
 ```
 
-The workspace `app` provides `react` which satisfies `components`' peer dependency.
+工作区 `app` 提供 `react`，满足 `components` 的同伴依赖。
 
-## Common Scenarios
+## 常见场景
 
-### Monorepo with Shared React
+### 具有共享 React 的 Monorepo
 
 ```yaml
 # pnpm-workspace.yaml
@@ -181,7 +181,7 @@ catalog:
 }
 ```
 
-### Suppress ESLint Plugin Warnings
+### 抑制 ESLint 插件警告
 
 ```json
 {
@@ -196,7 +196,7 @@ catalog:
 }
 ```
 
-### Allow Multiple Major Versions
+### 允许多个主要版本
 
 ```json
 {
@@ -211,28 +211,28 @@ catalog:
 }
 ```
 
-## Debugging Peer Dependencies
+## 调试同伴依赖
 
 ```bash
-# See why a package is installed
+# 查看为什么安装了包
 pnpm why <package>
 
-# List all peer dependency warnings
+# 列出所有同伴依赖警告
 pnpm install --reporter=append-only 2>&1 | grep -i peer
 
-# Check dependency tree
+# 检查依赖树
 pnpm list --depth=Infinity
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Enable auto-install-peers** for convenience (default in pnpm v8+)
+1. **启用 auto-install-peers** 以方便（pnpm v8+ 中的默认设置）
 
-2. **Use peerDependencyRules** instead of ignoring all warnings
+2. **使用 peerDependencyRules** 而不是忽略所有警告
 
-3. **Document suppressed warnings** explaining why they're safe
+3. **记录抑制的警告** 解释为什么它们是安全的
 
-4. **Keep peer deps ranges wide** in libraries:
+4. **在库中保持同伴依赖范围宽泛**：
    ```json
    {
      "peerDependencies": {
@@ -241,10 +241,10 @@ pnpm list --depth=Infinity
    }
    ```
 
-5. **Test with different peer versions** if you support multiple majors
+5. **使用不同的同伴版本测试** 如果您支持多个主要版本
 
-<!-- 
-Source references:
+<!--
+源引用:
 - https://pnpm.io/package_json#pnpmpeerdependencyrules
 - https://pnpm.io/npmrc#auto-install-peers
 -->

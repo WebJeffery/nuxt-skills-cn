@@ -1,59 +1,59 @@
 ---
 name: directory-structure
-description: Nuxt project folder structure, conventions, and file organization
+description: Nuxt 项目文件夹结构、约定和文件组织
 ---
 
-# Directory Structure
+# 目录结构
 
-Nuxt uses conventions-based directory structure. Understanding it is key to effective development.
+Nuxt 使用基于约定的目录结构。理解它对于高效开发至关重要。
 
-## Standard Project Structure
+## 标准项目结构
 
 ```
 my-nuxt-app/
-├── app/                    # Application source (can be at root level)
-│   ├── app.vue             # Root component
-│   ├── app.config.ts       # App configuration (runtime)
-│   ├── error.vue           # Error page
-│   ├── components/         # Auto-imported Vue components
-│   ├── composables/        # Auto-imported composables
-│   ├── layouts/            # Layout components
-│   ├── middleware/         # Route middleware
-│   ├── pages/              # File-based routing
-│   ├── plugins/            # Vue plugins
-│   └── utils/              # Auto-imported utilities
-├── assets/                 # Build-processed assets (CSS, images)
-├── public/                 # Static assets (served as-is)
-├── server/                 # Server-side code
-│   ├── api/                # API routes (/api/*)
-│   ├── routes/             # Server routes
-│   ├── middleware/         # Server middleware
-│   ├── plugins/            # Nitro plugins
-│   └── utils/              # Server utilities (auto-imported)
-├── content/                # Content files (@nuxt/content)
-├── layers/                 # Local layers (auto-scanned)
-├── modules/                # Local modules
-├── nuxt.config.ts          # Nuxt configuration
+├── app/                    # 应用源代码（可以在根级别）
+│   ├── app.vue             # 根组件
+│   ├── app.config.ts       # 应用配置（运行时）
+│   ├── error.vue           # 错误页面
+│   ├── components/         # 自动导入的 Vue 组件
+│   ├── composables/        # 自动导入的 composables
+│   ├── layouts/            # 布局组件
+│   ├── middleware/         # 路由中间件
+│   ├── pages/              # 基于文件的路由
+│   ├── plugins/            # Vue 插件
+│   └── utils/              # 自动导入的工具
+├── assets/                 # 构建处理的资源（CSS、图片）
+├── public/                 # 静态资源（按原样服务）
+├── server/                 # 服务器端代码
+│   ├── api/                # API 路由（/api/*）
+│   ├── routes/             # 服务器路由
+│   ├── middleware/         # 服务器中间件
+│   ├── plugins/            # Nitro 插件
+│   └── utils/              # 服务器工具（自动导入）
+├── content/                # 内容文件（@nuxt/content）
+├── layers/                 # 本地层（自动扫描）
+├── modules/                # 本地模块
+├── nuxt.config.ts          # Nuxt 配置
 ├── package.json
 └── tsconfig.json
 ```
 
-## Key Directories
+## 关键目录
 
-### `app/` Directory
+### `app/` 目录
 
-Contains all application code. Can also be at root level (without `app/` folder).
+包含所有应用代码。也可以在根级别（没有 `app/` 文件夹）。
 
 ```ts
-// nuxt.config.ts - customize source directory
+// nuxt.config.ts - 自定义源目录
 export default defineNuxtConfig({
-  srcDir: 'src/', // Change from 'app/' to 'src/'
+  srcDir: 'src/', // 从 'app/' 改为 'src/'
 })
 ```
 
 ### `app/components/`
 
-Vue components auto-imported by name:
+按名称自动导入的 Vue 组件：
 
 ```
 components/
@@ -67,7 +67,7 @@ components/
 └── TheHeader.vue        → <TheHeader />
 ```
 
-**Lazy loading**: Prefix with `Lazy` for dynamic import:
+**懒加载**：使用 `Lazy` 前缀进行动态导入：
 
 ```vue
 <template>
@@ -75,27 +75,27 @@ components/
 </template>
 ```
 
-**Client/Server only**:
+**客户端/服务器专用**：
 
 ```
 components/
-├── Comments.client.vue  → Only rendered on client
-└── ServerData.server.vue → Only rendered on server
+├── Comments.client.vue  → 仅在客户端渲染
+└── ServerData.server.vue → 仅在服务器渲染
 ```
 
 ### `app/composables/`
 
-Vue composables auto-imported (top-level files only):
+自动导入的 Vue composables（仅顶层文件）：
 
 ```
 composables/
 ├── useAuth.ts           → useAuth()
 ├── useFoo.ts            → useFoo()
 └── nested/
-    └── utils.ts         → NOT auto-imported
+    └── utils.ts         → 不会自动导入
 ```
 
-Re-export nested composables:
+重新导出嵌套 composables：
 
 ```ts
 // composables/index.ts
@@ -104,7 +104,7 @@ export { useHelper } from './nested/utils'
 
 ### `app/pages/`
 
-File-based routing:
+基于文件的路由：
 
 ```
 pages/
@@ -116,23 +116,23 @@ pages/
 ├── users/
 │   └── [id]/
 │       └── profile.vue  → /users/:id/profile
-├── [...slug].vue        → /* (catch-all)
-├── [[optional]].vue     → /:optional? (optional param)
-└── (marketing)/         → Route group (not in URL)
+├── [...slug].vue        → /*（捕获全部）
+├── [[optional]].vue     → /:optional?（可选参数）
+└── (marketing)/         → 路由组（不在 URL 中）
     └── pricing.vue      → /pricing
 ```
 
-**Pages are optional**: Without `pages/`, no vue-router is included.
+**Pages 是可选的**：没有 `pages/` 时，不包含 vue-router。
 
 ### `app/layouts/`
 
-Layout components wrapping pages:
+包装页面的布局组件：
 
 ```
 layouts/
-├── default.vue          → Default layout
-├── admin.vue            → Admin layout
-└── blank.vue            → No layout
+├── default.vue          → 默认布局
+├── admin.vue            → 管理员布局
+└── blank.vue            → 无布局
 ```
 
 ```vue
@@ -146,43 +146,43 @@ layouts/
 </template>
 ```
 
-Use in pages:
+在页面中使用：
 
 ```vue
 <script setup>
 definePageMeta({
   layout: 'admin',
-  // layout: false // Disable layout
+  // layout: false // 禁用布局
 })
 </script>
 ```
 
 ### `app/middleware/`
 
-Route middleware:
+路由中间件：
 
 ```
 middleware/
-├── auth.ts              → Named middleware
-├── admin.ts             → Named middleware
-└── logger.global.ts     → Global middleware (runs on every route)
+├── auth.ts              → 命名中间件
+├── admin.ts             → 命名中间件
+└── logger.global.ts     → 全局中间件（在每个路由上运行）
 ```
 
 ### `app/plugins/`
 
-Nuxt plugins (auto-registered):
+Nuxt 插件（自动注册）：
 
 ```
 plugins/
-├── 01.analytics.ts      → Order with number prefix
+├── 01.analytics.ts      → 使用数字前缀排序
 ├── 02.auth.ts
-├── vue-query.client.ts  → Client-only plugin
-└── server-init.server.ts → Server-only plugin
+├── vue-query.client.ts  → 仅客户端插件
+└── server-init.server.ts → 仅服务器插件
 ```
 
-### `server/` Directory
+### `server/` 目录
 
-Nitro server code:
+Nitro 服务器代码：
 
 ```
 server/
@@ -193,16 +193,16 @@ server/
 ├── routes/
 │   └── sitemap.xml.ts   → /sitemap.xml
 ├── middleware/
-│   └── auth.ts          → Runs on every request
+│   └── auth.ts          → 在每个请求上运行
 ├── plugins/
-│   └── db.ts            → Server startup plugins
+│   └── db.ts            → 服务器启动插件
 └── utils/
-    └── db.ts            → Auto-imported server utilities
+    └── db.ts            → 自动导入的服务器工具
 ```
 
-### `public/` Directory
+### `public/` 目录
 
-Static assets served at root URL:
+在根 URL 提供的静态资源：
 
 ```
 public/
@@ -212,9 +212,9 @@ public/
     └── logo.png         → /images/logo.png
 ```
 
-### `assets/` Directory
+### `assets/` 目录
 
-Build-processed assets:
+构建处理的资源：
 
 ```
 assets/
@@ -226,7 +226,7 @@ assets/
     └── custom.woff2
 ```
 
-Reference in components:
+在组件中引用：
 
 ```vue
 <template>
@@ -238,31 +238,179 @@ Reference in components:
 </style>
 ```
 
-## Special Files
+## 特殊文件
 
-| File | Purpose |
-|------|---------|
-| `app.vue` | Root component (optional with pages/) |
-| `app.config.ts` | Runtime app configuration |
-| `error.vue` | Custom error page |
-| `nuxt.config.ts` | Build-time configuration |
-| `.nuxtignore` | Ignore files from Nuxt |
-| `.env` | Environment variables |
+|| 文件 | 用途 |
+||------|---------|
+|| `app.vue` | 根组件（有 pages/ 时可选） |
+|| `app.config.ts` | 运行时应用配置 |
+|| `error.vue` | 自定义错误页面 |
+|| `nuxt.config.ts` | 构建时配置 |
+|| `.nuxtignore` | 从 Nuxt 忽略文件 |
+|| `.env` | 环境变量 |
 
-## File Naming Conventions
+## 文件命名约定
 
-| Pattern | Meaning |
-|---------|---------|
-| `[param]` | Dynamic route parameter |
-| `[[param]]` | Optional parameter |
-| `[...slug]` | Catch-all route |
-| `(group)` | Route group (not in URL) |
-| `.client.vue` | Client-only component |
-| `.server.vue` | Server-only component |
-| `.global.ts` | Global middleware |
+|| 模式 | 含义 |
+||---------|---------|
+|| `[param]` | 动态路由参数 |
+|| `[[param]]` | 可选参数 |
+|| `[...slug]` | 捕获全部路由 |
+|| `(group)` | 路由组（不在 URL 中） |
+|| `.client.vue` | 仅客户端组件 |
+|| `.server.vue` | 仅服务器组件 |
+|| `.global.ts` | 全局中间件 |
+
+## 最佳实践
+
+### 文件组织原则
+
+1. **按功能分组** - 相关文件放在一起
+2. **一致的命名** - 组件使用 PascalCase
+3. **避免深层嵌套** - 最多 2-3 层
+4. **清晰的命名** - 描述性文件名
+
+### 组件结构
+
+```vue
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+
+interface Props {
+  title: string
+  count?: number
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  count: 0,
+})
+
+interface Emits {
+  (e: 'update', value: number): void
+}
+
+const emit = defineEmits<Emits>()
+const isActive = ref(false)
+const displayCount = computed(() => props.count + 1)
+
+const handleClick = () => {
+  isActive.value = !isActive.value
+  emit('update', props.count)
+}
+</script>
+
+<template>
+  <div :class="{ active: isActive }" @click="handleClick">
+    {{ title }}: {{ displayCount }}
+  </div>
+</template>
+```
+
+### Composables 结构
+
+```ts
+export const useCounter = (initialValue = 0) => {
+  const count = ref(initialValue)
+  
+  const increment = () => {
+    count.value++
+  }
+  
+  const decrement = () => {
+    count.value--
+  }
+  
+  const reset = () => {
+    count.value = initialValue
+  }
+  
+  return {
+    count,
+    increment,
+    decrement,
+    reset,
+  }
+}
+```
+
+### 页面结构
+
+```vue
+<script setup lang="ts">
+// 1. 设置页面元信息
+definePageMeta({
+  layout: 'default',
+  middleware: ['auth'],
+})
+
+// 2. 路由信息
+const route = useRoute()
+const router = useRouter()
+
+// 3. 数据获取
+const { data, error, status } = await useFetch(
+  `/api/posts/${route.params.id}`
+)
+
+// 4. 错误处理
+if (error.value) {
+  throw createError({
+    statusCode: error.value.statusCode,
+    message: error.value.message,
+  })
+}
+</script>
+
+<template>
+  <div>
+    <h1>{{ data?.title }}</h1>
+    <p>{{ data?.content }}</p>
+  </div>
+</template>
+```
+
+## 常见问题
+
+### 组件未自动导入
+
+**原因：** 组件不在 `components/` 目录下
+
+**解决：**
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  components: [
+    {
+      path: '~/custom-components',
+      pathPrefix: false,
+    },
+  ],
+})
+```
+
+### Composables 未自动导入
+
+**原因：** 嵌套在子目录中
+
+**解决：**
+
+```ts
+// composables/index.ts
+export * from './nested/useHelper'
+```
+
+## 文件大小和复杂度
+
+### 推荐限制
+
+- 单个组件文件：最多 300 行
+- 单个 composable：最多 200 行
+- 单个页面：最多 400 行
+- 嵌套深度：最多 3 层
 
 <!-- 
-Source references:
+源码参考：
 - https://nuxt.com/docs/directory-structure
 - https://nuxt.com/docs/directory-structure/app
 - https://nuxt.com/docs/directory-structure/server

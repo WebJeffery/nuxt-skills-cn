@@ -1,19 +1,19 @@
 ---
 name: pnpm-aliases
-description: Install packages under custom names for versioning, forks, or alternatives
+description: 在自定义名称下安装包，用于版本控制、分支或替代方案
 ---
 
-# pnpm Aliases
+# pnpm 别名
 
-pnpm supports package aliases using the `npm:` protocol. This lets you install packages under different names, use multiple versions of the same package, or substitute packages.
+pnpm 使用 `npm:` 协议支持包别名。这允许您在不同的名称下安装包、使用同一包的多个版本或替换包。
 
-## Basic Syntax
+## 基本语法
 
 ```bash
 pnpm add <alias>@npm:<package>@<version>
 ```
 
-In `package.json`:
+在 `package.json` 中：
 ```json
 {
   "dependencies": {
@@ -22,11 +22,11 @@ In `package.json`:
 }
 ```
 
-## Use Cases
+## 用例
 
-### Multiple Versions of Same Package
+### 同一包的多个版本
 
-Install different versions side by side:
+并排安装不同版本：
 
 ```json
 {
@@ -37,15 +37,15 @@ Install different versions side by side:
 }
 ```
 
-Usage:
+使用：
 ```js
 import lodash3 from 'lodash3'
 import lodash4 from 'lodash4'
 ```
 
-### Replace Package with Fork
+### 用分支替换包
 
-Substitute a package with a fork or alternative:
+用分支或替代方案替换包：
 
 ```json
 {
@@ -55,9 +55,9 @@ Substitute a package with a fork or alternative:
 }
 ```
 
-All imports of `original-pkg` will resolve to `my-fork`.
+所有 `original-pkg` 的导入都将解析为 `my-fork`。
 
-### Replace Deprecated Package
+### 替换已弃用的包
 
 ```json
 {
@@ -67,7 +67,7 @@ All imports of `original-pkg` will resolve to `my-fork`.
 }
 ```
 
-### Scoped to Unscoped (or vice versa)
+### 作用域到非作用域（或反之亦然）
 
 ```json
 {
@@ -78,27 +78,27 @@ All imports of `original-pkg` will resolve to `my-fork`.
 }
 ```
 
-## CLI Usage
+## CLI 用法
 
-### Add with alias
+### 使用别名添加
 
 ```bash
-# Add lodash under alias
+# 在别名下添加 lodash
 pnpm add lodash4@npm:lodash@4
 
-# Add fork as original name
+# 将分支作为原始名称添加
 pnpm add request@npm:@cypress/request
 ```
 
-### Add multiple versions
+### 添加多个版本
 
 ```bash
 pnpm add react17@npm:react@17 react18@npm:react@18
 ```
 
-## With TypeScript
+## 与 TypeScript 一起使用
 
-For type resolution with aliases, you may need to configure TypeScript:
+对于别名的类型解析，您可能需要配置 TypeScript：
 
 ```json
 // tsconfig.json
@@ -112,7 +112,7 @@ For type resolution with aliases, you may need to configure TypeScript:
 }
 ```
 
-Or use `@types` packages with aliases:
+或使用别名的 `@types` 包：
 
 ```json
 {
@@ -123,9 +123,9 @@ Or use `@types` packages with aliases:
 }
 ```
 
-## Combined with Overrides
+## 与覆盖结合
 
-Force all transitive dependencies to use an alias:
+强制所有传递依赖使用别名：
 
 ```yaml
 # pnpm-workspace.yaml
@@ -133,11 +133,11 @@ overrides:
   "underscore": "npm:lodash@^4.17.21"
 ```
 
-This replaces all `underscore` imports (including in dependencies) with lodash.
+这将所有 `underscore` 导入（包括在依赖中）替换为 lodash。
 
-## Git and Local Aliases
+## Git 和本地别名
 
-Aliases work with any valid pnpm specifier:
+别名适用于任何有效的 pnpm 说明符：
 
 ```json
 {
@@ -148,21 +148,21 @@ Aliases work with any valid pnpm specifier:
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Clear naming**: Use descriptive alias names that indicate purpose
+1. **清晰的命名**：使用描述性别名名称来指示目的
    ```json
    "lodash-legacy": "npm:lodash@3"
    "lodash-modern": "npm:lodash@4"
    ```
 
-2. **Document aliases**: Add comments or documentation explaining why aliases exist
+2. **记录别名**：添加注释或文档解释为什么存在别名
 
-3. **Prefer overrides for global replacement**: If you want to replace a package everywhere, use overrides instead of aliases
+3. **优先使用覆盖进行全局替换**：如果您想在任何地方替换包，请使用覆盖而不是别名
 
-4. **Test thoroughly**: Aliased packages may have subtle differences in behavior
+4. **彻底测试**：别名的包可能在行为上有细微差别
 
-<!-- 
-Source references:
+<!--
+源引用:
 - https://pnpm.io/aliases
 -->

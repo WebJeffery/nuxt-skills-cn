@@ -1,26 +1,26 @@
 ---
 name: nuxt-integration
-description: Using Pinia with Nuxt - auto-imports, SSR, and best practices
+description: 在 Nuxt 中使用 Pinia - 自动导入、SSR 和最佳实践
 ---
 
-# Nuxt Integration
+# Nuxt 集成
 
-Pinia works seamlessly with Nuxt 3/4, handling SSR, serialization, and XSS protection automatically.
+Pinia 与 Nuxt 3/4 无缝协作，自动处理 SSR、序列化和 XSS 保护。
 
-## Installation
+## 安装
 
 ```bash
 npx nuxi@latest module add pinia
 ```
 
-This installs both `@pinia/nuxt` and `pinia`. If `pinia` isn't installed, add it manually.
+这将同时安装 `@pinia/nuxt` 和 `pinia`。如果 `pinia` 未安装，请手动添加。
 
-> **npm users:** If you get `ERESOLVE unable to resolve dependency tree`, add to `package.json`:
+> **npm 用户:** 如果遇到 `ERESOLVE unable to resolve dependency tree`，添加到 `package.json`:
 > ```json
 > "overrides": { "vue": "latest" }
 > ```
 
-## Configuration
+## 配置
 
 ```ts
 // nuxt.config.ts
@@ -29,17 +29,17 @@ export default defineNuxtConfig({
 })
 ```
 
-## Auto Imports
+## 自动导入
 
-These are automatically available:
-- `usePinia()` - get pinia instance
-- `defineStore()` - define stores
-- `storeToRefs()` - extract reactive refs
-- `acceptHMRUpdate()` - HMR support
+这些功能自动可用:
+- `usePinia()` - 获取 pinia 实例
+- `defineStore()` - 定义 store
+- `storeToRefs()` - 提取响应式 ref
+- `acceptHMRUpdate()` - HMR 支持
 
-**All stores in `app/stores/` (Nuxt 4) or `stores/` are auto-imported.**
+**`app/stores/` (Nuxt 4) 或 `stores/` 中的所有 store 都会自动导入。**
 
-### Custom Store Directories
+### 自定义 Store 目录
 
 ```ts
 // nuxt.config.ts
@@ -51,33 +51,33 @@ export default defineNuxtConfig({
 })
 ```
 
-## Fetching Data in Pages
+## 在页面中获取数据
 
-Use `callOnce()` for SSR-friendly data fetching:
+使用 `callOnce()` 进行 SSR 友好的数据获取:
 
 ```vue
 <script setup>
 const store = useStore()
 
-// Run once, data persists across navigations
+// 运行一次，数据在导航间持久化
 await callOnce('user', () => store.fetchUser())
 </script>
 ```
 
-### Refetch on Navigation
+### 导航时重新获取
 
 ```vue
 <script setup>
 const store = useStore()
 
-// Refetch on every navigation (like useFetch)
+// 每次导航时重新获取 (类似 useFetch)
 await callOnce('user', () => store.fetchUser(), { mode: 'navigation' })
 </script>
 ```
 
-## Using Stores Outside Components
+## 在组件外使用 Stores
 
-In navigation guards, middlewares, or other stores, pass the `pinia` instance:
+在导航守卫、中间件或其他 store 中，传递 `pinia` 实例:
 
 ```ts
 // middleware/auth.ts
@@ -91,11 +91,11 @@ export default defineNuxtRouteMiddleware((to) => {
 })
 ```
 
-Most of the time, you don't need this - just use stores in components or other injection-aware contexts.
+大多数情况下，你不需要这样做 - 只需在组件或其他支持注入的上下文中使用 store。
 
-## Pinia Plugins with Nuxt
+## 使用 Nuxt 的 Pinia 插件
 
-Create a Nuxt plugin:
+创建一个 Nuxt 插件:
 
 ```ts
 // plugins/myPiniaPlugin.ts
@@ -114,6 +114,6 @@ export default defineNuxtPlugin(({ $pinia }) => {
 ```
 
 <!--
-Source references:
+源引用:
 - https://pinia.vuejs.org/ssr/nuxt.html
 -->

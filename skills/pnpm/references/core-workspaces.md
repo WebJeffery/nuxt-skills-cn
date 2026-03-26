@@ -1,31 +1,31 @@
 ---
 name: pnpm-workspaces
-description: Monorepo support with workspaces for managing multiple packages
+description: 通过工作区管理多个包的 monorepo 支持
 ---
 
-# pnpm Workspaces
+# pnpm 工作区
 
-pnpm has built-in support for monorepos (multi-package repositories) through workspaces.
+pnpm 通过工作区内置支持 monorepo（多包仓库）。
 
-## Setting Up Workspaces
+## 设置工作区
 
-Create `pnpm-workspace.yaml` at the repository root:
+在仓库根目录创建 `pnpm-workspace.yaml`：
 
 ```yaml
 packages:
-  # Include all packages in packages/ directory
+  # 包含 packages/ 目录中的所有包
   - 'packages/*'
-  # Include all apps
+  # 包含所有应用
   - 'apps/*'
-  # Include nested packages
+  # 包含嵌套包
   - 'tools/*/packages/*'
-  # Exclude test directories
+  # 排除测试目录
   - '!**/test/**'
 ```
 
-## Workspace Protocol
+## 工作区协议
 
-Use `workspace:` protocol to reference local packages:
+使用 `workspace:` 协议引用本地包：
 
 ```json
 {
@@ -37,125 +37,125 @@ Use `workspace:` protocol to reference local packages:
 }
 ```
 
-### Protocol Variants
+### 协议变体
 
-| Protocol | Behavior | Published As |
+| 协议 | 行为 | 发布为 |
 |----------|----------|--------------|
-| `workspace:*` | Any version | Actual version (e.g., `1.2.3`) |
-| `workspace:^` | Compatible version | `^1.2.3` |
-| `workspace:~` | Patch version | `~1.2.3` |
-| `workspace:^1.0.0` | Semver range | `^1.0.0` |
+| `workspace:*` | 任何版本 | 实际版本（例如 `1.2.3`） |
+| `workspace:^` | 兼容版本 | `^1.2.3` |
+| `workspace:~` | 补丁版本 | `~1.2.3` |
+| `workspace:^1.0.0` | Semver 范围 | `^1.0.0` |
 
-## Filtering Packages
+## 过滤包
 
-Run commands on specific packages using `--filter`:
+使用 `--filter` 在特定包上运行命令：
 
 ```bash
-# By package name
+# 按包名
 pnpm --filter @myorg/app build
 pnpm -F @myorg/app build
 
-# By directory path
+# 按目录路径
 pnpm --filter "./packages/core" test
 
-# Glob patterns
+# Glob 模式
 pnpm --filter "@myorg/*" lint
 pnpm --filter "!@myorg/internal-*" publish
 
-# All packages
+# 所有包
 pnpm -r build
 pnpm --recursive build
 ```
 
-### Dependency-based Filtering
+### 基于依赖的过滤
 
 ```bash
-# Package and all its dependencies
+# 包及其所有依赖项
 pnpm --filter "...@myorg/app" build
 
-# Package and all its dependents
+# 包及其所有依赖者
 pnpm --filter "@myorg/core..." test
 
-# Both directions
+# 两个方向
 pnpm --filter "...@myorg/shared..." build
 
-# Changed since git ref
+# 自 git 引用以来更改的包
 pnpm --filter "...[origin/main]" test
 pnpm --filter "[HEAD~5]" lint
 ```
 
-## Workspace Commands
+## 工作区命令
 
-### Install dependencies
+### 安装依赖
 ```bash
-# Install all workspace packages
+# 安装所有工作区包
 pnpm install
 
-# Add dependency to specific package
+# 向特定包添加依赖
 pnpm --filter @myorg/app add lodash
 
-# Add workspace dependency
+# 添加工作区依赖
 pnpm --filter @myorg/app add @myorg/utils
 ```
 
-### Run scripts
+### 运行脚本
 ```bash
-# Run in all packages with that script
+# 在所有具有该脚本的包中运行
 pnpm -r run build
 
-# Run in topological order (dependencies first)
+# 按拓扑顺序运行（依赖项优先）
 pnpm -r --workspace-concurrency=1 run build
 
-# Run in parallel
+# 并行运行
 pnpm -r --parallel run test
 
-# Stream output
+# 流式输出
 pnpm -r --stream run dev
 ```
 
-### Execute commands
+### 执行命令
 ```bash
-# Run command in all packages
+# 在所有包中运行命令
 pnpm -r exec pwd
 
-# Run in specific packages
+# 在特定包中运行
 pnpm --filter "./packages/**" exec rm -rf dist
 ```
 
-## Workspace Settings
+## 工作区设置
 
-Configure in `.npmrc` or `pnpm-workspace.yaml`:
+在 `.npmrc` 或 `pnpm-workspace.yaml` 中配置：
 
 ```ini
-# Link workspace packages automatically
+# 自动链接工作区包
 link-workspace-packages=true
 
-# Prefer workspace packages over registry
+# 优先使用工作区包而非注册表
 prefer-workspace-packages=true
 
-# Single lockfile (recommended)
+# 单个锁文件（推荐）
 shared-workspace-lockfile=true
 
-# Workspace protocol handling
+# 工作区协议处理
 save-workspace-protocol=rolling
 
-# Concurrent workspace scripts
+# 并发工作区脚本
 workspace-concurrency=4
 ```
 
-## Publishing Workspaces
+## 发布工作区
 
-When publishing, `workspace:` protocols are converted:
+发布时，`workspace:` 协议被转换：
 
 ```json
-// Before publish
+// 发布前
 {
   "dependencies": {
     "@myorg/utils": "workspace:^"
   }
 }
 
-// After publish
+// 发布后
 {
   "dependencies": {
     "@myorg/utils": "^1.2.3"
@@ -163,20 +163,20 @@ When publishing, `workspace:` protocols are converted:
 }
 ```
 
-Use `--no-git-checks` for publishing from CI:
+使用 `--no-git-checks` 从 CI 发布：
 ```bash
 pnpm publish -r --no-git-checks
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use workspace protocol** for internal dependencies
-2. **Enable `link-workspace-packages`** for automatic linking
-3. **Use shared lockfile** for consistency
-4. **Filter by dependencies** when building to ensure correct order
-5. **Use catalogs** for shared external dependency versions
+1. **使用工作区协议** 用于内部依赖
+2. **启用 `link-workspace-packages`** 用于自动链接
+3. **使用共享锁文件** 以保持一致性
+4. **按依赖项过滤** 在构建时确保正确顺序
+5. **使用目录** 用于共享的外部依赖版本
 
-## Example Project Structure
+## 示例项目结构
 
 ```
 my-monorepo/
@@ -197,8 +197,8 @@ my-monorepo/
         └── package.json
 ```
 
-<!-- 
-Source references:
+<!--
+源引用:
 - https://pnpm.io/workspaces
 - https://pnpm.io/filtering
 - https://pnpm.io/npmrc#workspace-settings

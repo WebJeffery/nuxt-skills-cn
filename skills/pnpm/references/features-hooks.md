@@ -1,25 +1,25 @@
 ---
 name: pnpm-hooks
-description: Customize package resolution and dependency behavior with pnpmfile hooks
+description: 使用 pnpmfile 钩子自定义包解析和依赖行为
 ---
 
-# pnpm Hooks
+# pnpm 钩子
 
-pnpm provides hooks via `.pnpmfile.cjs` to customize how packages are resolved and their metadata is processed.
+pnpm 通过 `.pnpmfile.cjs` 提供钩子来自定义包的解析方式和元数据的处理方式。
 
-## Setup
+## 设置
 
-Create `.pnpmfile.cjs` at workspace root:
+在工作区根目录创建 `.pnpmfile.cjs`：
 
 ```js
 // .pnpmfile.cjs
 function readPackage(pkg, context) {
-  // Modify package metadata
+  // 修改包元数据
   return pkg
 }
 
 function afterAllResolved(lockfile, context) {
-  // Modify lockfile
+  // 修改锁文件
   return lockfile
 }
 
@@ -31,11 +31,11 @@ module.exports = {
 }
 ```
 
-## readPackage Hook
+## readPackage 钩子
 
-Called for every package before resolution. Use to modify dependencies, add missing peer deps, or fix broken packages.
+在解析之前为每个包调用。用于修改依赖项、添加缺失的同伴依赖或修复损坏的包。
 
-### Add Missing Peer Dependency
+### 添加缺失的同伴依赖
 
 ```js
 function readPackage(pkg, context) {
@@ -50,11 +50,11 @@ function readPackage(pkg, context) {
 }
 ```
 
-### Override Dependency Version
+### 覆盖依赖版本
 
 ```js
 function readPackage(pkg, context) {
-  // Fix all lodash versions
+  // 修复所有 lodash 版本
   if (pkg.dependencies?.lodash) {
     pkg.dependencies.lodash = '^4.17.21'
   }
@@ -65,11 +65,11 @@ function readPackage(pkg, context) {
 }
 ```
 
-### Remove Unwanted Dependency
+### 删除不需要的依赖
 
 ```js
 function readPackage(pkg, context) {
-  // Remove optional dependency that causes issues
+  // 删除导致问题的可选依赖
   if (pkg.optionalDependencies?.fsevents) {
     delete pkg.optionalDependencies.fsevents
   }
@@ -77,11 +77,11 @@ function readPackage(pkg, context) {
 }
 ```
 
-### Replace Package
+### 替换包
 
 ```js
 function readPackage(pkg, context) {
-  // Replace deprecated package
+  // 替换已弃用的包
   if (pkg.dependencies?.['old-package']) {
     pkg.dependencies['new-package'] = pkg.dependencies['old-package']
     delete pkg.dependencies['old-package']
@@ -90,11 +90,11 @@ function readPackage(pkg, context) {
 }
 ```
 
-### Fix Broken Package
+### 修复损坏的包
 
 ```js
 function readPackage(pkg, context) {
-  // Fix incorrect exports field
+  // 修复不正确的 exports 字段
   if (pkg.name === 'broken-esm-package') {
     pkg.exports = {
       '.': {
@@ -107,36 +107,36 @@ function readPackage(pkg, context) {
 }
 ```
 
-## afterAllResolved Hook
+## afterAllResolved 钩子
 
-Called after the lockfile is generated. Use for post-resolution modifications.
+在生成锁文件后调用。用于解析后修改。
 
 ```js
 function afterAllResolved(lockfile, context) {
-  // Log all resolved packages
+  // 记录所有已解析的包
   context.log(`Resolved ${Object.keys(lockfile.packages || {}).length} packages`)
   
-  // Modify lockfile if needed
+  // 如果需要，修改锁文件
   return lockfile
 }
 ```
 
-## Context Object
+## 上下文对象
 
-The `context` object provides utilities:
+`context` 对象提供实用程序：
 
 ```js
 function readPackage(pkg, context) {
-  // Log messages
+  // 记录消息
   context.log('Processing package...')
   
   return pkg
 }
 ```
 
-## Use with TypeScript
+## 与 TypeScript 一起使用
 
-For type hints, use JSDoc:
+对于类型提示，使用 JSDoc：
 
 ```js
 // .pnpmfile.cjs
@@ -157,9 +157,9 @@ module.exports = {
 }
 ```
 
-## Common Patterns
+## 常见模式
 
-### Conditional by Package Name
+### 按包名条件
 
 ```js
 function readPackage(pkg, context) {
@@ -175,11 +175,11 @@ function readPackage(pkg, context) {
 }
 ```
 
-### Apply to All Packages
+### 应用于所有包
 
 ```js
 function readPackage(pkg, context) {
-  // Remove all optional fsevents
+  // 删除所有可选的 fsevents
   if (pkg.optionalDependencies) {
     delete pkg.optionalDependencies.fsevents
   }
@@ -187,7 +187,7 @@ function readPackage(pkg, context) {
 }
 ```
 
-### Debug Resolution
+### 调试解析
 
 ```js
 function readPackage(pkg, context) {
@@ -199,35 +199,35 @@ function readPackage(pkg, context) {
 }
 ```
 
-## Hooks vs Overrides
+## 钩子与覆盖
 
-| Feature | Hooks (.pnpmfile.cjs) | Overrides |
+| 功能 | 钩子 (.pnpmfile.cjs) | 覆盖 |
 |---------|----------------------|-----------|
-| Complexity | Can use JavaScript logic | Declarative only |
-| Scope | Any package metadata | Version only |
-| Use case | Complex fixes, conditional logic | Simple version pins |
+| 复杂性 | 可以使用 JavaScript 逻辑 | 仅声明式 |
+| 范围 | 任何包元数据 | 仅版本 |
+| 用例 | 复杂修复、条件逻辑 | 简单版本固定 |
 
-**Prefer overrides** for simple version fixes. **Use hooks** when you need:
-- Conditional logic
-- Non-version modifications (exports, peer deps)
-- Logging/debugging
+**优先使用覆盖** 进行简单的版本修复。**使用钩子** 当您需要：
+- 条件逻辑
+- 非版本修改（exports、同伴依赖）
+- 日志/调试
 
-## Troubleshooting
+## 故障排除
 
-### Hook not running
+### 钩子未运行
 
-1. Ensure file is named `.pnpmfile.cjs` (not `.js`)
-2. Check file is at workspace root
-3. Run `pnpm install` to trigger hooks
+1. 确保文件名为 `.pnpmfile.cjs`（不是 `.js`）
+2. 检查文件位于工作区根目录
+3. 运行 `pnpm install` 以触发钩子
 
-### Debug hooks
+### 调试钩子
 
 ```bash
-# See hook logs
+# 查看钩子日志
 pnpm install --reporter=append-only
 ```
 
-<!-- 
-Source references:
+<!--
+源引用:
 - https://pnpm.io/pnpmfile
 -->

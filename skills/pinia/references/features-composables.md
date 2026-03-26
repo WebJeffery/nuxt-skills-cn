@@ -1,15 +1,15 @@
 ---
 name: composables-in-stores
-description: Using Vue composables within Pinia stores
+description: 在 Pinia stores 中使用 Vue composables
 ---
 
-# Composables in Stores
+# 在 Stores 中使用 Composables
 
-Pinia stores can leverage Vue composables for reusable stateful logic.
+Pinia stores 可以利用 Vue composables 来实现可复用的有状态逻辑。
 
 ## Option Stores
 
-Call composables inside the `state` property, but only those returning writable refs:
+在 `state` 属性中调用 composables，但只能使用那些返回可写 ref 的:
 
 ```ts
 import { defineStore } from 'pinia'
@@ -22,17 +22,17 @@ export const useAuthStore = defineStore('auth', {
 })
 ```
 
-**Works:** Composables returning `ref()`:
+**有效:** 返回 `ref()` 的 composables:
 - `useLocalStorage`
 - `useAsyncState`
 
-**Doesn't work in Option Stores:**
-- Composables exposing functions
-- Composables exposing readonly data
+**在 Option Stores 中无效:**
+- 暴露函数的 composables
+- 暴露只读数据的 composables
 
 ## Setup Stores
 
-More flexible - can use almost any composable:
+更灵活 - 可以使用几乎任何 composable:
 
 ```ts
 import { defineStore } from 'pinia'
@@ -61,13 +61,13 @@ export const useVideoPlayer = defineStore('video', () => {
 })
 ```
 
-**Note:** Don't return non-serializable DOM refs like `videoElement` - they're internal implementation details.
+**注意:** 不要返回不可序列化的 DOM ref 如 `videoElement` - 它们是内部实现细节。
 
-## SSR Considerations
+## SSR 考量
 
-### Option Stores with hydrate()
+### 带有 hydrate() 的 Option Stores
 
-Define a `hydrate()` function to handle client-side hydration:
+定义一个 `hydrate()` 函数来处理客户端水合:
 
 ```ts
 import { defineStore } from 'pinia'
@@ -79,15 +79,15 @@ export const useAuthStore = defineStore('auth', {
   }),
 
   hydrate(state, initialState) {
-    // Ignore server state, read from browser
+    // 忽略服务器状态，从浏览器读取
     state.user = useLocalStorage('pinia/auth/login', 'bob')
   },
 })
 ```
 
-### Setup Stores with skipHydrate()
+### 带有 skipHydrate() 的 Setup Stores
 
-Mark state that shouldn't hydrate from server:
+标记不应从服务器水合的状态:
 
 ```ts
 import { defineStore, skipHydrate } from 'pinia'
@@ -98,17 +98,17 @@ export const useColorStore = defineStore('colors', () => {
   const lastColor = useLocalStorage('lastColor', sRGBHex)
 
   return {
-    // Skip hydration for client-only state
+    // 跳过客户端专用状态的水合
     lastColor: skipHydrate(lastColor),
-    open,       // Function - no hydration needed
-    isSupported, // Boolean - not reactive
+    open,       // 函数 - 不需要水合
+    isSupported, // 布尔值 - 不是响应式的
   }
 })
 ```
 
-`skipHydrate()` only applies to state properties (refs), not functions or non-reactive values.
+`skipHydrate()` 仅适用于状态属性 (refs)，不适用于函数或非响应式值。
 
 <!--
-Source references:
+源引用:
 - https://pinia.vuejs.org/cookbook/composables.html
 -->

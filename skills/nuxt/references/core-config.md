@@ -1,28 +1,28 @@
 ---
 name: configuration
-description: Nuxt configuration files including nuxt.config.ts, app.config.ts, and runtime configuration
+description: Nuxt 配置文件，包括 nuxt.config.ts、app.config.ts 和运行时配置
 ---
 
-# Nuxt Configuration
+# Nuxt 配置
 
-Nuxt uses configuration files to customize application behavior. The main configuration options are `nuxt.config.ts` for build-time settings and `app.config.ts` for runtime settings.
+Nuxt 使用配置文件来自定义应用程序行为。主要的配置选项是 `nuxt.config.ts` 用于构建设置和 `app.config.ts` 用于运行时设置。
 
 ## nuxt.config.ts
 
-The main configuration file at the root of your project:
+项目根目录下的主配置文件：
 
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  // Configuration options
+  // 配置选项
   devtools: { enabled: true },
   modules: ['@nuxt/ui'],
 })
 ```
 
-### Environment Overrides
+### 环境覆盖
 
-Configure environment-specific settings:
+配置特定环境的设置：
 
 ```ts
 export default defineNuxtConfig({
@@ -32,29 +32,29 @@ export default defineNuxtConfig({
     },
   },
   $development: {
-    // Development-specific config
+    // 开发环境特定配置
   },
   $env: {
     staging: {
-      // Staging environment config
+      // 预发布环境配置
     },
   },
 })
 ```
 
-Use `--envName` flag to select environment: `nuxt build --envName staging`
+使用 `--envName` 标志选择环境：`nuxt build --envName staging`
 
-## Runtime Config
+## 运行时配置
 
-For values that need to be overridden via environment variables:
+对于需要通过环境变量覆盖的值：
 
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
   runtimeConfig: {
-    // Server-only keys
+    // 仅服务器端的密钥
     apiSecret: '123',
-    // Keys within public are exposed to client
+    // public 中的键暴露给客户端
     public: {
       apiBase: '/api',
     },
@@ -62,7 +62,7 @@ export default defineNuxtConfig({
 })
 ```
 
-Override with environment variables:
+通过环境变量覆盖：
 
 ```ini
 # .env
@@ -70,19 +70,19 @@ NUXT_API_SECRET=api_secret_token
 NUXT_PUBLIC_API_BASE=https://api.example.com
 ```
 
-Access in components/composables:
+在 components/composables 中访问：
 
 ```vue
 <script setup lang="ts">
 const config = useRuntimeConfig()
-// Server: config.apiSecret, config.public.apiBase
-// Client: config.public.apiBase only
+// 服务器端：config.apiSecret, config.public.apiBase
+// 客户端：仅 config.public.apiBase
 </script>
 ```
 
-## App Config
+## App 配置
 
-For public tokens determined at build time (not overridable via env vars):
+对于在构建设置的公开令牌（无法通过环境变量覆盖）：
 
 ```ts
 // app/app.config.ts
@@ -97,7 +97,7 @@ export default defineAppConfig({
 })
 ```
 
-Access in components:
+在组件中访问：
 
 ```vue
 <script setup lang="ts">
@@ -107,44 +107,44 @@ const appConfig = useAppConfig()
 
 ## runtimeConfig vs app.config
 
-| Feature | runtimeConfig | app.config |
+| 特性 | runtimeConfig | app.config |
 |---------|--------------|------------|
-| Client-side | Hydrated | Bundled |
-| Environment variables | Yes | No |
-| Reactive | Yes | Yes |
-| Hot module replacement | No | Yes |
-| Non-primitive JS types | No | Yes |
+| 客户端 | 水合 | 打包 |
+| 环境变量 | 是 | 否 |
+| 响应式 | 是 | 是 |
+| 热模块替换 | 否 | 是 |
+| 非原始 JS 类型 | 否 | 是 |
 
-**Use runtimeConfig** for secrets and values that change per environment.
-**Use app.config** for public tokens, theme settings, and non-sensitive config.
+**使用 runtimeConfig** 用于密钥和随环境变化的值。
+**使用 app.config** 用于公开令牌、主题设置和非敏感配置。
 
-## External Tool Configuration
+## 外部工具配置
 
-Nuxt uses `nuxt.config.ts` as single source of truth. Configure external tools within it:
+Nuxt 使用 `nuxt.config.ts` 作为单一真实源。在其中配置外部工具：
 
 ```ts
 export default defineNuxtConfig({
-  // Nitro configuration
+  // Nitro 配置
   nitro: {
-    // nitro options
+    // nitro 选项
   },
-  // Vite configuration
+  // Vite 配置
   vite: {
-    // vite options
+    // vite 选项
     vue: {
-      // @vitejs/plugin-vue options
+      // @vitejs/plugin-vue 选项
     },
   },
-  // PostCSS configuration
+  // PostCSS 配置
   postcss: {
-    // postcss options
+    // postcss 选项
   },
 })
 ```
 
-## Vue Configuration
+## Vue 配置
 
-Enable Vue experimental features:
+启用 Vue 实验性功能：
 
 ```ts
 export default defineNuxtConfig({
@@ -154,8 +154,205 @@ export default defineNuxtConfig({
 })
 ```
 
+## 配置最佳实践
+
+### 类型安全的配置
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  runtimeConfig: {
+    apiSecret: process.env.API_SECRET,
+    public: {
+      apiBase: process.env.NUXT_PUBLIC_API_BASE,
+    },
+  },
+})
+```
+
+### 模块配置
+
+```ts
+export default defineNuxtConfig({
+  modules: [
+    '@nuxtjs/color-mode',
+    '@nuxt/ui',
+    '@pinia/nuxt',
+    '@vueuse/nuxt',
+  ],
+  
+  colorMode: {
+    classSuffix: '',
+    preference: 'dark',
+  },
+})
+```
+
+### 性能优化配置
+
+```ts
+export default defineNuxtConfig({
+  build: {
+    analyze: process.env.ANALYZE === 'true',
+  },
+  
+  experimental: {
+    typedPages: true,
+    payloadExtraction: true,
+  },
+  
+  nitro: {
+    compressPublicAssets: true,
+  },
+})
+```
+
+### SSR 配置
+
+```ts
+export default defineNuxtConfig({
+  ssr: true,
+  
+  routeRules: {
+    '/': { prerender: true },
+    '/admin/**': { ssr: false },
+    '/api/**': { cors: true },
+  },
+})
+```
+
+### CSS 配置
+
+```ts
+export default defineNuxtConfig({
+  css: ['~/assets/css/main.css'],
+  
+  vite: {
+    css: {
+      modules: {
+        localsConvention: 'camelCase',
+      },
+    },
+  },
+})
+```
+
+### 自动导入配置
+
+```ts
+export default defineNuxtConfig({
+  imports: {
+    dirs: [
+      './composables',
+      './utils',
+    ],
+  },
+})
+```
+
+### 开发工具配置
+
+```ts
+export default defineNuxtConfig({
+  devtools: {
+    enabled: true,
+    timeline: {
+      enabled: true,
+    },
+  },
+})
+```
+
+### 安全性配置
+
+```ts
+export default defineNuxtConfig({
+  routeRules: {
+    '/api/**': {
+      headers: {
+        'X-Frame-Options': 'DENY',
+        'X-Content-Type-Options': 'nosniff',
+      },
+    },
+  },
+})
+```
+
+## 配置继承
+
+### 使用 Layers
+
+```ts
+export default defineNuxtConfig({
+  extends: [
+    './base-layer',
+    '@nuxt/ui',
+  ],
+})
+```
+
+### 环境特定配置
+
+```ts
+export default defineNuxtConfig({
+  $development: {
+    nitro: {
+      experimental: {
+        openAPI: true,
+      },
+    },
+  },
+  
+  $production: {
+    routeRules: {
+      '/**': { isr: 60 },
+    },
+  },
+})
+```
+
+## 配置调试
+
+```ts
+export default defineNuxtConfig({
+  debug: true,
+  typescript: {
+    strict: true,
+  },
+})
+```
+
+## 常见问题
+
+### 环境变量未生效
+
+```ts
+// 确保在 nuxt.config.ts 中正确使用
+export default defineNuxtConfig({
+  runtimeConfig: {
+    private: process.env.PRIVATE_VAR, // 错误
+    privateKey: process.env.PRIVATE_VAR, // 正确
+  },
+})
+```
+
+### 配置合并问题
+
+```ts
+// 使用深度合并
+export default defineNuxtConfig({
+  app: {
+    head: {
+      meta: [
+        { charset: 'utf-8' },
+      ],
+    },
+  },
+})
+```
+
 <!-- 
-Source references:
+源码参考：
 - https://nuxt.com/docs/getting-started/configuration
 - https://nuxt.com/docs/guide/going-further/runtime-config
 - https://nuxt.com/docs/api/nuxt-config

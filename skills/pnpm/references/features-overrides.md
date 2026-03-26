@@ -1,37 +1,37 @@
 ---
 name: pnpm-overrides
-description: Force specific versions of dependencies including transitive dependencies
+description: 强制依赖的特定版本，包括传递依赖
 ---
 
-# pnpm Overrides
+# pnpm 覆盖
 
-Overrides let you force specific versions of packages, including transitive dependencies. Useful for fixing security vulnerabilities or compatibility issues.
+覆盖允许您强制包的特定版本，包括传递依赖。用于修复安全漏洞或兼容性问题。
 
-## Basic Syntax
+## 基本语法
 
-Define overrides in `pnpm-workspace.yaml` (recommended) or `package.json`:
+在 `pnpm-workspace.yaml`（推荐）或 `package.json` 中定义覆盖：
 
-### In pnpm-workspace.yaml (Recommended)
+### 在 pnpm-workspace.yaml 中（推荐）
 
 ```yaml
 packages:
   - 'packages/*'
 
 overrides:
-  # Override all versions of a package
+  # 覆盖包的所有版本
   lodash: ^4.17.21
   
-  # Override specific version range
+  # 覆盖特定版本范围
   "foo@^1.0.0": ^1.2.3
   
-  # Override nested dependency
+  # 覆盖嵌套依赖
   "express>cookie": ^0.6.0
   
-  # Override to different package
+  # 覆盖到不同的包
   "underscore": "npm:lodash@^4.17.21"
 ```
 
-### In package.json
+### 在 package.json 中
 
 ```json
 {
@@ -45,66 +45,66 @@ overrides:
 }
 ```
 
-## Override Patterns
+## 覆盖模式
 
-### Override all instances
+### 覆盖所有实例
 ```yaml
 overrides:
   lodash: ^4.17.21
 ```
-Forces all lodash installations to use ^4.17.21.
+强制所有 lodash 安装使用 ^4.17.21。
 
-### Override specific parent version
+### 覆盖特定父版本
 ```yaml
 overrides:
   "foo@^1.0.0": ^1.2.3
 ```
-Only override foo when the requested version matches ^1.0.0.
+仅当请求的版本匹配 ^1.0.0 时覆盖 foo。
 
-### Override nested dependency
+### 覆盖嵌套依赖
 ```yaml
 overrides:
   "express>cookie": ^0.6.0
   "foo@1.x>bar@^2.0.0>qux": ^1.0.0
 ```
-Override cookie only when it's a dependency of express.
+仅当 cookie 是 express 的依赖时才覆盖它。
 
-### Replace with different package
+### 替换为不同的包
 ```yaml
 overrides:
-  # Replace underscore with lodash
+  # 用 lodash 替换 underscore
   "underscore": "npm:lodash@^4.17.21"
   
-  # Use local file
+  # 使用本地文件
   "some-pkg": "file:./local-pkg"
   
-  # Use git
+  # 使用 git
   "some-pkg": "github:user/repo#commit"
 ```
 
-### Remove a dependency
+### 删除依赖
 ```yaml
 overrides:
   "unwanted-pkg": "-"
 ```
-The `-` removes the package entirely.
+`-` 完全删除包。
 
-## Common Use Cases
+## 常见用例
 
-### Security Fix
+### 安全修复
 
-Force patched version of vulnerable package:
+强制修补易受攻击包的版本：
 
 ```yaml
 overrides:
-  # Fix CVE in transitive dependency
+  # 修复传递依赖中的 CVE
   "minimist": "^1.2.6"
   "json5": "^2.2.3"
 ```
 
-### Deduplicate Dependencies
+### 去重依赖
 
-Force single version when multiple are installed:
+当安装多个版本时强制单个版本：
 
 ```yaml
 overrides:
@@ -112,33 +112,33 @@ overrides:
   "react-dom": "^18.2.0"
 ```
 
-### Fix Peer Dependency Issues
+### 修复同伴依赖问题
 
 ```yaml
 overrides:
   "@types/react": "^18.2.0"
 ```
 
-### Replace Deprecated Package
+### 替换已弃用的包
 
 ```yaml
 overrides:
   "request": "npm:@cypress/request@^3.0.0"
 ```
 
-## Hooks Alternative
+## 钩子替代方案
 
-For more complex scenarios, use `.pnpmfile.cjs`:
+对于更复杂的场景，使用 `.pnpmfile.cjs`：
 
 ```js
 // .pnpmfile.cjs
 function readPackage(pkg, context) {
-  // Override dependency version
+  // 覆盖依赖版本
   if (pkg.dependencies?.lodash) {
     pkg.dependencies.lodash = '^4.17.21'
   }
   
-  // Add missing peer dependency
+  // 添加缺失的同伴依赖
   if (pkg.name === 'some-package') {
     pkg.peerDependencies = {
       ...pkg.peerDependencies,
@@ -156,29 +156,29 @@ module.exports = {
 }
 ```
 
-## Overrides vs Catalogs
+## 覆盖与目录
 
-| Feature | Overrides | Catalogs |
+| 功能 | 覆盖 | 目录 |
 |---------|-----------|----------|
-| Affects | All dependencies (including transitive) | Direct dependencies only |
-| Usage | Automatic | Explicit `catalog:` reference |
-| Purpose | Force versions, fix issues | Version management |
-| Granularity | Can target specific parents | Package-wide only |
+| 影响 | 所有依赖（包括传递依赖） | 仅直接依赖 |
+| 用法 | 自动 | 显式 `catalog:` 引用 |
+| 目的 | 强制版本、修复问题 | 版本管理 |
+| 粒度 | 可以针对特定父级 | 仅包范围 |
 
-## Debugging
+## 调试
 
-Check which version is resolved:
+检查解析的版本：
 
 ```bash
-# See resolved versions
+# 查看解析的版本
 pnpm why lodash
 
-# List all versions
+# 列出所有版本
 pnpm list lodash --depth=Infinity
 ```
 
-<!-- 
-Source references:
+<!--
+源引用:
 - https://pnpm.io/package_json#pnpmoverrides
 - https://pnpm.io/pnpmfile
 -->

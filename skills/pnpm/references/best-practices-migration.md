@@ -1,81 +1,81 @@
 ---
 name: migration-to-pnpm
-description: Migrating from npm or Yarn to pnpm with minimal friction
+description: 从 npm 或 Yarn 迁移到 pnpm，最小化摩擦
 ---
 
-# Migration to pnpm
+# 迁移到 pnpm
 
-Guide for migrating existing projects from npm or Yarn to pnpm.
+从 npm 或 Yarn 迁移现有项目到 pnpm 的指南。
 
-## Quick Migration
+## 快速迁移
 
-### From npm
+### 从 npm
 
 ```bash
-# Remove npm lockfile and node_modules
+# 删除 npm lockfile 和 node_modules
 rm -rf node_modules package-lock.json
 
-# Install with pnpm
+# 使用 pnpm 安装
 pnpm install
 ```
 
-### From Yarn
+### 从 Yarn
 
 ```bash
-# Remove yarn lockfile and node_modules
+# 删除 yarn lockfile 和 node_modules
 rm -rf node_modules yarn.lock
 
-# Install with pnpm
+# 使用 pnpm 安装
 pnpm install
 ```
 
-### Import Existing Lockfile
+### 导入现有 Lockfile
 
-pnpm can import existing lockfiles:
+pnpm 可以导入现有 lockfile：
 
 ```bash
-# Import from npm or yarn lockfile
+# 从 npm 或 yarn lockfile 导入
 pnpm import
 
-# This creates pnpm-lock.yaml from:
+# 这会从以下内容创建 pnpm-lock.yaml：
 # - package-lock.json (npm)
 # - yarn.lock (yarn)
 # - npm-shrinkwrap.json (npm)
 ```
 
-## Handling Common Issues
+## 处理常见问题
 
-### Phantom Dependencies
+### 幽灵依赖
 
-pnpm is strict about dependencies. If code imports a package not in `package.json`, it will fail.
+pnpm 对依赖很严格。如果代码导入了不在 `package.json` 中的包，它将失败。
 
-**Problem:**
+**问题：**
 ```js
-// Works with npm (hoisted), fails with pnpm
-import lodash from 'lodash' // Not in dependencies, installed by another package
+// 在 npm 中有效（提升），在 pnpm 中失败
+import lodash from 'lodash' // 不在依赖中，由另一个包安装
 ```
 
-**Solution:** Add missing dependencies explicitly:
+**解决方案：** 显式添加缺失的依赖：
 ```bash
 pnpm add lodash
 ```
 
-### Missing Peer Dependencies
+### 缺失同伴依赖
 
-pnpm reports peer dependency issues by default.
+pnpm 默认报告同伴依赖问题。
 
-**Option 1:** Let pnpm auto-install:
+**选项 1：** 让 pnpm 自动安装：
 ```ini
-# .npmrc (default in pnpm v8+)
+# .npmrc（pnpm v8+ 中的默认设置）
 auto-install-peers=true
 ```
 
-**Option 2:** Install manually:
+**选项 2：** 手动安装：
 ```bash
 pnpm add react react-dom
 ```
 
-**Option 3:** Suppress warnings if acceptable:
+**选项 3：** 如果可接受则抑制警告：
 ```json
 {
   "pnpm": {
@@ -86,46 +86,46 @@ pnpm add react react-dom
 }
 ```
 
-### Symlink Issues
+### 符号链接问题
 
-Some tools don't work with symlinks. Use hoisted mode:
+某些工具不适用于符号链接。使用提升模式：
 
 ```ini
 # .npmrc
 node-linker=hoisted
 ```
 
-Or hoist specific packages:
+或提升特定包：
 
 ```ini
 public-hoist-pattern[]=*eslint*
 public-hoist-pattern[]=*babel*
 ```
 
-### Native Module Rebuilds
+### 原生模块重新构建
 
-If native modules fail, try:
+如果原生模块失败，请尝试：
 
 ```bash
-# Rebuild all native modules
+# 重新构建所有原生模块
 pnpm rebuild
 
-# Or reinstall
+# 或重新安装
 rm -rf node_modules
 pnpm install
 ```
 
-## Monorepo Migration
+## Monorepo 迁移
 
-### From npm Workspaces
+### 从 npm Workspaces
 
-1. Create `pnpm-workspace.yaml`:
+1. 创建 `pnpm-workspace.yaml`：
    ```yaml
    packages:
      - 'packages/*'
    ```
 
-2. Update internal dependencies to use workspace protocol:
+2. 更新内部依赖以使用工作区协议：
    ```json
    {
      "dependencies": {
@@ -134,157 +134,157 @@ pnpm install
    }
    ```
 
-3. Install:
+3. 安装：
    ```bash
    rm -rf node_modules packages/*/node_modules package-lock.json
    pnpm install
    ```
 
-### From Yarn Workspaces
+### 从 Yarn Workspaces
 
-1. Remove Yarn-specific files:
+1. 删除 Yarn 特定文件：
    ```bash
    rm yarn.lock .yarnrc.yml
    rm -rf .yarn
    ```
 
-2. Create `pnpm-workspace.yaml` matching `workspaces` in package.json:
+2. 创建 `pnpm-workspace.yaml` 匹配 package.json 中的 `workspaces`：
    ```yaml
    packages:
      - 'packages/*'
    ```
 
-3. Update `package.json` - remove Yarn workspace config if not needed:
+3. 更新 `package.json` - 如果不需要则删除 Yarn 工作区配置：
    ```json
    {
-     // Remove "workspaces" field (optional, pnpm uses pnpm-workspace.yaml)
+     // 删除 "workspaces" 字段（可选，pnpm 使用 pnpm-workspace.yaml）
    }
    ```
 
-4. Convert workspace references:
+4. 转换工作区引用：
    ```json
-   // From Yarn
+   // 从 Yarn
    "@myorg/utils": "*"
    
-   // To pnpm
+   // 到 pnpm
    "@myorg/utils": "workspace:*"
    ```
 
-### From Lerna
+### 从 Lerna
 
-pnpm can replace Lerna for most use cases:
+pnpm 可以在大多数用例中替换 Lerna：
 
 ```bash
-# Lerna: run script in all packages
+# Lerna：在所有包中运行脚本
 lerna run build
 
-# pnpm equivalent
+# pnpm 等效
 pnpm -r run build
 
-# Lerna: run in specific package
+# Lerna：在特定包中运行
 lerna run build --scope=@myorg/app
 
-# pnpm equivalent  
+# pnpm 等效
 pnpm --filter @myorg/app run build
 
-# Lerna: publish
+# Lerna：发布
 lerna publish
 
-# pnpm: use changesets instead
+# pnpm：使用 changesets 代替
 pnpm add -Dw @changesets/cli
 pnpm changeset
 pnpm changeset version
 pnpm publish -r
 ```
 
-## Configuration Migration
+## 配置迁移
 
-### .npmrc Settings
+### .npmrc 设置
 
-Most npm/Yarn settings work in pnpm's `.npmrc`:
+大多数 npm/Yarn 设置在 pnpm 的 `.npmrc` 中有效：
 
 ```ini
-# Registry settings (same as npm)
+# 注册表设置（与 npm 相同）
 registry=https://registry.npmjs.org/
 @myorg:registry=https://npm.myorg.com/
 
-# Auth tokens (same as npm)
+# 认证令牌（与 npm 相同）
 //registry.npmjs.org/:_authToken=${NPM_TOKEN}
 
-# pnpm-specific additions
+# pnpm 特定添加
 auto-install-peers=true
 strict-peer-dependencies=false
 ```
 
-### Scripts Migration
+### 脚本迁移
 
-Most scripts work unchanged. Update pnpm-specific patterns:
+大多数脚本无需更改即可工作。更新 pnpm 特定模式：
 
 ```json
 {
   "scripts": {
-    // npm: recursive scripts
+    // npm：递归脚本
     "build:all": "npm run build --workspaces",
-    // pnpm: use -r flag
+    // pnpm：使用 -r 标志
     "build:all": "pnpm -r run build",
     
-    // npm: run in specific workspace  
+    // npm：在特定工作区中运行
     "dev:app": "npm run dev -w packages/app",
-    // pnpm: use --filter
+    // pnpm：使用 --filter
     "dev:app": "pnpm --filter @myorg/app run dev"
   }
 }
 ```
 
-## CI/CD Migration
+## CI/CD 迁移
 
-Update CI configuration:
+更新 CI 配置：
 
 ```yaml
-# Before (npm)
+# 之前 (npm)
 - run: npm ci
 
-# After (pnpm)
+# 之后 (pnpm)
 - uses: pnpm/action-setup@v4
 - run: pnpm install --frozen-lockfile
 ```
 
-Add to `package.json` for Corepack:
+为 Corepack 添加到 `package.json`：
 ```json
 {
   "packageManager": "pnpm@9.0.0"
 }
 ```
 
-## Gradual Migration
+## 逐步迁移
 
-For large projects, migrate gradually:
+对于大型项目，逐步迁移：
 
-1. **Start with CI**: Use pnpm in CI, keep npm/yarn locally
-2. **Add pnpm-lock.yaml**: Run `pnpm import` to create lockfile
-3. **Test thoroughly**: Ensure builds work with pnpm
-4. **Update documentation**: Update README, CONTRIBUTING
-5. **Remove old files**: Delete old lockfiles after team adoption
+1. **从 CI 开始**：在 CI 中使用 pnpm，本地保留 npm/yarn
+2. **添加 pnpm-lock.yaml**：运行 `pnpm import` 创建 lockfile
+3. **彻底测试**：确保构建与 pnpm 一起工作
+4. **更新文档**：更新 README、CONTRIBUTING
+5. **删除旧文件**：团队采用后删除旧 lockfile
 
-## Rollback Plan
+## 回滚计划
 
-If migration causes issues:
+如果迁移导致问题：
 
 ```bash
-# Remove pnpm files
+# 删除 pnpm 文件
 rm -rf node_modules pnpm-lock.yaml pnpm-workspace.yaml
 
-# Restore npm
+# 恢复 npm
 npm install
 
-# Or restore Yarn
+# 或恢复 Yarn
 yarn install
 ```
 
-Keep old lockfile in git history for easy rollback.
+在 git 历史中保留旧 lockfile 以便于回滚。
 
-<!-- 
-Source references:
+<!--
+源引用:
 - https://pnpm.io/installation
 - https://pnpm.io/cli/import
 - https://pnpm.io/limitations

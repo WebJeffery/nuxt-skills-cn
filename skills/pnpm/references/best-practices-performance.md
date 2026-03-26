@@ -1,59 +1,59 @@
 ---
 name: pnpm-performance-optimization
-description: Tips and tricks for faster installs and better performance
+description: 更快安装和更好性能的技巧和窍门
 ---
 
-# pnpm Performance Optimization
+# pnpm 性能优化
 
-pnpm is fast by default, but these optimizations can make it even faster.
+pnpm 默认很快，但这些优化可以使其更快。
 
-## Install Optimizations
+## 安装优化
 
-### Use Frozen Lockfile
+### 使用冻结锁文件
 
-Skip resolution when lockfile exists:
+当 lockfile 存在时跳过解析：
 
 ```bash
 pnpm install --frozen-lockfile
 ```
 
-This is faster because pnpm skips the resolution phase entirely.
+这更快，因为 pnpm 完全跳过解析阶段。
 
-### Prefer Offline Mode
+### 优先离线模式
 
-Use cached packages when available:
+在可用时使用缓存的包：
 
 ```bash
 pnpm install --prefer-offline
 ```
 
-Or configure globally:
+或全局配置：
 ```ini
 # .npmrc
 prefer-offline=true
 ```
 
-### Skip Optional Dependencies
+### 跳过可选依赖
 
-If you don't need optional deps:
+如果您不需要可选依赖：
 
 ```bash
 pnpm install --no-optional
 ```
 
-### Skip Scripts
+### 跳过脚本
 
-For CI or when scripts aren't needed:
+对于 CI 或不需要脚本时：
 
 ```bash
 pnpm install --ignore-scripts
 ```
 
-**Caution:** Some packages require postinstall scripts to work correctly.
+**警告：** 某些包需要 postinstall 脚本才能正常工作。
 
-### Only Build Specific Dependencies
+### 仅构建特定依赖
 
-Only run build scripts for specific packages:
+仅对特定包运行构建脚本：
 
 ```ini
 # .npmrc
@@ -62,7 +62,7 @@ onlyBuiltDependencies[]=sharp
 onlyBuiltDependencies[]=@swc/core
 ```
 
-Or skip builds entirely for deps that don't need them:
+或跳过不需要构建的依赖的构建：
 
 ```json
 {
@@ -72,106 +72,106 @@ Or skip builds entirely for deps that don't need them:
 }
 ```
 
-## Store Optimizations
+## 存储优化
 
-### Side Effects Cache
+### 副作用缓存
 
-Cache native module build results:
+缓存原生模块的构建输出：
 
 ```ini
 # .npmrc
 side-effects-cache=true
 ```
 
-This caches the results of postinstall scripts, speeding up subsequent installs.
+这会缓存 postinstall 脚本的结果，加快后续安装。
 
-### Shared Store
+### 共享存储
 
-Use a single store for all projects (default behavior):
+为所有项目使用单个存储（默认行为）：
 
 ```ini
 # .npmrc
 store-dir=~/.pnpm-store
 ```
 
-Benefits:
-- Packages downloaded once for all projects
-- Hard links save disk space
-- Faster installs from cache
+优势：
+- 包为所有项目下载一次
+- 硬链接节省磁盘空间
+- 从缓存更快安装
 
-### Store Maintenance
+### 存储维护
 
-Periodically clean unused packages:
+定期清理未使用的包：
 
 ```bash
-# Remove unreferenced packages
+# 删除未引用的包
 pnpm store prune
 
-# Check store integrity
+# 检查存储完整性
 pnpm store status
 ```
 
-## Workspace Optimizations
+## 工作区优化
 
-### Parallel Execution
+### 并行执行
 
-Run workspace scripts in parallel:
+并行运行工作区脚本：
 
 ```bash
 pnpm -r --parallel run build
 ```
 
-Control concurrency:
+控制并发：
 ```ini
 # .npmrc
 workspace-concurrency=8
 ```
 
-### Stream Output
+### 流式输出
 
-See output in real-time:
+实时查看输出：
 
 ```bash
 pnpm -r --stream run build
 ```
 
-### Filter to Changed Packages
+### 过滤到更改的包
 
-Only build what changed:
+仅构建更改的内容：
 
 ```bash
-# Build packages changed since main branch
+# 构建自 main 分支以来更改的包
 pnpm --filter "...[origin/main]" run build
 ```
 
-### Topological Order
+### 拓扑顺序
 
-Build dependencies before dependents:
+在依赖者之前构建依赖：
 
 ```bash
 pnpm -r run build
-# Automatically runs in topological order
+# 自动按拓扑顺序运行
 ```
 
-For explicit sequential builds:
+对于显式顺序构建：
 ```bash
 pnpm -r --workspace-concurrency=1 run build
 ```
 
-## Network Optimizations
+## 网络优化
 
-### Configure Registry
+### 配置注册表
 
-Use closest/fastest registry:
+使用最近/最快的注册表：
 
 ```ini
 # .npmrc
 registry=https://registry.npmmirror.com/
 ```
 
-### HTTP Settings
+### HTTP 设置
 
-Tune network settings:
+调整网络设置：
 
 ```ini
 # .npmrc
@@ -181,7 +181,7 @@ fetch-retry-maxtimeout=60000
 network-concurrency=16
 ```
 
-### Proxy Configuration
+### 代理配置
 
 ```ini
 # .npmrc
@@ -189,95 +189,95 @@ proxy=http://proxy.company.com:8080
 https-proxy=http://proxy.company.com:8080
 ```
 
-## Lockfile Optimization
+## 锁文件优化
 
-### Single Lockfile (Monorepos)
+### 单个锁文件（Monorepos）
 
-Use shared lockfile for all packages (default):
+为所有包使用共享锁文件（默认）：
 
 ```ini
 # .npmrc
 shared-workspace-lockfile=true
 ```
 
-Benefits:
-- Single source of truth
-- Faster resolution
-- Consistent versions across workspace
+优势：
+- 单一事实来源
+- 更快解析
+- 工作区中一致的版本
 
-### Lockfile-only Mode
+### 仅锁文件模式
 
-Only update lockfile without installing:
+仅更新 lockfile 而不安装：
 
 ```bash
 pnpm install --lockfile-only
 ```
 
-## Benchmarking
+## 基准测试
 
-### Compare Install Times
+### 比较安装时间
 
 ```bash
-# Clean install
+# 清洁安装
 rm -rf node_modules pnpm-lock.yaml
 time pnpm install
 
-# Cached install (with lockfile)
+# 缓存安装（有 lockfile）
 rm -rf node_modules
 time pnpm install --frozen-lockfile
 
-# With store cache
+# 有存储缓存
 time pnpm install --frozen-lockfile --prefer-offline
 ```
 
-### Profile Resolution
+### 分析解析
 
-Debug slow installs:
+调试慢安装：
 
 ```bash
-# Verbose logging
+# 详细日志
 pnpm install --reporter=append-only
 
-# Debug mode
+# 调试模式
 DEBUG=pnpm:* pnpm install
 ```
 
-## Configuration Summary
+## 配置总结
 
-Optimized `.npmrc` for performance:
+针对性能优化的 `.npmrc`：
 
 ```ini
-# Install behavior
+# 安装行为
 prefer-offline=true
 auto-install-peers=true
 
-# Build optimization  
+# 构建优化
 side-effects-cache=true
-# Only build what's necessary
+# 仅构建必要的内容
 onlyBuiltDependencies[]=esbuild
 onlyBuiltDependencies[]=@swc/core
 
-# Network
+# 网络
 fetch-retries=3
 network-concurrency=16
 
-# Workspace
+# 工作区
 workspace-concurrency=4
 ```
 
-## Quick Reference
+## 快速参考
 
-| Scenario | Command/Setting |
+| 场景 | 命令/设置 |
 |----------|-----------------|
-| CI installs | `pnpm install --frozen-lockfile` |
-| Offline development | `--prefer-offline` |
-| Skip native builds | `neverBuiltDependencies` |
-| Parallel workspace | `pnpm -r --parallel run build` |
-| Build changed only | `pnpm --filter "...[origin/main]" build` |
-| Clean store | `pnpm store prune` |
+| CI 安装 | `pnpm install --frozen-lockfile` |
+| 离线开发 | `--prefer-offline` |
+| 跳过原生构建 | `neverBuiltDependencies` |
+| 并行工作区 | `pnpm -r --parallel run build` |
+| 仅构建更改 | `pnpm --filter "...[origin/main]" build` |
+| 清洁存储 | `pnpm store prune` |
 
-<!-- 
-Source references:
+<!--
+源引用:
 - https://pnpm.io/npmrc
 - https://pnpm.io/cli/install
 - https://pnpm.io/filtering
