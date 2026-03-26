@@ -1,23 +1,23 @@
 ---
-title: State-driven Animations with CSS Transitions and Style Bindings
+title: 使用 CSS 过渡和样式绑定的状态驱动动画
 impact: LOW
-impactDescription: Combining Vue's reactive style bindings with CSS transitions creates smooth, interactive animations
+impactDescription: 结合 Vue 的响应式样式绑定与 CSS 过渡创建流畅的交互式动画
 type: best-practice
 tags: [vue3, animation, css, transition, style-binding, state, interactive]
 ---
 
-# State-driven Animations with CSS Transitions and Style Bindings
+# 使用 CSS 过渡和样式绑定的状态驱动动画
 
-**Impact: LOW** - For responsive, interactive animations that react to user input or state changes, combine Vue's dynamic style bindings with CSS transitions. This creates smooth animations that interpolate values in real-time based on state.
+**影响: LOW** - 对于响应式、交互式动画,结合 Vue 的动态样式绑定与 CSS 过渡。这创建流畅的动画,根据状态实时插值。
 
-## Task List
+## 任务列表
 
-- Use `:style` binding for dynamic properties that change frequently
-- Add CSS `transition` property to smoothly animate between values
-- Consider using `transform` and `opacity` for GPU-accelerated animations
-- For complex value interpolation, use watchers with animation libraries
+- 对频繁更改的动态属性使用 `:style` 绑定
+- 添加 CSS `transition` 属性以在值之间平滑动画
+- 考虑使用 `transform` 和 `opacity` 进行 GPU 加速动画
+- 对于复杂的值插值,使用侦听器和动画库
 
-## Basic Pattern
+## 基本模式
 
 ```vue
 <template>
@@ -26,8 +26,8 @@ tags: [vue3, animation, css, transition, style-binding, state, interactive]
     :style="{ backgroundColor: `hsl(${hue}, 80%, 50%)` }"
     class="interactive-area"
   >
-    <p>Move your mouse across this div...</p>
-    <p>Hue: {{ hue }}</p>
+    <p>在此 div 上移动鼠标...</p>
+    <p>色相: {{ hue }}</p>
   </div>
 </template>
 
@@ -37,7 +37,7 @@ import { ref } from 'vue'
 const hue = ref(0)
 
 function onMousemove(e) {
-  // Map mouse X position to hue (0-360)
+  // 将鼠标 X 位置映射到色相(0-360)
   const rect = e.currentTarget.getBoundingClientRect()
   hue.value = Math.round((e.clientX - rect.left) / rect.width * 360)
 }
@@ -55,9 +55,9 @@ function onMousemove(e) {
 </style>
 ```
 
-## Common Use Cases
+## 常见用例
 
-### Following Mouse Position
+### 跟随鼠标位置
 
 ```vue
 <template>
@@ -99,15 +99,15 @@ function onMousemove(e) {
   height: 20px;
   background: blue;
   border-radius: 50%;
-  /* Smooth following with transition */
+  /* 平滑跟随过渡 */
   transition: transform 0.1s ease-out;
-  /* Prevent the follower from triggering mousemove */
+  /* 防止跟随者触发 mousemove */
   pointer-events: none;
 }
 </style>
 ```
 
-### Progress Animation
+### 进度动画
 
 ```vue
 <template>
@@ -147,7 +147,7 @@ const progress = ref(0)
 </style>
 ```
 
-### Scroll-based Animation
+### 基于滚动的动画
 
 ```vue
 <template>
@@ -158,7 +158,7 @@ const progress = ref(0)
       transform: `translateY(${scrollOffset}px)`
     }"
   >
-    <h1>Scroll Down</h1>
+    <h1>向下滚动</h1>
   </div>
 </template>
 
@@ -172,7 +172,7 @@ const heroOpacity = computed(() => {
 })
 
 const scrollOffset = computed(() => {
-  return scrollY.value * 0.5  // Parallax effect
+  return scrollY.value * 0.5  // 视差效果
 })
 
 function handleScroll() {
@@ -194,12 +194,12 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Note: No transition for scroll-based animations - they should be instant */
+  /* 注意:基于滚动的动画不需要过渡 - 它们应该是即时的 */
 }
 </style>
 ```
 
-### Color Theme Transition
+### 颜色主题过渡
 
 ```vue
 <template>
@@ -207,8 +207,8 @@ onUnmounted(() => {
     class="app"
     :style="themeStyles"
   >
-    <button @click="toggleTheme">Toggle Theme</button>
-    <p>Current theme: {{ isDark ? 'Dark' : 'Light' }}</p>
+    <button @click="toggleTheme">切换主题</button>
+    <p>当前主题: {{ isDark ? '暗色' : '亮色' }}</p>
   </div>
 </template>
 
@@ -237,9 +237,9 @@ function toggleTheme() {
 </style>
 ```
 
-## Advanced: Numerical Tweening with Watchers
+## 高级:使用侦听器的数值补间
 
-For smooth number animations (counters, stats), use watchers with animation libraries:
+对于平滑的数字动画(计数器、统计),使用侦听器和动画库:
 
 ```vue
 <template>
@@ -256,7 +256,7 @@ import gsap from 'gsap'
 const targetNumber = ref(0)
 const tweened = reactive({ value: 0 })
 
-// Computed for display
+// 用于显示的计算属性
 const displayNumber = computed(() => tweened.value)
 
 watch(targetNumber, (newValue) => {
@@ -269,21 +269,21 @@ watch(targetNumber, (newValue) => {
 </script>
 ```
 
-## Performance Considerations
+## 性能考虑
 
 ```vue
 <style>
-/* GOOD: GPU-accelerated properties */
+/* 好:GPU 加速属性 */
 .element {
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* AVOID: Properties that trigger layout recalculation */
+/* 避免:触发布局重新计算的属性 */
 .element {
   transition: width 0.3s ease, height 0.3s ease, margin 0.3s ease;
 }
 
-/* For high-frequency updates, consider will-change */
+/* 对于高频更新,考虑 will-change */
 .frequently-animated {
   will-change: transform;
 }

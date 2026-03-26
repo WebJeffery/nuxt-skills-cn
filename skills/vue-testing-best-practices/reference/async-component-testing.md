@@ -1,24 +1,24 @@
 ---
-title: Use flushPromises for Testing Async Components
+title: 使用 flushPromises 测试异步组件
 impact: HIGH
-impactDescription: Without awaiting async operations, tests make assertions before the component has rendered, causing false negatives
+impactDescription: 不等待异步操作会导致测试在组件渲染之前进行断言,导致假阴性
 type: gotcha
 tags: [vue3, testing, async, defineAsyncComponent, flushPromises, vitest]
 ---
 
-# Use flushPromises for Testing Async Components
+# 使用 flushPromises 测试异步组件
 
-**Impact: HIGH** - When testing async components created with `defineAsyncComponent`, you must use `await flushPromises()` to ensure the component has loaded before making assertions. Vue updates asynchronously, so tests that don't account for this will make assertions before the component has rendered.
+**影响: HIGH** - 测试使用 `defineAsyncComponent` 创建的异步组件时,必须使用 `await flushPromises()` 确保组件在断言之前已加载。Vue 异步更新,因此不考虑这一点的测试将在组件渲染之前进行断言。
 
-## Task Checklist
+## 任务清单
 
-- [ ] Use `async/await` in test functions for async components
-- [ ] Call `await flushPromises()` after mounting async components
-- [ ] Test loading states by making assertions before `flushPromises()`
-- [ ] Test error states using rejected promises in `defineAsyncComponent`
-- [ ] Use `trigger()` with `await` as it returns a Promise
+- [ ] 在测试函数中使用 `async/await` 测试异步组件
+- [ ] 在挂载异步组件后调用 `await flushPromises()`
+- [ ] 通过在 `flushPromises()` 之前进行断言来测试加载状态
+- [ ] 在 `defineAsyncComponent` 中使用被拒绝的 Promise 测试错误状态
+- [ ] 使用 `trigger()` 时带上 `await`,因为它返回一个 Promise
 
-**Incorrect:**
+**错误:**
 
 ```javascript
 import { mount } from '@vue/test-utils'
@@ -28,15 +28,15 @@ const AsyncWidget = defineAsyncComponent(() =>
   import('./Widget.vue')
 )
 
-test('renders async component', () => {
+test('渲染异步组件', () => {
   const wrapper = mount(AsyncWidget)
 
-  // FAILS: Component hasn't loaded yet
+  // 失败: 组件尚未加载
   expect(wrapper.text()).toContain('Widget Content')
 })
 ```
 
-**Correct:**
+**正确:**
 
 ```javascript
 import { mount, flushPromises } from '@vue/test-utils'
@@ -46,16 +46,16 @@ const AsyncWidget = defineAsyncComponent(() =>
   import('./Widget.vue')
 )
 
-test('renders async component', async () => {
+test('渲染异步组件', async () => {
   const wrapper = mount(AsyncWidget)
 
-  // Wait for async component to load
+  // 等待异步组件加载
   await flushPromises()
 
   expect(wrapper.text()).toContain('Widget Content')
 })
 
-test('shows loading state initially', async () => {
+test('初始显示加载状态', async () => {
   const AsyncWithLoading = defineAsyncComponent({
     loader: () => import('./Widget.vue'),
     loadingComponent: { template: '<div>Loading...</div>' },
@@ -64,18 +64,18 @@ test('shows loading state initially', async () => {
 
   const wrapper = mount(AsyncWithLoading)
 
-  // Check loading state immediately
+  // 立即检查加载状态
   expect(wrapper.text()).toContain('Loading...')
 
-  // Wait for component to load
+  // 等待组件加载
   await flushPromises()
 
-  // Check final state
+  // 检查最终状态
   expect(wrapper.text()).toContain('Widget Content')
 })
 ```
 
-## Testing with Suspense
+## 使用 Suspense 测试
 
 ```javascript
 import { mount, flushPromises } from '@vue/test-utils'
@@ -85,7 +85,7 @@ const AsyncWidget = defineAsyncComponent(() =>
   import('./Widget.vue')
 )
 
-test('renders async component with Suspense', async () => {
+test('使用 Suspense 渲染异步组件', async () => {
   const wrapper = mount({
     components: { AsyncWidget },
     template: `
@@ -98,24 +98,24 @@ test('renders async component with Suspense', async () => {
     `
   })
 
-  // Initially shows fallback
+  // 初始显示 fallback
   expect(wrapper.text()).toContain('Loading...')
 
-  // Wait for async resolution
+  // 等待异步解析
   await flushPromises()
 
-  // Now shows actual content
+  // 现在显示实际内容
   expect(wrapper.text()).toContain('Widget Content')
 })
 ```
 
-## Testing Error States
+## 测试错误状态
 
 ```javascript
 import { mount, flushPromises } from '@vue/test-utils'
 import { defineAsyncComponent } from 'vue'
 
-test('shows error component on load failure', async () => {
+test('加载失败时显示错误组件', async () => {
   const AsyncWithError = defineAsyncComponent({
     loader: () => Promise.reject(new Error('Failed to load')),
     errorComponent: { template: '<div>Error loading component</div>' }
@@ -129,35 +129,34 @@ test('shows error component on load failure', async () => {
 })
 ```
 
-## Utilities Reference
+## 工具参考
 
-| Utility | Purpose |
+| 工具 | 用途 |
 |---------|---------|
-| `await flushPromises()` | Resolves all pending promises |
-| `await nextTick()` | Waits for Vue's next DOM update cycle |
-| `await wrapper.trigger('click')` | Triggers event and waits for update |
+| `await flushPromises()` | 解析所有挂起的 Promise |
+| `await nextTick()` | 等待 Vue 的下一个 DOM 更新周期 |
+| `await wrapper.trigger('click')` | 触发事件并等待更新 |
 
-## Dynamic Import Handling
+## 动态导入处理
 
-**Note:** Dynamic imports (`import('./File.vue')`) may require additional handling beyond `flushPromises()` in test environments. Test runners like Vitest handle module resolution differently than runtime bundlers, which can cause timing issues with dynamic imports. If `flushPromises()` alone doesn't resolve the component, consider:
+**注意:** 动态导入(`import('./File.vue')`)可能需要在测试环境中进行额外处理,而不仅仅是 `flushPromises()`。像 Vitest 这样的测试运行器与运行时打包器处理模块解析的方式不同,这可能导致动态导入出现时序问题。如果仅使用 `flushPromises()` 无法解析组件,请考虑:
 
-- Mocking the dynamic import to return the component synchronously
-- Using multiple `await flushPromises()` calls in sequence
-- Wrapping assertions in `waitFor()` or retry utilities
-- Configuring your test runner's module resolution settings
+- 模拟动态导入以同步返回组件
+- 按顺序使用多个 `await flushPromises()` 调用
+- 将断言包装在 `waitFor()` 或重试工具中
+- 配置测试运行器的模块解析设置
 
 ```javascript
-// If flushPromises() isn't sufficient, mock the import
+// 如果 flushPromises() 不够,模拟导入
 vi.mock('./Widget.vue', () => ({
   default: { template: '<div>Widget Content</div>' }
 }))
 
-// Or use multiple flush calls for nested async operations
+// 或对嵌套异步操作使用多个 flush 调用
 await flushPromises()
 await flushPromises()
 ```
 
-## References
-
-- [Vue Test Utils - Asynchronous Behavior](https://test-utils.vuejs.org/guide/advanced/async-suspense)
-- [Vue.js Async Components Documentation](https://vuejs.org/guide/components/async)
+## 参考
+- [Vue Test Utils - 异步行为](https://test-utils.vuejs.org/guide/advanced/async-suspense)
+- [Vue.js 异步组件文档](https://vuejs.org/guide/components/async)

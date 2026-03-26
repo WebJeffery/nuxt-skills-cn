@@ -1,15 +1,15 @@
 ---
 name: line-numbers
-description: Enable line numbering for code blocks globally or per-block
+description: 全局或逐块启用代码块的行号
 ---
 
-# Code Block Line Numbers
+# 代码块行号
 
-Enable line numbering for code blocks.
+为代码块启用行号。
 
-## Global Setting
+## 全局设置
 
-Enable for all code blocks in headmatter:
+在 headmatter 中为所有代码块启用：
 
 ```md
 ---
@@ -17,7 +17,7 @@ lineNumbers: true
 ---
 ```
 
-## Per-Block Setting
+## 逐块设置
 
 ````md
 ```ts {6,7}{lines:true,startLine:5}
@@ -30,17 +30,17 @@ function add(
 ```
 ````
 
-## Options
+## 选项
 
-- `lines: true/false` - Enable/disable line numbers
-- `startLine: number` - Starting line number (default: 1)
+- `lines: true/false` - 启用/禁用行号
+- `startLine: number` - 起始行号（默认：1）
 
-## With Line Highlighting
+## 与行高亮结合使用
 
-Use `{*}` as placeholder when combining with other features:
+与其他功能结合使用时，使用 `{*}` 作为占位符：
 
 ````md
 ```ts {*}{lines:true,startLine:5}
-// code here
+// 此处为代码
 ```
 ````

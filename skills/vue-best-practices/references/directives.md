@@ -1,47 +1,47 @@
 ---
-title: Directive Best Practices
+title: 指令最佳实践
 impact: MEDIUM
-impactDescription: Custom directives are powerful but easy to misuse; following patterns prevents leaks, invalid usage, and unclear abstractions
+impactDescription: 自定义指令很强大但容易误用;遵循模式可防止泄漏、无效使用和不清晰的抽象
 type: best-practice
 tags: [vue3, directives, custom-directives, composition, typescript]
 ---
 
-# Directive Best Practices
+# 指令最佳实践
 
-**Impact: MEDIUM** - Directives are for low-level DOM access. Use them sparingly, keep them side-effect safe, and prefer components or composables when you need stateful or reusable UI behavior.
+**影响: MEDIUM** - 指令用于低级 DOM 访问。谨慎使用它们,保持它们副作用安全,并在您需要有状态或可重用的 UI 行为时偏好组件或 composables。
 
-## Task List
+## 任务列表
 
-- Use directives only when you need direct DOM access
-- Do not mutate directive arguments or binding objects
-- Clean up timers, listeners, and observers in `unmounted`
-- Register directives in `<script setup>` with the `v-` prefix
-- In TypeScript projects, type directive values and augment template directive types
-- Prefer components or composables for complex behavior
+- 仅在需要直接 DOM 访问时使用指令
+- 不要变异指令参数或绑定对象
+- 在 `unmounted` 中清理计时器、侦听器和观察者
+- 在 `<script setup>` 中使用 `v-` 前缀注册指令
+- 在 TypeScript 项目中,类型化指令值并增强模板指令类型
+- 偏好组件或 composables 进行复杂行为
 
-## Treat Directive Arguments as Read-Only
+## 将指令参数视为只读
 
-Directive bindings are not reactive storage. Don’t write to them.
+指令绑定不是响应式存储。不要写入它们。
 
 ```ts
 const vFocus = {
   mounted(el, binding) {
-    // binding.value is read-only
+    // binding.value 是只读的
     el.focus()
   }
 }
 ```
 
-## Avoid Directives on Components
+## 避免在组件上使用指令
 
-Directives apply to DOM elements. When used on components, they attach to the root element and can break if the root changes.
+指令应用于 DOM 元素。在组件上使用时,它们附加到根元素,如果根更改可能会中断。
 
-**BAD:**
+**错误:**
 ```vue
 <MyInput v-focus />
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <!-- MyInput.vue -->
 <script setup>
@@ -53,9 +53,9 @@ const vFocus = (el) => el.focus()
 </template>
 ```
 
-## Clean Up Side Effects in `unmounted`
+## 在 `unmounted` 中清理副作用
 
-Any timers, listeners, or observers must be removed to avoid leaks.
+任何计时器、侦听器或观察者都必须移除以避免泄漏。
 
 ```ts
 const vResize = {
@@ -70,15 +70,15 @@ const vResize = {
 }
 ```
 
-## Prefer Function Shorthand for Single-Hook Directives
+## 对单钩子指令偏好函数简写
 
-If you only need `mounted`/`updated`, use the function form.
+如果您只需要 `mounted`/`updated`,请使用函数形式。
 
 ```ts
 const vAutofocus = (el) => el.focus()
 ```
 
-## Use the `v-` Prefix and Script Setup Registration
+## 使用 `v-` 前缀和脚本设置注册
 
 ```vue
 <script setup>
@@ -90,13 +90,13 @@ const vFocus = (el) => el.focus()
 </template>
 ```
 
-## Type Custom Directives in TypeScript Projects
+## 在 TypeScript 项目中类型化自定义指令
 
-Use `Directive<Element, ValueType>` so `binding.value` is typed, and augment Vue's template types so directives are recognized in SFC templates.
+使用 `Directive<Element, ValueType>` 以便 `binding.value` 被类型化,并增强 Vue 的模板类型以便在 SFC 模板中识别指令。
 
-**BAD:**
+**错误:**
 ```ts
-// Untyped directive value and no template type augmentation
+// 未类型化的指令值且没有模板类型增强
 export const vHighlight = {
   mounted(el, binding) {
     el.style.backgroundColor = binding.value
@@ -104,7 +104,7 @@ export const vHighlight = {
 }
 ```
 
-**GOOD:**
+**正确:**
 ```ts
 import type { Directive } from 'vue'
 
@@ -123,11 +123,11 @@ declare module 'vue' {
 }
 ```
 
-## Handle SSR with `getSSRProps`
+## 使用 `getSSRProps` 处理 SSR
 
-Directive hooks such as `mounted` and `updated` do not run during SSR. If a directive sets attributes/classes that affect rendered HTML, provide an SSR equivalent via `getSSRProps` to avoid hydration mismatches.
+指令钩子如 `mounted` 和 `updated` 在 SSR 期间不运行。如果指令设置影响渲染 HTML 的属性/类,通过 `getSSRProps` 提供 SSR 等效项以避免水合不匹配。
 
-**BAD:**
+**错误:**
 ```ts
 const vTooltip = {
   mounted(el, binding) {
@@ -137,7 +137,7 @@ const vTooltip = {
 }
 ```
 
-**GOOD:**
+**正确:**
 ```ts
 const vTooltip = {
   mounted(el, binding) {
@@ -153,10 +153,10 @@ const vTooltip = {
 }
 ```
 
-## Prefer Declarative Templates When Possible
+## 尽可能偏好声明性模板
 
-If a standard attribute or binding works, use it instead of a directive.
+如果标准属性或绑定有效,请使用它而不是指令。
 
-## Decide Between Directives and Components
+## 在指令和组件之间做决定
 
-Use a directive for DOM-level behavior. Use a component when behavior affects structure, state, or rendering.
+对 DOM 级行为使用指令。当行为影响结构、状态或渲染时使用组件。

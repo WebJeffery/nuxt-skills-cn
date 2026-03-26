@@ -1,37 +1,37 @@
 ---
 name: click-marker
-description: Highlight and auto-scroll presenter notes based on click progress
+description: 根据点击进度高亮和自动滚动演讲者备注
 ---
 
-# Click Markers
+# 点击标记
 
-Highlight and auto-scroll presenter notes based on click progress.
+根据点击进度高亮和自动滚动演讲者备注。
 
-## Syntax
+## 语法
 
-Add `[click]` markers in presenter notes:
+在演讲者备注中添加 `[click]` 标记：
 
 ```md
 <!--
-Content before the first click
+第一次点击之前的内容
 
-[click] This will be highlighted after the first click
+[click] 这将在第一次点击后高亮显示
 
-Also highlighted after the first click
+第一次点击后也高亮显示
 
-- [click] This list element highlights after the second click
+- [click] 此列表元素在第二次点击后高亮显示
 
-[click:3] Last click (skip two clicks)
+[click:3] 最后一次点击（跳过两次点击）
 -->
 ```
 
-## Behavior
+## 行为
 
-- Notes between markers highlight in sync with slide progress
-- Auto-scrolls presenter view to active section
-- Use `[click:{n}]` to skip to specific click number
+- 标记之间的备注与幻灯片进度同步高亮
+- 自动滚动演讲者视图到活动部分
+- 使用 `[click:{n}]` 跳转到特定点击次数
 
-## Requirements
+## 要求
 
-- Only works in presenter mode
-- Notes must be HTML comments at end of slide
+- 仅在演讲者模式下工作
+- 备注必须是幻灯片末尾的 HTML 注释

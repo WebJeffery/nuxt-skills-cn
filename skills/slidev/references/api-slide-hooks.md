@@ -1,13 +1,13 @@
 ---
 name: slide-hooks
-description: Lifecycle hooks for slide components
+description: 幻灯片组件的生命周期钩子
 ---
 
-# Slide Hooks
+# 幻灯片钩子
 
-Lifecycle hooks for slide components.
+幻灯片组件的生命周期钩子。
 
-## Available Hooks
+## 可用钩子
 
 ```ts
 import { onSlideEnter, onSlideLeave, useIsSlideActive } from '@slidev/client'
@@ -15,23 +15,23 @@ import { onSlideEnter, onSlideLeave, useIsSlideActive } from '@slidev/client'
 const isActive = useIsSlideActive()
 
 onSlideEnter(() => {
-  // Called when slide becomes active
+  // 幻灯片变为活动状态时调用
 })
 
 onSlideLeave(() => {
-  // Called when slide becomes inactive
+  // 幻灯片变为非活动状态时调用
 })
 ```
 
-## Important
+## 重要
 
-Do NOT use `onMounted` / `onUnmounted` in slides - component instance persists even when slide is inactive.
+不要在幻灯片中使用 `onMounted` / `onUnmounted` - 即使幻灯片处于非活动状态，组件实例也会持久存在。
 
-Use `onSlideEnter` and `onSlideLeave` instead.
+请改用 `onSlideEnter` 和 `onSlideLeave`。
 
-## Use Cases
+## 使用场景
 
-- Start/stop animations
-- Play/pause media
-- Initialize/cleanup resources
-- Track analytics
+- 启动/停止动画
+- 播放/暂停媒体
+- 初始化/清理资源
+- 跟踪分析

@@ -1,52 +1,52 @@
 ---
-title: Wrap Async Setup Components in Suspense for Testing
+title: 在测试中使用 Suspense 包装异步 Setup 组件
 impact: HIGH
-impactDescription: Components with async setup() fail to render in tests without Suspense wrapper, causing cryptic errors
+impactDescription: 具有异步 setup() 的组件在没有 Suspense 包装器的情况下在测试中无法渲染,导致难以理解的错误
 type: gotcha
 tags: [vue3, testing, suspense, async-setup, vue-test-utils, vitest]
 ---
 
-# Wrap Async Setup Components in Suspense for Testing
+# 在测试中使用 Suspense 包装异步 Setup 组件
 
-**Impact: HIGH** - Components using `async setup()` require a `<Suspense>` wrapper to function correctly. Testing them without Suspense causes the component to never render, leading to test failures and confusing errors.
+**影响: HIGH** - 使用 `async setup()` 的组件需要一个 `<Suspense>` 包装器才能正常工作。在没有 Suspense 的情况下测试它们会导致组件永远不会渲染,从而导致测试失败和令人困惑的错误。
 
-Create a test wrapper component with Suspense or use a `mountSuspense` helper function for testing async components.
+创建一个带有 Suspense 的测试包装器组件,或使用 `mountSuspense` 辅助函数来测试异步组件。
 
-## Task Checklist
+## 任务清单
 
-- [ ] Identify components with async setup (uses `await` in `<script setup>` or `async setup()`)
-- [ ] Create a wrapper component with `<Suspense>` for testing
-- [ ] Use `flushPromises()` after mounting to wait for async resolution
-- [ ] Access the actual component via `findComponent()` for assertions
-- [ ] Consider using `@testing-library/vue` with caution (has Suspense issues)
+- [ ] 识别具有异步 setup 的组件(在 `<script setup>` 或 `async setup()` 中使用 `await`)
+- [ ] 创建一个带有 `<Suspense>` 的包装器组件用于测试
+- [ ] 在挂载后使用 `flushPromises()` 等待异步解析
+- [ ] 通过 `findComponent()` 访问实际组件进行断言
+- [ ] 谨慎使用 `@testing-library/vue`(有 Suspense 问题)
 
-**Incorrect:**
+**错误:**
 ```javascript
 import { mount } from '@vue/test-utils'
 import AsyncUserProfile from './AsyncUserProfile.vue'
 
-// BAD: Async component without Suspense wrapper
-test('displays user data', async () => {
-  // This won't render - Vue expects Suspense wrapper for async setup
+// 错误: 没有 Suspense 包装器的异步组件
+test('显示用户数据', async () => {
+  // 这不会渲染 - Vue 期望异步 setup 有 Suspense 包装器
   const wrapper = mount(AsyncUserProfile, {
     props: { userId: 1 }
   })
 
   await flushPromises()
 
-  // This fails - component never rendered
+  // 这会失败 - 组件从未渲染
   expect(wrapper.find('.username').text()).toBe('John')
 })
 ```
 
-**Correct - Manual Wrapper Component:**
+**正确 - 手动包装器组件:**
 ```javascript
 import { mount, flushPromises } from '@vue/test-utils'
 import { defineComponent, Suspense } from 'vue'
 import AsyncUserProfile from './AsyncUserProfile.vue'
 
-test('displays user data', async () => {
-  // Create wrapper component with Suspense
+test('显示用户数据', async () => {
+  // 创建带有 Suspense 的包装器组件
   const TestWrapper = defineComponent({
     components: { AsyncUserProfile },
     template: `
@@ -59,19 +59,19 @@ test('displays user data', async () => {
 
   const wrapper = mount(TestWrapper)
 
-  // Initially shows fallback
+  // 最初显示 fallback
   expect(wrapper.text()).toContain('Loading...')
 
-  // Wait for async setup to complete
+  // 等待异步 setup 完成
   await flushPromises()
 
-  // Find the actual component for detailed assertions
+  // 查找实际组件进行详细断言
   const profile = wrapper.findComponent(AsyncUserProfile)
   expect(profile.find('.username').text()).toBe('John')
 })
 ```
 
-**Correct - Reusable Helper Function:**
+**正确 - 可重用的辅助函数:**
 ```javascript
 // test-utils.js
 import { mount, flushPromises } from '@vue/test-utils'
@@ -96,12 +96,12 @@ export async function mountSuspense(component, options = {}) {
     mountOptions
   )
 
-  // Wait for async component to resolve
+  // 等待异步组件解析
   await flushPromises()
 
   return {
     wrapper,
-    // Provide easy access to the actual component
+    // 提供对实际组件的轻松访问
     component: wrapper.findComponent(component)
   }
 }
@@ -112,12 +112,12 @@ export async function mountSuspense(component, options = {}) {
 import { mountSuspense } from './test-utils'
 import AsyncUserProfile from './AsyncUserProfile.vue'
 
-test('displays user data', async () => {
+test('显示用户数据', async () => {
   const { component } = await mountSuspense(AsyncUserProfile, {
     props: { userId: 1 },
     global: {
       stubs: {
-        // Stub any child components if needed
+        // 如果需要,存根任何子组件
       }
     }
   })
@@ -125,7 +125,7 @@ test('displays user data', async () => {
   expect(component.find('.username').text()).toBe('John')
 })
 
-test('handles errors gracefully', async () => {
+test('优雅地处理错误', async () => {
   const { component } = await mountSuspense(AsyncUserProfile, {
     props: { userId: 'invalid' }
   })
@@ -134,21 +134,21 @@ test('handles errors gracefully', async () => {
 })
 ```
 
-## Testing with onErrorCaptured
+## 使用 onErrorCaptured 测试
 
 ```javascript
 import { mount, flushPromises } from '@vue/test-utils'
 import { defineComponent, Suspense, h, ref, onErrorCaptured } from 'vue'
 import AsyncComponent from './AsyncComponent.vue'
 
-test('catches async errors', async () => {
+test('捕获异步错误', async () => {
   const capturedError = ref(null)
 
   const TestWrapper = defineComponent({
     setup() {
       onErrorCaptured((error) => {
         capturedError.value = error
-        return true // Prevent error propagation
+        return true // 防止错误传播
       })
       return { capturedError }
     },
@@ -168,14 +168,14 @@ test('catches async errors', async () => {
 })
 ```
 
-## Using with Nuxt's mountSuspended
+## 使用 Nuxt 的 mountSuspended
 
 ```javascript
-// If using Nuxt, use the built-in mountSuspended helper
+// 如果使用 Nuxt,使用内置的 mountSuspended 辅助函数
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import AsyncPage from './AsyncPage.vue'
 
-test('renders async page', async () => {
+test('渲染异步页面', async () => {
   const wrapper = await mountSuspended(AsyncPage, {
     props: { id: 1 }
   })
@@ -184,17 +184,17 @@ test('renders async page', async () => {
 })
 ```
 
-## Important Caveats
+## 重要注意事项
 
-### @testing-library/vue Limitation
+### @testing-library/vue 限制
 ```javascript
-// CAUTION: @testing-library/vue has issues with Suspense
-// Use @vue/test-utils for async components instead
+// 注意: @testing-library/vue 有 Suspense 问题
+// 改用 @vue/test-utils 测试异步组件
 
-// If you must use Testing Library, create manual wrapper:
+// 如果必须使用 Testing Library,创建手动包装器:
 import { render, waitFor } from '@testing-library/vue'
 
-test('async component with testing library', async () => {
+test('带有 testing library 的异步组件', async () => {
   const TestWrapper = {
     template: `
       <Suspense>
@@ -212,18 +212,18 @@ test('async component with testing library', async () => {
 })
 ```
 
-### Accessing Component Instance
+### 访问组件实例
 ```javascript
-test('access vm on async component', async () => {
+test('在异步组件上访问 vm', async () => {
   const { wrapper, component } = await mountSuspense(AsyncComponent)
 
-  // The wrapper.vm is the Suspense wrapper - not useful
-  // Use component.vm for the actual async component
+  // wrapper.vm 是 Suspense 包装器 - 没有用
+  // 使用 component.vm 获取实际的异步组件
   expect(component.vm.someData).toBe('value')
 })
 ```
 
-## Reference
-- [Vue Test Utils - Async Suspense](https://test-utils.vuejs.org/guide/advanced/async-suspense)
-- [Vue.js Suspense Documentation](https://vuejs.org/guide/built-ins/suspense.html)
-- [Testing Library Vue Suspense Issue](https://github.com/testing-library/vue-testing-library/issues/230)
+## 参考
+- [Vue Test Utils - 异步 Suspense](https://test-utils.vuejs.org/guide/advanced/async-suspense)
+- [Vue.js Suspense 文档](https://vuejs.org/guide/built-ins/suspense.html)
+- [Testing Library Vue Suspense 问题](https://github.com/testing-library/vue-testing-library/issues/230)

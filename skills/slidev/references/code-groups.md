@@ -1,15 +1,15 @@
 ---
 name: code-groups
-description: Group multiple code blocks with tabs and automatic icons
+description: 使用选项卡和自动图标对多个代码块进行分组
 ---
 
-# Code Groups
+# 代码组
 
-Group multiple code blocks with tabs and automatic icons.
+使用选项卡和自动图标对多个代码块进行分组。
 
-## Requirements
+## 要求
 
-Enable Comark syntax in headmatter:
+在 headmatter 中启用 Comark 语法：
 
 ```md
 ---
@@ -17,7 +17,7 @@ comark: true
 ---
 ```
 
-## Syntax
+## 语法
 
 ````md
 ::code-group
@@ -37,15 +37,15 @@ pnpm add @slidev/cli
 ::
 ````
 
-## Title Icon Matching
+## 标题图标匹配
 
-Icons auto-match by title name. Install `@iconify-json/vscode-icons` for built-in icons.
+图标按标题名称自动匹配。安装 `@iconify-json/vscode-icons` 以获取内置图标。
 
-Supported: npm, yarn, pnpm, bun, deno, vue, react, typescript, javascript, and many more.
+支持：npm、yarn、pnpm、bun、deno、vue、react、typescript、javascript 等。
 
-## Custom Icons
+## 自定义图标
 
-Use `~icon~` syntax in title:
+在标题中使用 `~icon~` 语法：
 
 ````md
 ```js [npm ~i-uil:github~]
@@ -53,9 +53,9 @@ console.log('Hello!')
 ```
 ````
 
-Requires:
-1. Install icon collection: `pnpm add @iconify-json/uil`
-2. Add to safelist in `uno.config.ts`:
+要求：
+1. 安装图标集：`pnpm add @iconify-json/uil`
+2. 添加到 `uno.config.ts` 中的 safelist：
 
 ```ts
 export default defineConfig({

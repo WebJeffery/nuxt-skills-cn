@@ -1,48 +1,48 @@
 ---
-title: Choose Browser-Based Runner for Style and DOM Event Testing
+title: 为样式和 DOM 事件测试选择基于浏览器的运行器
 impact: MEDIUM
-impactDescription: Node-based runners cannot test real CSS behavior, native DOM events, cookies, or computed styles
+impactDescription: 基于 Node 的运行器无法测试真实 CSS 行为、原生浏览器事件、cookies 或计算样式
 type: capability
 tags: [vue3, testing, component-testing, vitest, browser, jsdom]
 ---
 
-# Choose Browser-Based Runner for Style and DOM Event Testing
+# 为样式和 DOM 事件测试选择基于浏览器的运行器
 
-**Impact: MEDIUM** - Node-based test runners (Vitest with jsdom/happy-dom) simulate the DOM but cannot test real CSS rendering, native browser events, cookies, computed styles, or cross-browser behavior. Use browser-based runners when these matter.
+**影响: MEDIUM** - 基于 Node 的测试运行器(Vitest + jsdom/happy-dom)模拟 DOM 但无法测试真实 CSS 渲染、原生浏览器事件、cookies、计算样式或跨浏览器行为。当这些重要时使用基于浏览器的运行器。
 
-Use Vitest for most component tests (fast), but use Vitest Browser Mode when testing visual/DOM-dependent features.
+对大多数组件测试使用 Vitest(快速),但在测试视觉/DOM 依赖功能时使用 Vitest Browser Mode。
 
-## Task Checklist
+## 任务清单
 
-- [ ] Use Vitest (node) for logic-focused component tests
-- [ ] Use Vitest Browser Mode for style-dependent tests
-- [ ] Use Vitest Browser Mode for native events (focus, drag, resize)
-- [ ] Use Vitest Browser Mode for cookies and computed CSS styles
-- [ ] Accept slower speed tradeoff for browser accuracy
+- [ ] 使用 Vitest(node)进行逻辑聚焦的组件测试
+- [ ] 使用 Vitest Browser Mode 进行样式依赖测试
+- [ ] 使用 Vitest Browser Mode 进行原生事件(focus、drag、resize)
+- [ ] 使用 Vitest Browser Mode 进行 cookies 和计算 CSS 样式
+- [ ] 接受较慢的速度权衡以获得浏览器准确性
 
-## When to Use Each Approach
+## 何时使用每种方法
 
-### Node-Based Runner (Vitest + happy-dom/jsdom)
-Best for:
-- Pure logic testing
-- State management
-- Event emission
-- Props/slots behavior
-- Most component interactions
-- Fast CI/CD pipelines
+### 基于 Node 的运行器(Vitest + happy-dom/jsdom)
+最适合:
+- 纯逻辑测试
+- 状态管理
+- 事件发射
+- Props/slots 行为
+- 大多数组件交互
+- 快速 CI/CD 管道
 
 ```javascript
 // vitest.config.js
 export default defineConfig({
   test: {
-    environment: 'happy-dom',  // or 'jsdom'
+    environment: 'happy-dom',  // 或 'jsdom'
   }
 })
 ```
 
 ```javascript
-// Fast but limited - fine for most tests
-test('button emits click event', async () => {
+// 快速但有限 - 适用于大多数测试
+test('按钮发出点击事件', async () => {
   const wrapper = mount(Button)
   await wrapper.trigger('click')
   expect(wrapper.emitted('click')).toBeTruthy()
@@ -50,16 +50,16 @@ test('button emits click event', async () => {
 ```
 
 ### Vitest Browser Mode
-Required for:
-- CSS computed styles verification
-- CSS transitions/animations
-- Real focus/blur behavior
-- Drag and drop
-- Cookie operations
-- Viewport-dependent behavior
-- Cross-browser validation
+需要用于:
+- CSS 计算样式验证
+- CSS 过渡/动画
+- 真实 focus/blur 行为
+- 拖放
+- Cookie 操作
+- 视口依赖行为
+- 跨浏览器验证
 
-## Vitest Browser Mode Setup
+## Vitest Browser Mode 设置
 
 ```bash
 npm install -D @vitest/browser playwright
@@ -85,18 +85,18 @@ export default defineConfig({
 import { render } from 'vitest-browser-vue'
 import Button from './Button.vue'
 
-test('has correct hover styling', async () => {
+test('具有正确的悬停样式', async () => {
   const { getByRole } = render(Button, { props: { label: 'Click me' } })
 
   const button = getByRole('button')
 
-  // Check initial style
+  // 检查初始样式
   await expect.element(button).toHaveStyle({
     backgroundColor: 'rgb(59, 130, 246)'  // blue
   })
 })
 
-test('maintains focus after click', async () => {
+test('点击后保持焦点', async () => {
   const { getByRole } = render(Button)
 
   const button = getByRole('button')
@@ -106,19 +106,19 @@ test('maintains focus after click', async () => {
 })
 ```
 
-## Examples: What Each Runner Can/Cannot Test
+## 示例:每个运行器可以/不能测试什么
 
-### Styles - Browser Required
+### 样式 - 需要浏览器
 ```javascript
-// Node runner: CANNOT verify actual CSS
-test('danger button has red background', () => {
+// Node 运行器: 无法验证实际 CSS
+test('危险按钮具有红色背景', () => {
   const wrapper = mount(Button, { props: { variant: 'danger' } })
-  // This only checks class exists, not actual color
+  // 这只检查类存在,不检查实际颜色
   expect(wrapper.classes()).toContain('bg-red-500')
 })
 
-// Vitest Browser Mode: CAN verify computed styles
-test('danger button renders red', async () => {
+// Vitest Browser Mode: 可以验证计算样式
+test('危险按钮渲染红色', async () => {
   const { getByRole } = render(Button, { props: { variant: 'danger' } })
   await expect.element(getByRole('button')).toHaveStyle({
     backgroundColor: 'rgb(239, 68, 68)'
@@ -126,18 +126,18 @@ test('danger button renders red', async () => {
 })
 ```
 
-### Computed CSS Styles - Browser Required
+### 计算 CSS 样式 - 需要浏览器
 ```javascript
-// Node runner: CANNOT get real computed styles
-test('button has correct padding', () => {
+// Node 运行器: 无法获取真实计算样式
+test('按钮具有正确的填充', () => {
   const wrapper = mount(Button)
-  // getComputedStyle returns empty/default values in jsdom
+  // getComputedStyle 在 jsdom 中返回空/默认值
   const style = window.getComputedStyle(wrapper.element)
-  // style.padding will be empty string, not actual computed value
+  // style.padding 将是空字符串,不是实际计算值
 })
 
-// Vitest Browser Mode: Real computed styles
-test('button has correct padding', async () => {
+// Vitest Browser Mode: 真实计算样式
+test('按钮具有正确的填充', async () => {
   const { getByRole } = render(Button)
   const button = getByRole('button')
 
@@ -147,19 +147,19 @@ test('button has correct padding', async () => {
 })
 ```
 
-### Native Events - Browser Required
+### 原生事件 - 需要浏览器
 ```javascript
-// Node runner: Synthetic events only
-test('handles drag and drop', async () => {
+// Node 运行器: 仅合成事件
+test('处理拖放', async () => {
   const wrapper = mount(DraggableList)
-  // trigger('dragstart') is synthetic - may not work as expected
+  // trigger('dragstart') 是合成的 - 可能无法按预期工作
   await wrapper.find('.item').trigger('dragstart')
 })
 
-// Vitest Browser Mode: Real native events via userEvent
+// Vitest Browser Mode: 通过 userEvent 的真实原生事件
 import { userEvent } from '@vitest/browser/context'
 
-test('reorders items on drag', async () => {
+test('拖动时重新排序项目', async () => {
   const { getByTestId } = render(DraggableList)
 
   const item = getByTestId('item-1')
@@ -167,42 +167,42 @@ test('reorders items on drag', async () => {
 
   await userEvent.dragAndDrop(item, target)
 
-  // Assert reordering
+  // 断言重新排序
 })
 ```
 
-## Recommended Testing Strategy
+## 推荐的测试策略
 
 ```javascript
-// vitest.config.js - Separate test configurations
+// vitest.config.js - 分离的测试配置
 
 export default defineConfig({
   test: {
-    // Default: Node environment for speed
+    // 默认: Node 环境以获得速度
     environment: 'happy-dom',
 
-    // Browser tests in separate directory
+    // 浏览器测试在单独目录中
     include: ['src/**/*.test.{js,ts}'],
   },
 })
 
-// Run browser tests separately
+// 单独运行浏览器测试
 // npx vitest --browser.enabled
 ```
 
-### Directory Structure
+### 目录结构
 ```
 tests/
-├── unit/              # Fast node-based tests
+├── unit/              # 快速基于 node 的测试
 │   ├── Button.test.js
 │   └── useCounter.test.js
-├── component/         # Slower browser-based tests
+├── component/         # 较慢基于浏览器的测试
 │   ├── Button.browser.test.js
 │   └── DragDrop.browser.test.js
-└── e2e/               # Full E2E tests (Playwright)
+└── e2e/               # 完整 E2E 测试(Playwright)
     └── user-flow.spec.ts
 ```
 
-## Reference
-- [Vue.js Testing - Component Testing](https://vuejs.org/guide/scaling-up/testing#component-testing)
+## 参考
+- [Vue.js 测试 - 组件测试](https://vuejs.org/guide/scaling-up/testing#component-testing)
 - [Vitest Browser Mode](https://vitest.dev/guide/browser.html)

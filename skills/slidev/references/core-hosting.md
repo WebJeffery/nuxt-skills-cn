@@ -1,30 +1,30 @@
 ---
 name: hosting
-description: Build and deploy Slidev presentations
+description: 构建和部署 Slidev 演示文稿
 ---
 
-# Hosting & Deployment
+# 托管与部署
 
-Build and deploy Slidev presentations.
+构建和部署 Slidev 演示文稿。
 
-## Build for Production
+## 生产环境构建
 
 ```bash
 slidev build
 ```
 
-Output: `dist/` folder (static SPA)
+输出：`dist/` 文件夹（静态 SPA）
 
-### Options
+### 选项
 
 ```bash
-slidev build --base /talks/my-talk/    # Custom base path
-slidev build --out public              # Custom output dir
-slidev build --download                # Include PDF
-slidev build --without-notes           # Exclude notes
+slidev build --base /talks/my-talk/    # 自定义基础路径
+slidev build --out public              # 自定义输出目录
+slidev build --download                # 包含 PDF
+slidev build --without-notes           # 排除备注
 ```
 
-### Multiple Presentations
+### 多个演示文稿
 
 ```bash
 slidev build slides1.md slides2.md
@@ -34,7 +34,7 @@ slidev build slides1.md slides2.md
 
 ### GitHub Actions
 
-Create `.github/workflows/deploy.yml`:
+创建 `.github/workflows/deploy.yml`：
 
 ```yaml
 name: Deploy
@@ -75,7 +75,7 @@ jobs:
 
 ## Netlify
 
-Create `netlify.toml`:
+创建 `netlify.toml`：
 
 ```toml
 [build]
@@ -90,7 +90,7 @@ Create `netlify.toml`:
 
 ## Vercel
 
-Create `vercel.json`:
+创建 `vercel.json`：
 
 ```json
 {
@@ -102,7 +102,7 @@ Create `vercel.json`:
 
 ## Docker
 
-### Using Official Image
+### 使用官方镜像
 
 ```bash
 docker run --name slidev --rm -it \
@@ -111,7 +111,7 @@ docker run --name slidev --rm -it \
   tangramor/slidev:latest
 ```
 
-### Custom Dockerfile
+### 自定义 Dockerfile
 
 ```dockerfile
 FROM tangramor/slidev:latest
@@ -125,23 +125,23 @@ EXPOSE 80
 CMD ["npx", "serve", "dist"]
 ```
 
-## Base Path
+## 基础路径
 
-For subdirectory deployment:
+用于子目录部署：
 
 ```bash
-# Build
+# 构建
 slidev build --base /my-slides/
 
-# Or in headmatter
+# 或在 headmatter 中
 ---
 base: /my-slides/
 ---
 ```
 
-## Router Mode
+## 路由模式
 
-For servers without rewrite support:
+对于不支持重写的服务器：
 
 ```yaml
 ---
@@ -149,4 +149,4 @@ routerMode: hash
 ---
 ```
 
-URLs become: `/#/1`, `/#/2`, etc.
+URL 变为：`/#/1`、`/#/2` 等。

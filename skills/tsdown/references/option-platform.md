@@ -1,30 +1,30 @@
-# Platform
+# 平台
 
-Target runtime environment for bundled code.
+打包代码的目标运行时环境。
 
-## Overview
+## 概述
 
-Platform determines the runtime environment and affects module resolution, built-in handling, and optimizations.
+平台确定运行时环境，并影响模块解析、内置处理和优化。
 
-## Available Platforms
+## 可用平台
 
-| Platform | Runtime | Built-ins | Use Case |
+| 平台 | 运行时 | 内置 | 用例 |
 |----------|---------|-----------|----------|
-| `node` | Node.js (default) | Resolved automatically | Server-side, CLIs, tooling |
-| `browser` | Web browsers | Warning if used | Front-end applications |
-| `neutral` | Platform-agnostic | No assumptions | Universal libraries |
+| `node` | Node.js（默认） | 自动解析 | 服务器端、CLI、工具 |
+| `browser` | Web 浏览器 | 如果使用则警告 | 前端应用程序 |
+| `neutral` | 平台无关 | 无假设 | 通用库 |
 
-## Usage
+## 使用
 
 ### CLI
 
 ```bash
-tsdown --platform node     # Default
+tsdown --platform node     # 默认
 tsdown --platform browser
 tsdown --platform neutral
 ```
 
-### Config File
+### 配置文件
 
 ```ts
 export default defineConfig({
@@ -33,11 +33,11 @@ export default defineConfig({
 })
 ```
 
-## Platform Details
+## 平台详情
 
-### Node Platform
+### Node 平台
 
-**Default platform** for server-side and tooling.
+服务器端和工具的**默认平台**。
 
 ```ts
 export default defineConfig({
@@ -46,15 +46,15 @@ export default defineConfig({
 })
 ```
 
-**Characteristics:**
-- Node.js built-ins (fs, path, etc.) resolved automatically
-- Optimized for Node.js runtime
-- Compatible with Deno and Bun
-- Default mainFields: `['main', 'module']`
+**特性：**
+- Node.js 内置（fs、path 等）自动解析
+- 针对 Node.js 运行时优化
+- 与 Deno 和 Bun 兼容
+- 默认 mainFields：`['main', 'module']`
 
-### Browser Platform
+### 浏览器平台
 
-For web applications running in browsers.
+用于在浏览器中运行的 Web 应用程序。
 
 ```ts
 export default defineConfig({
@@ -64,15 +64,15 @@ export default defineConfig({
 })
 ```
 
-**Characteristics:**
-- Warnings if Node.js built-ins are used
-- May require polyfills for Node APIs
-- Optimized for browser environments
-- Default mainFields: `['browser', 'module', 'main']`
+**特性：**
+- 如果使用 Node.js 内置则发出警告
+- 可能需要 Node API 的 polyfills
+- 针对浏览器环境优化
+- 默认 mainFields：`['browser', 'module', 'main']`
 
-### Neutral Platform
+### 中立平台
 
-Platform-agnostic for universal libraries.
+用于通用库的平台无关。
 
 ```ts
 export default defineConfig({
@@ -82,49 +82,49 @@ export default defineConfig({
 })
 ```
 
-**Characteristics:**
-- No runtime assumptions
-- No automatic built-in resolution
-- Relies on `exports` field only
-- Default mainFields: `[]`
-- Full control over runtime behavior
+**特性：**
+- 无运行时假设
+- 无自动内置解析
+- 仅依赖 `exports` 字段
+- 默认 mainFields：`[]`
+- 对运行时行为的完全控制
 
-## CJS Format Limitation
+## CJS 格式限制
 
-**CJS format always uses `node` platform** and cannot be changed.
+**CJS 格式始终使用 `node` 平台**，无法更改。
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   format: ['cjs'],
-  platform: 'browser',  // Ignored for CJS
+  platform: 'browser',  // 对于 CJS 被忽略
 })
 ```
 
-See [rolldown PR #4693](https://github.com/rolldown/rolldown/pull/4693#issuecomment-2912229545) for details.
+详情请参阅 [rolldown PR #4693](https://github.com/rolldown/rolldown/pull/4693#issuecomment-2912229545)。
 
-## Module Resolution
+## 模块解析
 
 ### Main Fields
 
-Different platforms check different `package.json` fields:
+不同平台检查不同的 `package.json` 字段：
 
-| Platform | mainFields | Priority |
+| 平台 | mainFields | 优先级 |
 |----------|------------|----------|
 | `node` | `['main', 'module']` | main → module |
 | `browser` | `['browser', 'module', 'main']` | browser → module → main |
-| `neutral` | `[]` | Only `exports` field |
+| `neutral` | `[]` | 仅 `exports` 字段 |
 
-### Neutral Platform Resolution
+### 中立平台解析
 
-When using `neutral`, packages without `exports` field may fail to resolve:
+使用 `neutral` 时，没有 `exports` 字段的包可能无法解析：
 
 ```
 Help: The "main" field here was ignored. Main fields must be configured
-explicitly when using the "neutral" platform.
+explicitly when using "neutral" platform.
 ```
 
-**Solution:** Configure mainFields explicitly:
+**解决方案：** 显式配置 mainFields：
 
 ```ts
 export default defineConfig({
@@ -137,9 +137,9 @@ export default defineConfig({
 })
 ```
 
-## Common Patterns
+## 常见模式
 
-### Node.js CLI Tool
+### Node.js CLI 工具
 
 ```ts
 export default defineConfig({
@@ -150,7 +150,7 @@ export default defineConfig({
 })
 ```
 
-### Browser Library (IIFE)
+### 浏览器库（IIFE）
 
 ```ts
 export default defineConfig({
@@ -162,7 +162,7 @@ export default defineConfig({
 })
 ```
 
-### Universal Library
+### 通用库
 
 ```ts
 export default defineConfig({
@@ -177,7 +177,7 @@ export default defineConfig({
 })
 ```
 
-### React Component Library
+### React 组件库
 
 ```ts
 export default defineConfig({
@@ -190,7 +190,7 @@ export default defineConfig({
 })
 ```
 
-### Node.js + Browser Builds
+### Node.js + 浏览器构建
 
 ```ts
 export default defineConfig([
@@ -207,25 +207,25 @@ export default defineConfig([
 ])
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Node Built-in Warnings (Browser)
+### Node 内置警告（浏览器）
 
-When using Node.js APIs in browser builds:
+在浏览器构建中使用 Node.js API 时：
 
 ```
 Warning: Module "fs" has been externalized for browser compatibility
 ```
 
-**Solutions:**
-1. Use platform: 'node' if not browser-only
-2. Add polyfills for Node APIs
-3. Avoid Node.js built-ins in browser code
-4. Use platform: 'neutral' with careful dependency management
+**解决方案：**
+1. 如果不是仅浏览器，使用 platform: 'node'
+2. 为 Node API 添加 polyfills
+3. 在浏览器代码中避免 Node.js 内置
+4. 使用 platform: 'neutral' 并小心管理依赖项
 
-### Module Resolution Issues (Neutral)
+### 模块解析问题（中立）
 
-When packages don't resolve with `neutral`:
+当包无法使用 `neutral` 解析时：
 
 ```ts
 export default defineConfig({
@@ -239,18 +239,18 @@ export default defineConfig({
 })
 ```
 
-## Tips
+## 提示
 
-1. **Use `node`** for server-side and CLIs (default)
-2. **Use `browser`** for front-end applications
-3. **Use `neutral`** for universal libraries
-4. **Configure mainFields** when using neutral platform
-5. **CJS is always node** - use ESM for other platforms
-6. **Test in target environment** to verify compatibility
+1. **使用 `node`**用于服务器端和 CLI（默认）
+2. **使用 `browser`**用于前端应用程序
+3. **使用 `neutral`**用于通用库
+4. **使用中立平台时配置 mainFields**
+5. **CJS 始终是 node** - 其他平台使用 ESM
+6. **在目标环境中测试**以验证兼容性
 
-## Related Options
+## 相关选项
 
-- [Output Format](option-output-format.md) - Module formats
-- [Target](option-target.md) - JavaScript version
-- [Shims](option-shims.md) - ESM/CJS compatibility
-- [Dependencies](option-dependencies.md) - External packages
+- [输出格式](option-output-format.md) - 模块格式
+- [目标](option-target.md) - JavaScript 版本
+- [Shims](option-shims.md) - ESM/CJS 兼容性
+- [依赖项](option-dependencies.md) - 外部包

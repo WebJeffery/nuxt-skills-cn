@@ -1,15 +1,15 @@
 ---
 name: frontmatter-merging
-description: Priority rules when importing slides with conflicting frontmatter
+description: 导入具有冲突 frontmatter 的幻灯片时的优先级规则
 ---
 
-# Frontmatter Merging
+# Frontmatter 合并
 
-When importing slides, frontmatter from main entry takes priority.
+导入幻灯片时，主条目的 frontmatter 优先。
 
-## Example
+## 示例
 
-Main file (`slides.md`):
+主文件（`slides.md`）：
 ```md
 ---
 src: ./cover.md
@@ -18,32 +18,32 @@ class: text-center
 ---
 ```
 
-Imported file (`cover.md`):
+导入文件（`cover.md`）：
 ```md
 ---
 layout: cover
 background: https://sli.dev/foo.png
 ---
 
-# Cover
+# 封面
 
-Cover Page
+封面页
 ```
 
-## Result
+## 结果
 
 ```md
 ---
 layout: cover
-background: https://sli.dev/bar.png  # main entry wins
+background: https://sli.dev/bar.png  # 主条目获胜
 class: text-center
 ---
 
-# Cover
+# 封面
 
-Cover Page
+封面页
 ```
 
-## Priority Rule
+## 优先级规则
 
-Main entry > Imported file for duplicate keys.
+对于重复键，主条目 > 导入文件。

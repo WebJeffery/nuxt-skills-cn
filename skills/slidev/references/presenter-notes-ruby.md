@@ -1,13 +1,13 @@
 ---
 name: notes-auto-ruby
-description: Automatically add ruby text (pronunciation guides) to presenter notes
+description: 自动向演讲者备注添加 ruby 文本（发音指南）
 ---
 
-# Notes Auto Ruby
+# 备注自动 Ruby
 
-Automatically add ruby text (pronunciation guides) to presenter notes.
+自动向演讲者备注添加 ruby 文本（发音指南）。
 
-## Configuration
+## 配置
 
 ```md
 ---
@@ -17,19 +17,19 @@ notesAutoRuby:
 ---
 ```
 
-## Example
+## 示例
 
-Notes:
+备注：
 ```md
 <!--
 私は日本語を勉強しています。
 -->
 ```
 
-Renders with ruby annotations above the matched words.
+在匹配的单词上方渲染 ruby 注释。
 
-## Use Case
+## 使用场景
 
-- Language learning presentations
-- Pronunciation guides for technical terms
-- Reading assistance for non-native text
+- 语言学习演示文稿
+- 技术术语的发音指南
+- 非母语文本的阅读辅助

@@ -1,41 +1,41 @@
 ---
 name: tsdown
-description: Bundle TypeScript and JavaScript libraries with blazing-fast speed powered by Rolldown. Use when building libraries, generating type declarations, bundling for multiple formats, or migrating from tsup.
+description: 使用 Rolldown 驱动的超快速度打包 TypeScript 和 JavaScript 库。用于构建库、生成类型声明、打包多种格式或从 tsup 迁移。
 ---
 
-# tsdown - The Elegant Library Bundler
+# tsdown - 优雅的库打包器
 
-Blazing-fast bundler for TypeScript/JavaScript libraries powered by Rolldown and Oxc.
+由 Rolldown 和 Oxc 驱动的超快 TypeScript/JavaScript 库打包器。
 
-## When to Use
+## 使用场景
 
-- Building TypeScript/JavaScript libraries for npm
-- Generating TypeScript declaration files (.d.ts)
-- Bundling for multiple formats (ESM, CJS, IIFE, UMD)
-- Optimizing bundles with tree shaking and minification
-- Migrating from tsup with minimal changes
-- Building React, Vue, Solid, or Svelte component libraries
+- 为 npm 构建 TypeScript/JavaScript 库
+- 生成 TypeScript 声明文件（.d.ts）
+- 打包多种格式（ESM、CJS、IIFE、UMD）
+- 使用 tree shaking 和压缩优化包
+- 从 tsup 迁移，只需最少更改
+- 构建 React、Vue、Solid 或 Svelte 组件库
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Install
+# 安装
 pnpm add -D tsdown
 
-# Basic usage
+# 基本用法
 npx tsdown
 
-# With config file
+# 使用配置文件
 npx tsdown --config tsdown.config.ts
 
-# Watch mode
+# 监视模式
 npx tsdown --watch
 
-# Migrate from tsup
+# 从 tsup 迁移
 npx tsdown-migrate
 ```
 
-## Basic Configuration
+## 基本配置
 
 ```ts
 import { defineConfig } from 'tsdown'
@@ -48,74 +48,74 @@ export default defineConfig({
 })
 ```
 
-## Core References
+## 核心参考
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Getting Started | Installation, first bundle, CLI basics | [guide-getting-started](references/guide-getting-started.md) |
-| Configuration File | Config file formats, multiple configs, workspace | [option-config-file](references/option-config-file.md) |
-| CLI Reference | All CLI commands and options | [reference-cli](references/reference-cli.md) |
-| Migrate from tsup | Migration guide and compatibility notes | [guide-migrate-from-tsup](references/guide-migrate-from-tsup.md) |
-| Plugins | Rolldown, Rollup, Unplugin support | [advanced-plugins](references/advanced-plugins.md) |
-| Hooks | Lifecycle hooks for custom logic | [advanced-hooks](references/advanced-hooks.md) |
-| Programmatic API | Build from Node.js scripts | [advanced-programmatic](references/advanced-programmatic.md) |
-| Rolldown Options | Pass options directly to Rolldown | [advanced-rolldown-options](references/advanced-rolldown-options.md) |
-| CI Environment | CI detection, `'ci-only'` / `'local-only'` values | [advanced-ci](references/advanced-ci.md) |
+| 入门 | 安装、首次打包、CLI 基础 | [guide-getting-started](references/guide-getting-started.md) |
+| 配置文件 | 配置文件格式、多个配置、工作区 | [option-config-file](references/option-config-file.md) |
+| CLI 参考 | 所有 CLI 命令和选项 | [reference-cli](references/reference-cli.md) |
+| 从 tsup 迁移 | 迁移指南和兼容性说明 | [guide-migrate-from-tsup](references/guide-migrate-from-tsup.md) |
+| 插件 | Rolldown、Rollup、Unplugin 支持 | [advanced-plugins](references/advanced-plugins.md) |
+| 钩子 | 自定义逻辑的生命周期钩子 | [advanced-hooks](references/advanced-hooks.md) |
+| 编程式 API | 从 Node.js 脚本构建 | [advanced-programmatic](references/advanced-programmatic.md) |
+| Rolldown 选项 | 直接将选项传递给 Rolldown | [advanced-rolldown-options](references/advanced-rolldown-options.md) |
+| CI 环境 | CI 检测、'ci-only' / 'local-only' 值 | [advanced-ci](references/advanced-ci.md) |
 
-## Build Options
+## 构建选项
 
-| Option | Usage | Reference |
+| 选项 | 用法 | 参考 |
 |--------|-------|-----------|
-| Entry points | `entry: ['src/*.ts', '!**/*.test.ts']` | [option-entry](references/option-entry.md) |
-| Output formats | `format: ['esm', 'cjs', 'iife', 'umd']` | [option-output-format](references/option-output-format.md) |
-| Output directory | `outDir: 'dist'`, `outExtensions` | [option-output-directory](references/option-output-directory.md) |
-| Type declarations | `dts: true`, `dts: { sourcemap, compilerOptions, vue }` | [option-dts](references/option-dts.md) |
-| Target environment | `target: 'es2020'`, `target: 'esnext'` | [option-target](references/option-target.md) |
-| Platform | `platform: 'node'`, `platform: 'browser'` | [option-platform](references/option-platform.md) |
-| Tree shaking | `treeshake: true`, custom options | [option-tree-shaking](references/option-tree-shaking.md) |
-| Minification | `minify: true`, `minify: 'dce-only'` | [option-minification](references/option-minification.md) |
-| Source maps | `sourcemap: true`, `'inline'`, `'hidden'` | [option-sourcemap](references/option-sourcemap.md) |
-| Watch mode | `watch: true`, watch options | [option-watch-mode](references/option-watch-mode.md) |
-| Cleaning | `clean: true`, clean patterns | [option-cleaning](references/option-cleaning.md) |
-| Log level | `logLevel: 'silent'`, `failOnWarn: false` | [option-log-level](references/option-log-level.md) |
+| 入口点 | `entry: ['src/*.ts', '!**/*.test.ts']` | [option-entry](references/option-entry.md) |
+| 输出格式 | `format: ['esm', 'cjs', 'iife', 'umd']` | [option-output-format](references/option-output-format.md) |
+| 输出目录 | `outDir: 'dist'`、`outExtensions` | [option-output-directory](references/option-output-directory.md) |
+| 类型声明 | `dts: true`、`dts: { sourcemap, compilerOptions, vue }` | [option-dts](references/option-dts.md) |
+| 目标环境 | `target: 'es2020'`、`target: 'esnext'` | [option-target](references/option-target.md) |
+| 平台 | `platform: 'node'`、`platform: 'browser'` | [option-platform](references/option-platform.md) |
+| Tree shaking | `treeshake: true`、自定义选项 | [option-tree-shaking](references/option-tree-shaking.md) |
+| 压缩 | `minify: true`、`minify: 'dce-only'` | [option-minification](references/option-minification.md) |
+| 源映射 | `sourcemap: true`、`'inline'`、`'hidden'` | [option-sourcemap](references/option-sourcemap.md) |
+| 监视模式 | `watch: true`、监视选项 | [option-watch-mode](references/option-watch-mode.md) |
+| 清理 | `clean: true`、清理模式 | [option-cleaning](references/option-cleaning.md) |
+| 日志级别 | `logLevel: 'silent'`、`failOnWarn: false` | [option-log-level](references/option-log-level.md) |
 
-## Dependency Handling
+## 依赖处理
 
-| Feature | Usage | Reference |
+| 功能 | 用法 | 参考 |
 |---------|-------|-----------|
-| Never bundle | `deps: { neverBundle: ['react', /^@myorg\//] }` | [option-dependencies](references/option-dependencies.md) |
-| Always bundle | `deps: { alwaysBundle: ['dep-to-bundle'] }` | [option-dependencies](references/option-dependencies.md) |
-| Only bundle | `deps: { onlyBundle: ['cac', 'bumpp'] }` - Whitelist | [option-dependencies](references/option-dependencies.md) |
-| Skip node_modules | `deps: { skipNodeModulesBundle: true }` | [option-dependencies](references/option-dependencies.md) |
-| Auto external | Automatic peer/dependency externalization | [option-dependencies](references/option-dependencies.md) |
+| 从不打包 | `deps: { neverBundle: ['react', /^@myorg\//] }` | [option-dependencies](references/option-dependencies.md) |
+| 始终打包 | `deps: { alwaysBundle: ['dep-to-bundle'] }` | [option-dependencies](references/option-dependencies.md) |
+| 仅打包 | `deps: { onlyBundle: ['cac', 'bumpp'] }` - 白名单 | [option-dependencies](references/option-dependencies.md) |
+| 跳过 node_modules | `deps: { skipNodeModulesBundle: true }` | [option-dependencies](references/option-dependencies.md) |
+| 自动外部化 | 自动 peer/依赖外部化 | [option-dependencies](references/option-dependencies.md) |
 
-## Output Enhancement
+## 输出增强
 
-| Feature | Usage | Reference |
+| 功能 | 用法 | 参考 |
 |---------|-------|-----------|
-| Shims | `shims: true` - Add ESM/CJS compatibility | [option-shims](references/option-shims.md) |
-| CJS default | `cjsDefault: true` (default) / `false` | [option-cjs-default](references/option-cjs-default.md) |
-| Package exports | `exports: true` - Auto-generate exports field | [option-package-exports](references/option-package-exports.md) |
-| CSS handling | **[experimental]** `css: { ... }` — full pipeline with preprocessors, Lightning CSS, PostCSS, code splitting; requires `@tsdown/css` | [option-css](references/option-css.md) |
-| CSS inject | `css: { inject: true }` — preserve CSS imports in JS output | [option-css](references/option-css.md) |
-| Unbundle mode | `unbundle: true` - Preserve directory structure | [option-unbundle](references/option-unbundle.md) |
-| Root directory | `root: 'src'` - Control output directory mapping | [option-root](references/option-root.md) |
-| Executable | **[experimental]** `exe: true` - Bundle as standalone executable, cross-platform via `@tsdown/exe` | [option-exe](references/option-exe.md) |
-| Package validation | `publint: true`, `attw: true` - Validate package | [option-lint](references/option-lint.md) |
+| Shims | `shims: true` - 添加 ESM/CJS 兼容性 | [option-shims](references/option-shims.md) |
+| CJS 默认值 | `cjsDefault: true`（默认）/ `false` | [option-cjs-default](references/option-cjs-default.md) |
+| 包导出 | `exports: true` - 自动生成 exports 字段 | [option-package-exports](references/option-package-exports.md) |
+| CSS 处理 | **[实验性]** `css: { ... }` — 完整管道，包含预处理器、Lightning CSS、PostCSS、代码分割；需要 `@tsdown/css` | [option-css](references/option-css.md) |
+| CSS 注入 | `css: { inject: true }` — 在 JS 输出中保留 CSS 导入 | [option-css](references/option-css.md) |
+| 不打包模式 | `unbundle: true` - 保留目录结构 | [option-unbundle](references/option-unbundle.md) |
+| 根目录 | `root: 'src'` - 控制输出目录映射 | [option-root](references/option-root.md) |
+| 可执行文件 | **[实验性]** `exe: true` - 打包为独立可执行文件，通过 `@tsdown/exe` 跨平台 | [option-exe](references/option-exe.md) |
+| 包验证 | `publint: true`、`attw: true` - 验证包 | [option-lint](references/option-lint.md) |
 
-## Framework & Runtime Support
+## 框架和运行时支持
 
-| Framework | Guide | Reference |
+| 框架 | 指南 | 参考 |
 |-----------|-------|-----------|
-| React | JSX transform, React Compiler | [recipe-react](references/recipe-react.md) |
-| Vue | SFC support, JSX | [recipe-vue](references/recipe-vue.md) |
-| Solid | SolidJS JSX transform | [recipe-solid](references/recipe-solid.md) |
-| Svelte | Svelte component libraries (source distribution recommended) | [recipe-svelte](references/recipe-svelte.md) |
-| WASM | WebAssembly modules via `rolldown-plugin-wasm` | [recipe-wasm](references/recipe-wasm.md) |
+| React | JSX 转换、React Compiler | [recipe-react](references/recipe-react.md) |
+| Vue | SFC 支持、JSX | [recipe-vue](references/recipe-vue.md) |
+| Solid | SolidJS JSX 转换 | [recipe-solid](references/recipe-solid.md) |
+| Svelte | Svelte 组件库（推荐源码分发） | [recipe-svelte](references/recipe-svelte.md) |
+| WASM | 通过 `rolldown-plugin-wasm` 支持 WebAssembly 模块 | [recipe-wasm](references/recipe-wasm.md) |
 
-## Common Patterns
+## 常见模式
 
-### Basic Library Bundle
+### 基本库打包
 
 ```ts
 export default defineConfig({
@@ -126,7 +126,7 @@ export default defineConfig({
 })
 ```
 
-### Multiple Entry Points
+### 多入口点
 
 ```ts
 export default defineConfig({
@@ -140,7 +140,7 @@ export default defineConfig({
 })
 ```
 
-### Browser Library (IIFE/UMD)
+### 浏览器库（IIFE/UMD）
 
 ```ts
 export default defineConfig({
@@ -152,7 +152,7 @@ export default defineConfig({
 })
 ```
 
-### React Component Library
+### React 组件库
 
 ```ts
 export default defineConfig({
@@ -168,31 +168,31 @@ export default defineConfig({
 })
 ```
 
-### Preserve Directory Structure
+### 保留目录结构
 
 ```ts
 export default defineConfig({
   entry: ['src/**/*.ts', '!**/*.test.ts'],
-  unbundle: true, // Preserve file structure
+  unbundle: true, // 保留文件结构
   format: ['esm'],
   dts: true,
 })
 ```
 
-### CI-Aware Configuration
+### CI 感知配置
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   format: ['esm', 'cjs'],
   dts: true,
-  failOnWarn: 'ci-only',  // opt-in: fail on warnings in CI
+  failOnWarn: 'ci-only',  // 选择加入：在 CI 中因警告而失败
   publint: 'ci-only',
   attw: 'ci-only',
 })
 ```
 
-### WASM Support
+### WASM 支持
 
 ```ts
 import { wasm } from 'rolldown-plugin-wasm'
@@ -204,7 +204,7 @@ export default defineConfig({
 })
 ```
 
-### Library with CSS and Sass
+### 带有 CSS 和 Sass 的库
 
 ```ts
 export default defineConfig({
@@ -222,7 +222,7 @@ export default defineConfig({
 })
 ```
 
-### Standalone Executable
+### 独立可执行文件
 
 ```ts
 export default defineConfig({
@@ -231,7 +231,7 @@ export default defineConfig({
 })
 ```
 
-### Cross-Platform Executable (requires `@tsdown/exe`)
+### 跨平台可执行文件（需要 `@tsdown/exe`）
 
 ```ts
 export default defineConfig({
@@ -246,7 +246,7 @@ export default defineConfig({
 })
 ```
 
-### Advanced with Hooks
+### 带有钩子的高级用法
 
 ```ts
 export default defineConfig({
@@ -255,20 +255,20 @@ export default defineConfig({
   dts: true,
   hooks: {
     'build:before': async (context) => {
-      console.log('Building...')
+      console.log('构建中...')
     },
     'build:done': async (context) => {
-      console.log('Build complete!')
+      console.log('构建完成！')
     },
   },
 })
 ```
 
-## Configuration Features
+## 配置功能
 
-### Multiple Configs
+### 多个配置
 
-Export an array for multiple build configurations:
+导出数组以进行多个构建配置：
 
 ```ts
 export default defineConfig([
@@ -285,9 +285,9 @@ export default defineConfig([
 ])
 ```
 
-### Conditional Config
+### 条件配置
 
-Use functions for dynamic configuration:
+使用函数进行动态配置：
 
 ```ts
 export default defineConfig((options) => {
@@ -301,9 +301,9 @@ export default defineConfig((options) => {
 })
 ```
 
-### Workspace/Monorepo
+### 工作区/Monorepo
 
-Use glob patterns to build multiple packages:
+使用 glob 模式构建多个包：
 
 ```ts
 export default defineConfig({
@@ -314,91 +314,91 @@ export default defineConfig({
 })
 ```
 
-## CLI Quick Reference
+## CLI 快速参考
 
 ```bash
-# Basic commands
-tsdown                          # Build once
-tsdown --watch                  # Watch mode
-tsdown --config custom.ts       # Custom config
-npx tsdown-migrate              # Migrate from tsup
+# 基本命令
+tsdown                          # 构建一次
+tsdown --watch                  # 监视模式
+tsdown --config custom.ts       # 自定义配置
+npx tsdown-migrate              # 从 tsup 迁移
 
-# Output options
-tsdown --format esm,cjs        # Multiple formats
-tsdown -d lib                  # Custom output directory (--out-dir)
-tsdown --minify                # Enable minification
-tsdown --dts                   # Generate declarations
-tsdown --exe                   # Bundle as standalone executable
-tsdown --unbundle              # Bundleless mode
+# 输出选项
+tsdown --format esm,cjs        # 多种格式
+tsdown -d lib                  # 自定义输出目录（--out-dir）
+tsdown --minify                # 启用压缩
+tsdown --dts                   # 生成声明
+tsdown --exe                   # 打包为独立可执行文件
+tsdown --unbundle              # 无打包模式
 
-# Entry options
-tsdown src/index.ts            # Single entry
-tsdown src/*.ts                # Glob patterns
-tsdown src/a.ts src/b.ts       # Multiple entries
+# 入口选项
+tsdown src/index.ts            # 单个入口
+tsdown src/*.ts                # Glob 模式
+tsdown src/a.ts src/b.ts       # 多个入口
 
-# Workspace / Monorepo
-tsdown -W                      # Enable workspace mode
-tsdown -W -F my-package        # Filter specific package
-tsdown --filter /^pkg-/        # Filter by regex
+# 工作区 / Monorepo
+tsdown -W                      # 启用工作区模式
+tsdown -W -F my-package        # 过滤特定包
+tsdown --filter /^pkg-/        # 按正则表达式过滤
 
-# Development
-tsdown --watch                 # Watch mode
-tsdown --sourcemap             # Generate source maps
-tsdown --clean                 # Clean output directory
-tsdown --from-vite             # Reuse Vite config
-tsdown --tsconfig tsconfig.build.json  # Custom tsconfig
+# 开发
+tsdown --watch                 # 监视模式
+tsdown --sourcemap             # 生成源映射
+tsdown --clean                 # 清理输出目录
+tsdown --from-vite             # 重用 Vite 配置
+tsdown --tsconfig tsconfig.build.json  # 自定义 tsconfig
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Always generate type declarations** for TypeScript libraries:
+1. **始终生成类型声明**用于 TypeScript 库：
    ```ts
    { dts: true }
    ```
 
-2. **Externalize dependencies** to avoid bundling unnecessary code:
+2. **外部化依赖**以避免打包不必要的代码：
    ```ts
    { deps: { neverBundle: [/^react/, /^@myorg\//] } }
    ```
 
-3. **Use tree shaking** for optimal bundle size:
+3. **使用 tree shaking**以获得最佳包大小：
    ```ts
    { treeshake: true }
    ```
 
-4. **Enable minification** for production builds:
+4. **启用压缩**用于生产构建：
    ```ts
    { minify: true }
    ```
 
-5. **Add shims** for better ESM/CJS compatibility:
+5. **添加 shims**以获得更好的 ESM/CJS 兼容性：
    ```ts
-   { shims: true }  // Adds __dirname, __filename, etc.
+   { shims: true }  // 添加 __dirname、__filename 等。
    ```
 
-6. **Auto-generate package.json exports**:
+6. **自动生成 package.json exports**：
    ```ts
-   { exports: true }  // Creates proper exports field
+   { exports: true }  // 创建正确的 exports 字段
    ```
 
-7. **Use watch mode** during development:
+7. **在开发期间使用监视模式**：
    ```bash
    tsdown --watch
    ```
 
-8. **Preserve structure** for utilities with many files:
+8. **为包含许多文件的实用工具保留结构**：
    ```ts
-   { unbundle: true }  // Keep directory structure
+   { unbundle: true }  // 保留目录结构
    ```
 
-9. **Validate packages** in CI before publishing:
+9. **在发布前在 CI 中验证包**：
    ```ts
    { publint: 'ci-only', attw: 'ci-only' }
    ```
 
-## Resources
+## 资源
 
-- Documentation: https://tsdown.dev
-- GitHub: https://github.com/rolldown/tsdown
-- Rolldown: https://rolldown.rs
-- Migration Guide: https://tsdown.dev/guide/migrate-from-tsup
+- 文档：https://tsdown.dev
+- GitHub：https://github.com/rolldown/tsdown
+- Rolldown：https://rolldown.rs
+- 迁移指南：https://tsdown.dev/guide/migrate-from-tsup

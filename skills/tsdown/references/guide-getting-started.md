@@ -1,39 +1,39 @@
-# Getting Started
+# 入门指南
 
-Quick guide to installing and using tsdown for the first time.
+首次安装和使用 tsdown 的快速指南。
 
-## Installation
+## 安装
 
-Install tsdown as a development dependency:
+将 tsdown 安装为开发依赖：
 
 ```bash
 pnpm add -D tsdown
 
-# Optionally install TypeScript if not using isolatedDeclarations
+# 如果不使用 isolatedDeclarations，可选择安装 TypeScript
 pnpm add -D typescript
 ```
 
-**Requirements:**
-- Node.js 20.19 or higher
-- Experimental support for Deno and Bun
+**要求：**
+- Node.js 20.19 或更高版本
+- 对 Deno 和 Bun 的实验性支持
 
-## Quick Start Templates
+## 快速开始模板
 
-Use `create-tsdown` CLI for instant setup:
+使用 `create-tsdown` CLI 进行即时设置：
 
 ```bash
 pnpm create tsdown@latest
 ```
 
-Provides templates for:
-- Pure TypeScript libraries
-- React component libraries
-- Vue component libraries
-- Ready-to-use configurations
+提供以下模板：
+- 纯 TypeScript 库
+- React 组件库
+- Vue 组件库
+- 即用型配置
 
-## First Bundle
+## 首次打包
 
-### 1. Create Source Files
+### 1. 创建源文件
 
 ```ts
 // src/index.ts
@@ -46,7 +46,7 @@ export function hello() {
 }
 ```
 
-### 2. Create Config File
+### 2. 创建配置文件
 
 ```ts
 // tsdown.config.ts
@@ -57,22 +57,22 @@ export default defineConfig({
 })
 ```
 
-### 3. Run Build
+### 3. 运行构建
 
 ```bash
 ./node_modules/.bin/tsdown
 ```
 
-Output: `dist/index.mjs`
+输出：`dist/index.mjs`
 
-### 4. Test Output
+### 4. 测试输出
 
 ```bash
 node dist/index.mjs
-# Output: Hello tsdown!
+# 输出：Hello tsdown!
 ```
 
-## Add to npm Scripts
+## 添加到 npm 脚本
 
 ```json
 {
@@ -82,34 +82,34 @@ node dist/index.mjs
 }
 ```
 
-Run with:
+运行：
 
 ```bash
 pnpm build
 ```
 
-## CLI Commands
+## CLI 命令
 
 ```bash
-# Check version
+# 检查版本
 tsdown --version
 
-# View help
+# 查看帮助
 tsdown --help
 
-# Build with watch mode
+# 使用监视模式构建
 tsdown --watch
 
-# Build with specific format
+# 使用特定格式构建
 tsdown --format esm,cjs
 
-# Generate type declarations
+# 生成类型声明
 tsdown --dts
 ```
 
-## Basic Configurations
+## 基本配置
 
-### TypeScript Library (ESM + CJS)
+### TypeScript 库（ESM + CJS）
 
 ```ts
 export default defineConfig({
@@ -120,7 +120,7 @@ export default defineConfig({
 })
 ```
 
-### Browser Library (IIFE)
+### 浏览器库（IIFE）
 
 ```ts
 export default defineConfig({
@@ -132,7 +132,7 @@ export default defineConfig({
 })
 ```
 
-### Multiple Entry Points
+### 多个入口点
 
 ```ts
 export default defineConfig({
@@ -146,9 +146,9 @@ export default defineConfig({
 })
 ```
 
-## Using Plugins
+## 使用插件
 
-Add Rolldown, Rollup, or Unplugin plugins:
+添加 Rolldown、Rollup 或 Unplugin 插件：
 
 ```ts
 import SomePlugin from 'some-plugin'
@@ -159,20 +159,20 @@ export default defineConfig({
 })
 ```
 
-## Watch Mode
+## 监视模式
 
-Enable automatic rebuilds on file changes:
+在文件更改时启用自动重新构建：
 
 ```bash
 tsdown --watch
-# or
+# 或
 tsdown -w
 ```
 
-## Next Steps
+## 下一步
 
-- Configure [entry points](option-entry.md) with glob patterns
-- Set up [multiple output formats](option-output-format.md)
-- Enable [type declaration generation](option-dts.md)
-- Explore [plugins](advanced-plugins.md) for extended functionality
-- Read [migration guide](guide-migrate-from-tsup.md) if coming from tsup
+- 使用 glob 模式配置[入口点](option-entry.md)
+- 设置[多个输出格式](option-output-format.md)
+- 启用[类型声明生成](option-dts.md)
+- 探索[插件](advanced-plugins.md)以获得扩展功能
+- 如果从 tsup 迁移，请阅读[迁移指南](guide-migrate-from-tsup.md)

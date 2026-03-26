@@ -1,25 +1,25 @@
 ---
 name: vitest-cli
-description: Command line interface commands and options
+description: 命令行界面命令和选项
 ---
 
-# Command Line Interface
+# 命令行界面
 
-## Commands
+## 命令
 
 ### `vitest`
 
-Start Vitest in watch mode (dev) or run mode (CI):
+在监视模式(开发)或运行模式(CI)中启动 Vitest:
 
 ```bash
-vitest                    # Watch mode in dev, run mode in CI
-vitest foobar             # Run tests containing "foobar" in path
-vitest basic/foo.test.ts:10  # Run specific test by file and line number
+vitest                    # 开发中的监视模式,CI 中的运行模式
+vitest foobar             # 运行路径中包含 "foobar" 的测试
+vitest basic/foo.test.ts:10  # 通过文件和行号运行特定测试
 ```
 
 ### `vitest run`
 
-Run tests once without watch mode:
+在没有监视模式的情况下运行测试一次:
 
 ```bash
 vitest run
@@ -28,7 +28,7 @@ vitest run --coverage
 
 ### `vitest watch`
 
-Explicitly start watch mode:
+显式启动监视模式:
 
 ```bash
 vitest watch
@@ -36,7 +36,7 @@ vitest watch
 
 ### `vitest related`
 
-Run tests that import specific files (useful with lint-staged):
+运行导入特定文件的测试(与 lint-staged 一起使用):
 
 ```bash
 vitest related src/index.ts src/utils.ts --run
@@ -44,7 +44,7 @@ vitest related src/index.ts src/utils.ts --run
 
 ### `vitest bench`
 
-Run only benchmark tests:
+仅运行基准测试:
 
 ```bash
 vitest bench
@@ -52,67 +52,67 @@ vitest bench
 
 ### `vitest list`
 
-List all matching tests without running them:
+列出所有匹配的测试而不运行它们:
 
 ```bash
-vitest list                    # List test names
-vitest list --json             # Output as JSON
-vitest list --filesOnly        # List only test files
+vitest list                    # 列出测试名称
+vitest list --json             # 输出为 JSON
+vitest list --filesOnly        # 仅列出测试文件
 ```
 
 ### `vitest init`
 
-Initialize project setup:
+初始化项目设置:
 
 ```bash
-vitest init browser            # Set up browser testing
+vitest init browser            # 设置浏览器测试
 ```
 
-## Common Options
+## 常用选项
 
 ```bash
-# Configuration
---config <path>           # Path to config file
---project <name>          # Run specific project
+# 配置
+--config <path>           # 配置文件的路径
+--project <name>          # 运行特定项目
 
-# Filtering
---testNamePattern, -t     # Run tests matching pattern
---changed                 # Run tests for changed files
---changed HEAD~1          # Tests for last commit changes
+# 过滤
+--testNamePattern, -t     # 运行匹配模式的测试
+--changed                 # 运行更改文件的测试
+--changed HEAD~1          # 最后一次提交更改的测试
 
-# Reporters
+# 报告器
 --reporter <name>         # default, verbose, dot, json, html
 --reporter=html --outputFile=report.html
 
-# Coverage
---coverage                # Enable coverage
---coverage.provider v8    # Use v8 provider
+# 覆盖率
+--coverage                # 启用覆盖率
+--coverage.provider v8    # 使用 v8 提供程序
 --coverage.reporter text,html
 
-# Execution
---shard <index>/<count>   # Split tests across machines
---bail <n>                # Stop after n failures
---retry <n>               # Retry failed tests n times
---sequence.shuffle        # Randomize test order
+# 执行
+--shard <index>/<count>   # 跨机器拆分测试
+--bail <n>                # n 次失败后停止
+--retry <n>               # 重试失败的测试 n 次
+--sequence.shuffle        # 随机化测试顺序
 
-# Watch mode
---no-watch                # Disable watch mode
---standalone              # Start without running tests
+# 监视模式
+--no-watch                # 禁用监视模式
+--standalone              # 在不运行测试的情况下启动
 
-# Environment
+# 环境
 --environment <env>       # jsdom, happy-dom, node
---globals                 # Enable global APIs
+--globals                 # 启用全局 API
 
-# Debugging
---inspect                 # Enable Node inspector
---inspect-brk             # Break on start
+# 调试
+--inspect                 # 启用 Node 检查器
+--inspect-brk             # 启动时中断
 
-# Output
---silent                  # Suppress console output
---no-color                # Disable colors
+# 输出
+--silent                  # 抑制控制台输出
+--no-color                # 禁用颜色
 ```
 
-## Package.json Scripts
+## Package.json 脚本
 
 ```json
 {
@@ -125,40 +125,40 @@ vitest init browser            # Set up browser testing
 }
 ```
 
-## Sharding for CI
+## CI 分片
 
-Split tests across multiple machines:
+跨多台机器拆分测试:
 
 ```bash
-# Machine 1
+# 机器 1
 vitest run --shard=1/3 --reporter=blob
 
-# Machine 2
+# 机器 2
 vitest run --shard=2/3 --reporter=blob
 
-# Machine 3
+# 机器 3
 vitest run --shard=3/3 --reporter=blob
 
-# Merge reports
+# 合并报告
 vitest --merge-reports --reporter=junit
 ```
 
-## Watch Mode Keyboard Shortcuts
+## 监视模式键盘快捷键
 
-In watch mode, press:
-- `a` - Run all tests
-- `f` - Run only failed tests
-- `u` - Update snapshots
-- `p` - Filter by filename pattern
-- `t` - Filter by test name pattern
-- `q` - Quit
+在监视模式下,按:
+- `a` - 运行所有测试
+- `f` - 仅运行失败的测试
+- `u` - 更新快照
+- `p` - 按文件名模式过滤
+- `t` - 按测试名模式过滤
+- `q` - 退出
 
-## Key Points
+## 关键点
 
-- Watch mode is default in dev, run mode in CI (when `process.env.CI` is set)
-- Use `--run` flag to ensure single run (important for lint-staged)
-- Both camelCase (`--testTimeout`) and kebab-case (`--test-timeout`) work
-- Boolean options can be negated with `--no-` prefix
+- 监视模式在开发中是默认的,在 CI 中是运行模式(当设置了 `process.env.CI` 时)
+- 使用 `--run` 标志确保单次运行(对 lint-staged 很重要)
+- camelCase (`--testTimeout`) 和 kebab-case (`--test-timeout`) 都有效
+- 布尔选项可以使用 `--no-` 前缀否定
 
 <!-- 
 Source references:

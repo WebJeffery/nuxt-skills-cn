@@ -1,104 +1,141 @@
 ---
-name: vitepress-internationalization
-description: Setting up multi-language sites with locale configuration and RTL support
+name: vitepress-i18n
+description: 多语言支持、翻译配置、语言切换和本地化
 ---
 
-# Internationalization
+# 国际化 (i18n)
 
-VitePress supports multi-language sites through locale configuration.
+VitePress 提供内置的 i18n 支持以创建多语言站点。
 
-## Directory Structure
+## 基本配置
 
-Organize content by locale:
-
-```
-docs/
-├─ en/
-│  ├─ guide.md
-│  └─ index.md
-├─ zh/
-│  ├─ guide.md
-│  └─ index.md
-└─ fr/
-   ├─ guide.md
-   └─ index.md
-```
-
-Or with root as default language:
-
-```
-docs/
-├─ guide.md        # English (root)
-├─ index.md
-├─ zh/
-│  ├─ guide.md
-│  └─ index.md
-└─ fr/
-   ├─ guide.md
-   └─ index.md
-```
-
-## Configuration
+在站点配置中配置语言:
 
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
+  // 默认语言
+  lang: 'en-US',
+  
+  title: 'My Site',
+  description: 'A great site',
+  
+  // 多语言配置
   locales: {
     root: {
       label: 'English',
-      lang: 'en'
+      lang: 'en-US',
+      title: 'My Site',
+      description: 'A great site',
+      themeConfig: {
+        nav: [
+          { text: 'Guide', link: '/guide/' }
+        ]
+      }
     },
-    zh: {
+    'zh-CN': {
       label: '简体中文',
       lang: 'zh-CN',
-      link: '/zh/'
-    },
-    fr: {
-      label: 'Français',
-      lang: 'fr',
-      link: '/fr/'
+      title: '我的站点',
+      description: '一个很棒的站点',
+      themeConfig: {
+        nav: [
+          { text: '指南', link: '/zh-CN/guide/' }
+        ]
+      }
     }
   }
 })
 ```
 
-## Locale-Specific Config
+## 目录结构
 
-Override site config per locale:
+为每种语言创建单独的目录:
+
+```
+docs/
+├── index.md                 # 根语言(英语)
+├── guide/
+│   ├── index.md
+│   └── getting-started.md
+└── zh-CN/
+    ├── index.md             # 中文主页
+    └── guide/
+        ├── index.md
+        └── getting-started.md
+```
+
+## 语言切换器
+
+VitePress 自动在导航栏中添加语言切换器。
+
+自定义标签:
 
 ```ts
 locales: {
   root: {
-    label: 'English',
-    lang: 'en',
-    title: 'My Docs',
-    description: 'Documentation site',
+    label: 'English',  // 切换器中显示的文本
+    // ...
+  },
+  'zh-CN': {
+    label: '简体中文',
+    // ...
+  }
+}
+```
+
+## 翻译内容
+
+### 页面翻译
+
+为每种语言创建单独的 markdown 文件:
+
+```md
+<!-- guide/getting-started.md -->
+# Getting Started
+
+Welcome to the guide.
+```
+
+```md
+<!-- zh-CN/guide/getting-started.md -->
+# 快速开始
+
+欢迎来到指南。
+```
+
+### 主题配置翻译
+
+每种语言的独立主题配置:
+
+```ts
+locales: {
+  root: {
     themeConfig: {
       nav: [
-        { text: 'Guide', link: '/guide/' }
+        { text: 'Guide', link: '/guide/' },
+        { text: 'API', link: '/api/' }
       ],
       sidebar: {
         '/guide/': [
-          { text: 'Introduction', link: '/guide/' }
+          { text: 'Introduction', link: '/guide/' },
+          { text: 'Getting Started', link: '/guide/getting-started' }
         ]
       }
     }
   },
-  zh: {
-    label: '简体中文',
-    lang: 'zh-CN',
-    link: '/zh/',
-    title: '我的文档',
-    description: '文档站点',
+  'zh-CN': {
     themeConfig: {
       nav: [
-        { text: '指南', link: '/zh/guide/' }
+        { text: '指南', link: '/zh-CN/guide/' },
+        { text: 'API', link: '/zh-CN/api/' }
       ],
       sidebar: {
-        '/zh/guide/': [
-          { text: '介绍', link: '/zh/guide/' }
+        '/zh-CN/guide/': [
+          { text: '介绍', link: '/zh-CN/guide/' },
+          { text: '快速开始', link: '/zh-CN/guide/getting-started' }
         ]
       }
     }
@@ -106,192 +143,174 @@ locales: {
 }
 ```
 
-## Locale-Specific Properties
+### 默认主题文本
 
-Each locale can override:
-
-```ts
-interface LocaleSpecificConfig {
-  lang?: string
-  dir?: string              // 'ltr' or 'rtl'
-  title?: string
-  titleTemplate?: string | boolean
-  description?: string
-  head?: HeadConfig[]       // Merged with existing
-  themeConfig?: ThemeConfig // Shallow merged
-}
-```
-
-## Search i18n
-
-### Local Search
-
-```ts
-themeConfig: {
-  search: {
-    provider: 'local',
-    options: {
-      locales: {
-        zh: {
-          translations: {
-            button: {
-              buttonText: '搜索',
-              buttonAriaLabel: '搜索'
-            },
-            modal: {
-              noResultsText: '没有结果',
-              resetButtonTitle: '重置搜索',
-              footer: {
-                selectText: '选择',
-                navigateText: '导航',
-                closeText: '关闭'
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-### Algolia Search
-
-```ts
-themeConfig: {
-  search: {
-    provider: 'algolia',
-    options: {
-      appId: '...',
-      apiKey: '...',
-      indexName: '...',
-      locales: {
-        zh: {
-          placeholder: '搜索文档',
-          translations: {
-            button: { buttonText: '搜索文档' }
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-## Separate Locale Directories
-
-For fully separated locales without root fallback:
-
-```
-docs/
-├─ en/
-│  └─ index.md
-├─ zh/
-│  └─ index.md
-└─ fr/
-   └─ index.md
-```
-
-Requires server redirect for `/` → `/en/`. Netlify example:
-
-```
-/* /en/:splat 302 Language=en
-/* /zh/:splat 302 Language=zh
-/* /en/:splat 302
-```
-
-## Persisting Language Choice
-
-Set cookie on language change:
-
-```vue
-<!-- .vitepress/theme/Layout.vue -->
-<script setup>
-import DefaultTheme from 'vitepress/theme'
-import { useData, inBrowser } from 'vitepress'
-import { watchEffect } from 'vue'
-
-const { lang } = useData()
-
-watchEffect(() => {
-  if (inBrowser) {
-    document.cookie = `nf_lang=${lang.value}; expires=Mon, 1 Jan 2030 00:00:00 UTC; path=/`
-  }
-})
-</script>
-
-<template>
-  <DefaultTheme.Layout />
-</template>
-```
-
-## RTL Support (Experimental)
-
-For right-to-left languages:
+覆盖默认主题文本:
 
 ```ts
 locales: {
-  ar: {
-    label: 'العربية',
-    lang: 'ar',
-    dir: 'rtl'
+  root: {
+    themeConfig: {
+      outlineLabel: 'On this page',
+      returnToTopLabel: 'Return to top',
+      sidebarMenuLabel: 'Menu',
+      darkModeSwitchLabel: 'Appearance',
+      lightModeSwitchTitle: 'Switch to light theme',
+      darkModeSwitchTitle: 'Switch to dark theme',
+      docFooter: {
+        prev: 'Previous page',
+        next: 'Next page'
+      }
+    }
+  },
+  'zh-CN': {
+    themeConfig: {
+      outlineLabel: '本页目录',
+      returnToTopLabel: '返回顶部',
+      sidebarMenuLabel: '菜单',
+      darkModeSwitchLabel: '外观',
+      lightModeSwitchTitle: '切换到浅色模式',
+      darkModeSwitchTitle: '切换到深色模式',
+      docFooter: {
+        prev: '上一页',
+        next: '下一页'
+      }
+    }
   }
 }
 ```
 
-Requires PostCSS plugin like `postcss-rtlcss`:
+## 链接到翻译页面
 
-```ts
-// postcss.config.js
-import rtlcss from 'postcss-rtlcss'
+使用相对链接,VitePress 会自动处理语言前缀:
 
-export default {
-  plugins: [
-    rtlcss({
-      ltrPrefix: ':where([dir="ltr"])',
-      rtlPrefix: ':where([dir="rtl"])'
-    })
-  ]
+```md
+<!-- 在 guide/getting-started.md 中 -->
+[API Reference](/api/config)  → /api/config (英语)
+```
+
+```md
+<!-- 在 zh-CN/guide/getting-started.md 中 -->
+[API 参考](/api/config)  → /zh-CN/api/config (中文)
+```
+
+## 动态内容翻译
+
+在组件中使用 `useData`:
+
+```vue
+<script setup>
+import { useData } from 'vitepress'
+
+const { lang } = useData()
+
+const messages = {
+  'en-US': {
+    welcome: 'Welcome',
+    goodbye: 'Goodbye'
+  },
+  'zh-CN': {
+    welcome: '欢迎',
+    goodbye: '再见'
+  }
 }
+
+const t = messages[lang.value] || messages['en-US']
+</script>
+
+<template>
+  <div>
+    <p>{{ t.welcome }}</p>
+    <p>{{ t.goodbye }}</p>
+  </div>
+</template>
 ```
 
-## Organizing Config
+## 使用 i18n 库
 
-Split config into separate files:
-
-```
-.vitepress/
-├─ config/
-│  ├─ index.ts      # Main config, merges locales
-│  ├─ en.ts         # English config
-│  ├─ zh.ts         # Chinese config
-│  └─ shared.ts     # Shared config
-```
+集成 vue-i18n:
 
 ```ts
-// .vitepress/config/index.ts
-import { defineConfig } from 'vitepress'
-import { shared } from './shared'
-import { en } from './en'
-import { zh } from './zh'
+// .vitepress/theme/index.ts
+import { createI18n } from 'vue-i18n'
+import DefaultTheme from 'vitepress/theme'
 
-export default defineConfig({
-  ...shared,
-  locales: {
-    root: { label: 'English', ...en },
-    zh: { label: '简体中文', ...zh }
+const i18n = createI18n({
+  legacy: false,
+  locale: 'en',
+  messages: {
+    en: {
+      hello: 'Hello'
+    },
+    zh: {
+      hello: '你好'
+    }
   }
 })
+
+export default {
+  extends: DefaultTheme,
+  enhanceApp({ app }) {
+    app.use(i18n)
+  }
+}
 ```
 
-## Key Points
+```vue
+<script setup>
+import { useI18n } from 'vue-i18n'
 
-- Use `locales` object in config with `root` for default language
-- Each locale can override title, description, and themeConfig
-- `themeConfig` is shallow merged (define complete nav/sidebar per locale)
-- Don't override `themeConfig.algolia` at locale level
-- `dir: 'rtl'` enables RTL with PostCSS plugin
-- Language switcher appears automatically in nav
+const { t } = useI18n()
+</script>
+
+<template>
+  <p>{{ t('hello') }}</p>
+</template>
+```
+
+## SEO 优化
+
+每种语言的 `<html lang>` 自动设置。
+
+自定义 `<head>`:
+
+```ts
+export default {
+  transformHead({ page }) {
+    return [
+      ['meta', { property: 'og:locale', content: page.lang }]
+    ]
+  }
+}
+```
+
+## 生成站点地图
+
+使用 vitepress-plugin-sitemap:
+
+```ts
+// .vitepress/config.ts
+import { defineConfig } from 'vitepress'
+import { withSitemap } from '@sveltepress/vitepress-plugin-sitemap'
+
+export default withSitemap(
+  defineConfig({
+    // ...
+    sitemap: {
+      hostname: 'https://example.com'
+    }
+  })
+)
+```
+
+## 关键点
+
+- 在 `locales` 中配置每种语言
+- 为每种语言创建单独的目录
+- 每种语言的独立主题配置
+- 相对链接自动处理语言前缀
+- 使用 `useData().lang` 检测当前语言
+- 覆盖默认主题文本以进行本地化
 
 <!--
 Source references:

@@ -1,63 +1,63 @@
-# Environment Modes
+# 环境模式
 
-Turborepo supports different modes for handling environment variables during task execution.
+Turborepo 支持在任务执行期间处理环境变量的不同模式。
 
-## Strict Mode (Default)
+## 严格模式（默认）
 
-Only explicitly configured variables are available to tasks.
+只有显式配置的变量可用于任务。
 
-**Behavior:**
+**行为：**
 
-- Tasks only see vars listed in `env`, `globalEnv`, `passThroughEnv`, or `globalPassThroughEnv`
-- Unlisted vars are filtered out
-- Tasks fail if they require unlisted variables
+- 任务仅看到在 `env`、`globalEnv`、`passThroughEnv` 或 `globalPassThroughEnv` 中列出的变量
+- 未列出的变量被过滤掉
+- 如果任务需要未列出的变量，任务会失败
 
-**Benefits:**
+**优势：**
 
-- Guarantees cache correctness
-- Prevents accidental dependencies on system vars
-- Reproducible builds across machines
+- 保证缓存正确性
+- 防止对系统变量的意外依赖
+- 跨机器的可重现构建
 
 ```bash
-# Explicit (though it's the default)
+# 显式（虽然是默认值）
 turbo run build --env-mode=strict
 ```
 
-## Loose Mode
+## 宽松模式
 
-All system environment variables are available to tasks.
+所有系统环境变量可用于任务。
 
 ```bash
 turbo run build --env-mode=loose
 ```
 
-**Behavior:**
+**行为：**
 
-- Every system env var is passed through
-- Only vars in `env`/`globalEnv` affect the hash
-- Other vars are available but NOT hashed
+- 每个系统环境变量都被传递
+- 只有 `env`/`globalEnv` 中的变量影响哈希
+- 其他变量可用但不被哈希
 
-**Risks:**
+**风险：**
 
-- Cache may restore incorrect results if unhashed vars changed
-- "Works on my machine" bugs
-- CI vs local environment mismatches
+- 如果未哈希的变量更改，缓存可能会恢复不正确的结果
+- "在我的机器上可以工作"错误
+- CI 与本地环境不匹配
 
-**Use case:** Migrating legacy projects or debugging strict mode issues.
+**使用情况：** 迁移旧项目或调试严格模式问题。
 
-## Framework Inference (Automatic)
+## 框架推断（自动）
 
-Turborepo automatically detects frameworks and includes their conventional env vars.
+Turborepo 自动检测框架并包含其常规环境变量。
 
-### Inferred Variables by Framework
+### 按框架推断的变量
 
-| Framework        | Pattern             |
+| 框架        | 模式             |
 | ---------------- | ------------------- |
 | Next.js          | `NEXT_PUBLIC_*`     |
 | Vite             | `VITE_*`            |
 | Create React App | `REACT_APP_*`       |
 | Gatsby           | `GATSBY_*`          |
-| Nuxt             | `NUXT_*`, `NITRO_*` |
+| Nuxt             | `NUXT_*`、`NITRO_*` |
 | Expo             | `EXPO_PUBLIC_*`     |
 | Astro            | `PUBLIC_*`          |
 | SvelteKit        | `PUBLIC_*`          |
@@ -66,15 +66,15 @@ Turborepo automatically detects frameworks and includes their conventional env v
 | Sanity           | `SANITY_STUDIO_*`   |
 | Solid            | `VITE_*`            |
 
-### Disabling Framework Inference
+### 禁用框架推断
 
-Globally via CLI:
+通过 CLI 全局禁用：
 
 ```bash
 turbo run build --framework-inference=false
 ```
 
-Or exclude specific patterns in config:
+或在配置中排除特定模式：
 
 ```json
 {
@@ -86,15 +86,15 @@ Or exclude specific patterns in config:
 }
 ```
 
-### Why Disable?
+### 为什么要禁用？
 
-- You want explicit control over all env vars
-- Framework vars shouldn't bust the cache (e.g., analytics IDs)
-- Debugging unexpected cache misses
+- 你想要对所有环境变量进行显式控制
+- 框架变量不应该破坏缓存（例如，分析 ID）
+- 调试意外的缓存未命中
 
-## Checking Environment Mode
+## 检查环境模式
 
-Use `--dry` to see which vars affect each task:
+使用 `--dry` 查看哪些变量影响每个任务：
 
 ```bash
 turbo run build --dry=json | jq '.tasks[].environmentVariables'

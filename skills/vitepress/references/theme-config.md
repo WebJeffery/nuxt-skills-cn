@@ -1,26 +1,26 @@
 ---
 name: vitepress-theme-configuration
-description: Default theme configuration for navigation, sidebar, search, social links, and footer
+description: 默认主题配置,包括导航、侧边栏、搜索、社交链接和页脚
 ---
 
-# Theme Configuration
+# 主题配置
 
-Configure the default theme via `themeConfig` in your VitePress config.
+通过 VitePress 配置中的 `themeConfig` 配置默认主题。
 
-## Navigation
+## 导航
 
 ```ts
 export default {
   themeConfig: {
-    // Site title in nav (overrides config.title)
+    // 导航中的站点标题(覆盖 config.title)
     siteTitle: 'My Docs',
-    siteTitle: false,  // Hide title
+    siteTitle: false,  // 隐藏标题
     
     // Logo
     logo: '/logo.svg',
     logo: { light: '/light-logo.svg', dark: '/dark-logo.svg', alt: 'Logo' },
     
-    // Nav links
+    // 导航链接
     nav: [
       { text: 'Guide', link: '/guide/' },
       { text: 'API', link: '/api/' },
@@ -30,7 +30,7 @@ export default {
 }
 ```
 
-### Dropdown Menu
+### 下拉菜单
 
 ```ts
 nav: [
@@ -41,7 +41,7 @@ nav: [
       { text: 'Item B', link: '/item-b' }
     ]
   },
-  // With sections
+  // 带有部分
   {
     text: 'Versions',
     items: [
@@ -57,23 +57,23 @@ nav: [
 ]
 ```
 
-### Active Match
+### 活动匹配
 
-Control when nav item shows as active:
+控制导航项何时显示为活动:
 
 ```ts
 nav: [
   {
     text: 'Guide',
     link: '/guide/',
-    activeMatch: '/guide/'  // Regex pattern
+    activeMatch: '/guide/'  // 正则表达式模式
   }
 ]
 ```
 
-## Sidebar
+## 侧边栏
 
-### Simple Sidebar
+### 简单侧边栏
 
 ```ts
 sidebar: [
@@ -87,9 +87,9 @@ sidebar: [
 ]
 ```
 
-### Multiple Sidebars
+### 多个侧边栏
 
-Different sidebar per section:
+每个部分不同的侧边栏:
 
 ```ts
 sidebar: {
@@ -114,26 +114,26 @@ sidebar: {
 }
 ```
 
-### Collapsible Groups
+### 可折叠组
 
 ```ts
 sidebar: [
   {
     text: 'Section A',
-    collapsed: false,  // Open by default, can collapse
+    collapsed: false,  // 默认打开,可以折叠
     items: [...]
   },
   {
     text: 'Section B',
-    collapsed: true,   // Collapsed by default
+    collapsed: true,   // 默认折叠
     items: [...]
   }
 ]
 ```
 
-### Base Path
+### 基础路径
 
-Simplify links with common base:
+使用公共基础简化链接:
 
 ```ts
 sidebar: {
@@ -147,9 +147,9 @@ sidebar: {
 }
 ```
 
-## Search
+## 搜索
 
-### Local Search
+### 本地搜索
 
 ```ts
 themeConfig: {
@@ -159,7 +159,7 @@ themeConfig: {
 }
 ```
 
-With options:
+使用选项:
 
 ```ts
 search: {
@@ -188,14 +188,14 @@ search: {
 }
 ```
 
-## Social Links
+## 社交链接
 
 ```ts
 socialLinks: [
   { icon: 'github', link: 'https://github.com/...' },
   { icon: 'twitter', link: 'https://twitter.com/...' },
   { icon: 'discord', link: 'https://discord.gg/...' },
-  // Custom SVG
+  // 自定义 SVG
   {
     icon: { svg: '<svg>...</svg>' },
     link: 'https://...',
@@ -204,7 +204,7 @@ socialLinks: [
 ]
 ```
 
-## Footer
+## 页脚
 
 ```ts
 footer: {
@@ -213,9 +213,9 @@ footer: {
 }
 ```
 
-Footer only displays on pages without sidebar.
+页脚仅显示在没有侧边栏的页面上。
 
-## Edit Link
+## 编辑链接
 
 ```ts
 editLink: {
@@ -224,19 +224,19 @@ editLink: {
 }
 ```
 
-`:path` is replaced with the page's source file path.
+`:path` 被替换为页面的源文件路径。
 
-## Last Updated
+## 最后更新
 
-Enable in site config:
+在站点配置中启用:
 
 ```ts
 export default {
-  lastUpdated: true  // Get timestamp from git
+  lastUpdated: true  // 从 git 获取时间戳
 }
 ```
 
-Customize display:
+自定义显示:
 
 ```ts
 themeConfig: {
@@ -250,44 +250,44 @@ themeConfig: {
 }
 ```
 
-## Outline (Table of Contents)
+## 大纲(目录)
 
 ```ts
 outline: {
-  level: [2, 3],      // Which heading levels to show
+  level: [2, 3],      // 显示哪些标题级别
   label: 'On this page'
 }
 ```
 
-Or just the level:
+或仅级别:
 
 ```ts
-outline: 'deep'  // Same as [2, 6]
-outline: 2       // Only h2
-outline: [2, 4]  // h2 through h4
+outline: 'deep'  // 与 [2, 6] 相同
+outline: 2       // 仅 h2
+outline: [2, 4]  // h2 到 h4
 ```
 
-## Doc Footer Navigation
+## 文档页脚导航
 
 ```ts
 docFooter: {
   prev: 'Previous page',
   next: 'Next page'
 }
-// Or disable:
+// 或禁用:
 docFooter: {
   prev: false,
   next: false
 }
 ```
 
-## External Link Icon
+## 外部链接图标
 
 ```ts
-externalLinkIcon: true  // Show icon on external links
+externalLinkIcon: true  // 在外部链接上显示图标
 ```
 
-## Appearance Toggle Labels
+## 外观切换标签
 
 ```ts
 darkModeSwitchLabel: 'Appearance',
@@ -297,14 +297,14 @@ sidebarMenuLabel: 'Menu',
 returnToTopLabel: 'Return to top'
 ```
 
-## Key Points
+## 关键点
 
-- `nav` defines top navigation links
-- `sidebar` can be array (single) or object (multiple sidebars)
-- Use `collapsed` for collapsible sidebar sections
-- Local search works out of the box
-- `editLink.pattern` uses `:path` placeholder
-- Enable `lastUpdated` in site config, customize in themeConfig
+- `nav` 定义顶部导航链接
+- `sidebar` 可以是数组(单个)或对象(多个侧边栏)
+- 使用 `collapsed` 进行可折叠的侧边栏部分
+- 本地搜索开箱即用
+- `editLink.pattern` 使用 `:path` 占位符
+- 在站点配置中启用 `lastUpdated`,在 themeConfig 中自定义
 
 <!--
 Source references:

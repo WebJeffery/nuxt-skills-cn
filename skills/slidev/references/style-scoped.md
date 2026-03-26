@@ -1,16 +1,16 @@
 ---
 name: scoped
-description: Slide-scoped CSS styles
+description: 幻灯片作用域 CSS 样式
 ---
 
-# Slide Scope Styles
+# 幻灯片作用域样式
 
-Define CSS that applies only to the current slide.
+定义仅应用于当前幻灯片的 CSS。
 
-## Usage
+## 用法
 
 ```md
-# This is Red
+# 这是红色的
 
 <style>
 h1 {
@@ -20,16 +20,16 @@ h1 {
 
 ---
 
-# Other slides are not affected
+# 其他幻灯片不受影响
 ```
 
-## Scoped by Default
+## 默认作用域
 
-All `<style>` tags in slides are automatically scoped.
+幻灯片中的所有 `<style>` 标签都会自动作用域化。
 
-Child combinators (`.a > .b`) don't work as expected due to scoping.
+由于作用域化，子组合器（`.a > .b`）无法按预期工作。
 
-## Nested CSS with UnoCSS
+## 使用 UnoCSS 的嵌套 CSS
 
 ```md
 # Slidev
@@ -45,6 +45,6 @@ blockquote {
 </style>
 ```
 
-## Global Styles
+## 全局样式
 
-For global styles, use `styles/index.css` in your project.
+对于全局样式，请在项目中使用 `styles/index.css`。

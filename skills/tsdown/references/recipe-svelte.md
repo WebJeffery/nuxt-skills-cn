@@ -1,14 +1,14 @@
-# Svelte Support
+# Svelte 支持
 
-Build Svelte component libraries with `tsdown` using `rollup-plugin-svelte`.
+使用 `tsdown` 和 `rollup-plugin-svelte` 构建 Svelte 组件库。
 
-## Quick Start
+## 快速开始
 
 ```bash
 npx create-tsdown@latest -t svelte
 ```
 
-## Configuration
+## 配置
 
 ```ts
 import svelte from 'rollup-plugin-svelte'
@@ -22,33 +22,33 @@ export default defineConfig({
 })
 ```
 
-## Dependencies
+## 依赖
 
 ```bash
 npm install -D rollup-plugin-svelte svelte svelte-preprocess
 ```
 
-## Distribution Strategy
+## 分发策略
 
-**Recommended: Ship `.svelte` source files** instead of precompiled JS. Let consumers' tooling (Vite + `@sveltejs/vite-plugin-svelte`) compile in their apps.
+**推荐：分发 `.svelte` 源文件**而不是预编译的 JS。让消费者的工具链（Vite + `@sveltejs/vite-plugin-svelte`）在他们的应用中编译。
 
-Reasons:
-- Avoids version compatibility issues with `svelte/internal`
-- Better SSR/hydration consistency
-- Consumers get better HMR, diagnostics, and tree-shaking
-- Fewer republish cycles on Svelte upgrades
+原因：
+- 避免与 `svelte/internal` 的版本兼容性问题
+- 更好的 SSR/hydration 一致性
+- 消费者获得更好的 HMR、诊断和 tree-shaking
+- Svelte 升级时更少的重新发布周期
 
-**Exceptions** where shipping JS makes sense:
-- Web Components via `customElement` mode
-- CDN direct-load without a build step
+**例外**情况下分发 JS 是合理的：
+- 通过 `customElement` 模式的 Web Components
+- CDN 直接加载而不需要构建步骤
 
-## Key Points
+## 关键点
 
-- Mark `svelte`/`svelte/*` as external; declare `svelte` in `peerDependencies`
-- Use `svelte2tsx` to emit `.d.ts` for Svelte components
-- Keep `.svelte` in source form for distribution
+- 将 `svelte`/`svelte/*` 标记为外部；在 `peerDependencies` 中声明 `svelte`
+- 使用 `svelte2tsx` 为 Svelte 组件发出 `.d.ts`
+- 保持 `.svelte` 源形式用于分发
 
-## Related
+## 相关内容
 
-- [Plugins](advanced-plugins.md) - Plugin configuration
-- [Dependencies](option-dependencies.md) - External dependencies
+- [插件](advanced-plugins.md) - 插件配置
+- [依赖](option-dependencies.md) - 外部依赖

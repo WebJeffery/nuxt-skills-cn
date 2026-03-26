@@ -1,45 +1,45 @@
 ---
 name: syntax
-description: Core Markdown syntax for Slidev presentations
+description: Slidev 演示文稿的核心 Markdown 语法
 ---
 
-# Slidev Markdown Syntax
+# Slidev Markdown 语法
 
-Core Markdown syntax for Slidev presentations.
+Slidev 演示文稿的核心 Markdown 语法。
 
-## Slide Separator
+## 幻灯片分隔符
 
-Use `---` with blank lines before and after:
+使用 `---`，前后留空行：
 
 ```md
-# Slide 1
+# 幻灯片 1
 
-Content
+内容
 
 ---
 
-# Slide 2
+# 幻灯片 2
 
-More content
+更多内容
 ```
 
-## Headmatter (Deck Config)
+## Headmatter（幻灯片组配置）
 
-First frontmatter block configures the entire deck:
+第一个 frontmatter 块配置整个幻灯片组：
 
 ```md
 ---
 theme: default
-title: My Presentation
+title: 我的演示
 lineNumbers: true
 ---
 
-# First Slide
+# 第一张幻灯片
 ```
 
-## Per-Slide Frontmatter
+## 单张幻灯片的 Frontmatter
 
-Each slide can have its own frontmatter:
+每张幻灯片可以有自己的 frontmatter：
 
 ```md
 ---
@@ -48,28 +48,28 @@ background: /image.jpg
 class: text-white
 ---
 
-# Centered Slide
+# 居中幻灯片
 ```
 
-## Presenter Notes
+## 演讲者备注
 
-HTML comments at end of slide become presenter notes:
+幻灯片末尾的 HTML 注释会成为演讲者备注：
 
 ```md
-# My Slide
+# 我的幻灯片
 
-Content here
+内容在这里
 
 <!--
-These are presenter notes.
-- Remember to mention X
-- Demo the feature
+这些是演讲者备注。
+- 记得提到 X
+- 演示该功能
 -->
 ```
 
-## Code Blocks
+## 代码块
 
-Standard Markdown with Shiki highlighting:
+使用 Shiki 高亮的标准 Markdown：
 
 ````md
 ```ts
@@ -77,30 +77,30 @@ const hello = 'world'
 ```
 ````
 
-With features:
+带功能：
 ````md
-```ts {2,3}              // Line highlighting
-```ts {1|2-3|all}        // Click-based highlighting
-```ts {monaco}           // Monaco editor
-```ts {monaco-run}       // Runnable code
-```ts twoslash           // TypeScript types
+```ts {2,3}              // 行高亮
+```ts {1|2-3|all}        // 基于点击的高亮
+```ts {monaco}           // Monaco 编辑器
+```ts {monaco-run}       // 可运行代码
+```ts twoslash           // TypeScript 类型
 ```
 ````
 
-## LaTeX Math
+## LaTeX 数学公式
 
-Inline: `$E = mc^2$`
+行内：`$E = mc^2$`
 
-Block:
+块级：
 ```md
 $$
 \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 $$
 ```
 
-## Diagrams
+## 图表
 
-Mermaid:
+Mermaid：
 ````md
 ```mermaid
 graph LR
@@ -108,7 +108,7 @@ graph LR
 ```
 ````
 
-PlantUML:
+PlantUML：
 ````md
 ```plantuml
 @startuml
@@ -117,9 +117,9 @@ Alice -> Bob : Hello
 ```
 ````
 
-## Comark Syntax
+## Comark 语法
 
-Enable with `comark: true`:
+使用 `comark: true` 启用：
 
 ```md
 [styled text]{style="color:red"}
@@ -127,19 +127,19 @@ Enable with `comark: true`:
 ::component{prop="value"}
 ```
 
-## Scoped CSS
+## 作用域 CSS
 
-Styles apply only to current slide:
+样式仅应用于当前幻灯片：
 
 ```md
-# Red Title
+# 红色标题
 
 <style>
 h1 { color: red; }
 </style>
 ```
 
-## Import Slides
+## 导入幻灯片
 
 ```md
 ---
@@ -147,7 +147,7 @@ src: ./pages/intro.md
 ---
 ```
 
-Import specific slides:
+导入特定幻灯片：
 ```md
 ---
 src: ./other.md#2,5-7

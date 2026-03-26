@@ -1,201 +1,127 @@
 ---
-title: Render Function Patterns and Performance
+title: 渲染函数最佳实践
 impact: MEDIUM
-impactDescription: Render functions require explicit patterns for lists, events, v-model, and performance to stay correct and maintainable
+impactDescription: 渲染函数提供强大的编程能力,但误用会导致难以维护的代码
 type: best-practice
-tags: [vue3, render-function, h, v-model, directives, performance, jsx]
+tags: [vue3, render-functions, h, jsx, vnodes]
 ---
 
-# Render Function Patterns and Performance
+# 渲染函数最佳实践
 
-**Impact: MEDIUM** - Render functions are powerful but opt out of template compiler optimizations. Use them intentionally and apply the key patterns below to keep output correct and performant.
+**影响: MEDIUM** - 渲染函数提供强大的编程能力,但误用会导致难以维护的代码。仅在模板不够用时使用它们。
 
-## Task List
+## 任务列表
 
-- Prefer templates; use render functions only when templates cannot express the logic
-- Always add stable keys when rendering lists with `h()`/JSX
-- Use `withModifiers` / `withKeys` for event modifiers
-- Implement `v-model` via `modelValue` + `onUpdate:modelValue`
-- Apply custom directives with `withDirectives`
-- Use functional components for stateless presentational UI
+- 仅在模板不够用时使用渲染函数
+- 使用 `h` 函数创建虚拟节点
+- 对复杂渲染逻辑使用 JSX
+- 正确处理事件和属性
+- 为渲染函数提供 TypeScript 类型
+- 避免在渲染函数中进行副作用操作
 
-## Prefer templates over render functions
+## 使用 h 函数
 
-**BAD:**
-```vue
-<script setup>
-import { h, ref } from 'vue'
-
-const count = ref(0)
-const render = () => h('div', `Count: ${count.value}`)
-</script>
-```
-
-**GOOD:**
-```vue
-<script setup>
-import { ref } from 'vue'
-
-const count = ref(0)
-</script>
-
-<template>
-  <div>Count: {{ count }}</div>
-</template>
-```
-
-## Always add keys for list rendering
-
-**BAD:**
-```javascript
-import { h, ref } from 'vue'
-
-export default {
-  setup() {
-    const items = ref([{ id: 1, name: 'Apple' }])
-
-    return () => h('ul',
-      items.value.map(item => h('li', item.name))
-    )
-  }
-}
-```
-
-**GOOD:**
-```javascript
-import { h, ref } from 'vue'
-
-export default {
-  setup() {
-    const items = ref([{ id: 1, name: 'Apple' }])
-
-    return () => h('ul',
-      items.value.map(item => h('li', { key: item.id }, item.name))
-    )
-  }
-}
-```
-
-## Use `withModifiers` / `withKeys` for event modifiers
-
-**BAD:**
+**正确:**
 ```javascript
 import { h } from 'vue'
 
 export default {
-  setup() {
-    const handleClick = (e) => {
-      e.stopPropagation()
-      e.preventDefault()
-    }
-
-    return () => h('button', { onClick: handleClick }, 'Click')
-  }
-}
-```
-
-**GOOD:**
-```javascript
-import { h, withModifiers, withKeys } from 'vue'
-
-export default {
-  setup() {
-    const handleClick = () => {}
-    const handleEnter = () => {}
-
-    return () => h('div', [
-      h('button', {
-        onClick: withModifiers(handleClick, ['stop', 'prevent'])
-      }, 'Click'),
-      h('input', {
-        onKeyup: withKeys(handleEnter, ['enter'])
-      })
+  render() {
+    return h('div', { class: 'container' }, [
+      h('h1', '标题'),
+      h('p', '内容')
     ])
   }
 }
 ```
 
-## Implement `v-model` explicitly
+## 使用 JSX
 
-**BAD:**
+**正确:**
 ```javascript
-import { h, ref } from 'vue'
-import CustomInput from './CustomInput.vue'
-
 export default {
-  setup() {
-    const text = ref('')
-    return () => h(CustomInput, { modelValue: text.value })
+  render() {
+    return (
+      <div class="container">
+        <h1>标题</h1>
+        <p>内容</p>
+      </div>
+    )
   }
 }
 ```
 
-**GOOD:**
-```javascript
-import { h, ref } from 'vue'
-import CustomInput from './CustomInput.vue'
+## 处理事件
 
+**正确:**
+```javascript
 export default {
-  setup() {
-    const text = ref('')
-    return () => h(CustomInput, {
-      modelValue: text.value,
-      'onUpdate:modelValue': (value) => { text.value = value }
-    })
+  render() {
+    return h('button', {
+      onClick: () => {
+        console.log('点击')
+      }
+    }, '点击我')
   }
 }
 ```
 
-## Use `withDirectives` for custom directives
+## 处理插槽
 
-**BAD:**
+**正确:**
 ```javascript
-import { h } from 'vue'
-
-const vFocus = { mounted: (el) => el.focus() }
-
 export default {
-  setup() {
-    return () => h('input', { 'v-focus': true })
+  render() {
+    return h('div', [
+      this.$slots.default?.(),
+      this.$slots.header?.()
+    ])
   }
 }
 ```
 
-**GOOD:**
-```javascript
-import { h, withDirectives } from 'vue'
+## TypeScript 支持
 
-const vFocus = { mounted: (el) => el.focus() }
+```typescript
+import { h, VNode } from 'vue'
 
-export default {
-  setup() {
-    return () => withDirectives(h('input'), [[vFocus]])
+interface Props {
+  title: string
+  content: string
+}
+
+export default defineComponent({
+  props: {
+    title: String,
+    content: String
+  },
+  render(props): VNode {
+    return h('div', [
+      h('h1', props.title),
+      h('p', props.content)
+    ])
   }
-}
+})
 ```
 
-## Prefer functional components for stateless UI
+## 最佳实践
 
-**BAD:**
-```javascript
-import { h } from 'vue'
+1. **何时使用渲染函数:**
+   - 需要动态组件生成
+   - 需要复杂的条件渲染逻辑
+   - 需要优化性能的特定场景
 
-export default {
-  setup() {
-    return () => h('span', { class: 'badge' }, 'New')
-  }
-}
-```
+2. **避免在渲染函数中进行副作用:**
+   - 不要在渲染函数中修改状态
+   - 不要在渲染函数中发起网络请求
+   - 不要在渲染函数中添加事件监听器
 
-**GOOD:**
-```javascript
-import { h } from 'vue'
+3. **保持渲染函数简洁:**
+   - 将复杂逻辑提取到单独的函数中
+   - 使用 composables 处理副作用
+   - 使用计算属性处理派生状态
 
-function Badge(props, { slots }) {
-  return h('span', { class: 'badge' }, slots.default?.())
-}
-
-Badge.props = ['variant']
-
-export default Badge
-```
+4. **考虑替代方案:**
+   - 对于大多数场景,模板更清晰
+   - 对于动态组件,使用 `<component :is="">`
+   - 对于复杂逻辑,使用 composables

@@ -1,13 +1,13 @@
 ---
 name: monaco
-description: Turn code blocks into fully-featured editors
+description: 将代码块转换为功能完整的编辑器
 ---
 
-# Monaco Editor
+# Monaco 编辑器
 
-Turn code blocks into fully-featured editors.
+将代码块转换为功能完整的编辑器。
 
-## Basic Usage
+## 基本用法
 
 ````md
 ```ts {monaco}
@@ -15,21 +15,21 @@ console.log('HelloWorld')
 ```
 ````
 
-## Diff Editor
+## 差异编辑器
 
-Compare two code versions:
+比较两个代码版本：
 
 ````md
 ```ts {monaco-diff}
-console.log('Original text')
+console.log('原始文本')
 ~~~
-console.log('Modified text')
+console.log('修改后的文本')
 ```
 ````
 
-## Editor Height
+## 编辑器高度
 
-Auto-grow as you type:
+输入时自动增长：
 
 ````md
 ```ts {monaco} {height:'auto'}
@@ -37,14 +37,14 @@ console.log('Hello, World!')
 ```
 ````
 
-Fixed height:
+固定高度：
 
 ````md
 ```ts {monaco} {height:'300px'}
-// code here
+// 代码在这里
 ```
 ````
 
-## Configuration
+## 配置
 
-See `/custom/config-monaco` for Monaco editor customization options.
+参见 `/custom/config-monaco` 了解 Monaco 编辑器自定义选项。

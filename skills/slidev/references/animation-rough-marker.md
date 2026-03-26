@@ -1,53 +1,53 @@
 ---
 name: rough-marker
-description: Hand-drawn style highlighting using Rough Notation
+description: 使用 Rough Notation 进行手绘风格高亮
 ---
 
-# Rough Markers
+# Rough 标记
 
-Hand-drawn style highlighting using Rough Notation.
+使用 Rough Notation 进行手绘风格高亮。
 
-## v-mark Directive
-
-```html
-<span v-mark>Important text</span>
-```
-
-## Marker Types
+## v-mark 指令
 
 ```html
-<span v-mark.underline>Underlined</span>
-<span v-mark.circle>Circled</span>
-<span v-mark.highlight>Highlighted</span>
-<span v-mark.strike-through>Struck through</span>
-<span v-mark.box>Boxed</span>
+<span v-mark>重要文本</span>
 ```
 
-## Colors
+## 标记类型
 
 ```html
-<span v-mark.red>Red marker</span>
-<span v-mark.blue>Blue marker</span>
+<span v-mark.underline>下划线</span>
+<span v-mark.circle>圆圈</span>
+<span v-mark.highlight>高亮</span>
+<span v-mark.strike-through>删除线</span>
+<span v-mark.box>方框</span>
 ```
 
-Custom color:
-```html
-<span v-mark="{ color: '#234' }">Custom color</span>
-```
-
-## Click Timing
-
-Works like v-click:
+## 颜色
 
 ```html
-<span v-mark="5">Appears on click 5</span>
-<span v-mark="'+1'">Next click</span>
+<span v-mark.red>红色标记</span>
+<span v-mark.blue>蓝色标记</span>
 ```
 
-## Full Options
+自定义颜色：
+```html
+<span v-mark="{ color: '#234' }">自定义颜色</span>
+```
+
+## 点击时机
+
+像 v-click 一样工作：
+
+```html
+<span v-mark="5">在第 5 次点击时出现</span>
+<span v-mark="'+1'">下一次点击</span>
+```
+
+## 完整选项
 
 ```html
 <span v-mark="{ at: 5, color: '#234', type: 'circle' }">
-  Custom marker
+  自定义标记
 </span>
 ```

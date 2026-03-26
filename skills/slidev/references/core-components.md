@@ -1,29 +1,29 @@
 ---
 name: components
-description: Ready-to-use components in Slidev
+description: Slidev 中可用的组件
 ---
 
-# Built-in Components
+# 内置组件
 
-Ready-to-use components in Slidev.
+Slidev 中可用的组件。
 
-## Navigation
+## 导航
 
 ### Link
 
-Navigate to slide:
+导航到幻灯片：
 ```md
-<Link to="5">Go to slide 5</Link>
-<Link to="intro">Go to intro</Link>  <!-- with routeAlias -->
+<Link to="5">跳转到第 5 张幻灯片</Link>
+<Link to="intro">跳转到介绍</Link>  <!-- 使用 routeAlias -->
 ```
 
 ### SlideCurrentNo / SlidesTotal
 
 ```md
-Slide <SlideCurrentNo /> of <SlidesTotal />
+幻灯片 <SlideCurrentNo /> / <SlidesTotal />
 ```
 
-### Toc (Table of Contents)
+### Toc（目录）
 
 ```md
 <Toc />
@@ -31,29 +31,29 @@ Slide <SlideCurrentNo /> of <SlidesTotal />
 <Toc columns="2" />
 ```
 
-Props:
-- `columns` - Number of columns
-- `maxDepth` / `minDepth` - Heading depth filter
+属性：
+- `columns` - 列数
+- `maxDepth` / `minDepth` - 标题深度过滤器
 - `mode` - 'all' | 'onlyCurrentTree' | 'onlySiblings'
 
 ### TitleRenderer
 
-Render slide title:
+渲染幻灯片标题：
 ```md
 <TitleRenderer no="3" />
 ```
 
-## Animations
+## 动画
 
 ### VClick / VClicks
 
 ```md
-<VClick>Shows on click</VClick>
+<VClick>点击时显示</VClick>
 
 <VClicks>
 
-- Item 1
-- Item 2
+- 项目 1
+- 项目 2
 
 </VClicks>
 ```
@@ -61,20 +61,20 @@ Render slide title:
 ### VAfter
 
 ```md
-<VClick>First</VClick>
-<VAfter>Shows with first</VAfter>
+<VClick>第一个</VClick>
+<VAfter>与第一个一起显示</VAfter>
 ```
 
 ### VSwitch
 
 ```md
 <VSwitch>
-  <template #1>State 1</template>
-  <template #2>State 2</template>
+  <template #1>状态 1</template>
+  <template #2>状态 2</template>
 </VSwitch>
 ```
 
-## Drawing
+## 绘图
 
 ### Arrow
 
@@ -83,36 +83,36 @@ Render slide title:
 <Arrow x1="10" y1="10" x2="100" y2="100" two-way />
 ```
 
-Props: `x1`, `y1`, `x2`, `y2`, `width`, `color`, `two-way`
+属性：`x1`、`y1`、`x2`、`y2`、`width`、`color`、`two-way`
 
 ### VDragArrow
 
-Draggable arrow:
+可拖动箭头：
 ```md
 <VDragArrow />
 ```
 
-## Layout
+## 布局
 
 ### Transform
 
-Scale elements:
+缩放元素：
 ```md
 <Transform :scale="0.5">
   <LargeContent />
 </Transform>
 ```
 
-Props: `scale`, `origin`
+属性：`scale`、`origin`
 
 ### AutoFitText
 
-Auto-sizing text:
+自动调整文本大小：
 ```md
 <AutoFitText :max="200" :min="50" modelValue="Hello" />
 ```
 
-## Media
+## 媒体
 
 ### SlidevVideo
 
@@ -122,7 +122,7 @@ Auto-sizing text:
 </SlidevVideo>
 ```
 
-Props: `controls`, `autoplay`, `autoreset`, `poster`, `timestamp`
+属性：`controls`、`autoplay`、`autoreset`、`poster`、`timestamp`
 
 ### Youtube
 
@@ -138,14 +138,14 @@ Props: `controls`, `autoplay`, `autoreset`, `poster`, `timestamp`
 <Tweet id="1423789844234231808" :scale="0.8" />
 ```
 
-## Conditional
+## 条件渲染
 
 ### LightOrDark
 
 ```md
 <LightOrDark>
-  <template #dark>Dark mode content</template>
-  <template #light>Light mode content</template>
+  <template #dark>暗色模式内容</template>
+  <template #light>亮色模式内容</template>
 </LightOrDark>
 ```
 
@@ -153,20 +153,20 @@ Props: `controls`, `autoplay`, `autoreset`, `poster`, `timestamp`
 
 ```md
 <RenderWhen context="presenter">
-  Only in presenter mode
+  仅在演讲者模式下显示
 </RenderWhen>
 ```
 
-Context values:
-- `main` - Main presentation view
-- `visible` - Visible slides
-- `print` - Print/export mode
-- `slide` - Normal slide view
-- `overview` - Overview mode
-- `presenter` - Presenter mode
-- `previewNext` - Next slide preview
+上下文值：
+- `main` - 主演示视图
+- `visible` - 可见幻灯片
+- `print` - 打印/导出模式
+- `slide` - 正常幻灯片视图
+- `overview` - 概览模式
+- `presenter` - 演讲者模式
+- `previewNext` - 下一张幻灯片预览
 
-## Branding
+## 品牌展示
 
 ### PoweredBySlidev
 
@@ -174,24 +174,24 @@ Context values:
 <PoweredBySlidev />
 ```
 
-## Draggable
+## 可拖动
 
 ### VDrag
 
 ```md
 <VDrag pos="myElement">
-  Draggable content
+  可拖动内容
 </VDrag>
 ```
 
-See [draggable](draggable.md) for details.
+详情参见 [draggable](draggable.md)。
 
-## Component Auto-Import
+## 组件自动导入
 
-Components from these sources are auto-imported:
-1. Built-in components
-2. Theme components
-3. Addon components
-4. `./components/` directory
+来自以下来源的组件会自动导入：
+1. 内置组件
+2. 主题组件
+3. 插件组件
+4. `./components/` 目录
 
-No import statements needed.
+无需导入语句。

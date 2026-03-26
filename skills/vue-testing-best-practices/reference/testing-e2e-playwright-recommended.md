@@ -1,36 +1,36 @@
 ---
-title: Use Playwright for E2E Testing - Cross-Browser Support and Better DX
+title: 使用 Playwright 进行 E2E 测试 - 跨浏览器支持和更好的 DX
 impact: MEDIUM
-impactDescription: Cypress has browser limitations and some features require paid subscriptions
+impactDescription: Cypress 有浏览器限制,某些功能需要付费订阅
 type: best-practice
 tags: [vue3, testing, e2e, playwright, cypress, end-to-end]
 ---
 
-# Use Playwright for E2E Testing - Cross-Browser Support and Better DX
+# 使用 Playwright 进行 E2E 测试 - 跨浏览器支持和更好的 DX
 
-**Impact: MEDIUM** - Playwright offers superior cross-browser testing (Chromium, WebKit, Firefox), excellent debugging tools, and is fully open source. Cypress has limitations with WebKit support and requires paid subscriptions for some features.
+**影响: MEDIUM** - Playwright 提供卓越的跨浏览器测试(Chromium、WebKit、Firefox)、出色的调试工具,并且完全开源。Cypress 对 WebKit 支持有限,某些功能需要付费订阅。
 
-Use Playwright for new E2E testing setups. Consider Cypress if team already has expertise or for its visual debugging UI.
+对于新的 E2E 测试设置使用 Playwright。如果团队已经有专业知识或其视觉调试 UI,则考虑 Cypress。
 
-## Task Checklist
+## 任务清单
 
-- [ ] Install Playwright with browsers for your target platforms
-- [ ] Configure for Vue dev server integration
-- [ ] Set up projects for different browsers
-- [ ] Use locator strategies that match component test patterns
-- [ ] Configure CI for parallel test execution
-- [ ] Use trace and screenshot features for debugging
+- [ ] 为目标平台安装带有浏览器的 Playwright
+- [ ] 配置 Vue 开发服务器集成
+- [ ] 为不同浏览器设置项目
+- [ ] 使用匹配组件测试模式的定位器策略
+- [ ] 配置 CI 以进行并行测试执行
+- [ ] 使用 trace 和截图功能进行调试
 
-## Quick Setup
+## 快速设置
 
 ```bash
-# Install Playwright
+# 安装 Playwright
 npm init playwright@latest
 
-# This will create:
+# 这将创建:
 # - playwright.config.ts
-# - tests/ directory
-# - tests-examples/ directory
+# - tests/ 目录
+# - tests-examples/ 目录
 ```
 
 **playwright.config.ts:**
@@ -46,11 +46,11 @@ export default defineConfig({
   reporter: 'html',
 
   use: {
-    // Base URL for navigation
+    // 用于导航的基本 URL
     baseURL: 'http://localhost:5173',
-    // Capture trace on first retry
+    // 在第一次重试时捕获 trace
     trace: 'on-first-retry',
-    // Screenshot on failure
+    // 失败时截图
     screenshot: 'only-on-failure',
   },
 
@@ -67,14 +67,14 @@ export default defineConfig({
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },
-    // Mobile viewports
+    // 移动视口
     {
       name: 'Mobile Chrome',
       use: { ...devices['Pixel 5'] },
     },
   ],
 
-  // Run local dev server before tests
+  // 在测试前运行本地开发服务器
   webServer: {
     command: 'npm run dev',
     url: 'http://localhost:5173',
@@ -83,28 +83,28 @@ export default defineConfig({
 })
 ```
 
-## E2E Test Example
+## E2E 测试示例
 
 ```typescript
 // e2e/user-flow.spec.ts
 import { test, expect } from '@playwright/test'
 
-test.describe('User Authentication', () => {
-  test('user can log in and see dashboard', async ({ page }) => {
-    // Navigate to login
+test.describe('用户认证', () => {
+  test('用户可以登录并查看仪表板', async ({ page }) => {
+    // 导航到登录
     await page.goto('/login')
 
-    // Fill login form
+    // 填写登录表单
     await page.getByLabel('Email').fill('user@example.com')
     await page.getByLabel('Password').fill('password123')
     await page.getByRole('button', { name: 'Sign In' }).click()
 
-    // Verify redirect to dashboard
+    // 验证重定向到仪表板
     await expect(page).toHaveURL('/dashboard')
     await expect(page.getByRole('heading', { name: 'Welcome' })).toBeVisible()
   })
 
-  test('shows error for invalid credentials', async ({ page }) => {
+  test('对无效凭据显示错误', async ({ page }) => {
     await page.goto('/login')
 
     await page.getByLabel('Email').fill('wrong@example.com')
@@ -117,43 +117,43 @@ test.describe('User Authentication', () => {
 })
 ```
 
-## Playwright vs Cypress Comparison
+## Playwright vs Cypress 比较
 
-| Feature | Playwright | Cypress |
+| 功能 | Playwright | Cypress |
 |---------|------------|---------|
-| Browsers | Chromium, Firefox, WebKit | Chromium, Firefox, Electron (WebKit experimental) |
-| Cross-browser | Full support | Limited |
-| Parallelization | Built-in | Requires Cypress Cloud |
-| Open source | Fully | Core only |
-| Mobile testing | Device emulation | Limited |
-| Debugging | Inspector, trace viewer | Time-travel UI |
-| API testing | Built-in | Plugin required |
-| Iframes | Full support | Limited |
+| 浏览器 | Chromium, Firefox, WebKit | Chromium, Firefox, Electron (WebKit 实验性) |
+| 跨浏览器 | 完全支持 | 有限 |
+| 并行化 | 内置 | 需要 Cypress Cloud |
+| 开源 | 完全 | 仅核心 |
+| 移动测试 | 设备模拟 | 有限 |
+| 调试 | Inspector, trace viewer | 时间旅行 UI |
+| API 测试 | 内置 | 需要插件 |
+| Iframes | 完全支持 | 有限 |
 
-## Testing Vue Components with Data-Testid
+## 使用 Data-Testid 测试 Vue 组件
 
 ```typescript
 // e2e/product-list.spec.ts
 import { test, expect } from '@playwright/test'
 
-test('user can add product to cart', async ({ page }) => {
+test('用户可以将产品添加到购物车', async ({ page }) => {
   await page.goto('/products')
 
-  // Use data-testid for reliable selectors
+  // 使用 data-testid 进行可靠的定位器
   await page.getByTestId('product-card').first().click()
 
-  // Verify product detail page
+  // 验证产品详情页面
   await expect(page.getByTestId('product-title')).toBeVisible()
 
-  // Add to cart
+  // 添加到购物车
   await page.getByTestId('add-to-cart-button').click()
 
-  // Verify cart updated
+  // 验证购物车更新
   await expect(page.getByTestId('cart-count')).toHaveText('1')
 })
 ```
 
-## Page Object Pattern for Vue Apps
+## Vue 应用的页面对象模式
 
 ```typescript
 // e2e/pages/LoginPage.ts
@@ -191,7 +191,7 @@ export class LoginPage {
 import { test, expect } from '@playwright/test'
 import { LoginPage } from './pages/LoginPage'
 
-test('successful login', async ({ page }) => {
+test('成功登录', async ({ page }) => {
   const loginPage = new LoginPage(page)
   await loginPage.goto()
   await loginPage.login('user@example.com', 'password123')
@@ -200,43 +200,43 @@ test('successful login', async ({ page }) => {
 })
 ```
 
-## Visual Regression Testing
+## 视觉回归测试
 
 ```typescript
-test('homepage visual regression', async ({ page }) => {
+test('主页视觉回归', async ({ page }) => {
   await page.goto('/')
 
-  // Full page screenshot comparison
+  // 全页截图比较
   await expect(page).toHaveScreenshot('homepage.png')
 
-  // Element-specific screenshot
+  // 元素特定截图
   await expect(page.getByTestId('hero-section')).toHaveScreenshot('hero.png')
 })
 ```
 
-## Running Tests
+## 运行测试
 
 ```bash
-# Run all tests
+# 运行所有测试
 npx playwright test
 
-# Run in headed mode (see browser)
+# 在 headed 模式下运行(查看浏览器)
 npx playwright test --headed
 
-# Run specific file
+# 运行特定文件
 npx playwright test e2e/auth.spec.ts
 
-# Run in specific browser
+# 在特定浏览器中运行
 npx playwright test --project=chromium
 
-# Debug mode
+# 调试模式
 npx playwright test --debug
 
-# Generate test from actions
+# 从操作生成测试
 npx playwright codegen localhost:5173
 ```
 
-## Reference
-- [Playwright Documentation](https://playwright.dev/)
-- [Vue.js E2E Testing Recommendations](https://vuejs.org/guide/scaling-up/testing#e2e-testing)
-- [Playwright Best Practices](https://playwright.dev/docs/best-practices)
+## 参考
+- [Playwright 文档](https://playwright.dev/)
+- [Vue.js E2E 测试推荐](https://vuejs.org/guide/scaling-up/testing#e2e-testing)
+- [Playwright 最佳实践](https://playwright.dev/docs/best-practices)

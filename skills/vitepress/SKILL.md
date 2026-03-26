@@ -1,65 +1,59 @@
 ---
 name: vitepress
-description: VitePress static site generator powered by Vite and Vue. Use when building documentation sites, configuring themes, or writing Markdown with Vue components.
-metadata:
-  author: Anthony Fu
-  version: "2026.1.28"
-  source: Generated from https://github.com/vuejs/vitepress, scripts located at https://github.com/antfu/skills
+description: 基于 Vite 和 Vue 的 VitePress 静态站点生成器。用于构建文档站点、配置主题或使用 Vue 组件编写 Markdown。
 ---
 
-VitePress is a Static Site Generator (SSG) built on Vite and Vue 3. It takes Markdown content, applies a theme, and generates static HTML that becomes an SPA for fast navigation. Perfect for documentation, blogs, and marketing sites.
+VitePress 是基于 Vite 和 Vue 3 构建的静态站点生成器(SSG)。它获取 Markdown 内容,应用主题,并生成静态 HTML,该 HTML 成为快速导航的 SPA。非常适合文档、博客和营销站点。
 
-**Key Characteristics:**
-- File-based routing with `.md` files
-- Vue components work directly in Markdown
-- Fast HMR with instant updates (<100ms)
-- Default theme optimized for documentation
-- Built-in search (local or Algolia)
+**关键特性:**
+- 基于 `.md` 文件的文件路由
+- Vue 组件可直接在 Markdown 中工作
+- 快速 HMR,即时更新(<100ms)
+- 针对文档优化的默认主题
+- 内置搜索(本地或 Algolia)
 
-**Before working with VitePress projects:**
-- Check `.vitepress/config.ts` for site configuration
-- Look at `.vitepress/theme/` for custom theme extensions
-- The `public/` directory contains static assets served as-is
+**在使用 VitePress 项目之前:**
+- 检查 `.vitepress/config.ts` 以获取站点配置
+- 查看 `.vitepress/theme/` 以获取自定义主题扩展
+- `public/` 目录包含按原样提供的静态资源
 
-> The skill is based on VitePress 1.x, generated at 2026-01-28.
+## 核心
 
-## Core
-
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Configuration | Config file setup, defineConfig, site metadata | [core-config](references/core-config.md) |
-| CLI | Command-line interface: dev, build, preview, init | [core-cli](references/core-cli.md) |
-| Routing | File-based routing, source directory, rewrites | [core-routing](references/core-routing.md) |
-| Markdown | Frontmatter, containers, tables, anchors, includes | [core-markdown](references/core-markdown.md) |
+| 配置 | 配置文件设置、defineConfig、站点元数据 | [core-config](references/core-config.md) |
+| CLI | 命令行界面:dev、build、preview、init | [core-cli](references/core-cli.md) |
+| 路由 | 基于文件的路由、源目录、重写 | [core-routing](references/core-routing.md) |
+| Markdown | Frontmatter、容器、表格、锚点、包含 | [core-markdown](references/core-markdown.md) |
 
-## Features
+## 功能
 
-### Code & Content
+### 代码和内容
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Code Blocks | Syntax highlighting, line highlighting, diffs, focus | [features-code-blocks](references/features-code-blocks.md) |
-| Vue in Markdown | Components, script setup, directives, templating | [features-vue](references/features-vue.md) |
-| Data Loading | Build-time data loaders, createContentLoader | [features-data-loading](references/features-data-loading.md) |
-| Dynamic Routes | Generate pages from data, paths loader files | [features-dynamic-routes](references/features-dynamic-routes.md) |
+| 代码块 | 语法高亮、行高亮、差异、焦点 | [features-code-blocks](references/features-code-blocks.md) |
+| Markdown 中的 Vue | 组件、script setup、指令、模板 | [features-vue](references/features-vue.md) |
+| 数据加载 | 构建时数据加载器、createContentLoader | [features-data-loading](references/features-data-loading.md) |
+| 动态路由 | 从数据生成页面、路径加载器文件 | [features-dynamic-routes](references/features-dynamic-routes.md) |
 
-## Theme
+## 主题
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Theme Config | Nav, sidebar, search, social links, footer | [theme-config](references/theme-config.md) |
-| Customization | CSS variables, slots, fonts, global components | [theme-customization](references/theme-customization.md) |
-| Custom Theme | Building themes from scratch, theme interface | [theme-custom](references/theme-custom.md) |
+| 主题配置 | 导航、侧边栏、搜索、社交链接、页脚 | [theme-config](references/theme-config.md) |
+| 自定义 | CSS 变量、插槽、字体、全局组件 | [theme-customization](references/theme-customization.md) |
+| 自定义主题 | 从头开始构建主题、主题接口 | [theme-custom](references/theme-custom.md) |
 
-## Advanced
+## 高级
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Internationalization | Multi-language sites, locale configuration | [advanced-i18n](references/advanced-i18n.md) |
-| SSR Compatibility | Server-side rendering, ClientOnly, dynamic imports | [advanced-ssr](references/advanced-ssr.md) |
+| 国际化 | 多语言站点、区域设置配置 | [advanced-i18n](references/advanced-i18n.md) |
+| SSR 兼容性 | 服务端渲染、ClientOnly、动态导入 | [advanced-ssr](references/advanced-ssr.md) |
 
-## Recipes
+## 配方
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Deployment | GitHub Pages, Netlify, Vercel, Cloudflare, Nginx | [recipes-deploy](references/recipes-deploy.md) |
+| 部署 | GitHub Pages、Netlify、Vercel、Cloudflare、Nginx | [recipes-deploy](references/recipes-deploy.md) |

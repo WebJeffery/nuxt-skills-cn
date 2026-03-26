@@ -1,22 +1,22 @@
 ---
-title: Teleported Content Requires Special Testing Approach
+title: 传送的内容需要特殊的测试方法
 impact: MEDIUM
-impactDescription: Vue Test Utils cannot find teleported content using standard wrapper.find() methods
+impactDescription: Vue Test Utils 无法使用标准 wrapper.find() 方法找到传送的内容
 type: gotcha
 tags: [vue3, teleport, testing, vue-test-utils]
 ---
 
-# Teleported Content Requires Special Testing Approach
+# 传送的内容需要特殊的测试方法
 
-**Impact: MEDIUM** - Vue Test Utils scopes queries to the mounted component. Teleported content renders outside the component's DOM tree, so `wrapper.find()` cannot locate it. This leads to failing tests and confusion.
+**影响: MEDIUM** - Vue Test Utils 将查询范围限制在挂载的组件内。传送的内容在组件的 DOM 树之外渲染,因此 `wrapper.find()` 无法定位它。这导致测试失败和困惑。
 
-## Task Checklist
+## 任务清单
 
-- [ ] Stub Teleport in unit tests to keep content in component tree
-- [ ] Use `document.body` queries for integration tests with real Teleport
-- [ ] Consider using `getComponent()` instead of DOM queries for teleported components
+- [ ] 在单元测试中存根 Teleport 以将内容保留在组件树中
+- [ ] 使用 `document.body` 查询进行带有真实 Teleport 的集成测试
+- [ ] 考虑对传送的组件使用 `getComponent()` 而不是 DOM 查询
 
-**Problem - Standard Testing Fails:**
+**问题 - 标准测试失败:**
 ```vue
 <!-- Modal.vue -->
 <template>
@@ -30,29 +30,29 @@ tags: [vue3, teleport, testing, vue-test-utils]
 ```
 
 ```ts
-// Modal.spec.ts - BROKEN
+// Modal.spec.ts - 损坏
 import { mount } from '@vue/test-utils'
 import Modal from './Modal.vue'
 
-test('modal input exists', async () => {
+test('模态框输入存在', async () => {
   const wrapper = mount(Modal)
   await wrapper.find('button').trigger('click')
 
-  // FAILS: Teleported content is not in wrapper's DOM tree
+  // 失败: 传送的内容不在包装器的 DOM 树中
   expect(wrapper.find('[data-testid="modal-input"]').exists()).toBe(true)
 })
 ```
 
-**Solution 1 - Stub Teleport:**
+**解决方案 1 - 存根 Teleport:**
 ```ts
 import { mount } from '@vue/test-utils'
 import Modal from './Modal.vue'
 
-test('modal input exists', async () => {
+test('模态框输入存在', async () => {
   const wrapper = mount(Modal, {
     global: {
       stubs: {
-        // Stub teleport to render content inline
+        // 存根 teleport 以内联渲染内容
         Teleport: true
       }
     }
@@ -60,49 +60,49 @@ test('modal input exists', async () => {
 
   await wrapper.find('button').trigger('click')
 
-  // Works: Content renders inside wrapper
+  // 有效: 内容在包装器内渲染
   expect(wrapper.find('[data-testid="modal-input"]').exists()).toBe(true)
 })
 ```
 
-**Solution 2 - Query Document Body:**
+**解决方案 2 - 查询文档主体:**
 ```ts
 import { mount } from '@vue/test-utils'
 import Modal from './Modal.vue'
 
-test('modal renders to body', async () => {
+test('模态框渲染到主体', async () => {
   const wrapper = mount(Modal, {
-    attachTo: document.body  // Required for Teleport to work
+    attachTo: document.body  // Teleport 工作所必需
   })
 
   await wrapper.find('button').trigger('click')
 
-  // Query the actual DOM
+  // 查询实际 DOM
   const modal = document.querySelector('[data-testid="modal"]')
   expect(modal).toBeTruthy()
 
   const input = document.querySelector('[data-testid="modal-input"]')
   expect(input).toBeTruthy()
 
-  // Cleanup
+  // 清理
   wrapper.unmount()
 })
 ```
 
-**Solution 3 - Custom Teleport Stub with Content Access:**
+**解决方案 3 - 带内容访问的自定义 Teleport 存根:**
 ```ts
 import { mount, config } from '@vue/test-utils'
 import { h, Teleport } from 'vue'
 import Modal from './Modal.vue'
 
-// Custom stub that renders content in a testable way
+// 自定义存根,以可测试的方式渲染内容
 const TeleportStub = {
   setup(props, { slots }) {
     return () => h('div', { class: 'teleport-stub' }, slots.default?.())
   }
 }
 
-test('modal with custom stub', async () => {
+test('带自定义存根的模态框', async () => {
   const wrapper = mount(Modal, {
     global: {
       stubs: {
@@ -113,24 +113,24 @@ test('modal with custom stub', async () => {
 
   await wrapper.find('button').trigger('click')
 
-  // Content is inside .teleport-stub
+  // 内容在 .teleport-stub 内
   expect(wrapper.find('.teleport-stub [data-testid="modal-input"]').exists()).toBe(true)
 })
 ```
 
-## Testing Vue Final Modal and UI Libraries
+## 测试 Vue Final Modal 和 UI 库
 
-Libraries like Vue Final Modal use Teleport internally, causing test failures:
+像 Vue Final Modal 这样的库在内部使用 Teleport,导致测试失败:
 
 ```ts
-// Problem: Vue Final Modal teleports to body
+// 问题: Vue Final Modal 传送到主体
 import { VueFinalModal } from 'vue-final-modal'
 
-test('modal content', async () => {
+test('模态框内容', async () => {
   const wrapper = mount(MyComponent, {
     global: {
       stubs: {
-        // Stub the modal component to avoid teleport issues
+        // 存根模态框组件以避免 teleport 问题
         VueFinalModal: true
       }
     }
@@ -138,21 +138,21 @@ test('modal content', async () => {
 })
 ```
 
-## E2E Testing (Cypress, Playwright)
+## E2E 测试(Cypress, Playwright)
 
-E2E tests query the real DOM, so Teleport works naturally:
+E2E 测试查询真实 DOM,因此 Teleport 自然工作:
 
 ```ts
 // Cypress
-it('opens modal', () => {
+it('打开模态框', () => {
   cy.visit('/page-with-modal')
   cy.get('button').click()
 
-  // Works: Cypress queries the real DOM
+  // 有效: Cypress 查询真实 DOM
   cy.get('[data-testid="modal"]').should('be.visible')
 })
 ```
 
-## Reference
+## 参考
 - [Vue Test Utils - Teleport](https://test-utils.vuejs.org/guide/advanced/teleport)
 - [Vue Test Utils - Stubs](https://test-utils.vuejs.org/guide/advanced/stubs-shallow-mount)

@@ -1,12 +1,12 @@
-# Root Directory
+# 根目录
 
-Specify the root directory of input files for output structure mapping.
+指定输入文件的根目录，用于输出结构映射。
 
-## Overview
+## 概述
 
-The `root` option is similar to TypeScript's `rootDir`. It determines how entry file paths map to output paths. By default, tsdown computes the root as the common base directory of all entry files. Setting `root` explicitly lets you override this behavior.
+`root` 选项类似于 TypeScript 的 `rootDir`。它确定入口文件路径如何映射到输出路径。默认情况下，tsdown 将根计算为所有入口文件的公共基本目录。显式设置 `root` 可以让您覆盖此行为。
 
-## Basic Usage
+## 基本用法
 
 ### CLI
 
@@ -14,7 +14,7 @@ The `root` option is similar to TypeScript's `rootDir`. It determines how entry 
 tsdown --root src
 ```
 
-### Config File
+### 配置文件
 
 ```ts
 export default defineConfig({
@@ -23,11 +23,11 @@ export default defineConfig({
 })
 ```
 
-## How It Works
+## 工作原理
 
-### Default
+### 默认
 
-Given entries `src/index.ts` and `src/utils/helper.ts`, the common base directory is `src/`:
+给定入口 `src/index.ts` 和 `src/utils/helper.ts`，公共基本目录是 `src/`：
 
 ```
 dist/
@@ -36,9 +36,9 @@ dist/
     └── helper.js
 ```
 
-### With `root: '.'`
+### 使用 `root: '.'`
 
-Setting root to the project directory preserves the `src/` prefix:
+将根设置为项目目录会保留 `src/` 前缀：
 
 ```
 dist/
@@ -48,20 +48,20 @@ dist/
         └── helper.js
 ```
 
-## What It Affects
+## 影响内容
 
-1. **Entry name resolution** — Array entry paths are computed relative to `root` for output filenames
-2. **Unbundle mode** — Used as `preserveModulesRoot`, controlling output structure when `unbundle: true`
+1. **入口名称解析** - 数组入口路径相对于 `root` 计算以生成输出文件名
+2. **Unbundle 模式** - 用作 `preserveModulesRoot`，控制 `unbundle: true` 时的输出结构
 
-## When to Use
+## 何时使用
 
-- Auto-computed common base directory doesn't produce desired output structure
-- Need to include or exclude directory prefixes in output paths
-- Unbundle mode needs specific directory mapping
+- 自动计算的公共基本目录未产生所需的输出结构
+- 需要在输出路径中包含或排除目录前缀
+- Unbundle 模式需要特定的目录映射
 
-## Common Patterns
+## 常见模式
 
-### Library with `src/` Prefix Preserved
+### 保留 `src/` 前缀的库
 
 ```ts
 export default defineConfig({
@@ -71,7 +71,7 @@ export default defineConfig({
 })
 ```
 
-### Monorepo Package
+### Monorepo 包
 
 ```ts
 export default defineConfig({
@@ -81,8 +81,8 @@ export default defineConfig({
 })
 ```
 
-## Related Options
+## 相关选项
 
-- [Unbundle](option-unbundle.md) - Preserve directory structure
-- [Entry](option-entry.md) - Entry point configuration
-- [Output Directory](option-output-directory.md) - Output location
+- [Unbundle](option-unbundle.md) - 保留目录结构
+- [入口点](option-entry.md) - 入口点配置
+- [输出目录](option-output-directory.md) - 输出位置

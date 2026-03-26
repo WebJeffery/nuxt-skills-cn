@@ -1,24 +1,24 @@
 ---
 name: vitepress-dynamic-routes
-description: Generate multiple pages from a single markdown template using paths loader files
+description: 使用路径加载器文件从单个 markdown 模板生成多个页面
 ---
 
-# Dynamic Routes
+# 动态路由
 
-Generate many pages from a single markdown file and dynamic data. Useful for blogs, package docs, or any data-driven pages.
+从单个 markdown 文件和动态数据生成许多页面。适用于博客、包文档或任何数据驱动的页面。
 
-## Basic Setup
+## 基本设置
 
-Create a template file with parameter in brackets and a paths loader:
+创建带有括号中参数的模板文件和路径加载器:
 
 ```
 .
 └─ packages/
-   ├─ [pkg].md           # Route template
-   └─ [pkg].paths.js     # Paths loader
+   ├─ [pkg].md           # 路由模板
+   └─ [pkg].paths.js     # 路径加载器
 ```
 
-The paths loader exports a `paths` method returning route parameters:
+路径加载器导出返回路由参数的 `paths` 方法:
 
 ```js
 // packages/[pkg].paths.js
@@ -33,12 +33,12 @@ export default {
 }
 ```
 
-Generated pages:
+生成的页面:
 - `/packages/foo.html`
 - `/packages/bar.html`
 - `/packages/baz.html`
 
-## Multiple Parameters
+## 多个参数
 
 ```
 .
@@ -60,9 +60,9 @@ export default {
 }
 ```
 
-## Dynamic Path Generation
+## 动态路径生成
 
-From local files:
+从本地文件:
 
 ```js
 // packages/[pkg].paths.js
@@ -77,7 +77,7 @@ export default {
 }
 ```
 
-From remote API:
+从远程 API:
 
 ```js
 // packages/[pkg].paths.js
@@ -95,9 +95,9 @@ export default {
 }
 ```
 
-## Accessing Params in Page
+## 在页面中访问参数
 
-Template globals:
+模板全局变量:
 
 ```md
 <!-- packages/[pkg].md -->
@@ -106,7 +106,7 @@ Template globals:
 Version: {{ $params.version }}
 ```
 
-In script:
+在 script 中:
 
 ```vue
 <script setup>
@@ -119,9 +119,9 @@ const { params } = useData()
 </template>
 ```
 
-## Passing Content
+## 传递内容
 
-For heavy content (raw markdown/HTML from CMS), use `content` instead of params to avoid bloating the client bundle:
+对于重内容(来自 CMS 的原始 markdown/HTML),使用 `content` 而不是 params 以避免膨胀客户端包:
 
 ```js
 // posts/[slug].paths.js
@@ -131,13 +131,13 @@ export default {
     
     return posts.map(post => ({
       params: { slug: post.slug },
-      content: post.content  // Raw markdown or HTML
+      content: post.content  // 原始 markdown 或 HTML
     }))
   }
 }
 ```
 
-Render content in template:
+在模板中渲染内容:
 
 ```md
 <!-- posts/[slug].md -->
@@ -148,11 +148,11 @@ title: {{ $params.title }}
 <!-- @content -->
 ```
 
-The `<!-- @content -->` placeholder is replaced with the content from the paths loader.
+`<!-- @content -->` 占位符被路径加载器中的内容替换。
 
-## Watch Option
+## 监视选项
 
-Auto-rebuild when template or data files change:
+当模板或数据文件更改时自动重建:
 
 ```js
 // posts/[slug].paths.js
@@ -176,7 +176,7 @@ export default {
 }
 ```
 
-## Complete Example: Blog
+## 完整示例:博客
 
 ```js
 // posts/[slug].paths.js
@@ -220,14 +220,14 @@ layout: doc
 <!-- @content -->
 ```
 
-## Key Points
+## 关键点
 
-- Template file uses `[param]` syntax in filename
-- Paths loader file must be named `[param].paths.js` or `.ts`
-- `paths()` returns array of `{ params: {...}, content?: string }`
-- Use `$params` in templates or `useData().params` in scripts
-- Use `content` for heavy data to avoid client bundle bloat
-- `watch` enables HMR for template/data file changes
+- 模板文件在文件名中使用 `[param]` 语法
+- 路径加载器文件必须命名为 `[param].paths.js` 或 `.ts`
+- `paths()` 返回 `{ params: {...}, content?: string }` 数组
+- 在模板中使用 `$params` 或在 scripts 中使用 `useData().params`
+- 使用 `content` 处理重数据以避免客户端包膨胀
+- `watch` 启用模板/数据文件更改的 HMR
 
 <!--
 Source references:

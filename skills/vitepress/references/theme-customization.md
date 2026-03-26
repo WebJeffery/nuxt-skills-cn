@@ -1,15 +1,15 @@
 ---
 name: extending-vitepress-default-theme
-description: Customize CSS variables, use layout slots, register global components, and override theme fonts
+description: 自定义 CSS 变量、使用布局插槽、注册全局组件和覆盖主题字体
 ---
 
-# Extending Default Theme
+# 扩展默认主题
 
-Customize the default theme through CSS, slots, and Vue components.
+通过 CSS、插槽和 Vue 组件自定义默认主题。
 
-## Theme Entry File
+## 主题入口文件
 
-Create `.vitepress/theme/index.ts` to extend the default theme:
+创建 `.vitepress/theme/index.ts` 以扩展默认主题:
 
 ```ts
 // .vitepress/theme/index.ts
@@ -19,23 +19,23 @@ import './custom.css'
 export default DefaultTheme
 ```
 
-## CSS Variables
+## CSS 变量
 
-Override root CSS variables:
+覆盖根 CSS 变量:
 
 ```css
 /* .vitepress/theme/custom.css */
 :root {
-  /* Brand colors */
+  /* 品牌颜色 */
   --vp-c-brand-1: #646cff;
   --vp-c-brand-2: #747bff;
   --vp-c-brand-3: #9499ff;
   
-  /* Backgrounds */
+  /* 背景 */
   --vp-c-bg: #ffffff;
   --vp-c-bg-soft: #f6f6f7;
   
-  /* Text */
+  /* 文本 */
   --vp-c-text-1: #213547;
   --vp-c-text-2: #476582;
 }
@@ -46,25 +46,25 @@ Override root CSS variables:
 }
 ```
 
-See [all CSS variables](https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css).
+参见[所有 CSS 变量](https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css)。
 
-## Home Hero Customization
+## 主页英雄自定义
 
 ```css
 :root {
-  /* Gradient name color */
+  /* 渐变名称颜色 */
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: linear-gradient(120deg, #bd34fe, #41d1ff);
   
-  /* Hero image glow */
+  /* 英雄图像发光 */
   --vp-home-hero-image-background-image: linear-gradient(-45deg, #bd34fe 50%, #47caff 50%);
   --vp-home-hero-image-filter: blur(44px);
 }
 ```
 
-## Custom Fonts
+## 自定义字体
 
-Remove Inter font and use your own:
+删除 Inter 字体并使用您自己的:
 
 ```ts
 // .vitepress/theme/index.ts
@@ -87,7 +87,7 @@ export default DefaultTheme
 }
 ```
 
-Preload fonts in config:
+在配置中预加载字体:
 
 ```ts
 // .vitepress/config.ts
@@ -103,9 +103,9 @@ export default {
 }
 ```
 
-## Global Components
+## 全局组件
 
-Register components available in all markdown:
+注册在所有 markdown 中可用的组件:
 
 ```ts
 // .vitepress/theme/index.ts
@@ -120,15 +120,15 @@ export default {
 }
 ```
 
-Use in markdown:
+在 markdown 中使用:
 
 ```md
 <MyComponent :prop="value" />
 ```
 
-## Layout Slots
+## 布局插槽
 
-Inject content into specific locations:
+将内容注入到特定位置:
 
 ```ts
 // .vitepress/theme/index.ts
@@ -165,9 +165,9 @@ const { Layout } = DefaultTheme
 </template>
 ```
 
-### Available Slots
+### 可用插槽
 
-**Doc layout (`layout: doc`):**
+**文档布局(`layout: doc`):**
 - `doc-top`, `doc-bottom`
 - `doc-before`, `doc-after`
 - `doc-footer-before`
@@ -176,24 +176,24 @@ const { Layout } = DefaultTheme
 - `aside-outline-before`, `aside-outline-after`
 - `aside-ads-before`, `aside-ads-after`
 
-**Home layout (`layout: home`):**
+**主页布局(`layout: home`):**
 - `home-hero-before`, `home-hero-after`
 - `home-hero-info-before`, `home-hero-info`, `home-hero-info-after`
 - `home-hero-actions-after`, `home-hero-image`
 - `home-features-before`, `home-features-after`
 
-**Page layout (`layout: page`):**
+**页面布局(`layout: page`):**
 - `page-top`, `page-bottom`
 
-**Always available:**
+**始终可用:**
 - `layout-top`, `layout-bottom`
 - `nav-bar-title-before`, `nav-bar-title-after`
 - `nav-bar-content-before`, `nav-bar-content-after`
-- `not-found` (404 page)
+- `not-found` (404 页面)
 
-## Using Render Functions
+## 使用渲染函数
 
-Alternative to template slots:
+模板插槽的替代方案:
 
 ```ts
 // .vitepress/theme/index.ts
@@ -211,9 +211,9 @@ export default {
 }
 ```
 
-## Override Internal Components
+## 覆盖内部组件
 
-Replace default theme components with Vite aliases:
+使用 Vite 别名替换默认主题组件:
 
 ```ts
 // .vitepress/config.ts
@@ -235,9 +235,9 @@ export default {
 }
 ```
 
-## View Transitions
+## 视图转换
 
-Custom dark mode toggle animation:
+自定义暗色模式切换动画:
 
 ```vue
 <!-- .vitepress/theme/Layout.vue -->
@@ -276,13 +276,13 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }) => {
 </template>
 ```
 
-## Key Points
+## 关键点
 
-- Import `vitepress/theme-without-fonts` to use custom fonts
-- Use layout slots to inject content without overriding components
-- Global components are registered in `enhanceApp`
-- Override CSS variables for theming
-- Use Vite aliases to replace internal components
+- 导入 `vitepress/theme-without-fonts` 以使用自定义字体
+- 使用布局插槽注入内容而无需覆盖组件
+- 全局组件在 `enhanceApp` 中注册
+- 覆盖 CSS 变量以进行主题化
+- 使用 Vite 别名替换内部组件
 
 <!--
 Source references:

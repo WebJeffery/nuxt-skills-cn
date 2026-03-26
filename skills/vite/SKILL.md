@@ -1,56 +1,52 @@
 ---
 name: vite
-description: Vite build tool configuration, plugin API, SSR, and Vite 8 Rolldown migration. Use when working with Vite projects, vite.config.ts, Vite plugins, or building libraries/SSR apps with Vite.
-metadata:
-  author: Anthony Fu
-  version: "2026.1.31"
-  source: Generated from https://github.com/vitejs/vite, scripts at https://github.com/antfu/skills
+description: Vite 构建工具配置、插件 API、SSR 和 Vite 8 Rolldown 迁移。在使用 Vite 项目、vite.config.ts、Vite 插件或使用 Vite 构建库/SSR 应用时使用。
 ---
 
 # Vite
 
-> Based on Vite 8 beta (Rolldown-powered). Vite 8 uses Rolldown bundler and Oxc transformer.
+> 基于 Vite 8 beta (Rolldown 驱动)。Vite 8 使用 Rolldown 打包器和 Oxc 转换器。
 
-Vite is a next-generation frontend build tool with fast dev server (native ESM + HMR) and optimized production builds.
+Vite 是下一代前端构建工具,具有快速的开发服务器(原生 ESM + HMR)和优化的生产构建。
 
-## Preferences
+## 偏好
 
-- Use TypeScript: prefer `vite.config.ts`
-- Always use ESM, avoid CommonJS
+- 使用 TypeScript: 优先使用 `vite.config.ts`
+- 始终使用 ESM,避免 CommonJS
 
-## Core
+## 核心
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Configuration | `vite.config.ts`, `defineConfig`, conditional configs, `loadEnv` | [core-config](references/core-config.md) |
-| Features | `import.meta.glob`, asset queries (`?raw`, `?url`), `import.meta.env`, HMR API | [core-features](references/core-features.md) |
-| Plugin API | Vite-specific hooks, virtual modules, plugin ordering | [core-plugin-api](references/core-plugin-api.md) |
+| 配置 | `vite.config.ts`、`defineConfig`、条件配置、`loadEnv` | [core-config](references/core-config.md) |
+| 功能 | `import.meta.glob`、资源查询(`?raw`、`?url`)、`import.meta.env`、HMR API | [core-features](references/core-features.md) |
+| 插件 API | Vite 特定钩子、虚拟模块、插件顺序 | [core-plugin-api](references/core-plugin-api.md) |
 
-## Build & SSR
+## 构建和 SSR
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Build & SSR | Library mode, SSR middleware mode, `ssrLoadModule`, JavaScript API | [build-and-ssr](references/build-and-ssr.md) |
+| 构建和 SSR | 库模式、SSR 中间件模式、`ssrLoadModule`、JavaScript API | [build-and-ssr](references/build-and-ssr.md) |
 
-## Advanced
+## 高级
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Environment API | Vite 6+ multi-environment support, custom runtimes | [environment-api](references/environment-api.md) |
-| Rolldown Migration | Vite 8 changes: Rolldown bundler, Oxc transformer, config migration | [rolldown-migration](references/rolldown-migration.md) |
+| 环境 API | Vite 6+ 多环境支持、自定义运行时 | [environment-api](references/environment-api.md) |
+| Rolldown 迁移 | Vite 8 更改: Rolldown 打包器、Oxc 转换器、配置迁移 | [rolldown-migration](references/rolldown-migration.md) |
 
-## Quick Reference
+## 快速参考
 
-### CLI Commands
+### CLI 命令
 
 ```bash
-vite              # Start dev server
-vite build        # Production build
-vite preview      # Preview production build
-vite build --ssr  # SSR build
+vite              # 启动开发服务器
+vite build        # 生产构建
+vite preview      # 预览生产构建
+vite build --ssr  # SSR 构建
 ```
 
-### Common Config
+### 常用配置
 
 ```ts
 import { defineConfig } from 'vite'
@@ -63,10 +59,10 @@ export default defineConfig({
 })
 ```
 
-### Official Plugins
+### 官方插件
 
-- `@vitejs/plugin-vue` - Vue 3 SFC support
+- `@vitejs/plugin-vue` - Vue 3 SFC 支持
 - `@vitejs/plugin-vue-jsx` - Vue 3 JSX
-- `@vitejs/plugin-react` - React with Oxc/Babel
-- `@vitejs/plugin-react-swc` - React with SWC
-- `@vitejs/plugin-legacy` - Legacy browser support
+- `@vitejs/plugin-react` - 使用 Oxc/Babel 的 React
+- `@vitejs/plugin-react-swc` - 使用 SWC 的 React
+- `@vitejs/plugin-legacy` - 传统浏览器支持

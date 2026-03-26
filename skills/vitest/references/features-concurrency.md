@@ -1,36 +1,36 @@
 ---
 name: concurrency-parallelism
-description: Concurrent tests, parallel execution, and sharding
+description: 并发测试、并行执行和分片
 ---
 
-# Concurrency & Parallelism
+# 并发与并行
 
-## File Parallelism
+## 文件并行
 
-By default, Vitest runs test files in parallel across workers:
+默认情况下,Vitest 在工作器之间并行运行测试文件:
 
 ```ts
 defineConfig({
   test: {
-    // Run files in parallel (default: true)
+    // 并行运行文件(默认: true)
     fileParallelism: true,
     
-    // Number of worker threads
+    // 工作器线程数
     maxWorkers: 4,
     minWorkers: 1,
     
-    // Pool type: 'threads', 'forks', 'vmThreads'
+    // 池类型: 'threads'、'forks'、'vmThreads'
     pool: 'threads',
   },
 })
 ```
 
-## Concurrent Tests
+## 并发测试
 
-Run tests within a file in parallel:
+在文件内并行运行测试:
 
 ```ts
-// Individual concurrent tests
+// 单个并发测试
 test.concurrent('test 1', async ({ expect }) => {
   expect(await fetch1()).toBe('result')
 })
@@ -39,18 +39,18 @@ test.concurrent('test 2', async ({ expect }) => {
   expect(await fetch2()).toBe('result')
 })
 
-// All tests in suite concurrent
+// 套件中的所有测试并发
 describe.concurrent('parallel suite', () => {
   test('test 1', async ({ expect }) => {})
   test('test 2', async ({ expect }) => {})
 })
 ```
 
-**Important:** Use `{ expect }` from context for concurrent tests.
+**重要:** 对并发测试使用 `{ expect }` 上下文。
 
-## Sequential in Concurrent Context
+## 并发上下文中的顺序
 
-Force sequential execution:
+强制顺序执行:
 
 ```ts
 describe.concurrent('mostly parallel', () => {
@@ -61,54 +61,54 @@ describe.concurrent('mostly parallel', () => {
   test.sequential('must run alone 2', async () => {})
 })
 
-// Or entire suite
+// 或整个套件
 describe.sequential('sequential suite', () => {
   test('first', () => {})
   test('second', () => {})
 })
 ```
 
-## Max Concurrency
+## 最大并发
 
-Limit concurrent tests:
+限制并发测试:
 
 ```ts
 defineConfig({
   test: {
-    maxConcurrency: 5, // Max concurrent tests per file
+    maxConcurrency: 5, // 每个文件的最大并发测试数
   },
 })
 ```
 
-## Isolation
+## 隔离
 
-Each file runs in isolated environment by default:
+默认情况下,每个文件在隔离环境中运行:
 
 ```ts
 defineConfig({
   test: {
-    // Disable isolation for faster runs (less safe)
+    // 禁用隔离以加快运行速度(不太安全)
     isolate: false,
   },
 })
 ```
 
-## Sharding
+## 分片
 
-Split tests across machines:
+跨机器拆分测试:
 
 ```bash
-# Machine 1
+# 机器 1
 vitest run --shard=1/3
 
-# Machine 2
+# 机器 2
 vitest run --shard=2/3
 
-# Machine 3
+# 机器 3
 vitest run --shard=3/3
 ```
 
-### CI Example (GitHub Actions)
+### CI 示例 (GitHub Actions)
 
 ```yaml
 jobs:
@@ -125,50 +125,50 @@ jobs:
       - run: vitest --merge-reports --reporter=junit
 ```
 
-### Merge Reports
+### 合并报告
 
 ```bash
-# Each shard outputs blob
+# 每个 shard 输出 blob
 vitest run --shard=1/3 --reporter=blob --coverage
 vitest run --shard=2/3 --reporter=blob --coverage
 
-# Merge all blobs
+# 合并所有 blob
 vitest --merge-reports --reporter=json --coverage
 ```
 
-## Test Sequence
+## 测试顺序
 
-Control test order:
+控制测试顺序:
 
 ```ts
 defineConfig({
   test: {
     sequence: {
-      // Run tests in random order
+      // 以随机顺序运行测试
       shuffle: true,
       
-      // Seed for reproducible shuffle
+      // 用于可重现随机化的种子
       seed: 12345,
       
-      // Hook execution order
-      hooks: 'stack', // 'stack', 'list', 'parallel'
+      // 钩子执行顺序
+      hooks: 'stack', // 'stack'、'list'、'parallel'
       
-      // All tests concurrent by default
+      // 默认情况下所有测试并发
       concurrent: true,
     },
   },
 })
 ```
 
-## Shuffle Tests
+## 随机化测试
 
-Randomize to catch hidden dependencies:
+随机化以发现隐藏的依赖关系:
 
 ```ts
-// Via CLI
+// 通过 CLI
 vitest --sequence.shuffle
 
-// Per suite
+// 每个套件
 describe.shuffle('random order', () => {
   test('test 1', () => {})
   test('test 2', () => {})
@@ -176,9 +176,9 @@ describe.shuffle('random order', () => {
 })
 ```
 
-## Pool Options
+## 池选项
 
-### Threads (Default)
+### 线程(默认)
 
 ```ts
 defineConfig({
@@ -197,7 +197,7 @@ defineConfig({
 
 ### Forks
 
-Better isolation, slower:
+更好的隔离,更慢:
 
 ```ts
 defineConfig({
@@ -213,9 +213,9 @@ defineConfig({
 })
 ```
 
-### VM Threads
+### VM 线程
 
-Full VM isolation per file:
+每个文件完全 VM 隔离:
 
 ```ts
 defineConfig({
@@ -225,23 +225,23 @@ defineConfig({
 })
 ```
 
-## Bail on Failure
+## 失败时停止
 
-Stop after first failure:
+第一次失败后停止:
 
 ```bash
-vitest --bail 1    # Stop after 1 failure
-vitest --bail      # Stop on first failure (same as --bail 1)
+vitest --bail 1    # 1 次失败后停止
+vitest --bail      # 第一次失败时停止(与 --bail 1 相同)
 ```
 
-## Key Points
+## 关键点
 
-- Files run in parallel by default
-- Use `.concurrent` for parallel tests within file
-- Always use context's `expect` in concurrent tests
-- Sharding splits tests across CI machines
-- Use `--merge-reports` to combine sharded results
-- Shuffle tests to find hidden dependencies
+- 文件默认并行运行
+- 对文件内的并行测试使用 `.concurrent`
+- 始终在并发测试中使用上下文的 `expect`
+- 分片跨 CI 机器拆分测试
+- 使用 `--merge-reports` 合并分片结果
+- 随机化测试以发现隐藏的依赖关系
 
 <!-- 
 Source references:

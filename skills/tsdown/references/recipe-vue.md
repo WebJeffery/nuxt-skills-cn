@@ -1,28 +1,28 @@
-# Vue Support
+# Vue 支持
 
-Build Vue component libraries with tsdown.
+使用 tsdown 构建 Vue 组件库。
 
-## Overview
+## 概述
 
-tsdown provides first-class support for Vue libraries through integration with `unplugin-vue` and `rolldown-plugin-dts` for type generation.
+tsdown 通过集成 `unplugin-vue` 和 `rolldown-plugin-dts` 为 Vue 库提供一流的支持，用于类型生成。
 
-## Quick Start
+## 快速开始
 
-### Use Starter Template
+### 使用启动模板
 
 ```bash
 npx create-tsdown@latest -t vue
 ```
 
-## Basic Configuration
+## 基本配置
 
-### Install Dependencies
+### 安装依赖
 
 ```bash
 pnpm add -D unplugin-vue vue-tsc
 ```
 
-### Minimal Setup
+### 最小设置
 
 ```ts
 // tsdown.config.ts
@@ -40,31 +40,31 @@ export default defineConfig({
     Vue({ isProduction: true }),
   ],
   dts: {
-    vue: true,  // Enable Vue type generation
+    vue: true,  // 启用 Vue 类型生成
   },
 })
 ```
 
-## How It Works
+## 工作原理
 
 ### unplugin-vue
 
-Compiles `.vue` single-file components:
-- Transforms template to render functions
-- Handles scoped styles
-- Processes script setup
+编译 `.vue` 单文件组件：
+- 将模板转换为渲染函数
+- 处理作用域样式
+- 处理 script setup
 
 ### vue-tsc
 
-Generates TypeScript declarations:
-- Type-checks Vue components
-- Creates `.d.ts` files
-- Preserves component props types
-- Exports component types
+生成 TypeScript 声明：
+- 类型检查 Vue 组件
+- 创建 `.d.ts` 文件
+- 保留组件 props 类型
+- 导出组件类型
 
-## Component Example
+## 组件示例
 
-### Single File Component
+### 单文件组件
 
 ```vue
 <!-- src/Button.vue -->
@@ -103,7 +103,7 @@ defineEmits<{
 </style>
 ```
 
-### Export Components
+### 导出组件
 
 ```ts
 // src/index.ts
@@ -111,13 +111,13 @@ export { default as Button } from './Button.vue'
 export { default as Input } from './Input.vue'
 export { default as Modal } from './Modal.vue'
 
-// Re-export types
+// 重新导出类型
 export type { ButtonProps } from './Button.vue'
 ```
 
-## Common Patterns
+## 常见模式
 
-### Component Library
+### 组件库
 
 ```ts
 export default defineConfig({
@@ -142,7 +142,7 @@ export default defineConfig({
 })
 ```
 
-### Multiple Components
+### 多个组件
 
 ```ts
 export default defineConfig({
@@ -161,7 +161,7 @@ export default defineConfig({
 })
 ```
 
-### With Composition Utilities
+### 使用组合式工具
 
 ```ts
 // src/composables/useCounter.ts
@@ -187,7 +187,7 @@ export default defineConfig({
 })
 ```
 
-### TypeScript Configuration
+### TypeScript 配置
 
 ```json
 // tsconfig.json
@@ -208,7 +208,7 @@ export default defineConfig({
 }
 ```
 
-### Package.json Configuration
+### Package.json 配置
 
 ```json
 {
@@ -239,11 +239,11 @@ export default defineConfig({
 }
 ```
 
-## Advanced Patterns
+## 高级模式
 
-### With Vite Plugins
+### 使用 Vite 插件
 
-Some Vite Vue plugins may work:
+某些 Vite Vue 插件可能可用：
 
 ```ts
 import Vue from 'unplugin-vue/rolldown'
@@ -264,7 +264,7 @@ export default defineConfig({
 })
 ```
 
-### JSX Support
+### JSX 支持
 
 ```ts
 export default defineConfig({
@@ -291,7 +291,7 @@ export default defineConfig({
 })
 ```
 
-### Monorepo Vue Packages
+### Monorepo Vue 包
 
 ```ts
 export default defineConfig({
@@ -306,9 +306,9 @@ export default defineConfig({
 })
 ```
 
-## Plugin Options
+## 插件选项
 
-### unplugin-vue Options
+### unplugin-vue 选项
 
 ```ts
 Vue({
@@ -328,32 +328,32 @@ Vue({
 })
 ```
 
-## Tips
+## 提示
 
-1. **Always externalize Vue** - Don't bundle Vue itself
-2. **Enable vue: true in dts** - For proper type generation
-3. **Use platform: 'neutral'** - Maximum compatibility
-4. **Install vue-tsc** - Required for type generation
-5. **Set isProduction: true** - Optimize for production
-6. **Add peer dependency** - Vue as peer dependency
+1. **始终外部化 Vue** - 不要打包 Vue 本身
+2. **在 dts 中启用 vue: true** - 以获得正确的类型生成
+3. **使用 platform: 'neutral'** - 最大兼容性
+4. **安装 vue-tsc** - 类型生成必需
+5. **设置 isProduction: true** - 为生产优化
+6. **添加 peer dependency** - Vue 作为 peer dependency
 
-## Troubleshooting
+## 故障排除
 
-### Type Generation Fails
+### 类型生成失败
 
-Ensure vue-tsc is installed:
+确保安装了 vue-tsc：
 ```bash
 pnpm add -D vue-tsc
 ```
 
-Enable in config:
+在配置中启用：
 ```ts
 dts: { vue: true }
 ```
 
-### Component Types Missing
+### 组件类型缺失
 
-Check TypeScript config:
+检查 TypeScript 配置：
 ```json
 {
   "compilerOptions": {
@@ -363,25 +363,25 @@ Check TypeScript config:
 }
 ```
 
-### Vue Not Externalized
+### Vue 未外部化
 
-Add to deps.neverBundle:
+添加到 deps.neverBundle：
 ```ts
 deps: {
   neverBundle: ['vue'],
 }
 ```
 
-### SFC Compilation Errors
+### SFC 编译错误
 
-Check unplugin-vue version:
+检查 unplugin-vue 版本：
 ```bash
 pnpm add -D unplugin-vue@latest
 ```
 
-## Related
+## 相关内容
 
-- [Plugins](advanced-plugins.md) - Plugin system
-- [Dependencies](option-dependencies.md) - External packages
-- [DTS](option-dts.md) - Type declarations
-- [React Recipe](recipe-react.md) - React component libraries
+- [插件](advanced-plugins.md) - 插件系统
+- [依赖](option-dependencies.md) - 外部包
+- [DTS](option-dts.md) - 类型声明
+- [React 配方](recipe-react.md) - React 组件库

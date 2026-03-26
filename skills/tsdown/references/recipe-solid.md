@@ -1,17 +1,17 @@
-# Solid Support
+# Solid 支持
 
-Build Solid component libraries with `tsdown` using `rolldown-plugin-solid` or `unplugin-solid`.
+使用 `tsdown` 和 `rolldown-plugin-solid` 或 `unplugin-solid` 构建 Solid 组件库。
 
-## Quick Start
+## 快速开始
 
 ```bash
 npx create-tsdown@latest -t solid
 ```
 
-## Configuration
+## 配置
 
 ```ts
-import solid from 'rolldown-plugin-solid' // or 'unplugin-solid/rolldown'
+import solid from 'rolldown-plugin-solid' // 或 'unplugin-solid/rolldown'
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({
@@ -22,25 +22,25 @@ export default defineConfig({
 })
 ```
 
-## Dependencies
+## 依赖
 
-Install one of:
+安装以下之一：
 
 ```bash
-# Option 1: rolldown-plugin-solid
+# 选项 1：rolldown-plugin-solid
 npm install -D rolldown-plugin-solid
 
-# Option 2: unplugin-solid
+# 选项 2：unplugin-solid
 npm install -D unplugin-solid
 ```
 
-## Key Points
+## 关键点
 
-- Use `platform: 'neutral'` for framework-agnostic output
-- `dts: true` generates TypeScript declarations
-- The Solid plugin handles JSX compilation for Solid's reactive system
+- 使用 `platform: 'neutral'` 获得与框架无关的输出
+- `dts: true` 生成 TypeScript 声明
+- Solid 插件处理 Solid 响应式系统的 JSX 编译
 
-## Related
+## 相关内容
 
-- [Plugins](advanced-plugins.md) - Plugin configuration
-- [Platform](option-platform.md) - Platform options
+- [插件](advanced-plugins.md) - 插件配置
+- [平台](option-platform.md) - 平台选项

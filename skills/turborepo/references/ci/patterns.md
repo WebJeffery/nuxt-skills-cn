@@ -1,12 +1,12 @@
-# CI Optimization Patterns
+# CI 优化模式
 
-Strategies for efficient CI/CD with Turborepo.
+使用 Turborepo 进行高效 CI/CD 的策略。
 
-## PR vs Main Branch Builds
+## PR 与主分支构建
 
-### PR Builds: Only Affected
+### PR 构建：仅受影响
 
-Test only what changed in the PR:
+仅测试 PR 中更改的内容：
 
 ```yaml
 - name: Test (PR)
@@ -14,9 +14,9 @@ Test only what changed in the PR:
   run: turbo run build test --affected
 ```
 
-### Main Branch: Full Build
+### 主分支：完整构建
 
-Ensure complete validation on merge:
+确保合并时的完整验证：
 
 ```yaml
 - name: Test (Main)
@@ -24,26 +24,26 @@ Ensure complete validation on merge:
   run: turbo run build test
 ```
 
-## Custom Git Ranges with --filter
+## 使用 --filter 的自定义 Git 范围
 
-For advanced scenarios, use `--filter` with git refs:
+对于高级场景，将 `--filter` 与 git 引用一起使用：
 
 ```bash
-# Changes since specific commit
+# 自特定提交以来的更改
 turbo run test --filter="...[abc123]"
 
-# Changes between refs
+# 引用之间的更改
 turbo run test --filter="...[main...HEAD]"
 
-# Changes in last 3 commits
+# 最后 3 次提交中的更改
 turbo run test --filter="...[HEAD~3]"
 ```
 
-## Caching Strategies
+## 缓存策略
 
-### Remote Cache (Recommended)
+### 远程缓存（推荐）
 
-Best performance - shared across all CI runs and developers:
+最佳性能 - 在所有 CI 运行和开发者之间共享：
 
 ```yaml
 env:
@@ -51,9 +51,9 @@ env:
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 ```
 
-### actions/cache Fallback
+### actions/cache 后备方案
 
-When remote cache isn't available:
+当远程缓存不可用时：
 
 ```yaml
 - uses: actions/cache@v4
@@ -65,15 +65,15 @@ When remote cache isn't available:
       turbo-${{ runner.os }}-
 ```
 
-Limitations:
+限制：
 
-- Cache is branch-scoped
-- PRs restore from base branch cache
-- Less efficient than remote cache
+- 缓存是分支范围的
+- PR 从基础分支缓存恢复
+- 效率低于远程缓存
 
-## Matrix Builds
+## 矩阵构建
 
-Test across Node versions:
+跨 Node 版本测试：
 
 ```yaml
 strategy:
@@ -88,9 +88,9 @@ steps:
   - run: turbo run test
 ```
 
-## Parallelizing Across Jobs
+## 跨作业并行化
 
-Split tasks into separate jobs:
+将任务拆分为单独的作业：
 
 ```yaml
 jobs:
@@ -111,13 +111,13 @@ jobs:
       - run: turbo run build
 ```
 
-### Cache Considerations
+### 缓存注意事项
 
-When parallelizing:
+并行化时：
 
-- Each job has separate cache writes
-- Remote cache handles this automatically
-- With actions/cache, use unique keys per job to avoid conflicts
+- 每个作业都有单独的缓存写入
+- 远程缓存自动处理此问题
+- 使用 actions/cache 时，为每个作业使用唯一键以避免冲突
 
 ```yaml
 - uses: actions/cache@v4
@@ -126,9 +126,9 @@ When parallelizing:
     key: turbo-${{ runner.os }}-${{ github.job }}-${{ github.sha }}
 ```
 
-## Conditional Tasks
+## 条件任务
 
-Skip expensive tasks on draft PRs:
+在草稿 PR 上跳过昂贵的任务：
 
 ```yaml
 - name: E2E Tests
@@ -136,7 +136,7 @@ Skip expensive tasks on draft PRs:
   run: turbo run test:e2e --affected
 ```
 
-Or require label for full test:
+或要求标签进行完整测试：
 
 ```yaml
 - name: Full Test Suite

@@ -1,13 +1,13 @@
 ---
 name: line-highlighting
-description: Highlight specific lines in code blocks with static or click-based dynamic highlighting
+description: 使用静态或基于点击的动态高亮来高亮代码块中的特定行
 ---
 
-# Line Highlighting
+# 行高亮
 
-Highlight specific lines in code blocks.
+高亮代码块中的特定行。
 
-## Static Highlighting
+## 静态高亮
 
 ````md
 ```ts {2,3}
@@ -20,9 +20,9 @@ function add(
 ```
 ````
 
-## Dynamic (Click-based)
+## 动态高亮（基于点击）
 
-Use `|` to separate stages:
+使用 `|` 分隔阶段：
 
 ````md
 ```ts {2-3|5|all}
@@ -35,16 +35,17 @@ function add(
 ```
 ````
 
-Click progression: lines 2-3 → line 5 → all lines
+点击进度：第 2-3 行 → 第 5 行 → 所有行
 
-## Special Values
+## 特殊值
 
-- `hide` - Hide the code block
-- `none` - Show code without highlighting
-- `all` - Highlight all lines
+- `hide` - 隐藏代码块
+- `none` - 显示代码但不高亮
+- `all` - 高亮所有行
 
 ````md
 ```ts {hide|none|all}
-// Hidden → No highlight → All highlighted
+// 隐藏 → 无高亮 → 全部高亮
 ```
+````
 ````

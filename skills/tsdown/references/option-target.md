@@ -1,16 +1,16 @@
-# Target Environment
+# 目标环境
 
-Configure JavaScript syntax transformations for target environments.
+为目标环境配置 JavaScript 语法转换。
 
-## Overview
+## 概述
 
-The `target` option controls which JavaScript features are downleveled (transformed to older syntax) for compatibility.
+`target` 选项控制哪些 JavaScript 特性被降级（转换为旧语法）以实现兼容性。
 
-**Important:** Only affects syntax transformations, not runtime polyfills.
+**重要：** 仅影响语法转换，不影响运行时 polyfills。
 
-## Default Behavior
+## 默认行为
 
-tsdown auto-reads from `package.json`:
+tsdown 从 `package.json` 自动读取：
 
 ```json
 // package.json
@@ -21,13 +21,13 @@ tsdown auto-reads from `package.json`:
 }
 ```
 
-Automatically sets `target` to `node18.0.0`.
+自动将 `target` 设置为 `node18.0.0`。
 
-If no `engines.node` field exists, behaves as if `target: false` (no transformations).
+如果不存在 `engines.node` 字段，则行为类似于 `target: false`（无转换）。
 
-## Disabling Transformations
+## 禁用转换
 
-Set to `false` to preserve modern syntax:
+设置为 `false` 以保留现代语法：
 
 ```ts
 export default defineConfig({
@@ -35,32 +35,32 @@ export default defineConfig({
 })
 ```
 
-**Result:**
-- No JavaScript downleveling
-- Modern features preserved (optional chaining `?.`, nullish coalescing `??`, etc.)
+**结果：**
+- 无 JavaScript 降级
+- 保留现代特性（可选链 `?.`、空值合并 `??` 等）
 
-**Use when:**
-- Targeting modern environments
-- Handling transformations elsewhere
-- Building libraries for further processing
+**在以下情况下使用：**
+- 针对现代环境
+- 在其他地方处理转换
+- 构建库以供进一步处理
 
-## Setting Target
+## 设置目标
 
 ### CLI
 
 ```bash
-# Single target
+# 单个目标
 tsdown --target es2020
 tsdown --target node20
 
-# Multiple targets
+# 多个目标
 tsdown --target chrome100 --target node20.18
 
-# Disable
+# 禁用
 tsdown --no-target
 ```
 
-### Config File
+### 配置文件
 
 ```ts
 export default defineConfig({
@@ -69,7 +69,7 @@ export default defineConfig({
 })
 ```
 
-### Multiple Targets
+### 多个目标
 
 ```ts
 export default defineConfig({
@@ -78,23 +78,23 @@ export default defineConfig({
 })
 ```
 
-## Supported Targets
+## 支持的目标
 
-### ECMAScript Versions
+### ECMAScript 版本
 
-- `es2015`, `es2016`, `es2017`, `es2018`, `es2019`, `es2020`, `es2021`, `es2022`, `es2023`, `esnext`
+- `es2015`、`es2016`、`es2017`、`es2018`、`es2019`、`es2020`、`es2021`、`es2022`、`es2023`、`esnext`
 
-### Browser Versions
+### 浏览器版本
 
-- `chrome100`, `safari18`, `firefox110`, `edge100`, etc.
+- `chrome100`、`safari18`、`firefox110`、`edge100` 等
 
-### Node.js Versions
+### Node.js 版本
 
-- `node16`, `node18`, `node20`, `node20.18`, etc.
+- `node16`、`node18`、`node20`、`node20.18` 等
 
-## Examples
+## 示例
 
-### Modern Browsers
+### 现代浏览器
 
 ```ts
 export default defineConfig({
@@ -104,7 +104,7 @@ export default defineConfig({
 })
 ```
 
-### Node.js Library
+### Node.js 库
 
 ```ts
 export default defineConfig({
@@ -114,17 +114,17 @@ export default defineConfig({
 })
 ```
 
-### Legacy Support
+### 传统支持
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   format: ['esm'],
-  target: 'es2015',  // Maximum compatibility
+  target: 'es2015',  // 最大兼容性
 })
 ```
 
-### Per-Format Targets
+### 每种格式目标
 
 ```ts
 export default defineConfig({
@@ -140,11 +140,11 @@ export default defineConfig({
 })
 ```
 
-## Decorators
+## 装饰器
 
-### Legacy Decorators (Stage 2)
+### 传统装饰器（Stage 2）
 
-Enable in `tsconfig.json`:
+在 `tsconfig.json` 中启用：
 
 ```json
 {
@@ -154,35 +154,35 @@ Enable in `tsconfig.json`:
 }
 ```
 
-### Stage 3 Decorators
+### Stage 3 装饰器
 
-**Not currently supported** by tsdown/Rolldown/Oxc.
+tsdown/Rolldown/Oxc 目前**不支持**。
 
-See [oxc issue #9170](https://github.com/oxc-project/oxc/issues/9170).
+请参阅 [oxc issue #9170](https://github.com/oxc-project/oxc/issues/9170)。
 
-## Common Patterns
+## 常见模式
 
-### Universal Library
+### 通用库
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   format: ['esm', 'cjs'],
-  target: 'es2020',  // Wide compatibility
+  target: 'es2020',  // 广泛兼容性
 })
 ```
 
-### Modern-Only Library
+### 仅现代库
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   format: ['esm'],
-  target: false,  // No transformations
+  target: false,  // 无转换
 })
 ```
 
-### Browser Component
+### 浏览器组件
 
 ```ts
 export default defineConfig({
@@ -193,30 +193,30 @@ export default defineConfig({
 })
 ```
 
-## CSS Targeting
+## CSS 目标
 
-When `@tsdown/css` is installed and a browser target is set, CSS syntax is also lowered automatically:
+当安装了 `@tsdown/css` 并设置了浏览器目标时，CSS 语法也会自动降级：
 
 ```ts
 export default defineConfig({
-  target: 'chrome108',  // CSS nesting will be flattened
+  target: 'chrome108',  // CSS 嵌套将被展平
 })
 ```
 
-See [CSS](option-css.md) for full CSS configuration options.
+完整的 CSS 配置选项请参阅 [CSS](option-css.md)。
 
-## Tips
+## 提示
 
-1. **Let tsdown auto-detect** from package.json when possible
-2. **Use `false`** for modern-only builds
-3. **Specify multiple targets** for broader compatibility
-4. **Use legacy decorators** with `experimentalDecorators`
-5. **Install `@tsdown/css`** for CSS support and syntax lowering
-6. **Test output** in target environments
+1. **让 tsdown 从 package.json 自动检测**（如果可能）
+2. **使用 `false`**用于仅现代构建
+3. **指定多个目标**以获得更广泛的兼容性
+4. **使用传统装饰器**配合 `experimentalDecorators`
+5. **安装 `@tsdown/css`**用于 CSS 支持和语法降级
+6. **在目标环境中测试输出**
 
-## Related Options
+## 相关选项
 
-- [Platform](option-platform.md) - Runtime environment
-- [Output Format](option-output-format.md) - Module formats
-- [Minification](option-minification.md) - Code optimization
-- [CSS](option-css.md) - CSS handling and preprocessors
+- [平台](option-platform.md) - 运行时环境
+- [输出格式](option-output-format.md) - 模块格式
+- [压缩](option-minification.md) - 代码优化
+- [CSS](option-css.md) - CSS 处理和预处理器

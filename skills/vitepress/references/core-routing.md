@@ -1,13 +1,13 @@
 ---
 name: vitepress-routing
-description: File-based routing, source directory structure, clean URLs, and route rewrites
+description: 基于文件的路由、源目录结构、干净 URL 和路由重写
 ---
 
-# Routing
+# 路由
 
-VitePress uses file-based routing where markdown files map directly to HTML pages.
+VitePress 使用基于文件的路由,其中 markdown 文件直接映射到 HTML 页面。
 
-## File to URL Mapping
+## 文件到 URL 映射
 
 ```
 .
@@ -18,60 +18,60 @@ VitePress uses file-based routing where markdown files map directly to HTML page
 │  └─ getting-started.md → /guide/getting-started.html
 ```
 
-## Project Structure
+## 项目结构
 
 ```
 .
-├─ docs                    # Project root
-│  ├─ .vitepress          # VitePress directory
-│  │  ├─ config.ts        # Configuration
-│  │  ├─ theme/           # Custom theme
-│  │  ├─ cache/           # Dev server cache (gitignore)
-│  │  └─ dist/            # Build output (gitignore)
-│  ├─ public/             # Static assets (copied as-is)
-│  ├─ index.md            # Home page
+├─ docs                    # 项目根目录
+│  ├─ .vitepress          # VitePress 目录
+│  │  ├─ config.ts        # 配置
+│  │  ├─ theme/           # 自定义主题
+│  │  ├─ cache/           # 开发服务器缓存(gitignore)
+│  │  └─ dist/            # 构建输出(gitignore)
+│  ├─ public/             # 静态资源(按原样复制)
+│  ├─ index.md            # 首页
 │  └─ guide/
 │     └─ intro.md
 ```
 
-## Source Directory
+## 源目录
 
-Separate source files from project root:
+将源文件与项目根目录分离:
 
 ```ts
 // .vitepress/config.ts
 export default {
-  srcDir: './src'  // Markdown files live in ./src/
+  srcDir: './src'  // Markdown 文件位于 ./src/
 }
 ```
 
-With `srcDir: 'src'`:
+使用 `srcDir: 'src'`:
 
 ```
 .
-├─ .vitepress/           # Config stays at project root
-└─ src/                  # Source directory
+├─ .vitepress/           # 配置保留在项目根目录
+└─ src/                  # 源目录
    ├─ index.md          →  /
    └─ guide/intro.md    →  /guide/intro.html
 ```
 
-## Linking Between Pages
+## 页面间链接
 
-Use relative or absolute paths. Omit file extensions:
+使用相对或绝对路径。省略文件扩展名:
 
 ```md
-<!-- Recommended -->
+<!-- 推荐 -->
 [Getting Started](./getting-started)
 [Guide](/guide/)
 
-<!-- Works but not recommended -->
+<!-- 可行但不推荐 -->
 [Getting Started](./getting-started.md)
 [Getting Started](./getting-started.html)
 ```
 
-## Clean URLs
+## 干净 URL
 
-Remove `.html` extension from URLs (requires server support):
+从 URL 中删除 `.html` 扩展名(需要服务器支持):
 
 ```ts
 export default {
@@ -79,33 +79,33 @@ export default {
 }
 ```
 
-**Server requirements:**
-- Netlify, GitHub Pages: Supported by default
-- Vercel: Enable `cleanUrls` in `vercel.json`
-- Nginx: Configure `try_files $uri $uri.html $uri/ =404`
+**服务器要求:**
+- Netlify、GitHub Pages: 默认支持
+- Vercel: 在 `vercel.json` 中启用 `cleanUrls`
+- Nginx: 配置 `try_files $uri $uri.html $uri/ =404`
 
-## Route Rewrites
+## 路由重写
 
-Customize the mapping between source and output paths:
+自定义源路径和输出路径之间的映射:
 
 ```ts
 export default {
   rewrites: {
-    // Static mapping
+    // 静态映射
     'packages/pkg-a/src/index.md': 'pkg-a/index.md',
     'packages/pkg-a/src/foo.md': 'pkg-a/foo.md',
     
-    // Dynamic parameters
+    // 动态参数
     'packages/:pkg/src/:slug*': ':pkg/:slug*'
   }
 }
 ```
 
-This maps `packages/pkg-a/src/intro.md` → `/pkg-a/intro.html`.
+这将映射 `packages/pkg-a/src/intro.md` → `/pkg-a/intro.html`。
 
-**Important:** Relative links in rewritten files should be based on the rewritten path, not the source path.
+**重要:** 重写文件中的相对链接应基于重写后的路径,而不是源路径。
 
-Rewrites can also be a function:
+重写也可以是函数:
 
 ```ts
 export default {
@@ -115,9 +115,9 @@ export default {
 }
 ```
 
-## Public Directory
+## Public 目录
 
-Files in `public/` are copied to output root as-is:
+`public/` 中的文件按原样复制到输出根目录:
 
 ```
 docs/public/
@@ -126,15 +126,15 @@ docs/public/
   └─ images/logo.png →  /images/logo.png
 ```
 
-Reference with absolute paths:
+使用绝对路径引用:
 
 ```md
 ![Logo](/images/logo.png)
 ```
 
-## Base URL
+## 基础 URL
 
-For sub-path deployment (e.g., GitHub Pages):
+对于子路径部署(例如,GitHub Pages):
 
 ```ts
 export default {
@@ -142,7 +142,7 @@ export default {
 }
 ```
 
-All absolute paths are automatically prefixed with base. For dynamic paths in components, use `withBase`:
+所有绝对路径都自动添加基础前缀。对于组件中的动态路径,使用 `withBase`:
 
 ```vue
 <script setup>
@@ -154,13 +154,13 @@ import { withBase } from 'vitepress'
 </template>
 ```
 
-## Key Points
+## 关键点
 
-- `index.md` files map to directory root (`/guide/` instead of `/guide/index`)
-- Use paths without extensions in links for flexibility
-- `srcDir` separates source from config
-- `cleanUrls` removes `.html` but requires server support
-- `rewrites` enables complex source structures with clean output URLs
+- `index.md` 文件映射到目录根目录(`/guide/` 而不是 `/guide/index`)
+- 在链接中使用不带扩展名的路径以获得灵活性
+- `srcDir` 将源与配置分离
+- `cleanUrls` 删除 `.html` 但需要服务器支持
+- `rewrites` 启用具有干净输出 URL 的复杂源结构
 
 <!--
 Source references:

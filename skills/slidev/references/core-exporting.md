@@ -1,121 +1,121 @@
 ---
 name: exporting
-description: Export presentations to PDF, PPTX, PNG, or Markdown
+description: 导出幻灯片为 PDF、PPTX、PNG 或 Markdown
 ---
 
-# Exporting Slides
+# 导出幻灯片
 
-Export presentations to PDF, PPTX, PNG, or Markdown.
+导出演示文稿为 PDF、PPTX、PNG 或 Markdown。
 
-## Browser Exporter
+## 浏览器导出器
 
-Access at `http://localhost:3030/export`:
-- Select format and options
-- Preview and download
+访问 `http://localhost:3030/export`：
+- 选择格式和选项
+- 预览和下载
 
-## CLI Export
+## CLI 导出
 
-Requires playwright:
+需要 playwright：
 ```bash
 pnpm add -D playwright-chromium
 ```
 
-### PDF Export
+### PDF 导出
 
 ```bash
 slidev export
 slidev export --output my-slides.pdf
 ```
 
-### PowerPoint Export
+### PowerPoint 导出
 
 ```bash
 slidev export --format pptx
 ```
 
-### PNG Export
+### PNG 导出
 
 ```bash
 slidev export --format png
 slidev export --format png --range 1-5
 ```
 
-### Markdown Export
+### Markdown 导出
 
 ```bash
 slidev export --format md
 ```
 
-## Export Options
+## 导出选项
 
-### With Click Steps
+### 包含点击步骤
 
-Export each click as separate page:
+将每次点击导出为单独页面：
 ```bash
 slidev export --with-clicks
 ```
 
-### Dark Mode
+### 暗色模式
 
 ```bash
 slidev export --dark
 ```
 
-### Slide Range
+### 幻灯片范围
 
 ```bash
 slidev export --range 1,4-7,10
 ```
 
-### Table of Contents
+### 目录
 
-PDF with clickable outline:
+带可点击大纲的 PDF：
 ```bash
 slidev export --with-toc
 ```
 
-### Timeout
+### 超时
 
-For slow-rendering slides:
+针对渲染缓慢的幻灯片：
 ```bash
 slidev export --timeout 60000
 ```
 
-### Wait
+### 等待
 
-Wait before capture:
+捕获前等待：
 ```bash
 slidev export --wait 2000
 ```
 
-### Wait Until
+### 等待条件
 
-Wait condition:
+等待条件：
 ```bash
-slidev export --wait-until networkidle   # Default
+slidev export --wait-until networkidle   # 默认
 slidev export --wait-until domcontentloaded
 slidev export --wait-until load
 slidev export --wait-until none
 ```
 
-### Transparent Background
+### 透明背景
 
 ```bash
 slidev export --omit-background
 ```
 
-### Custom Browser
+### 自定义浏览器
 
 ```bash
 slidev export --executable-path /path/to/chrome
 ```
 
-## Headmatter Options
+## Headmatter 选项
 
 ```yaml
 ---
 exportFilename: my-presentation
-download: true              # Add download button in build
+download: true              # 在构建中添加下载按钮
 export:
   format: pdf
   timeout: 30000
@@ -123,26 +123,26 @@ export:
 ---
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Missing Content
+### 内容缺失
 
-Increase wait time:
+增加等待时间：
 ```bash
 slidev export --wait 3000 --timeout 60000
 ```
 
-### Wrong Global Layer State
+### 全局图层状态错误
 
-Use `--per-slide` or use `slide-top.vue` instead of `global-top.vue`.
+使用 `--per-slide` 或使用 `slide-top.vue` 代替 `global-top.vue`。
 
-### Broken Emojis
+### 表情符号显示异常
 
-Use system fonts or install emoji font on server.
+使用系统字体或在服务器上安装表情符号字体。
 
-### CI/CD Export
+### CI/CD 导出
 
-Install playwright browsers:
+安装 playwright 浏览器：
 ```bash
 npx playwright install chromium
 ```

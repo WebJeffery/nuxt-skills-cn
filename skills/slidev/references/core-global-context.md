@@ -1,73 +1,73 @@
 ---
 name: global-context
-description: Access navigation, slide info, and configuration programmatically
+description: 以编程方式访问导航、幻灯片信息和配置
 ---
 
-# Global Context & API
+# 全局上下文与 API
 
-Access navigation, slide info, and configuration programmatically.
+以编程方式访问导航、幻灯片信息和配置。
 
-## Template Variables
+## 模板变量
 
-Available in slides and components:
+在幻灯片和组件中可用：
 
 ```md
-Page {{ $page }} of {{ $nav.total }}
-Title: {{ $slidev.configs.title }}
+第 {{ $page }} 页，共 {{ $nav.total }} 页
+标题：{{ $slidev.configs.title }}
 ```
 
 ### $nav
 
-Navigation state and controls:
+导航状态和控制：
 
-| Property | Type | Description |
+| 属性 | 类型 | 描述 |
 |----------|------|-------------|
-| `$nav.currentPage` | number | Current page (1-indexed) |
-| `$nav.currentLayout` | string | Current layout name |
-| `$nav.total` | number | Total slides |
-| `$nav.isPresenter` | boolean | In presenter mode |
-| `$nav.next()` | function | Next click/slide |
-| `$nav.prev()` | function | Previous click/slide |
-| `$nav.nextSlide()` | function | Next slide |
-| `$nav.prevSlide()` | function | Previous slide |
-| `$nav.go(n)` | function | Go to slide n |
+| `$nav.currentPage` | number | 当前页（从 1 开始） |
+| `$nav.currentLayout` | string | 当前布局名称 |
+| `$nav.total` | number | 总幻灯片数 |
+| `$nav.isPresenter` | boolean | 是否在演讲者模式 |
+| `$nav.next()` | function | 下一次点击/幻灯片 |
+| `$nav.prev()` | function | 上一次点击/幻灯片 |
+| `$nav.nextSlide()` | function | 下一张幻灯片 |
+| `$nav.prevSlide()` | function | 上一张幻灯片 |
+| `$nav.go(n)` | function | 跳转到第 n 张幻灯片 |
 
 ### $slidev
 
-Global context:
+全局上下文：
 
-| Property | Description |
+| 属性 | 描述 |
 |----------|-------------|
-| `$slidev.configs` | Project config (title, etc.) |
-| `$slidev.themeConfigs` | Theme config |
+| `$slidev.configs` | 项目配置（标题等） |
+| `$slidev.themeConfigs` | 主题配置 |
 
 ### $frontmatter
 
-Current slide frontmatter:
+当前幻灯片的 frontmatter：
 
 ```md
-Layout: {{ $frontmatter.layout }}
+布局：{{ $frontmatter.layout }}
 ```
 
 ### $clicks
 
-Current click count on slide.
+当前幻灯片上的点击次数。
 
 ### $page
 
-Current page number (1-indexed).
+当前页码（从 1 开始）。
 
 ### $renderContext
 
-Current render context:
-- `'slide'` - Normal slide view
-- `'overview'` - Overview mode
-- `'presenter'` - Presenter mode
-- `'previewNext'` - Next slide preview
+当前渲染上下文：
+- `'slide'` - 正常幻灯片视图
+- `'overview'` - 概览模式
+- `'presenter'` - 演讲者模式
+- `'previewNext'` - 下一张幻灯片预览
 
 ## Composables
 
-Import from `@slidev/client`:
+从 `@slidev/client` 导入：
 
 ```ts
 import {
@@ -99,7 +99,7 @@ const { isDark, toggle } = useDarkMode()
 
 ```ts
 const isActive = useIsSlideActive()
-// Returns ref<boolean>
+// 返回 ref<boolean>
 ```
 
 ### useSlideContext
@@ -108,47 +108,47 @@ const isActive = useIsSlideActive()
 const { $page, $clicks, $frontmatter } = useSlideContext()
 ```
 
-## Lifecycle Hooks
+## 生命周期钩子
 
 ```ts
 import { onSlideEnter, onSlideLeave } from '@slidev/client'
 
 onSlideEnter(() => {
-  // Slide became active
+  // 幻灯片变为活动状态
   startAnimation()
 })
 
 onSlideLeave(() => {
-  // Slide became inactive
+  // 幻灯片变为非活动状态
   cleanup()
 })
 ```
 
-**Important:** Don't use `onMounted`/`onUnmounted` in slides - component instance persists. Use `onSlideEnter`/`onSlideLeave` instead.
+**重要**：不要在幻灯片中使用 `onMounted`/`onUnmounted` - 组件实例会持久存在。请改用 `onSlideEnter`/`onSlideLeave`。
 
-## Conditional Rendering Examples
+## 条件渲染示例
 
 ```html
-<!-- Show only in presenter mode -->
+<!-- 仅在演讲者模式显示 -->
 <div v-if="$nav.isPresenter">
-  Presenter notes
+  演讲者备注
 </div>
 
-<!-- Hide on cover slide -->
+<!-- 在封面幻灯片上隐藏 -->
 <footer v-if="$nav.currentLayout !== 'cover'">
-  Page {{ $nav.currentPage }}
+  第 {{ $nav.currentPage }} 页
 </footer>
 
-<!-- Different content by context -->
+<!-- 根据上下文显示不同内容 -->
 <template v-if="$renderContext === 'slide'">
-  Normal view
+  正常视图
 </template>
 <template v-else-if="$renderContext === 'presenter'">
-  Presenter view
+  演讲者视图
 </template>
 ```
 
-## Type Imports
+## 类型导入
 
 ```ts
 import type { TocItem } from '@slidev/types'

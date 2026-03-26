@@ -1,43 +1,43 @@
 ---
 name: global-layers
-description: Create components that persist across slides like footers and backgrounds
+description: 创建在幻灯片之间持久化的组件，如页脚和背景
 ---
 
-# Global Layers
+# 全局图层
 
-Create components that persist across slides.
+创建在幻灯片之间持久化的组件。
 
-## Layer Files
+## 图层文件
 
-Create in project root:
-- `global-top.vue` - Above all slides (single instance)
-- `global-bottom.vue` - Below all slides (single instance)
-- `slide-top.vue` - Above each slide (per-slide instance)
-- `slide-bottom.vue` - Below each slide (per-slide instance)
-- `custom-nav-controls.vue` - Custom navigation controls
+在项目根目录中创建：
+- `global-top.vue` - 在所有幻灯片之上（单个实例）
+- `global-bottom.vue` - 在所有幻灯片之下（单个实例）
+- `slide-top.vue` - 在每张幻灯片之上（每张幻灯片实例）
+- `slide-bottom.vue` - 在每张幻灯片之下（每张幻灯片实例）
+- `custom-nav-controls.vue` - 自定义导航控件
 
-## Z-Order (top to bottom)
+## Z 顺序（从上到下）
 
 1. NavControls / custom-nav-controls.vue
 2. global-top.vue
 3. slide-top.vue
-4. Slide Content
+4. 幻灯片内容
 5. slide-bottom.vue
 6. global-bottom.vue
 
-## Example: Footer
+## 示例：页脚
 
 ```html
 <!-- global-bottom.vue -->
 <template>
-  <footer class="absolute bottom-0 left-0 right-0 p-2">Your Name</footer>
+  <footer class="absolute bottom-0 left-0 right-0 p-2">您的姓名</footer>
 </template>
 ```
 
-## Conditional Rendering
+## 条件渲染
 
 ```html
-<!-- Hide on cover layout -->
+<!-- 在封面布局上隐藏 -->
 <template>
   <footer v-if="$nav.currentLayout !== 'cover'" class="absolute bottom-0 p-2">
     {{ $nav.currentPage }} / {{ $nav.total }}
@@ -45,6 +45,6 @@ Create in project root:
 </template>
 ```
 
-## Export Note
+## 导出说明
 
-Use `--per-slide` export option when global layers depend on navigation state.
+当全局图层依赖于导航状态时，使用 `--per-slide` 导出选项。

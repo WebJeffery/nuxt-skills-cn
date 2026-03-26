@@ -1,16 +1,16 @@
-# Customizing Rolldown Options
+# 自定义 Rolldown 选项
 
-Pass options directly to the underlying Rolldown bundler.
+将选项直接传递给底层的 Rolldown 打包器。
 
-## Overview
+## 概述
 
-tsdown uses [Rolldown](https://rolldown.rs) as its core bundling engine. You can override Rolldown's input and output options directly for fine-grained control.
+tsdown 使用 [Rolldown](https://rolldown.rs) 作为其核心打包引擎。您可以直接覆盖 Rolldown 的输入和输出选项以进行细粒度控制。
 
-**Warning:** You should be familiar with Rolldown's behavior before overriding options. Refer to the [Rolldown Config Options](https://rolldown.rs/options/input) documentation.
+**警告：** 在覆盖选项之前，您应该熟悉 Rolldown 的行为。请参阅 [Rolldown 配置选项](https://rolldown.rs/options/input) 文档。
 
-## Input Options
+## 输入选项
 
-### Using an Object
+### 使用对象
 
 ```ts
 export default defineConfig({
@@ -20,9 +20,9 @@ export default defineConfig({
 })
 ```
 
-### Using a Function
+### 使用函数
 
-Dynamically modify options based on the output format:
+根据输出格式动态修改选项：
 
 ```ts
 export default defineConfig({
@@ -33,9 +33,9 @@ export default defineConfig({
 })
 ```
 
-## Output Options
+## 输出选项
 
-### Using an Object
+### 使用对象
 
 ```ts
 export default defineConfig({
@@ -45,7 +45,7 @@ export default defineConfig({
 })
 ```
 
-### Using a Function
+### 使用函数
 
 ```ts
 export default defineConfig({
@@ -58,9 +58,9 @@ export default defineConfig({
 })
 ```
 
-## Common Use Cases
+## 常见用例
 
-### Preserve Legal Comments
+### 保留法律注释
 
 ```ts
 export default defineConfig({
@@ -71,7 +71,7 @@ export default defineConfig({
 })
 ```
 
-### Custom Working Directory
+### 自定义工作目录
 
 ```ts
 export default defineConfig({
@@ -82,7 +82,7 @@ export default defineConfig({
 })
 ```
 
-### Format-Specific Options
+### 特定格式选项
 
 ```ts
 export default defineConfig({
@@ -97,21 +97,21 @@ export default defineConfig({
 })
 ```
 
-## When to Use
+## 何时使用
 
-- When tsdown doesn't expose a specific Rolldown option
-- For format-specific Rolldown customizations
-- For advanced bundling scenarios
+- 当 tsdown 未公开特定的 Rolldown 选项时
+- 用于特定格式的 Rolldown 自定义
+- 用于高级打包场景
 
-## Tips
+## 提示
 
-1. **Read Rolldown docs** before overriding options
-2. **Use functions** for format-specific customization
-3. **Test thoroughly** when overriding defaults
-4. **Prefer tsdown options** when available (e.g., use `minify` instead of setting it via `outputOptions`)
+1. **在覆盖选项之前阅读 Rolldown 文档**
+2. **使用函数**进行特定格式的自定义
+3. **覆盖默认值时彻底测试**
+4. **优先使用 tsdown 选项**（例如，使用 `minify` 而不是通过 `outputOptions` 设置）
 
-## Related
+## 相关
 
-- [Plugins](advanced-plugins.md) - Plugin system
-- [Hooks](advanced-hooks.md) - Lifecycle hooks
-- [Config File](option-config-file.md) - Configuration options
+- [插件](advanced-plugins.md) - 插件系统
+- [Hooks](advanced-hooks.md) - 生命周期钩子
+- [配置文件](option-config-file.md) - 配置选项

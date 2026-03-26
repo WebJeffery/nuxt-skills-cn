@@ -1,89 +1,89 @@
 ---
 name: expect-api
-description: Assertions with matchers, asymmetric matchers, and custom matchers
+description: 断言,包括 matchers、非对称 matchers 和自定义 matchers
 ---
 
 # Expect API
 
-Vitest uses Chai assertions with Jest-compatible API.
+Vitest 使用 Chai 断言和 Jest 兼容的 API。
 
-## Basic Assertions
+## 基本断言
 
 ```ts
 import { expect, test } from 'vitest'
 
 test('assertions', () => {
-  // Equality
-  expect(1 + 1).toBe(2)              // Strict equality (===)
-  expect({ a: 1 }).toEqual({ a: 1 }) // Deep equality
+  // 相等性
+  expect(1 + 1).toBe(2)              // 严格相等 (===)
+  expect({ a: 1 }).toEqual({ a: 1 }) // 深度相等
 
-  // Truthiness
+  // 真值性
   expect(true).toBeTruthy()
   expect(false).toBeFalsy()
   expect(null).toBeNull()
   expect(undefined).toBeUndefined()
   expect('value').toBeDefined()
 
-  // Numbers
+  // 数字
   expect(10).toBeGreaterThan(5)
   expect(10).toBeGreaterThanOrEqual(10)
   expect(5).toBeLessThan(10)
   expect(0.1 + 0.2).toBeCloseTo(0.3, 5)
 
-  // Strings
+  // 字符串
   expect('hello world').toMatch(/world/)
   expect('hello').toContain('ell')
 
-  // Arrays
+  // 数组
   expect([1, 2, 3]).toContain(2)
   expect([{ a: 1 }]).toContainEqual({ a: 1 })
   expect([1, 2, 3]).toHaveLength(3)
 
-  // Objects
+  // 对象
   expect({ a: 1, b: 2 }).toHaveProperty('a')
   expect({ a: 1, b: 2 }).toHaveProperty('a', 1)
   expect({ a: { b: 1 } }).toHaveProperty('a.b', 1)
   expect({ a: 1 }).toMatchObject({ a: 1 })
 
-  // Types
+  // 类型
   expect('string').toBeTypeOf('string')
   expect(new Date()).toBeInstanceOf(Date)
 })
 ```
 
-## Negation
+## 否定
 
 ```ts
 expect(1).not.toBe(2)
 expect({ a: 1 }).not.toEqual({ a: 2 })
 ```
 
-## Error Assertions
+## 错误断言
 
 ```ts
-// Sync errors - wrap in function
+// 同步错误 - 包装在函数中
 expect(() => throwError()).toThrow()
 expect(() => throwError()).toThrow('message')
 expect(() => throwError()).toThrow(/pattern/)
 expect(() => throwError()).toThrow(CustomError)
 
-// Async errors - use rejects
+// 异步错误 - 使用 rejects
 await expect(asyncThrow()).rejects.toThrow('error')
 ```
 
-## Promise Assertions
+## Promise 断言
 
 ```ts
-// Resolves
+// 解析
 await expect(Promise.resolve(1)).resolves.toBe(1)
 await expect(fetchData()).resolves.toEqual({ data: true })
 
-// Rejects
+// 拒绝
 await expect(Promise.reject('error')).rejects.toBe('error')
 await expect(failingFetch()).rejects.toThrow()
 ```
 
-## Spy/Mock Assertions
+## Spy/Mock 断言
 
 ```ts
 const fn = vi.fn()
@@ -100,9 +100,9 @@ expect(fn).toHaveReturned()
 expect(fn).toHaveReturnedWith(value)
 ```
 
-## Asymmetric Matchers
+## 非对称 Matchers
 
-Use inside `toEqual`, `toHaveBeenCalledWith`, etc:
+在 `toEqual`、`toHaveBeenCalledWith` 等内部使用:
 
 ```ts
 expect({ id: 1, name: 'test' }).toEqual({
@@ -127,28 +127,28 @@ expect('hello world').toEqual(
 )
 
 expect({ value: null }).toEqual({
-  value: expect.anything() // Matches anything except null/undefined
+  value: expect.anything() // 匹配除 null/undefined 之外的任何内容
 })
 
-// Negate with expect.not
+// 使用 expect.not 否定
 expect([1, 2]).toEqual(
   expect.not.arrayContaining([3])
 )
 ```
 
-## Soft Assertions
+## 软断言
 
-Continue test after failure:
+失败后继续测试:
 
 ```ts
-expect.soft(1).toBe(2) // Marks test failed but continues
-expect.soft(2).toBe(3) // Also runs
-// All failures reported at end
+expect.soft(1).toBe(2) // 标记测试失败但继续
+expect.soft(2).toBe(3) // 也运行
+// 所有失败在最后报告
 ```
 
-## Poll Assertions
+## 轮询断言
 
-Retry until passes:
+重试直到通过:
 
 ```ts
 await expect.poll(() => fetchStatus()).toBe('ready')
@@ -159,11 +159,11 @@ await expect.poll(
 ).toBeTruthy()
 ```
 
-## Assertion Count
+## 断言计数
 
 ```ts
 test('async assertions', async () => {
-  expect.assertions(2) // Exactly 2 assertions must run
+  expect.assertions(2) // 必须运行恰好 2 个断言
   
   await doAsync((data) => {
     expect(data).toBeDefined()
@@ -172,11 +172,11 @@ test('async assertions', async () => {
 })
 
 test('at least one', () => {
-  expect.hasAssertions() // At least 1 assertion must run
+  expect.hasAssertions() // 必须运行至少 1 个断言
 })
 ```
 
-## Extending Matchers
+## 扩展 Matchers
 
 ```ts
 expect.extend({
@@ -195,7 +195,7 @@ test('custom matcher', () => {
 })
 ```
 
-## Snapshot Assertions
+## 快照断言
 
 ```ts
 expect(data).toMatchSnapshot()
@@ -205,13 +205,13 @@ await expect(result).toMatchFileSnapshot('./expected.json')
 expect(() => throw new Error('fail')).toThrowErrorMatchingSnapshot()
 ```
 
-## Key Points
+## 关键点
 
-- Use `toBe` for primitives, `toEqual` for objects/arrays
-- `toStrictEqual` checks undefined properties and array sparseness
-- Always `await` async assertions (`resolves`, `rejects`, `poll`)
-- Use context's `expect` in concurrent tests for correct tracking
-- `toThrow` requires wrapping sync code in a function
+- 对基本类型使用 `toBe`,对对象/数组使用 `toEqual`
+- `toStrictEqual` 检查未定义的属性和数组稀疏性
+- 始终 `await` 异步断言(`resolves`、`rejects`、`poll`)
+- 在并发测试中使用上下文的 `expect` 进行正确跟踪
+- `toThrow` 需要将同步代码包装在函数中
 
 <!-- 
 Source references:

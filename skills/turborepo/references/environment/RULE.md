@@ -1,12 +1,12 @@
-# Environment Variables in Turborepo
+# Turborepo 中的环境变量
 
-Turborepo provides fine-grained control over which environment variables affect task hashing and runtime availability.
+Turborepo 提供对哪些环境变量影响任务哈希和运行时可用性的细粒度控制。
 
-## Configuration Keys
+## 配置键
 
-### `env` - Task-Specific Variables
+### `env` - 特定于任务的变量
 
-Variables that affect a specific task's hash. When these change, only that task rebuilds.
+影响特定任务哈希的变量。当这些更改时，仅该任务重新构建。
 
 ```json
 {
@@ -18,9 +18,9 @@ Variables that affect a specific task's hash. When these change, only that task 
 }
 ```
 
-### `globalEnv` - Variables Affecting All Tasks
+### `globalEnv` - 影响所有任务的变量
 
-Variables that affect EVERY task's hash. When these change, all tasks rebuild.
+影响每个任务哈希的变量。当这些更改时，所有任务重新构建。
 
 ```json
 {
@@ -28,9 +28,9 @@ Variables that affect EVERY task's hash. When these change, all tasks rebuild.
 }
 ```
 
-### `passThroughEnv` - Runtime-Only Variables (Not Hashed)
+### `passThroughEnv` - 仅运行时变量（不哈希）
 
-Variables available at runtime but NOT included in hash. **Use with caution** - changes won't trigger rebuilds.
+在运行时可用但不包含在哈希中的变量。**谨慎使用** - 更改不会触发重新构建。
 
 ```json
 {
@@ -42,9 +42,9 @@ Variables available at runtime but NOT included in hash. **Use with caution** - 
 }
 ```
 
-### `globalPassThroughEnv` - Global Runtime Variables
+### `globalPassThroughEnv` - 全局运行时变量
 
-Same as `passThroughEnv` but for all tasks.
+与 `passThroughEnv` 相同，但用于所有任务。
 
 ```json
 {
@@ -52,11 +52,11 @@ Same as `passThroughEnv` but for all tasks.
 }
 ```
 
-## Wildcards and Negation
+## 通配符和否定
 
-### Wildcards
+### 通配符
 
-Match multiple variables with `*`:
+使用 `*` 匹配多个变量：
 
 ```json
 {
@@ -64,11 +64,11 @@ Match multiple variables with `*`:
 }
 ```
 
-This matches `MY_API_URL`, `MY_API_KEY`, `FEATURE_FLAG_DARK_MODE`, etc.
+这匹配 `MY_API_URL`、`MY_API_KEY`、`FEATURE_FLAG_DARK_MODE` 等。
 
-### Negation
+### 否定
 
-Exclude variables (useful with framework inference):
+排除变量（对框架推断有用）：
 
 ```json
 {
@@ -76,7 +76,7 @@ Exclude variables (useful with framework inference):
 }
 ```
 
-## Complete Example
+## 完整示例
 
 ```json
 {

@@ -1,39 +1,39 @@
 ---
 name: vscode-extension
-description: Manage slides visually in VS Code
+description: 在 VS Code 中可视化管理幻灯片
 ---
 
-# VS Code Extension
+# VS Code 扩展
 
-Manage slides visually in VS Code.
+在 VS Code 中可视化管理幻灯片。
 
-## Installation
+## 安装
 
-Install from VS Code Marketplace: `antfu.slidev`
+从 VS Code Marketplace 安装：`antfu.slidev`
 
-## Features
+## 功能
 
-- Preview slides in side panel
-- Slides tree view
-- Drag and drop to reorder slides
-- Folding for slide blocks
-- Multiple project support
-- One-click dev server start
+- 在侧面板中预览幻灯片
+- 幻灯片树视图
+- 拖放以重新排序幻灯片
+- 幻灯片块折叠
+- 多项目支持
+- 一键启动开发服务器
 
-## Usage
+## 用法
 
-1. Click `Slidev` icon in activity bar
-2. Projects tree shows all Slidev projects in workspace
-3. Slides tree shows slides in active project
-4. Preview panel shows live preview
+1. 点击活动栏中的 `Slidev` 图标
+2. 项目树显示工作区中的所有 Slidev 项目
+3. 幻灯片树显示活动项目中的幻灯片
+4. 预览面板显示实时预览
 
-## Commands
+## 命令
 
-Type `Slidev` in command palette to see available commands.
+在命令面板中输入 `Slidev` 以查看可用命令。
 
-## Configuration
+## 配置
 
-Include specific files as Slidev entries:
+将特定文件包含为 Slidev 条目：
 
 ```json
 {
@@ -41,7 +41,7 @@ Include specific files as Slidev entries:
 }
 ```
 
-Custom dev command:
+自定义开发命令：
 
 ```json
 {
@@ -49,7 +49,7 @@ Custom dev command:
 }
 ```
 
-## Placeholders
+## 占位符
 
-- `${args}` - All CLI arguments
-- `${port}` - Port number
+- `${args}` - 所有 CLI 参数
+- `${port}` - 端口号

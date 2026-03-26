@@ -1,69 +1,69 @@
-# tsdown Skills for Claude Code
+# tsdown Claude Code 技能
 
-Agent skills that help Claude Code understand and work with [tsdown](https://tsdown.dev), the elegant library bundler.
+帮助 Claude Code 理解和使用 [tsdown](https://tsdown.dev)（优雅的库打包器）的代理技能。
 
-## Installation
+## 安装
 
 ```bash
 npx skills add rolldown/tsdown
 ```
 
-This will add the tsdown skill to your Claude Code configuration.
+这会将 tsdown 技能添加到您的 Claude Code 配置中。
 
-## What's Included
+## 包含内容
 
-The tsdown skill provides Claude Code with knowledge about:
+tsdown 技能为 Claude Code 提供以下知识：
 
-- **Core Concepts** - What tsdown is, why use it, key features
-- **Configuration** - Config file formats, options, multiple configs, workspace support
-- **Build Options** - Entry points, output formats, type declarations, targets
-- **Dependency Handling** - External/inline dependencies, auto-externalization
-- **Output Enhancement** - Shims, CJS defaults, package exports
-- **Framework Support** - React, Vue, Solid, Svelte integration
-- **Advanced Features** - Plugins, hooks, programmatic API, Rolldown options
-- **CLI Commands** - All CLI options and usage patterns
-- **Migration** - Migrating from tsup to tsdown
+- **核心概念** - tsdown 是什么、为什么要使用它、关键功能
+- **配置** - 配置文件格式、选项、多个配置、工作区支持
+- **构建选项** - 入口点、输出格式、类型声明、目标
+- **依赖处理** - 外部/内联依赖、自动外部化
+- **输出增强** - Shims、CJS 默认值、包导出
+- **框架支持** - React、Vue、Solid、Svelte 集成
+- **高级功能** - 插件、钩子、编程式 API、Rolldown 选项
+- **CLI 命令** - 所有 CLI 选项和使用模式
+- **迁移** - 从 tsup 迁移到 tsdown
 
-## Usage
+## 使用方法
 
-Once installed, Claude Code will automatically use tsdown knowledge when:
+安装后，Claude Code 将在以下情况下自动使用 tsdown 知识：
 
-- Building TypeScript/JavaScript libraries
-- Configuring bundlers for library projects
-- Setting up type declaration generation
-- Working with multi-format builds (ESM, CJS, IIFE, UMD)
-- Migrating from tsup
-- Building framework component libraries
+- 构建 TypeScript/JavaScript 库
+- 为库项目配置打包器
+- 设置类型声明生成
+- 处理多格式构建（ESM、CJS、IIFE、UMD）
+- 从 tsup 迁移
+- 构建框架组件库
 
-### Example Prompts
-
-```
-Set up tsdown to build my TypeScript library with ESM and CJS formats
-```
+### 示例提示
 
 ```
-Configure tsdown to generate type declarations and bundle for browsers
+设置 tsdown 以使用 ESM 和 CJS 格式构建我的 TypeScript 库
 ```
 
 ```
-Add React support to my tsdown config with Fast Refresh
+配置 tsdown 以生成类型声明并为浏览器打包
 ```
 
 ```
-Help me migrate from tsup to tsdown
+将 React 支持添加到我的 tsdown 配置中，使用 Fast Refresh
 ```
 
 ```
-Set up a monorepo build with tsdown workspace support
+帮助我从 tsup 迁移到 tsdown
 ```
 
-## Documentation
+```
+使用 tsdown 工作区支持设置 monorepo 构建
+```
 
-- [tsdown Documentation](https://tsdown.dev)
-- [GitHub Repository](https://github.com/rolldown/tsdown)
+## 文档
+
+- [tsdown 文档](https://tsdown.dev)
+- [GitHub 仓库](https://github.com/rolldown/tsdown)
 - [Rolldown](https://rolldown.rs)
-- [Migration Guide](https://tsdown.dev/guide/migrate-from-tsup)
+- [迁移指南](https://tsdown.dev/guide/migrate-from-tsup)
 
-## License
+## 许可证
 
 MIT

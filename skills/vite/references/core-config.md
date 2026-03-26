@@ -1,60 +1,60 @@
 ---
 name: vite-config
-description: Vite configuration patterns using vite.config.ts
+description: 使用 vite.config.ts 的 Vite 配置模式
 ---
 
-# Vite Configuration
+# Vite 配置
 
-## Basic Setup
+## 基本设置
 
 ```ts
 // vite.config.ts
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  // config options
+  // 配置选项
 })
 ```
 
-Vite auto-resolves `vite.config.ts` from project root. Supports ES modules syntax regardless of `package.json` type.
+Vite 从项目根目录自动解析 `vite.config.ts`。无论 `package.json` 类型如何,都支持 ES 模块语法。
 
-## Conditional Config
+## 条件配置
 
-Export a function to access command and mode:
+导出函数以访问命令和模式:
 
 ```ts
 export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
   if (command === 'serve') {
-    return { /* dev config */ }
+    return { /* 开发配置 */ }
   } else {
-    return { /* build config */ }
+    return { /* 构建配置 */ }
   }
 })
 ```
 
-- `command`: `'serve'` during dev, `'build'` for production
-- `mode`: `'development'` or `'production'` (or custom via `--mode`)
+- `command`: 开发期间为 `'serve'`,生产构建为 `'build'`
+- `mode`: `'development'` 或 `'production'`(或通过 `--mode` 自定义)
 
-## Async Config
+## 异步配置
 
 ```ts
 export default defineConfig(async ({ command, mode }) => {
   const data = await fetchSomething()
-  return { /* config */ }
+  return { /* 配置 */ }
 })
 ```
 
-## Using Environment Variables in Config
+## 在配置中使用环境变量
 
-`.env` files are loaded **after** config resolution. Use `loadEnv` to access them in config:
+`.env` 文件在配置解析**之后**加载。使用 `loadEnv` 在配置中访问它们:
 
 ```ts
 import { defineConfig, loadEnv } from 'vite'
 
 export default defineConfig(({ mode }) => {
-  // Load env files from cwd, include all vars (empty prefix)
+  // 从 cwd 加载环境文件,包含所有变量(空前缀)
   const env = loadEnv(mode, process.cwd(), '')
-  
+
   return {
     define: {
       __APP_ENV__: JSON.stringify(env.APP_ENV),
@@ -66,7 +66,7 @@ export default defineConfig(({ mode }) => {
 })
 ```
 
-## Key Config Options
+## 关键配置选项
 
 ### resolve.alias
 
@@ -81,7 +81,7 @@ export default defineConfig({
 })
 ```
 
-### define (Global Constants)
+### define (全局常量)
 
 ```ts
 export default defineConfig({
@@ -92,7 +92,7 @@ export default defineConfig({
 })
 ```
 
-Values must be JSON-serializable or single identifiers. Non-strings auto-wrapped with `JSON.stringify`.
+值必须是 JSON 可序列化的或单个标识符。非字符串自动用 `JSON.stringify` 包装。
 
 ### plugins
 
@@ -104,7 +104,7 @@ export default defineConfig({
 })
 ```
 
-Plugins array is flattened; falsy values ignored.
+插件数组被展平;假值被忽略。
 
 ### server.proxy
 
@@ -124,19 +124,19 @@ export default defineConfig({
 
 ### build.target
 
-Default: Baseline Widely Available browsers. Customize:
+默认: 基准广泛可用的浏览器。自定义:
 
 ```ts
 export default defineConfig({
   build: {
-    target: 'esnext', // or 'es2020', ['chrome90', 'firefox88']
+    target: 'esnext', // 或 'es2020', ['chrome90', 'firefox88']
   },
 })
 ```
 
-## TypeScript Intellisense
+## TypeScript 智能感知
 
-For plain JS config files:
+对于纯 JS 配置文件:
 
 ```js
 /** @type {import('vite').UserConfig} */
@@ -145,7 +145,7 @@ export default {
 }
 ```
 
-Or use `satisfies`:
+或使用 `satisfies`:
 
 ```ts
 import type { UserConfig } from 'vite'

@@ -1,13 +1,13 @@
 ---
 name: monaco-run
-description: Run code directly in the editor and see results
+description: 直接在编辑器中运行代码并查看结果
 ---
 
-# Monaco Runner
+# Monaco 运行器
 
-Run code directly in the editor and see results.
+直接在编辑器中运行代码并查看结果。
 
-## Basic Usage
+## 基本用法
 
 ````md
 ```ts {monaco-run}
@@ -18,27 +18,27 @@ console.log(distance(3, 4))
 ```
 ````
 
-Shows a "Run" button and displays output below the code.
+显示"运行"按钮并在代码下方显示输出。
 
-## Disable Auto-run
+## 禁用自动运行
 
 ````md
 ```ts {monaco-run} {autorun:false}
-console.log('Click the play button to run me')
+console.log('点击播放按钮运行我')
 ```
 ````
 
-## Show Output on Click
+## 点击时显示输出
 
 ````md
 ```ts {monaco-run} {showOutputAt:'+1'}
-console.log('Shown after 1 click')
+console.log('在 1 次点击后显示')
 ```
 ````
 
-## Supported Languages
+## 支持的语言
 
 - JavaScript
 - TypeScript
 
-For other languages, configure custom code runners in `/custom/config-code-runners`.
+对于其他语言，在 `/custom/config-code-runners` 中配置自定义代码运行器。

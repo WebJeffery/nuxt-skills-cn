@@ -1,197 +1,243 @@
 ---
-title: Avoid Snapshot-Only Tests - They Don't Prove Correctness
+title: 避免仅依赖快照测试 - 它们难以维护且脆弱
 impact: MEDIUM
-impactDescription: Snapshot tests verify structure but not functionality, leading to false confidence and brittle tests
+impactDescription: 快照测试难以维护,容易产生误报,并且无法捕获逻辑错误
 type: best-practice
-tags: [vue3, testing, snapshot, vitest, vue-test-utils, anti-pattern]
+tags: [vue3, testing, vitest, vue-test-utils, snapshot, maintenance]
 ---
 
-# Avoid Snapshot-Only Tests - They Don't Prove Correctness
+# 避免仅依赖快照测试 - 它们难以维护且脆弱
 
-**Impact: MEDIUM** - Snapshot tests only verify that HTML structure hasn't changed - they don't verify that the component works correctly. Relying exclusively on snapshots leads to false confidence and tests that break on any refactoring, even when functionality is preserved.
+**影响: MEDIUM** - 快照测试提供低价值,高维护成本。它们容易产生误报(对无关更改失败),无法捕获逻辑错误,并且不传达测试意图。
 
-Use snapshots sparingly for regression detection. Prefer behavioral assertions that test what the component does.
+使用快照测试作为回归检查,但主要测试应断言特定的、有意义的行为和输出。
 
-## Task Checklist
+## 任务清单
 
-- [ ] Don't use snapshots as the only assertion for component behavior
-- [ ] Use snapshots for regression detection on stable UI components
-- [ ] Always pair snapshots with behavioral assertions
-- [ ] Keep snapshots small and focused (avoid full component snapshots)
-- [ ] Review snapshot diffs carefully - don't blindly update
-- [ ] Consider inline snapshots for small, critical structures
+- [ ] 避免创建仅包含快照的测试
+- [ ] 对快照测试添加有意义的断言
+- [ ] 使用快照测试验证复杂 UI 结构或视觉回归
+- [ ] 对快照使用内联快照以提高可读性
+- [ ] 使用描述性快照名称
+- [ ] 定期审查和更新快照
 
-**Incorrect:**
+**错误:**
 ```javascript
 import { mount } from '@vue/test-utils'
-import UserCard from './UserCard.vue'
+import UserProfile from './UserProfile.vue'
 
-// BAD: Snapshot-only test proves nothing about functionality
-test('UserCard renders correctly', () => {
-  const wrapper = mount(UserCard, {
-    props: { user: { name: 'John', email: 'john@example.com' } }
+// 错误: 仅快照 - 不传达意图
+test('渲染用户资料', () => {
+  const wrapper = mount(UserProfile, {
+    props: {
+      user: {
+        name: 'John Doe',
+        email: 'john@example.com',
+        avatar: 'avatar.jpg'
+      }
+    }
   })
 
   expect(wrapper.html()).toMatchSnapshot()
 })
 
-// This test passes even if:
-// - The email isn't clickable
-// - The avatar doesn't load
-// - User actions are completely broken
-// - Accessibility is broken
+// 问题:
+// 1. 不传达测试意图
+// 2. 任何 UI 更改都会导致失败(误报)
+// 3. 不会捕获逻辑错误
+// 4. 难以审查快照以验证正确性
 ```
 
-**Correct:**
+**正确:**
 ```javascript
 import { mount } from '@vue/test-utils'
-import UserCard from './UserCard.vue'
+import UserProfile from './UserProfile.vue'
 
-// CORRECT: Test actual behavior
-test('UserCard displays user information', () => {
-  const wrapper = mount(UserCard, {
-    props: { user: { name: 'John', email: 'john@example.com' } }
+// 正确: 有意义的断言 + 快照作为回归检查
+test('渲染用户资料', () => {
+  const wrapper = mount(UserProfile, {
+    props: {
+      user: {
+        name: 'John Doe',
+        email: 'john@example.com',
+        avatar: 'avatar.jpg'
+      }
+    }
   })
 
-  expect(wrapper.find('[data-testid="user-name"]').text()).toBe('John')
+  // 有意义的断言 - 传达意图
+  expect(wrapper.find('[data-testid="user-name"]').text()).toBe('John Doe')
   expect(wrapper.find('[data-testid="user-email"]').text()).toBe('john@example.com')
-})
+  expect(wrapper.find('[data-testid="user-avatar"]').attributes('src')).toBe('avatar.jpg')
 
-test('UserCard email link is clickable', async () => {
-  const wrapper = mount(UserCard, {
-    props: { user: { name: 'John', email: 'john@example.com' } }
-  })
-
-  const emailLink = wrapper.find('a[href^="mailto:"]')
-  expect(emailLink.exists()).toBe(true)
-  expect(emailLink.attributes('href')).toBe('mailto:john@example.com')
-})
-
-test('UserCard emits select event when clicked', async () => {
-  const wrapper = mount(UserCard, {
-    props: { user: { id: 1, name: 'John' } }
-  })
-
-  await wrapper.trigger('click')
-
-  expect(wrapper.emitted('select')).toBeTruthy()
-  expect(wrapper.emitted('select')[0]).toEqual([{ id: 1, name: 'John' }])
+  // 快照作为回归检查 - 捕获意外结构更改
+  expect(wrapper.html()).toMatchSnapshot()
 })
 ```
 
-## When Snapshots ARE Useful
+## 内联快照以提高可读性
 
-### Regression Detection for Stable Components
 ```javascript
-// ACCEPTABLE: Snapshot as additional check, not the only check
-test('ErrorBoundary renders error message', () => {
-  const wrapper = mount(ErrorBoundary, {
-    props: { error: new Error('Something went wrong') }
+test('渲染用户资料', () => {
+  const wrapper = mount(UserProfile, {
+    props: {
+      user: {
+        name: 'John Doe',
+        email: 'john@example.com',
+        avatar: 'avatar.jpg'
+      }
+    }
   })
 
-  // Primary assertions - verify behavior
-  expect(wrapper.find('.error-title').text()).toBe('Error')
-  expect(wrapper.find('.error-message').text()).toContain('Something went wrong')
-
-  // Secondary snapshot - catches unexpected structural changes
-  expect(wrapper.find('.error-container').html()).toMatchSnapshot()
-})
-```
-
-### Inline Snapshots for Small Structures
-```javascript
-// ACCEPTABLE: Inline snapshot for small, critical structure
-test('generates correct list markup', () => {
-  const wrapper = mount(ListItem, { props: { item: 'Test' } })
-
+  // 内联快照 - 在测试文件中可见
   expect(wrapper.html()).toMatchInlineSnapshot(`
-    "<li class="list-item">Test</li>"
+    <div class="user-profile">
+      <img src="avatar.jpg" alt="John Doe" data-testid="user-avatar" />
+      <h2 data-testid="user-name">John Doe</h2>
+      <p data-testid="user-email">john@example.com</p>
+    </div>
   `)
 })
 ```
 
-### Complex SVG or Icon Output
+## 快照测试的适当用例
+
+### 1. 复杂 UI 结构验证
 ```javascript
-// ACCEPTABLE: Snapshot for complex generated content
-test('renders correct chart SVG', () => {
-  const wrapper = mount(PieChart, {
-    props: { data: [30, 40, 30] }
+test('渲染复杂的表格结构', () => {
+  const wrapper = mount(DataTable, {
+    props: {
+      columns: ['Name', 'Age', 'Email'],
+      data: [
+        { name: 'John', age: 30, email: 'john@example.com' },
+        { name: 'Jane', age: 25, email: 'jane@example.com' }
+      ]
+    }
   })
 
-  // Verify key behavior
-  expect(wrapper.findAll('path').length).toBe(3)
-
-  // Snapshot for full SVG structure
-  expect(wrapper.find('svg').html()).toMatchSnapshot()
+  // 快照捕获整个表格结构
+  expect(wrapper.html()).toMatchSnapshot('data-table-structure')
 })
 ```
 
-## Better Alternatives to Snapshots
-
-### Test Specific Elements
+### 2. 视觉回归检查
 ```javascript
-// Instead of snapshotting entire component
-test('renders product with all required fields', () => {
-  const wrapper = mount(ProductCard, {
-    props: { product: { name: 'Widget', price: 9.99, inStock: true } }
+test('错误消息样式保持一致', () => {
+  const wrapper = mount(ErrorMessage, {
+    props: { message: 'Something went wrong' }
   })
 
-  expect(wrapper.find('.product-name').text()).toBe('Widget')
-  expect(wrapper.find('.product-price').text()).toContain('9.99')
-  expect(wrapper.find('.in-stock-badge').exists()).toBe(true)
+  // 快照确保错误消息样式保持一致
+  expect(wrapper.html()).toMatchSnapshot('error-message-styles')
 })
 ```
 
-### Test CSS Classes for Styling
+### 3. 集成测试
 ```javascript
-test('applies danger styling for errors', () => {
-  const wrapper = mount(Alert, {
-    props: { type: 'error', message: 'Failed!' }
+test('完整的注册表单渲染', () => {
+  const wrapper = mount(RegistrationForm)
+
+  // 快照捕获整个表单结构
+  expect(wrapper.html()).toMatchSnapshot('registration-form')
+})
+```
+
+## 快照测试的常见陷阱
+
+### 1. 过度使用快照
+```javascript
+// 错误: 对简单组件使用快照
+test('按钮渲染', () => {
+  const wrapper = mount(Button, { props: { label: 'Click me' } })
+  expect(wrapper.html()).toMatchSnapshot()  // 过度使用
+})
+
+// 正确: 对简单组件使用断言
+test('按钮渲染', () => {
+  const wrapper = mount(Button, { props: { label: 'Click me' } })
+  expect(wrapper.text()).toBe('Click me')
+  expect(wrapper.classes()).toContain('btn')
+})
+```
+
+### 2. 忽略快照更新
+```javascript
+// 错误: 不审查快照更新
+// 当快照失败时,盲目运行 --update 而不审查更改
+
+// 正确: 审查快照更新
+// 1. 检查快照失败
+// 2. 验证更改是否预期
+// 3. 如果是,更新快照
+// 4. 如果否,修复代码
+```
+
+### 3. 快照包含动态内容
+```javascript
+// 错误: 快照包含动态内容(时间戳、随机 ID)
+test('渲染用户列表', () => {
+  const wrapper = mount(UserList, {
+    props: { users: [{ id: Date.now(), name: 'John' }] }
+  })
+  expect(wrapper.html()).toMatchSnapshot()  // 每次都会失败
+})
+
+// 正确: 模拟或固定动态内容
+test('渲染用户列表', () => {
+  vi.useFakeTimers()
+  vi.setSystemTime('2024-01-01')
+
+  const wrapper = mount(UserList, {
+    props: { users: [{ id: 1, name: 'John' }] }
+  })
+  expect(wrapper.html()).toMatchSnapshot()
+
+  vi.useRealTimers()
+})
+```
+
+## 快照测试最佳实践
+
+```javascript
+// 1. 使用描述性快照名称
+expect(wrapper.html()).toMatchSnapshot('user-profile-with-avatar')
+
+// 2. 对不同场景使用多个快照
+test('不同按钮变体', () => {
+  expect(mount(Button, { props: { variant: 'primary' } }).html())
+    .toMatchSnapshot('button-primary')
+
+  expect(mount(Button, { props: { variant: 'secondary' } }).html())
+    .toMatchSnapshot('button-secondary')
+})
+
+// 3. 将快照与有意义的断言结合
+test('模态框渲染', () => {
+  const wrapper = mount(Modal, {
+    props: { open: true, title: 'Confirm' }
   })
 
-  expect(wrapper.classes()).toContain('alert-danger')
-  expect(wrapper.find('.alert-icon').classes()).toContain('icon-error')
+  // 有意义的断言
+  expect(wrapper.find('[data-testid="modal"]').classes()).toContain('open')
+  expect(wrapper.find('[data-testid="modal-title"]').text()).toBe('Confirm')
+
+  // 快照作为回归检查
+  expect(wrapper.html()).toMatchSnapshot('modal-open')
+})
+
+// 4. 使用属性快照进行特定检查
+test('按钮属性', () => {
+  const wrapper = mount(Button, {
+    props: { disabled: true, type: 'submit' }
+  })
+
+  expect(wrapper.attributes()).toMatchInlineSnapshot({
+    disabled: '',
+    type: 'submit'
+  })
 })
 ```
 
-### Use Testing Library Queries
-```javascript
-import { render, screen } from '@testing-library/vue'
-
-test('form has accessible labels', () => {
-  render(LoginForm)
-
-  // Testing Library queries verify accessibility
-  expect(screen.getByLabelText('Email')).toBeInTheDocument()
-  expect(screen.getByLabelText('Password')).toBeInTheDocument()
-  expect(screen.getByRole('button', { name: 'Sign In' })).toBeInTheDocument()
-})
-```
-
-## Snapshot Anti-Patterns
-
-```javascript
-// ANTI-PATTERN: Giant component snapshot
-test('page renders', () => {
-  const wrapper = mount(EntirePageComponent)
-  expect(wrapper.html()).toMatchSnapshot()  // 500+ lines of HTML
-})
-
-// ANTI-PATTERN: Snapshot with dynamic content
-test('shows current date', () => {
-  const wrapper = mount(DateDisplay)
-  expect(wrapper.html()).toMatchSnapshot()  // Fails every day!
-})
-
-// ANTI-PATTERN: Snapshot after every test
-test('button works', async () => {
-  const wrapper = mount(Counter)
-  await wrapper.find('button').trigger('click')
-  expect(wrapper.html()).toMatchSnapshot()  // Redundant
-})
-```
-
-## Reference
-- [Vue.js Testing Guide - What Not to Test](https://vuejs.org/guide/scaling-up/testing)
-- [Effective Snapshot Testing](https://kentcdodds.com/blog/effective-snapshot-testing)
-- [Vitest Snapshot Testing](https://vitest.dev/guide/snapshot.html)
+## 参考
+- [Vue.js 测试指南 - 快照测试](https://vuejs.org/guide/scaling-up/testing#snapshot-testing)
+- [Jest 快照测试最佳实践](https://jestjs.io/docs/snapshot-testing)

@@ -1,13 +1,13 @@
-# Configuration Gotchas
+# 配置陷阱
 
-Common mistakes and how to fix them.
+常见错误以及如何修复它们。
 
-## #1 Root Scripts Not Using `turbo run`
+## #1 根脚本未使用 `turbo run`
 
-Root `package.json` scripts for turbo tasks MUST use `turbo run`, not direct commands.
+根 `package.json` 中用于 turbo 任务的脚本必须使用 `turbo run`，而不是直接命令。
 
 ```json
-// WRONG - bypasses turbo, no parallelization or caching
+// 错误 - 绕过 turbo，没有并行化或缓存
 {
   "scripts": {
     "build": "bun build",
@@ -15,7 +15,7 @@ Root `package.json` scripts for turbo tasks MUST use `turbo run`, not direct com
   }
 }
 
-// CORRECT - delegates to turbo
+// 正确 - 委托给 turbo
 {
   "scripts": {
     "build": "turbo run build",
@@ -24,21 +24,21 @@ Root `package.json` scripts for turbo tasks MUST use `turbo run`, not direct com
 }
 ```
 
-**Why this matters:** Running `bun build` or `npm run build` at root bypasses Turborepo entirely - no parallelization, no caching, no dependency graph awareness.
+**为什么这很重要：** 在根目录运行 `bun build` 或 `npm run build` 会完全绕过 Turborepo - 没有并行化，没有缓存，没有依赖图感知。
 
-## #2 Using `&&` to Chain Turbo Tasks
+## #2 使用 `&&` 链接 Turbo 任务
 
-Don't use `&&` to chain tasks that turbo should orchestrate.
+不要使用 `&&` 来链接 turbo 应该编排的任务。
 
 ```json
-// WRONG - changeset:publish chains turbo task with non-turbo command
+// 错误 - changeset:publish 将 turbo 任务与非 turbo 命令链接
 {
   "scripts": {
     "changeset:publish": "bun build && changeset publish"
   }
 }
 
-// CORRECT - use turbo run, let turbo handle dependencies
+// 正确 - 使用 turbo run，让 turbo 处理依赖
 {
   "scripts": {
     "changeset:publish": "turbo run build && changeset publish"
@@ -46,19 +46,19 @@ Don't use `&&` to chain tasks that turbo should orchestrate.
 }
 ```
 
-If the second command (`changeset publish`) depends on build outputs, the turbo task should run through turbo to get caching and parallelization benefits.
+如果第二个命令（`changeset publish`）依赖于构建输出，turbo 任务应该通过 turbo 运行以获得缓存和并行化优势。
 
-## #3 Overly Broad globalDependencies
+## #3 过于宽泛的 globalDependencies
 
-`globalDependencies` affects hash for ALL tasks in ALL packages. Be specific.
+`globalDependencies` 影响所有包中所有任务的哈希。要具体。
 
 ```json
-// WRONG - affects all hashes
+// 错误 - 影响所有哈希
 {
   "globalDependencies": ["**/.env.*local"]
 }
 
-// CORRECT - move to specific tasks that need it
+// 正确 - 移动到需要它的特定任务
 {
   "globalDependencies": [".env"],
   "tasks": {
@@ -70,17 +70,17 @@ If the second command (`changeset publish`) depends on build outputs, the turbo 
 }
 ```
 
-**Why this matters:** `**/.env.*local` matches .env files in ALL packages, causing unnecessary cache invalidation. Instead:
+**为什么这很重要：** `**/.env.*local` 匹配所有包中的 .env 文件，导致不必要的缓存失效。相反：
 
-- Use `globalDependencies` only for truly global files (root `.env`)
-- Use task-level `inputs` for package-specific .env files with `$TURBO_DEFAULT$` to preserve default behavior
+- 仅对真正全局的文件（根 `.env`）使用 `globalDependencies`
+- 对于特定于包的 .env 文件，使用任务级别的 `inputs` 和 `$TURBO_DEFAULT$` 来保留默认行为
 
-## #4 Repetitive Task Configuration
+## #4 重复的任务配置
 
-Look for repeated configuration across tasks that can be collapsed.
+查找可以折叠的任务之间的重复配置。
 
 ```json
-// WRONG - repetitive env and inputs across tasks
+// 错误 - 任务之间重复的 env 和 inputs
 {
   "tasks": {
     "build": {
@@ -94,7 +94,7 @@ Look for repeated configuration across tasks that can be collapsed.
   }
 }
 
-// BETTER - use globalEnv and globalDependencies
+// 更好 - 使用 globalEnv 和 globalDependencies
 {
   "globalEnv": ["API_URL", "DATABASE_URL"],
   "globalDependencies": [".env*"],
@@ -105,17 +105,17 @@ Look for repeated configuration across tasks that can be collapsed.
 }
 ```
 
-**When to use global vs task-level:**
+**何时使用全局与任务级别：**
 
-- `globalEnv` / `globalDependencies` - affects ALL tasks, use for truly shared config
-- Task-level `env` / `inputs` - use when only specific tasks need it
+- `globalEnv` / `globalDependencies` - 影响所有任务，用于真正共享的配置
+- 任务级别的 `env` / `inputs` - 仅当特定任务需要时使用
 
-## #5 Using `../` to Traverse Out of Package in `inputs`
+## #5 在 `inputs` 中使用 `../` 遍历包外
 
-Don't use relative paths like `../` to reference files outside the package. Use `$TURBO_ROOT$` instead.
+不要使用像 `../` 这样的相对路径来引用包外的文件。使用 `$TURBO_ROOT$` 代替。
 
 ```json
-// WRONG - traversing out of package
+// 错误 - 遍历出包
 {
   "tasks": {
     "build": {
@@ -124,7 +124,7 @@ Don't use relative paths like `../` to reference files outside the package. Use 
   }
 }
 
-// CORRECT - use $TURBO_ROOT$ for repo root
+// 正确 - 使用 $TURBO_ROOT$ 引用仓库根
 {
   "tasks": {
     "build": {
@@ -134,19 +134,19 @@ Don't use relative paths like `../` to reference files outside the package. Use 
 }
 ```
 
-## #6 MOST COMMON MISTAKE: Creating Root Tasks
+## #6 最常见的错误：创建根任务
 
-**DO NOT create Root Tasks. ALWAYS create package tasks.**
+**不要创建根任务。始终创建包任务。**
 
-When you need to create a task (build, lint, test, typecheck, etc.):
+当你需要创建任务（build、lint、test、typecheck 等）时：
 
-1. Add the script to **each relevant package's** `package.json`
-2. Register the task in root `turbo.json`
-3. Root `package.json` only contains `turbo run <task>`
+1. 将脚本添加到**每个相关包的** `package.json`
+2. 在根 `turbo.json` 中注册任务
+3. 根 `package.json` 仅包含 `turbo run <task>`
 
 ```json
-// WRONG - DO NOT DO THIS
-// Root package.json with task logic
+// 错误 - 不要这样做
+// 根 package.json 带有任务逻辑
 {
   "scripts": {
     "build": "cd apps/web && next build && cd ../api && tsc",
@@ -155,7 +155,7 @@ When you need to create a task (build, lint, test, typecheck, etc.):
   }
 }
 
-// CORRECT - DO THIS
+// 正确 - 这样做
 // apps/web/package.json
 { "scripts": { "build": "next build", "lint": "eslint .", "test": "vitest" } }
 
@@ -165,10 +165,10 @@ When you need to create a task (build, lint, test, typecheck, etc.):
 // packages/ui/package.json
 { "scripts": { "build": "tsc", "lint": "eslint .", "test": "vitest" } }
 
-// Root package.json - ONLY delegates
+// 根 package.json - 仅委托
 { "scripts": { "build": "turbo run build", "lint": "turbo run lint", "test": "turbo run test" } }
 
-// turbo.json - register tasks
+// turbo.json - 注册任务
 {
   "tasks": {
     "build": { "dependsOn": ["^build"], "outputs": ["dist/**"] },
@@ -178,30 +178,30 @@ When you need to create a task (build, lint, test, typecheck, etc.):
 }
 ```
 
-**Why this matters:**
+**为什么这很重要：**
 
-- Package tasks run in **parallel** across all packages
-- Each package's output is cached **individually**
-- You can **filter** to specific packages: `turbo run test --filter=web`
+- 包任务在所有包中**并行**运行
+- 每个包的输出被**单独**缓存
+- 你可以**过滤**到特定包：`turbo run test --filter=web`
 
-Root Tasks (`//#taskname`) defeat all these benefits. Only use them for tasks that truly cannot exist in any package (extremely rare).
+根任务（`//#taskname`）会破坏所有这些优势。仅将它们用于真正无法在任何包中存在的任务（极其罕见）。
 
-## #7 Tasks That Need Parallel Execution + Cache Invalidation
+## #7 需要并行执行 + 缓存失效的任务
 
-Some tasks can run in parallel (don't need built output from dependencies) but must still invalidate cache when dependency source code changes. Using `dependsOn: ["^taskname"]` forces sequential execution. Using no dependencies breaks cache invalidation.
+某些任务可以并行运行（不需要依赖的构建输出）但当依赖源代码更改时仍必须使缓存失效。使用 `dependsOn: ["^taskname"]` 强制顺序执行。使用无依赖会破坏缓存失效。
 
-**Use Transit Nodes for these tasks:**
+**对这些任务使用传递节点：**
 
 ```json
-// WRONG - forces sequential execution (SLOW)
+// 错误 - 强制顺序执行（慢）
 "my-task": {
   "dependsOn": ["^my-task"]
 }
 
-// ALSO WRONG - no dependency awareness (INCORRECT CACHING)
+// 也错误 - 没有依赖感知（不正确的缓存）
 "my-task": {}
 
-// CORRECT - use Transit Nodes for parallel + correct caching
+// 正确 - 使用传递节点进行并行 + 正确的缓存
 {
   "tasks": {
     "transit": { "dependsOn": ["^transit"] },
@@ -210,80 +210,80 @@ Some tasks can run in parallel (don't need built output from dependencies) but m
 }
 ```
 
-**Why Transit Nodes work:**
+**为什么传递节点有效：**
 
-- `transit` creates dependency relationships without matching any actual script
-- Tasks that depend on `transit` gain dependency awareness
-- Since `transit` completes instantly (no script), tasks run in parallel
-- Cache correctly invalidates when dependency source code changes
+- `transit` 创建依赖关系而不匹配任何实际脚本
+- 依赖于 `transit` 的任务获得依赖感知
+- 由于 `transit` 立即完成（没有脚本），任务并行运行
+- 当依赖源代码更改时，缓存正确失效
 
-**How to identify tasks that need this pattern:** Look for tasks that read source files from dependencies but don't need their build outputs.
+**如何识别需要此模式的任务：** 查找从依赖项读取源文件但不需要其构建输出的任务。
 
-## Missing outputs for File-Producing Tasks
+## 生成文件的任务缺少输出
 
-**Before flagging missing `outputs`, check what the task actually produces:**
+**在标记缺少 `outputs` 之前，检查任务实际产生什么：**
 
-1. Read the package's script (e.g., `"build": "tsc"`, `"test": "vitest"`)
-2. Determine if it writes files to disk or only outputs to stdout
-3. Only flag if the task produces files that should be cached
+1. 读取包的脚本（例如，`"build": "tsc"`、`"test": "vitest"`）
+2. 确定它是否写入磁盘或仅输出到 stdout
+3. 仅当任务产生应该缓存的文件时才标记
 
 ```json
-// WRONG - build produces files but they're not cached
+// 错误 - 构建产生文件但它们未被缓存
 "build": {
   "dependsOn": ["^build"]
 }
 
-// CORRECT - outputs are cached
+// 正确 - 输出被缓存
 "build": {
   "dependsOn": ["^build"],
   "outputs": ["dist/**"]
 }
 ```
 
-No `outputs` key is fine for stdout-only tasks. For file-producing tasks, missing `outputs` means Turbo has nothing to cache.
+对于仅 stdout 的任务，没有 `outputs` 键是可以的。对于生成文件的任务，缺少 `outputs` 意味着 Turbo 没有任何东西可以缓存。
 
-## Forgetting ^ in dependsOn
+## 在 dependsOn 中忘记 ^
 
 ```json
-// WRONG - looks for "build" in SAME package (infinite loop or missing)
+// 错误 - 在同一包中查找 "build"（无限循环或缺失）
 "build": {
   "dependsOn": ["build"]
 }
 
-// CORRECT - runs dependencies' build first
+// 正确 - 首先运行依赖的 build
 "build": {
   "dependsOn": ["^build"]
 }
 ```
 
-The `^` means "in dependency packages", not "in this package".
+`^` 意味着"在依赖包中"，而不是"在此包中"。
 
-## Missing persistent on Dev Tasks
+## Dev 任务缺少 persistent
 
 ```json
-// WRONG - dependent tasks hang waiting for dev to "finish"
+// 错误 - 依赖任务无限期等待 dev "完成"
 "dev": {
   "cache": false
 }
 
-// CORRECT
+// 正确
 "dev": {
   "cache": false,
   "persistent": true
 }
 ```
 
-## Package Config Missing extends
+## 包配置缺少 extends
 
 ```json
-// WRONG - packages/web/turbo.json
+// 错误 - packages/web/turbo.json
 {
   "tasks": {
     "build": { "outputs": [".next/**"] }
   }
 }
 
-// CORRECT
+// 正确
 {
   "extends": ["//"],
   "tasks": {
@@ -292,57 +292,57 @@ The `^` means "in dependency packages", not "in this package".
 }
 ```
 
-Without `"extends": ["//"]`, Package Configurations are invalid.
+没有 `"extends": ["//"]`，包配置是无效的。
 
-## Root Tasks Need Special Syntax
+## 根任务需要特殊语法
 
-To run a task defined only in root `package.json`:
+要运行仅在根 `package.json` 中定义的任务：
 
 ```bash
-# WRONG
+# 错误
 turbo run format
 
-# CORRECT
+# 正确
 turbo run //#format
 ```
 
-And in dependsOn:
+在 dependsOn 中：
 
 ```json
 "build": {
-  "dependsOn": ["//#codegen"]  // Root package's codegen
+  "dependsOn": ["//#codegen"]  // 根包的 codegen
 }
 ```
 
-## Overwriting Default Inputs
+## 覆盖默认输入
 
 ```json
-// WRONG - only watches test files, ignores source changes
+// 错误 - 仅监视测试文件，忽略源代码更改
 "test": {
   "inputs": ["tests/**"]
 }
 
-// CORRECT - extends defaults, adds test files
+// 正确 - 扩展默认值，添加测试文件
 "test": {
   "inputs": ["$TURBO_DEFAULT$", "tests/**"]
 }
 ```
 
-Without `$TURBO_DEFAULT$`, you replace all default file watching.
+没有 `$TURBO_DEFAULT$`，你替换所有默认文件监视。
 
-## Caching Tasks with Side Effects
+## 缓存具有副作用的任务
 
 ```json
-// WRONG - deploy might be skipped on cache hit
+// 错误 - deploy 可能在缓存命中时被跳过
 "deploy": {
   "dependsOn": ["build"]
 }
 
-// CORRECT
+// 正确
 "deploy": {
   "dependsOn": ["build"],
   "cache": false
 }
 ```
 
-Always disable cache for deploy, publish, or mutation tasks.
+始终禁用 deploy、publish 或变更任务的缓存。

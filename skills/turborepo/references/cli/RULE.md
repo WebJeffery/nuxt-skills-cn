@@ -1,34 +1,34 @@
 # turbo run
 
-The primary command for executing tasks across your monorepo.
+在 monorepo 中执行任务的主要命令。
 
-## Basic Usage
+## 基本用法
 
 ```bash
-# Full form (use in CI, package.json, scripts)
+# 完整形式（在 CI、package.json、脚本中使用）
 turbo run <tasks>
 
-# Shorthand (only for one-off terminal invocations)
+# 简写（仅用于一次性终端调用）
 turbo <tasks>
 ```
 
-## When to Use `turbo run` vs `turbo`
+## 何时使用 `turbo run` vs `turbo`
 
-**Always use `turbo run` when the command is written into code:**
+**当命令写入代码时，始终使用 `turbo run`：**
 
-- `package.json` scripts
-- CI/CD workflows (GitHub Actions, etc.)
-- Shell scripts
-- Documentation
-- Any static/committed configuration
+- `package.json` 脚本
+- CI/CD 工作流（GitHub Actions 等）
+- Shell 脚本
+- 文档
+- 任何静态/提交的配置
 
-**Only use `turbo` (shorthand) for:**
+**仅将 `turbo`（简写）用于：**
 
-- One-off commands typed directly in terminal
-- Ad-hoc invocations by humans or agents
+- 在终端中直接输入的一次性命令
+- 人类或代理的临时调用
 
 ```json
-// package.json - ALWAYS use "turbo run"
+// package.json - 始终使用 "turbo run"
 {
   "scripts": {
     "build": "turbo run build",
@@ -40,34 +40,34 @@ turbo <tasks>
 ```
 
 ```yaml
-# CI workflow - ALWAYS use "turbo run"
+// CI 工作流 - 始终使用 "turbo run"
 - run: turbo run build --affected
 - run: turbo run test --affected
 ```
 
 ```bash
-# Terminal one-off - shorthand OK
+// 终端一次性 - 简写可以
 turbo build --filter=web
 ```
 
-## Running Tasks
+## 运行任务
 
-Tasks must be defined in `turbo.json` before running.
+在运行之前，必须在 `turbo.json` 中定义任务。
 
 ```bash
-# Single task
+# 单个任务
 turbo build
 
-# Multiple tasks
+# 多个任务
 turbo run build lint test
 
-# See available tasks (run without arguments)
+# 查看可用任务（不带参数运行）
 turbo run
 ```
 
-## Passing Arguments to Scripts
+## 向脚本传递参数
 
-Use `--` to pass arguments through to the underlying package scripts:
+使用 `--` 将参数传递给底层包脚本：
 
 ```bash
 turbo run build -- --sourcemap
@@ -75,26 +75,26 @@ turbo test -- --watch
 turbo lint -- --fix
 ```
 
-Everything after `--` goes directly to the task's script.
+`--` 之后的所有内容直接传递给任务的脚本。
 
-## Package Selection
+## 包选择
 
-By default, turbo runs tasks in all packages. Use `--filter` to narrow scope:
+默认情况下，turbo 在所有包中运行任务。使用 `--filter` 缩小范围：
 
 ```bash
 turbo build --filter=web
 turbo test --filter=./apps/*
 ```
 
-See `filtering/` for complete filter syntax.
+完整过滤语法请参阅 `filtering/`。
 
-## Quick Reference
+## 快速参考
 
-| Goal                | Command                    |
+| 目标                | 命令                    |
 | ------------------- | -------------------------- |
-| Build everything    | `turbo build`              |
-| Build one package   | `turbo build --filter=web` |
-| Multiple tasks      | `turbo build lint test`    |
-| Pass args to script | `turbo build -- --arg`     |
-| Preview run         | `turbo build --dry`        |
-| Force rebuild       | `turbo build --force`      |
+| 构建所有内容    | `turbo build`              |
+| 构建一个包   | `turbo build --filter=web` |
+| 多个任务      | `turbo build lint test`    |
+| 向脚本传递参数 | `turbo build -- --arg`     |
+| 预览运行         | `turbo build --dry`        |
+| 强制重新构建       | `turbo build --force`      |

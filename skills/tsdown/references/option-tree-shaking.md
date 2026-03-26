@@ -1,39 +1,39 @@
 # Tree Shaking
 
-Remove unused code from bundles.
+从包中删除未使用的代码。
 
-## Overview
+## 概述
 
-Tree shaking eliminates dead code (unused exports) from your final bundle, reducing size and improving performance.
+Tree shaking 从最终包中消除死代码（未使用的导出），减小大小并提高性能。
 
-**Default:** Enabled
+**默认：** 已启用
 
-## Basic Usage
+## 基本用法
 
 ### CLI
 
 ```bash
-# Tree shaking enabled (default)
+# Tree shaking 已启用（默认）
 tsdown
 
-# Disable tree shaking
+# 禁用 tree shaking
 tsdown --no-treeshake
 ```
 
-### Config File
+### 配置文件
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
-  treeshake: true,  // Default
+  treeshake: true,  // 默认
 })
 ```
 
-## How It Works
+## 工作原理
 
-### With Tree Shaking
+### 使用 Tree Shaking
 
-**Source:**
+**源代码：**
 ```ts
 // src/util.ts
 export function unused() {
@@ -49,7 +49,7 @@ import { hello } from './util'
 hello(1)
 ```
 
-**Output:**
+**输出：**
 ```js
 // dist/index.mjs
 function hello(x) {
@@ -58,11 +58,11 @@ function hello(x) {
 hello(1)
 ```
 
-`unused()` function is removed because it's never imported.
+`unused()` 函数被删除，因为它从未被导入。
 
-### Without Tree Shaking
+### 不使用 Tree Shaking
 
-**Output:**
+**输出：**
 ```js
 // dist/index.mjs
 function unused() {
@@ -75,11 +75,11 @@ function hello(x) {
 hello(1)
 ```
 
-All code is included, even if unused.
+包含所有代码，即使未使用。
 
-## Advanced Configuration
+## 高级配置
 
-### Enable (Default)
+### 启用（默认）
 
 ```ts
 export default defineConfig({
@@ -87,9 +87,9 @@ export default defineConfig({
 })
 ```
 
-Uses Rolldown's default tree shaking.
+使用 Rolldown 的默认 tree shaking。
 
-### Custom Options
+### 自定义选项
 
 ```ts
 export default defineConfig({
@@ -101,9 +101,9 @@ export default defineConfig({
 })
 ```
 
-See [Rolldown docs](https://rolldown.rs/reference/config-options#treeshake) for all options.
+请参阅 [Rolldown 文档](https://rolldown.rs/reference/config-options#treeshake) 了解所有选项。
 
-### Disable
+### 禁用
 
 ```ts
 export default defineConfig({
@@ -111,11 +111,11 @@ export default defineConfig({
 })
 ```
 
-## Side Effects
+## 副作用
 
 ### Package.json sideEffects
 
-Declare side effects in your package:
+在包中声明副作用：
 
 ```json
 {
@@ -123,7 +123,7 @@ Declare side effects in your package:
 }
 ```
 
-Or specify files with side effects:
+或指定具有副作用的文件：
 
 ```json
 {
@@ -131,22 +131,22 @@ Or specify files with side effects:
 }
 ```
 
-### Module Side Effects
+### 模块副作用
 
 ```ts
 export default defineConfig({
   treeshake: {
     moduleSideEffects: (id) => {
-      // Preserve side effects for polyfills
+      // 为 polyfills 保留副作用
       return id.includes('polyfill')
     },
   },
 })
 ```
 
-## Common Patterns
+## 常见模式
 
-### Production Build
+### 生产构建
 
 ```ts
 export default defineConfig({
@@ -157,16 +157,16 @@ export default defineConfig({
 })
 ```
 
-### Development Build
+### 开发构建
 
 ```ts
 export default defineConfig((options) => ({
   entry: ['src/index.ts'],
-  treeshake: !options.watch,  // Disable in dev
+  treeshake: !options.watch,  // 在开发中禁用
 }))
 ```
 
-### Library with Side Effects
+### 带有副作用的库
 
 ```ts
 export default defineConfig({
@@ -183,7 +183,7 @@ export default defineConfig({
 })
 ```
 
-### Utilities Library
+### 实用程序库
 
 ```ts
 export default defineConfig({
@@ -194,36 +194,36 @@ export default defineConfig({
 })
 ```
 
-Users can import only what they need:
+用户可以仅导入他们需要的内容：
 ```ts
 import { onlyWhatINeed } from 'my-utils'
 ```
 
-## Benefits
+## 好处
 
-### Smaller Bundles
+### 更小的包
 
-- Only includes imported code
-- Removes unused functions, classes, variables
-- Reduces download size
+- 仅包含导入的代码
+- 删除未使用的函数、类、变量
+- 减少下载大小
 
-### Better Performance
+### 更好的性能
 
-- Less code to parse
-- Faster execution
-- Improved loading times
+- 更少的代码需要解析
+- 更快的执行
+- 改进的加载时间
 
-### Cleaner Output
+### 更清洁的输出
 
-- No dead code in production
-- Easier to debug
-- Better maintainability
+- 生产中没有死代码
+- 更容易调试
+- 更好的可维护性
 
-## When to Disable
+## 何时禁用
 
-### Debugging
+### 调试
 
-During development to see all code:
+在开发期间查看所有代码：
 
 ```ts
 export default defineConfig((options) => ({
@@ -231,12 +231,12 @@ export default defineConfig((options) => ({
 }))
 ```
 
-### Side Effect Code
+### 副作用代码
 
-Code with global side effects:
+具有全局副作用的代码：
 
 ```ts
-// This has side effects
+// 这有副作用
 window.myGlobal = {}
 
 export function setup() {
@@ -244,7 +244,7 @@ export function setup() {
 }
 ```
 
-Disable tree shaking or mark side effects:
+禁用 tree shaking 或标记副作用：
 
 ```json
 {
@@ -252,9 +252,9 @@ Disable tree shaking or mark side effects:
 }
 ```
 
-### Testing
+### 测试
 
-Include all code for coverage:
+包含所有代码以进行覆盖率：
 
 ```ts
 export default defineConfig({
@@ -262,40 +262,40 @@ export default defineConfig({
 })
 ```
 
-## Tips
+## 提示
 
-1. **Leave enabled** for production builds
-2. **Mark side effects** in package.json
-3. **Use with minification** for best results
-4. **Test tree shaking** - verify unused code is removed
-5. **Disable for debugging** if needed
-6. **Pure functions** are easier to tree shake
+1. **保持启用**用于生产构建
+2. **在 package.json 中标记副作用**
+3. **与压缩结合**以获得最佳结果
+4. **测试 tree shaking** - 验证未使用的代码被删除
+5. **在需要时禁用**用于调试
+6. **纯函数**更容易进行 tree shaking
 
-## Troubleshooting
+## 故障排除
 
-### Code Still Included
+### 代码仍然被包含
 
-- Check for side effects
-- Verify imports are ES modules
-- Ensure code is actually unused
-- Check `sideEffects` in package.json
+- 检查副作用
+- 验证导入是否为 ES 模块
+- 确保代码实际上未被使用
+- 检查 package.json 中的 `sideEffects`
 
-### Missing Code at Runtime
+### 运行时缺少代码
 
-- Code has side effects but marked as none
-- Set `sideEffects: true` or list specific files
+- 代码有副作用但标记为无副作用
+- 设置 `sideEffects: true` 或列出特定文件
 
-### Unexpected Behavior
+### 意外行为
 
-- Module has side effects not declared
-- Try disabling tree shaking to isolate issue
+- 模块具有未声明的副作用
+- 尝试禁用 tree shaking 以隔离问题
 
-## Examples
+## 示例
 
-### Pure Utility Functions
+### 纯实用程序函数
 
 ```ts
-// utils.ts - perfect for tree shaking
+// utils.ts - 非常适合 tree shaking
 export function add(a, b) {
   return a + b
 }
@@ -304,21 +304,21 @@ export function multiply(a, b) {
   return a * b
 }
 
-// Only 'add' imported = only 'add' bundled
+// 仅导入 'add' = 仅打包 'add'
 import { add } from './utils'
 ```
 
-### With Side Effects
+### 带有副作用
 
 ```ts
-// polyfill.ts - has side effects
+// polyfill.ts - 有副作用
 if (!Array.prototype.at) {
   Array.prototype.at = function(index) {
-    // polyfill implementation
+    // polyfill 实现
   }
 }
 
-export {} // Need to export something
+export {} // 需要导出一些内容
 ```
 
 ```json
@@ -327,9 +327,9 @@ export {} // Need to export something
 }
 ```
 
-## Related Options
+## 相关选项
 
-- [Minification](option-minification.md) - Code compression
-- [Target](option-target.md) - Syntax transformations
-- [Dependencies](option-dependencies.md) - External packages
-- [Output Format](option-output-format.md) - Module formats
+- [压缩](option-minification.md) - 代码压缩
+- [目标](option-target.md) - 语法转换
+- [依赖项](option-dependencies.md) - 外部包
+- [输出格式](option-output-format.md) - 模块格式

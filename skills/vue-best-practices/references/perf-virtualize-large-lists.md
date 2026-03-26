@@ -1,187 +1,102 @@
 ---
-title: Virtualize Large Lists to Avoid DOM Overload
+title: 虚拟化大型列表
 impact: HIGH
-impactDescription: Rendering thousands of list items creates excessive DOM nodes, causing slow renders and high memory usage
-type: efficiency
-tags: [vue3, performance, virtual-list, large-data, dom, optimization]
+impactDescription: 大型列表(1000+ 项目)会显著降低性能;虚拟滚动是标准解决方案
+type: best-practice
+tags: [vue3, performance, lists, virtual-scroll, optimization]
 ---
 
-# Virtualize Large Lists to Avoid DOM Overload
+# 虚拟化大型列表
 
-**Impact: HIGH** - Rendering all items in a large list (hundreds or thousands) creates massive amounts of DOM nodes. Each node consumes memory, slows down initial render, and makes updates expensive. List virtualization only renders visible items, dramatically improving performance.
+**影响: HIGH** - 大型列表(1000+ 项目)会显著降低性能,因为每个项目都需要渲染和跟踪。虚拟滚动是标准解决方案。
 
-Use a virtualization library when dealing with lists that could exceed 50-100 items, especially if items have complex content.
+## 任务列表
 
-## Task List
+- 对大型列表(1000+ 项目)使用虚拟滚动
+- 选择合适的虚拟滚动库
+- 为列表项提供固定或可预测的高度
+- 处理动态高度列表
+- 优化列表项渲染性能
 
-- Identify lists that render more than 50-100 items
-- Install a virtualization library (vue-virtual-scroller, @tanstack/vue-virtual)
-- Replace standard `v-for` with virtualized component
-- Ensure list items have consistent or estimable heights
-- Test with realistic data volumes during development
+## 使用虚拟滚动库
 
-## Recommended Libraries
+**推荐库:**
+- `vue-virtual-scroller`
+- `vue-virtual-list`
+- `vue3-virtual-scroll-list`
 
-| Library | Best For | Notes |
-|---------|----------|-------|
-| `vue-virtual-scroller` | General use, easy setup | Most popular, good defaults |
-| `@tanstack/vue-virtual` | Complex layouts, headless | Framework-agnostic, flexible |
-| `vue-virtual-scroll-grid` | Grid layouts | 2D virtualization |
-| `vueuc/VVirtualList` | Naive UI projects | Part of Naive UI ecosystem |
-
-**BAD:**
+**正确示例:**
 ```vue
 <template>
-  <!-- BAD: Renders ALL 10,000 items immediately -->
-  <div class="user-list">
-    <UserCard
-      v-for="user in users"
-      :key="user.id"
-      :user="user"
-    />
-  </div>
-</template>
-
-<script setup>
-import { ref, onMounted } from 'vue'
-import UserCard from './UserCard.vue'
-
-const users = ref([])
-
-onMounted(async () => {
-  // 10,000 DOM nodes created, browser struggles
-  users.value = await fetchAllUsers()
-})
-</script>
-```
-
-**GOOD:**
-```vue
-<template>
-  <!-- GOOD: Only renders ~20 visible items at a time -->
   <RecycleScroller
-    class="user-list"
-    :items="users"
-    :item-size="80"
+    class="scroller"
+    :items="items"
+    :item-size="50"
     key-field="id"
     v-slot="{ item }"
   >
-    <UserCard :user="item" />
+    <div class="item">
+      {{ item.name }}
+    </div>
   </RecycleScroller>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
-import UserCard from './UserCard.vue'
 
-const users = ref([])
-
-onMounted(async () => {
-  // 10,000 items in memory, but only ~20 DOM nodes
-  users.value = await fetchAllUsers()
-})
+const items = ref([...])
 </script>
-
-<style scoped>
-.user-list {
-  height: 600px; /* Container must have fixed height */
-}
-</style>
 ```
 
-## Using @tanstack/vue-virtual
+## 错误示例
 
 ```vue
 <template>
-  <div ref="parentRef" class="list-container">
-    <div
-      :style="{
-        height: `${rowVirtualizer.getTotalSize()}px`,
-        position: 'relative'
-      }"
-    >
-      <div
-        v-for="virtualRow in rowVirtualizer.getVirtualItems()"
-        :key="virtualRow.key"
-        :style="{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: `${virtualRow.size}px`,
-          transform: `translateY(${virtualRow.start}px)`
-        }"
-      >
-        <UserCard :user="users[virtualRow.index]" />
-      </div>
+  <div>
+    <div v-for="item in items" :key="item.id" class="item">
+      {{ item.name }}
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useVirtualizer } from '@tanstack/vue-virtual'
-
-const users = ref([/* 10,000 users */])
-const parentRef = ref(null)
-
-const rowVirtualizer = useVirtualizer({
-  count: users.value.length,
-  getScrollElement: () => parentRef.value,
-  estimateSize: () => 80,  // Estimated row height
-  overscan: 5  // Render 5 extra items above/below viewport
-})
-</script>
-
-<style scoped>
-.list-container {
-  height: 600px;
-  overflow: auto;
-}
-</style>
-```
-
-## Dynamic Heights with vue-virtual-scroller
-
-```vue
-<template>
-  <!-- For variable height items, use DynamicScroller -->
-  <DynamicScroller
-    :items="messages"
-    :min-item-size="54"
-    key-field="id"
-  >
-    <template #default="{ item, index, active }">
-      <DynamicScrollerItem
-        :item="item"
-        :active="active"
-        :data-index="index"
-      >
-        <ChatMessage :message="item" />
-      </DynamicScrollerItem>
-    </template>
-  </DynamicScroller>
-</template>
-
-<script setup>
-import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
+const items = ref([...]) // 10000+ 项目
 </script>
 ```
 
-## Performance Comparison
+## 性能影响
 
-| Approach | 100 Items | 1,000 Items | 10,000 Items |
-|----------|-----------|-------------|--------------|
-| Regular v-for | ~100 DOM nodes | ~1,000 DOM nodes | ~10,000 DOM nodes |
-| Virtualized | ~20 DOM nodes | ~20 DOM nodes | ~20 DOM nodes |
-| Initial render | Fast | Slow | Very slow / crashes |
-| Virtualized render | Fast | Fast | Fast |
+- 渲染 1000+ 项目会导致明显的卡顿
+- DOM 节点数量过多会影响浏览器性能
+- 响应式跟踪开销随列表大小线性增长
+- 滚动性能会显著下降
 
-## When NOT to Virtualize
+## 最佳实践
 
-- Lists under 50 items with simple content
-- Lists where all items must be accessible to screen readers simultaneously
-- Print layouts where all content must render
-- SEO-critical content that must be in initial HTML
+1. **何时使用虚拟滚动:**
+   - 列表超过 1000 个项目
+   - 列表项渲染成本较高
+   - 需要流畅的滚动体验
+
+2. **列表项高度:**
+   - 固定高度性能最佳
+   - 可变高度需要额外计算
+   - 提供预估高度以提高性能
+
+3. **优化列表项:**
+   - 保持列表项简单
+   - 避免在列表项中使用复杂组件
+   - 使用 `v-once` 优化静态内容
+
+4. **内存管理:**
+   - 虚拟滚动会复用 DOM 节点
+   - 注意清理事件监听器
+   - 避免在列表项中存储大量状态
+
+## 替代方案
+
+对于中小型列表,考虑:
+- 分页
+- 无限滚动
+- 延迟加载

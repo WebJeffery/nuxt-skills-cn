@@ -1,26 +1,26 @@
-# turbo.json Configuration Overview
+# turbo.json 配置概述
 
-Configuration reference for Turborepo. Full docs: https://turborepo.dev/docs/reference/configuration
+Turborepo 的配置参考。完整文档：https://turborepo.dev/docs/reference/configuration
 
-## File Location
+## 文件位置
 
-Root `turbo.json` lives at repo root, sibling to root `package.json`:
+根 `turbo.json` 位于仓库根目录，与根 `package.json` 相邻：
 
 ```
 my-monorepo/
-├── turbo.json        # Root configuration
+├── turbo.json        # 根配置
 ├── package.json
 └── packages/
     └── web/
-        ├── turbo.json  # Package Configuration (optional)
+        ├── turbo.json  # 包配置（可选）
         └── package.json
 ```
 
-## Always Prefer Package Tasks Over Root Tasks
+## 始终优先使用包任务而不是根任务
 
-**Always use package tasks. Only use Root Tasks if you cannot succeed with package tasks.**
+**始终使用包任务。仅当无法使用包任务成功时才使用根任务。**
 
-Package tasks enable parallelization, individual caching, and filtering. Define scripts in each package's `package.json`:
+包任务启用并行化、单独缓存和过滤。在每个包的 `package.json` 中定义脚本：
 
 ```json
 // packages/web/package.json
@@ -45,7 +45,7 @@ Package tasks enable parallelization, individual caching, and filtering. Define 
 ```
 
 ```json
-// Root package.json - delegates to turbo
+// 根 package.json - 委托给 turbo
 {
   "scripts": {
     "build": "turbo run build",
@@ -56,12 +56,12 @@ Package tasks enable parallelization, individual caching, and filtering. Define 
 }
 ```
 
-When you run `turbo run lint`, Turborepo finds all packages with a `lint` script and runs them **in parallel**.
+当你运行 `turbo run lint` 时，Turborepo 查找所有具有 `lint` 脚本的包并**并行**运行它们。
 
-**Root Tasks are a fallback**, not the default. Only use them for tasks that truly cannot run per-package (e.g., repo-level CI scripts, workspace-wide config generation).
+**根任务是后备方案**，而不是默认值。仅将它们用于真正无法按包运行的任务（例如，仓库级别的 CI 脚本、工作区范围的配置生成）。
 
 ```json
-// AVOID: Task logic in root defeats parallelization
+// 避免：根中的任务逻辑会破坏并行化
 {
   "scripts": {
     "lint": "eslint apps/web && eslint apps/api && eslint packages/ui"
@@ -69,7 +69,7 @@ When you run `turbo run lint`, Turborepo finds all packages with a `lint` script
 }
 ```
 
-## Basic Structure
+## 基本结构
 
 ```json
 {
@@ -89,23 +89,23 @@ When you run `turbo run lint`, Turborepo finds all packages with a `lint` script
 }
 ```
 
-The `$schema` key enables IDE autocompletion and validation.
+`$schema` 键启用 IDE 自动完成和验证。
 
-## Configuration Sections
+## 配置部分
 
-**Global options** - Settings affecting all tasks:
+**全局选项** - 影响所有任务的设置：
 
-- `globalEnv`, `globalDependencies`, `globalPassThroughEnv`
-- `cacheDir`, `daemon`, `envMode`, `ui`, `remoteCache`
+- `globalEnv`、`globalDependencies`、`globalPassThroughEnv`
+- `cacheDir`、`daemon`、`envMode`、`ui`、`remoteCache`
 
-**Task definitions** - Per-task settings in `tasks` object:
+**任务定义** - `tasks` 对象中的每个任务设置：
 
-- `dependsOn`, `outputs`, `inputs`, `env`
-- `cache`, `persistent`, `interactive`, `outputLogs`
+- `dependsOn`、`outputs`、`inputs`、`env`
+- `cache`、`persistent`、`interactive`、`outputLogs`
 
-## Package Configurations
+## 包配置
 
-Use `turbo.json` in individual packages to override root settings:
+在单个包中使用 `turbo.json` 来覆盖根设置：
 
 ```json
 // packages/web/turbo.json
@@ -119,18 +119,18 @@ Use `turbo.json` in individual packages to override root settings:
 }
 ```
 
-The `"extends": ["//"]` is required - it references the root configuration.
+`"extends": ["//"]` 是必需的 - 它引用根配置。
 
-**When to use Package Configurations:**
+**何时使用包配置：**
 
-- Framework-specific outputs (Next.js, Vite, etc.)
-- Package-specific env vars
-- Different caching rules for specific packages
-- Keeping framework config close to the framework code
+- 框架特定的输出（Next.js、Vite 等）
+- 特定于包的环境变量
+- 特定包的不同缓存规则
+- 将框架配置保持在框架代码附近
 
-### Extending from Other Packages
+### 从其他包扩展
 
-You can extend from config packages instead of just root:
+你可以从配置包而不是仅从根扩展：
 
 ```json
 // packages/web/turbo.json
@@ -139,12 +139,12 @@ You can extend from config packages instead of just root:
 }
 ```
 
-### Adding to Inherited Arrays with `$TURBO_EXTENDS$`
+### 使用 `$TURBO_EXTENDS$` 添加到继承的数组
 
-By default, array fields in Package Configurations **replace** root values. Use `$TURBO_EXTENDS$` to **append** instead:
+默认情况下，包配置中的数组字段**替换**根值。使用 `$TURBO_EXTENDS$` 来**追加**：
 
 ```json
-// Root turbo.json
+// 根 turbo.json
 {
   "tasks": {
     "build": {
@@ -160,16 +160,16 @@ By default, array fields in Package Configurations **replace** root values. Use 
   "extends": ["//"],
   "tasks": {
     "build": {
-      // Inherits "dist/**" from root, adds ".next/**"
+      // 从根继承 "dist/**"，添加 ".next/**"
       "outputs": ["$TURBO_EXTENDS$", ".next/**", "!.next/cache/**"]
     }
   }
 }
 ```
 
-Without `$TURBO_EXTENDS$`, outputs would only be `[".next/**", "!.next/cache/**"]`.
+没有 `$TURBO_EXTENDS$`，输出将只有 `[".next/**", "!.next/cache/**"]`。
 
-**Works with:**
+**适用于：**
 
 - `dependsOn`
 - `env`
@@ -178,9 +178,9 @@ Without `$TURBO_EXTENDS$`, outputs would only be `[".next/**", "!.next/cache/**"
 - `passThroughEnv`
 - `with`
 
-### Excluding Tasks from Packages
+### 从包中排除任务
 
-Use `extends: false` to exclude a task from a package:
+使用 `extends: false` 从包中排除任务：
 
 ```json
 // packages/ui/turbo.json
@@ -188,22 +188,22 @@ Use `extends: false` to exclude a task from a package:
   "extends": ["//"],
   "tasks": {
     "e2e": {
-      "extends": false // UI package doesn't have e2e tests
+      "extends": false // UI 包没有 e2e 测试
     }
   }
 }
 ```
 
-## `turbo.jsonc` for Comments
+## 使用 `turbo.jsonc` 添加注释
 
-Use `turbo.jsonc` extension to add comments with IDE support:
+使用 `turbo.jsonc` 扩展名添加注释并支持 IDE：
 
 ```jsonc
 // turbo.jsonc
 {
   "tasks": {
     "build": {
-      // Next.js outputs
+      // Next.js 输出
       "outputs": [".next/**", "!.next/cache/**"]
     }
   }

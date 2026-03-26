@@ -1,61 +1,61 @@
 ---
-title: Properly Handle Async Updates with nextTick and flushPromises
+title: 使用 nextTick 和 flushPromises 正确处理异步更新
 impact: HIGH
-impactDescription: Race conditions and flaky tests occur when async DOM updates or API calls complete after assertions run
+impactDescription: 竞态条件和脆弱的测试发生在异步 DOM 更新或 API 调用在断言运行后完成时
 type: gotcha
 tags: [vue3, testing, async, flushPromises, nextTick, vitest, vue-test-utils, race-condition]
 ---
 
-# Properly Handle Async Updates with nextTick and flushPromises
+# 使用 nextTick 和 flushPromises 正确处理异步更新
 
-**Impact: HIGH** - Vue updates the DOM asynchronously. Without properly awaiting these updates, tests may assert against stale DOM state, causing intermittent failures and false negatives.
+**影响: HIGH** - Vue 异步更新 DOM。如果不正确等待这些更新,测试可能会对过时的 DOM 状态进行断言,导致间歇性失败和假阴性。
 
-Use `await` with triggers and `setValue`, use `nextTick` for reactive updates, and use `flushPromises` for external async operations like API calls.
+对触发和 setValue 使用 `await`,对响应式更新使用 `nextTick`,对外部异步操作(如 API 调用)使用 `flushPromises`。
 
-## Task Checklist
+## 任务清单
 
-- [ ] Always await `trigger()` and `setValue()` calls
-- [ ] Use `await nextTick()` after programmatic reactive state changes
-- [ ] Use `await flushPromises()` for external async operations (API calls, timers)
-- [ ] Don't chain multiple `nextTick` calls - use `flushPromises` instead
-- [ ] Consider using `waitFor` from testing-library for polling assertions
+- [ ] 始终 await `trigger()` 和 `setValue()` 调用
+- [ ] 在编程式响应式状态更改后使用 `await nextTick()`
+- [ ] 对外部异步操作(API 调用、计时器)使用 `await flushPromises()`
+- [ ] 不要链接多个 `nextTick` 调用 - 使用 `flushPromises` 代替
+- [ ] 考虑使用 testing-library 的 `waitFor` 进行轮询断言
 
-**Incorrect:**
+**错误:**
 ```javascript
 import { mount } from '@vue/test-utils'
 import SearchComponent from './SearchComponent.vue'
 
-// BAD: Not awaiting trigger - assertion runs before DOM updates
-test('search filters results', () => {
+// 错误: 不等待 trigger - 断言在 DOM 更新前运行
+test('搜索过滤结果', () => {
   const wrapper = mount(SearchComponent)
 
-  wrapper.find('input').setValue('vue')  // Missing await!
-  wrapper.find('button').trigger('click')  // Missing await!
+  wrapper.find('input').setValue('vue')  // 缺少 await!
+  wrapper.find('button').trigger('click')  // 缺少 await!
 
-  // This assertion likely fails - DOM hasn't updated yet
+  // 此断言可能失败 - DOM 尚未更新
   expect(wrapper.findAll('.result').length).toBe(3)
 })
 
-// BAD: Using nextTick for API calls
-test('loads data from API', async () => {
+// 错误: 对 API 调用使用 nextTick
+test('从 API 加载数据', async () => {
   const wrapper = mount(DataLoader)
 
-  await nextTick()  // This won't wait for the API call!
+  await nextTick()  // 这不会等待 API 调用!
 
-  // Assertion runs before fetch completes
+  // 断言在 fetch 完成前运行
   expect(wrapper.find('.data').text()).toBe('Loaded data')
 })
 ```
 
-**Correct:**
+**正确:**
 ```javascript
 import { mount, flushPromises } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import SearchComponent from './SearchComponent.vue'
 import DataLoader from './DataLoader.vue'
 
-// CORRECT: Await trigger and setValue
-test('search filters results', async () => {
+// 正确: Await trigger 和 setValue
+test('搜索过滤结果', async () => {
   const wrapper = mount(SearchComponent)
 
   await wrapper.find('input').setValue('vue')
@@ -64,90 +64,90 @@ test('search filters results', async () => {
   expect(wrapper.findAll('.result').length).toBe(3)
 })
 
-// CORRECT: Use flushPromises for API calls
-test('loads data from API', async () => {
+// 正确: 对 API 调用使用 flushPromises
+test('从 API 加载数据', async () => {
   const wrapper = mount(DataLoader)
 
-  // Wait for all pending promises to resolve
+  // 等待所有挂起的 Promise 解析
   await flushPromises()
 
   expect(wrapper.find('.data').text()).toBe('Loaded data')
 })
 ```
 
-## When to Use Each Method
+## 何时使用每种方法
 
-### `await trigger()` / `await setValue()` - User Interactions
+### `await trigger()` / `await setValue()` - 用户交互
 ```javascript
-// These methods return nextTick internally
+// 这些方法内部返回 nextTick
 await wrapper.find('button').trigger('click')
 await wrapper.find('input').setValue('new value')
 await wrapper.find('form').trigger('submit')
 ```
 
-### `await nextTick()` - Programmatic Reactive Updates
+### `await nextTick()` - 编程式响应式更新
 ```javascript
 import { nextTick } from 'vue'
 
-test('reflects programmatic state changes', async () => {
+test('反映编程式状态更改', async () => {
   const wrapper = mount(Counter)
 
-  // Direct state modification (when testing with exposed internals)
+  // 直接状态修改(当测试暴露的内部时)
   wrapper.vm.count = 5
 
-  await nextTick()  // Wait for Vue to update DOM
+  await nextTick()  // 等待 Vue 更新 DOM
 
   expect(wrapper.find('.count').text()).toBe('5')
 })
 ```
 
-### `await flushPromises()` - External Async Operations
+### `await flushPromises()` - 外部异步操作
 ```javascript
 import { flushPromises } from '@vue/test-utils'
 
-test('displays fetched data', async () => {
+test('显示获取的数据', async () => {
   const wrapper = mount(UserProfile, {
     props: { userId: 1 }
   })
 
-  // Wait for component's API call to complete
+  // 等待组件的 API 调用完成
   await flushPromises()
 
   expect(wrapper.find('.username').text()).toBe('John')
 })
 
-// Sometimes you need multiple flushPromises for chained async operations
-test('processes data after fetch', async () => {
+// 有时你需要多个 flushPromises 进行链式异步操作
+test('在 fetch 后处理数据', async () => {
   const wrapper = mount(DataProcessor)
 
-  await flushPromises()  // Wait for fetch
-  await flushPromises()  // Wait for processing triggered by fetch
+  await flushPromises()  // 等待 fetch
+  await flushPromises()  // 等待由 fetch 触发的处理
 
   expect(wrapper.find('.processed').exists()).toBe(true)
 })
 ```
 
-## Common Pattern: Combining Methods
+## 常见模式: 组合方法
 ```javascript
-test('submits form and shows success', async () => {
+test('提交表单并显示成功', async () => {
   const wrapper = mount(ContactForm)
 
-  // Fill form (awaiting each interaction)
+  // 填写表单(awaiting 每个交互)
   await wrapper.find('#name').setValue('John')
   await wrapper.find('#email').setValue('john@example.com')
 
-  // Submit form
+  // 提交表单
   await wrapper.find('form').trigger('submit')
 
-  // Wait for API submission to complete
+  // 等待 API 提交完成
   await flushPromises()
 
-  // Assert success state
+  // 断言成功状态
   expect(wrapper.find('.success-message').exists()).toBe(true)
 })
 ```
 
-## Testing with MSW or Mock APIs
+## 使用 MSW 或模拟 API 测试
 ```javascript
 import { flushPromises } from '@vue/test-utils'
 import { rest } from 'msw'
@@ -159,10 +159,10 @@ const server = setupServer(
   })
 )
 
-test('displays user data', async () => {
+test('显示用户数据', async () => {
   const wrapper = mount(UserCard)
 
-  // MSW might require multiple flushPromises
+  // MSW 可能需要多个 flushPromises
   await flushPromises()
   await flushPromises()
 
@@ -170,6 +170,6 @@ test('displays user data', async () => {
 })
 ```
 
-## Reference
-- [Vue Test Utils - Asynchronous Behavior](https://test-utils.vuejs.org/guide/advanced/async-suspense)
-- [Vue.js Testing Guide](https://vuejs.org/guide/scaling-up/testing)
+## 参考
+- [Vue Test Utils - 异步行为](https://test-utils.vuejs.org/guide/advanced/async-suspense)
+- [Vue.js 测试指南](https://vuejs.org/guide/scaling-up/testing)

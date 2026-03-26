@@ -1,28 +1,28 @@
 ---
 name: core-new-apis
-description: Vue 3 reactivity system, lifecycle hooks, and composable patterns
+description: Vue 3 响应式系统、生命周期钩子和 composable 模式
 ---
 
-# Reactivity, Lifecycle & Composables
+# 响应式、生命周期 & Composables
 
-## Reactivity
+## 响应式
 
 ### ref vs shallowRef
 
 ```ts
 import { ref, shallowRef } from 'vue'
 
-// ref - deep reactivity (tracks nested changes)
+// ref - 深度响应式(跟踪嵌套更改)
 const user = ref({ name: 'John', profile: { age: 30 } })
-user.value.profile.age = 31  // Triggers reactivity
+user.value.profile.age = 31  // 触发响应式
 
-// shallowRef - only .value assignment triggers reactivity (better performance)
+// shallowRef - 仅 .value 赋值触发响应式(更好的性能)
 const data = shallowRef({ items: [] })
-data.value.items.push('new')  // Does NOT trigger reactivity
-data.value = { items: ['new'] }  // Triggers reactivity
+data.value.items.push('new')  // 不触发响应式
+data.value = { items: ['new'] }  // 触发响应式
 ```
 
-**Prefer `shallowRef`** for large data structures or when deep reactivity is unnecessary.
+**优先使用 `shallowRef`** 用于大型数据结构或不需要深度响应式时。
 
 ### computed
 
@@ -31,10 +31,10 @@ import { ref, computed } from 'vue'
 
 const count = ref(0)
 
-// Read-only computed
+// 只读计算属性
 const doubled = computed(() => count.value * 2)
 
-// Writable computed
+// 可写计算属性
 const plusOne = computed({
   get: () => count.value + 1,
   set: (val) => { count.value = val - 1 }
@@ -47,15 +47,15 @@ const plusOne = computed({
 import { reactive, readonly } from 'vue'
 
 const state = reactive({ count: 0, nested: { value: 1 } })
-state.count++  // Reactive
+state.count++  // 响应式
 
 const readonlyState = readonly(state)
-readonlyState.count++  // Warning, mutation blocked
+readonlyState.count++  // 警告,阻止变异
 ```
 
-Note: `reactive()` loses reactivity on destructuring. Use `ref()` or `toRefs()`.
+注意: `reactive()` 在解构时失去响应式。使用 `ref()` 或 `toRefs()`。
 
-## Watchers
+## 侦听器
 
 ### watch
 
@@ -64,33 +64,33 @@ import { ref, watch } from 'vue'
 
 const count = ref(0)
 
-// Watch single ref
+// 侦听单个 ref
 watch(count, (newVal, oldVal) => {
-  console.log(`Changed from ${oldVal} to ${newVal}`)
+  console.log(`从 ${oldVal} 更改为 ${newVal}`)
 })
 
-// Watch getter
+// 侦听 getter
 watch(
   () => props.id,
   (id) => fetchData(id),
   { immediate: true }
 )
 
-// Watch multiple sources
+// 侦听多个源
 watch([firstName, lastName], ([first, last]) => {
   fullName.value = `${first} ${last}`
 })
 
-// Deep watch with depth limit (Vue 3.5+)
+// 深度侦听带深度限制(Vue 3.5+)
 watch(state, callback, { deep: 2 })
 
-// Once (Vue 3.4+)
+// 一次性(Vue 3.4+)
 watch(source, callback, { once: true })
 ```
 
 ### watchEffect
 
-Runs immediately and auto-tracks dependencies.
+立即运行并自动跟踪依赖。
 
 ```ts
 import { ref, watchEffect, onWatcherCleanup } from 'vue'
@@ -100,32 +100,32 @@ const id = ref(1)
 watchEffect(async () => {
   const controller = new AbortController()
   
-  // Cleanup on re-run or unmount (Vue 3.5+)
+  // 在重新运行或卸载时清理(Vue 3.5+)
   onWatcherCleanup(() => controller.abort())
   
   const res = await fetch(`/api/${id.value}`, { signal: controller.signal })
   data.value = await res.json()
 })
 
-// Pause/resume (Vue 3.5+)
+// 暂停/恢复(Vue 3.5+)
 const { pause, resume, stop } = watchEffect(() => {})
 pause()
 resume()
 stop()
 ```
 
-### Flush Timing
+### 刷新时机
 
 ```ts
-// 'pre' (default) - before component update
-// 'post' - after component update (access updated DOM)
-// 'sync' - immediate, use with caution
+// 'pre'(默认) - 组件更新之前
+// 'post' - 组件更新之后(访问更新的 DOM)
+// 'sync' - 立即,谨慎使用
 
 watch(source, callback, { flush: 'post' })
-watchPostEffect(() => {})  // Alias for flush: 'post'
+watchPostEffect(() => {})  // flush: 'post' 的别名
 ```
 
-## Lifecycle Hooks
+## 生命周期钩子
 
 ```ts
 import {
@@ -138,27 +138,27 @@ import {
   onErrorCaptured,
   onActivated,      // KeepAlive
   onDeactivated,    // KeepAlive
-  onServerPrefetch  // SSR only
+  onServerPrefetch  // 仅 SSR
 } from 'vue'
 
 onMounted(() => {
-  console.log('DOM is ready')
+  console.log('DOM 已就绪')
 })
 
 onUnmounted(() => {
-  // Cleanup timers, listeners, etc.
+  // 清理计时器、侦听器等
 })
 
-// Error boundary
+// 错误边界
 onErrorCaptured((err, instance, info) => {
   console.error(err)
-  return false  // Stop propagation
+  return false  // 停止传播
 })
 ```
 
 ## Effect Scope
 
-Group reactive effects for batch disposal.
+将响应式效果分组以便批量清理。
 
 ```ts
 import { effectScope, onScopeDispose } from 'vue'
@@ -171,25 +171,25 @@ scope.run(() => {
   
   watch(count, () => console.log(count.value))
   
-  // Cleanup when scope stops
+  // 当作用域停止时清理
   onScopeDispose(() => {
-    console.log('Scope disposed')
+    console.log('作用域已清理')
   })
 })
 
-// Dispose all effects
+// 清理所有效果
 scope.stop()
 ```
 
 ## Composables
 
-Composables are functions that encapsulate stateful logic using Composition API.
+Composables 是使用 Composition API 封装有状态逻辑的函数。
 
-### Naming Convention
+### 命名约定
 
-- Start with `use`: `useMouse`, `useFetch`, `useCounter`
+- 以 `use` 开头: `useMouse`、`useFetch`、`useCounter`
 
-### Pattern
+### 模式
 
 ```ts
 // composables/useMouse.ts
@@ -211,9 +211,9 @@ export function useMouse() {
 }
 ```
 
-### Accept Reactive Input
+### 接受响应式输入
 
-Use `toValue()` (Vue 3.3+) to normalize refs, getters, or plain values.
+使用 `toValue()` (Vue 3.3+) 来规范化 refs、getters 或普通值。
 
 ```ts
 import { ref, watchEffect, toValue, type MaybeRefOrGetter } from 'vue'
@@ -237,21 +237,21 @@ export function useFetch(url: MaybeRefOrGetter<string>) {
   return { data, error }
 }
 
-// Usage - all work:
+// 使用 - 都可以工作:
 useFetch('/api/users')
 useFetch(urlRef)
 useFetch(() => `/api/users/${props.id}`)
 ```
 
-### Return Refs (Not Reactive)
+### 返回 Refs(而非响应式对象)
 
-Always return plain object with refs for destructuring compatibility.
+始终返回带有 refs 的普通对象以保持解构兼容性。
 
 ```ts
-// Good - preserves reactivity when destructured
+// 好 - 解构时保持响应式
 return { x, y }
 
-// Bad - loses reactivity when destructured
+// 坏 - 解构时失去响应式
 return reactive({ x, y })
 ```
 

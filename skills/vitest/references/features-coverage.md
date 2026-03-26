@@ -1,37 +1,37 @@
 ---
 name: code-coverage
-description: Code coverage with V8 or Istanbul providers
+description: 使用 V8 或 Istanbul 提供程序的代码覆盖率
 ---
 
-# Code Coverage
+# 代码覆盖率
 
-## Setup
+## 设置
 
 ```bash
-# Run tests with coverage
+# 使用覆盖率运行测试
 vitest run --coverage
 ```
 
-## Configuration
+## 配置
 
 ```ts
 // vitest.config.ts
 defineConfig({
   test: {
     coverage: {
-      // Provider: 'v8' (default, faster) or 'istanbul' (more compatible)
+      // 提供程序: 'v8'(默认,更快)或 'istanbul'(更兼容)
       provider: 'v8',
       
-      // Enable coverage
+      // 启用覆盖率
       enabled: true,
       
-      // Reporters
+      // 报告器
       reporter: ['text', 'json', 'html'],
       
-      // Files to include
+      // 包含的文件
       include: ['src/**/*.{ts,tsx}'],
       
-      // Files to exclude
+      // 排除的文件
       exclude: [
         'node_modules/',
         'tests/',
@@ -39,10 +39,10 @@ defineConfig({
         '**/*.test.ts',
       ],
       
-      // Report uncovered files
+      // 报告未覆盖的文件
       all: true,
       
-      // Thresholds
+      // 阈值
       thresholds: {
         lines: 80,
         functions: 80,
@@ -54,17 +54,17 @@ defineConfig({
 })
 ```
 
-## Providers
+## 提供程序
 
-### V8 (Default)
+### V8 (默认)
 
 ```bash
 npm i -D @vitest/coverage-v8
 ```
 
-- Faster, no pre-instrumentation
-- Uses V8's native coverage
-- Recommended for most projects
+- 更快,无需预插桩
+- 使用 V8 的原生覆盖率
+- 推荐用于大多数项目
 
 ### Istanbul
 
@@ -72,49 +72,49 @@ npm i -D @vitest/coverage-v8
 npm i -D @vitest/coverage-istanbul
 ```
 
-- Pre-instruments code
-- Works in any JS runtime
-- More overhead but widely compatible
+- 预插桩代码
+- 在任何 JS 运行时中工作
+- 开销更大但广泛兼容
 
-## Reporters
+## 报告器
 
 ```ts
 coverage: {
   reporter: [
-    'text',           // Terminal output
-    'text-summary',   // Summary only
-    'json',           // JSON file
-    'html',           // HTML report
-    'lcov',           // For CI tools
-    'cobertura',      // XML format
+    'text',           // 终端输出
+    'text-summary',   // 仅摘要
+    'json',           // JSON 文件
+    'html',           // HTML 报告
+    'lcov',           // 用于 CI 工具
+    'cobertura',      // XML 格式
   ],
   reportsDirectory: './coverage',
 }
 ```
 
-## Thresholds
+## 阈值
 
-Fail tests if coverage is below threshold:
+如果覆盖率低于阈值,则测试失败:
 
 ```ts
 coverage: {
   thresholds: {
-    // Global thresholds
+    // 全局阈值
     lines: 80,
     functions: 75,
     branches: 70,
     statements: 80,
     
-    // Per-file thresholds
+    // 每文件阈值
     perFile: true,
     
-    // Auto-update thresholds (for gradual improvement)
+    // 自动更新阈值(用于逐步改进)
     autoUpdate: true,
   },
 }
 ```
 
-## Ignoring Code
+## 忽略代码
 
 ### V8
 
@@ -125,7 +125,7 @@ function ignored() {
 }
 
 /* v8 ignore start -- @preserve */
-// All code here ignored
+// 此处的所有代码都被忽略
 /* v8 ignore stop -- @preserve */
 ```
 
@@ -137,13 +137,13 @@ function ignored() {}
 
 /* istanbul ignore if -- @preserve */
 if (condition) {
-  // ignored
+  // 被忽略
 }
 ```
 
-Note: `@preserve` keeps comments through esbuild.
+注意: `@preserve` 使注释通过 esbuild。
 
-## Package.json Scripts
+## Package.json 脚本
 
 ```json
 {
@@ -155,9 +155,9 @@ Note: `@preserve` keeps comments through esbuild.
 }
 ```
 
-## Vitest UI Coverage
+## Vitest UI 覆盖率
 
-Enable HTML coverage in Vitest UI:
+在 Vitest UI 中启用 HTML 覆盖率:
 
 ```ts
 coverage: {
@@ -166,9 +166,9 @@ coverage: {
 }
 ```
 
-Run with `vitest --ui` to view coverage visually.
+使用 `vitest --ui` 运行以可视化查看覆盖率。
 
-## CI Integration
+## CI 集成
 
 ```yaml
 # GitHub Actions
@@ -181,9 +181,9 @@ Run with `vitest --ui` to view coverage visually.
     files: ./coverage/lcov.info
 ```
 
-## Coverage with Sharding
+## 分片覆盖率
 
-Merge coverage from sharded runs:
+合并分片运行的覆盖率:
 
 ```bash
 vitest run --shard=1/3 --coverage --reporter=blob
@@ -193,13 +193,13 @@ vitest run --shard=3/3 --coverage --reporter=blob
 vitest --merge-reports --coverage --reporter=json
 ```
 
-## Key Points
+## 关键点
 
-- V8 is faster, Istanbul is more compatible
-- Use `--coverage` flag or `coverage.enabled: true`
-- Include `all: true` to see uncovered files
-- Set thresholds to enforce minimum coverage
-- Use `@preserve` comment to keep ignore hints
+- V8 更快,Istanbul 更兼容
+- 使用 `--coverage` 标志或 `coverage.enabled: true`
+- 包含 `all: true` 以查看未覆盖的文件
+- 设置阈值以强制最低覆盖率
+- 使用 `@preserve` 注释保留忽略提示
 
 <!-- 
 Source references:

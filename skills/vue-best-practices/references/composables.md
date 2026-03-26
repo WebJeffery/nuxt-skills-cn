@@ -1,26 +1,26 @@
 ---
-title: Composable Organization Patterns
+title: Composable 组织模式
 impact: MEDIUM
-impactDescription: Well-structured composables improve maintainability, reusability, and update performance
+impactDescription: 结构良好的 composables 提高可维护性、可重用性和更新性能
 type: best-practice
 tags: [vue3, composables, composition-api, code-organization, api-design, readonly, utilities]
 ---
 
-# Composable Organization Patterns
+# Composable 组织模式
 
-**Impact: MEDIUM** - Treat composables as reusable, stateful building blocks and keep their code organized by feature concern. This keeps large components maintainable and prevents hard-to-debug mutation and API design issues.
+**影响: MEDIUM** - 将 composables 视为可重用的、有状态的构建块,并按功能关注点组织其代码。这保持大型组件可维护,并防止难以调试的变异和 API 设计问题。
 
-## Task List
+## 任务列表
 
-- Compose complex behavior from small, focused composables
-- Use options objects for composables with multiple optional parameters
-- Return readonly state when updates must flow through explicit actions
-- Keep pure utility functions as plain utilities, not composables
-- Organize composable and component code by feature concern, and extract composables when components grow
+- 从小型、专注的 composables 组合复杂行为
+- 对具有多个可选参数的 composables 使用选项对象
+- 当更新必须通过显式操作流动时返回只读状态
+- 将纯工具函数保持为普通工具,而不是 composables
+- 按功能关注点组织 composable 和组件代码,并在组件增长时提取 composables
 
-## Compose Composables from Smaller Primitives
+## 从更小的原语组合 Composables
 
-**BAD:**
+**错误:**
 ```vue
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
@@ -44,7 +44,7 @@ onUnmounted(() => window.removeEventListener('mousemove', onMove))
 </script>
 ```
 
-**GOOD:**
+**正确:**
 ```javascript
 // composables/useEventListener.js
 import { onMounted, onUnmounted, toValue } from 'vue'
@@ -92,18 +92,18 @@ export function useMouseInElement(elementRef) {
 }
 ```
 
-## Use Options Object Pattern for Composable Parameters
+## 对 Composable 参数使用选项对象模式
 
-**BAD:**
+**错误:**
 ```javascript
 export function useFetch(url, method, headers, timeout, retries, immediate) {
-  // hard to read and easy to misorder
+  // 难以阅读且容易错误排序
 }
 
 useFetch('/api/users', 'GET', null, 5000, 3, true)
 ```
 
-**GOOD:**
+**正确:**
 ```javascript
 export function useFetch(url, options = {}) {
   const {
@@ -114,7 +114,7 @@ export function useFetch(url, options = {}) {
     immediate = true
   } = options
 
-  // implementation
+  // 实现
   return { method, headers, timeout, retries, immediate }
 }
 
@@ -135,25 +135,25 @@ interface UseCounterOptions {
 
 export function useCounter(options: UseCounterOptions = {}) {
   const { initial = 0, min = -Infinity, max = Infinity, step = 1 } = options
-  // implementation
+  // 实现
 }
 ```
 
-## Return Readonly State with Explicit Actions
+## 返回具有显式操作的只读状态
 
-**BAD:**
+**错误:**
 ```javascript
 export function useCart() {
   const items = ref([])
   const total = computed(() => items.value.reduce((sum, item) => sum + item.price, 0))
-  return { items, total } // any consumer can mutate directly
+  return { items, total } // 任何消费者可以直接变异
 }
 
 const { items } = useCart()
 items.value.push({ id: 1, price: 10 })
 ```
 
-**GOOD:**
+**正确:**
 ```javascript
 import { ref, computed, readonly } from 'vue'
 
@@ -186,9 +186,9 @@ export function useCart() {
 }
 ```
 
-## Keep Utilities as Utilities
+## 将工具保持为工具
 
-**BAD:**
+**错误:**
 ```javascript
 export function useFormatters() {
   const formatDate = (date) => new Intl.DateTimeFormat('en-US').format(date)
@@ -200,7 +200,7 @@ export function useFormatters() {
 const { formatDate } = useFormatters()
 ```
 
-**GOOD:**
+**正确:**
 ```javascript
 // utils/formatters.js
 export function formatDate(date) {
@@ -226,9 +226,9 @@ export function useInvoiceSummary(invoiceRef) {
 }
 ```
 
-## Organize Composable and Component Code by Feature Concern
+## 按功能关注点组织 Composable 和组件代码
 
-**BAD:**
+**错误:**
 ```vue
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
@@ -249,20 +249,20 @@ onMounted(() => { /* ... */ })
 </script>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <script setup>
 import { useItems } from '@/composables/useItems'
 import { useSearch } from '@/composables/useSearch'
 import { useSelectionModal } from '@/composables/useSelectionModal'
 
-// Data
+// 数据
 const { items, loading, fetchItems } = useItems()
 
-// Search/filter/sort
+// 搜索/筛选/排序
 const { query, visibleItems } = useSearch(items)
 
-// Selection + modal
+// 选择 + 模态框
 const { selectedItem, isModalOpen, selectItem, closeModal } = useSelectionModal()
 </script>
 ```

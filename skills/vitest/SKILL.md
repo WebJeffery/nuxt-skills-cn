@@ -1,52 +1,48 @@
 ---
 name: vitest
-description: Vitest fast unit testing framework powered by Vite with Jest-compatible API. Use when writing tests, mocking, configuring coverage, or working with test filtering and fixtures.
-metadata:
-  author: Anthony Fu
-  version: "2026.1.28"
-  source: Generated from https://github.com/vitest-dev/vitest, scripts located at https://github.com/antfu/skills
+description: Vitest 是由 Vite 驱动的快速单元测试框架,具有 Jest 兼容的 API。在编写测试、模拟、配置覆盖率或使用测试过滤和 fixtures 时使用。
 ---
 
-Vitest is a next-generation testing framework powered by Vite. It provides a Jest-compatible API with native ESM, TypeScript, and JSX support out of the box. Vitest shares the same config, transformers, resolvers, and plugins with your Vite app.
+Vitest 是由 Vite 驱动的下一代测试框架。它提供 Jest 兼容的 API,开箱即支持原生 ESM、TypeScript 和 JSX。Vitest 与您的 Vite 应用共享相同的配置、转换器、解析器和插件。
 
-**Key Features:**
-- Vite-native: Uses Vite's transformation pipeline for fast HMR-like test updates
-- Jest-compatible: Drop-in replacement for most Jest test suites
-- Smart watch mode: Only reruns affected tests based on module graph
-- Native ESM, TypeScript, JSX support without configuration
-- Multi-threaded workers for parallel test execution
-- Built-in coverage via V8 or Istanbul
-- Snapshot testing, mocking, and spy utilities
+**关键功能:**
+- Vite 原生: 使用 Vite 的转换管道进行类似 HMR 的快速测试更新
+- Jest 兼容: 大多数 Jest 测试套件的直接替代品
+- 智能监视模式: 仅基于模块图重新运行受影响的测试
+- 原生 ESM、TypeScript、JSX 支持无需配置
+- 多线程工作器用于并行测试执行
+- 通过 V8 或 Istanbul 内置覆盖率
+- 快照测试、模拟和 spy 工具
 
-> The skill is based on Vitest 3.x, generated at 2026-01-28.
+> 该技能基于 Vitest 3.x,生成于 2026-01-28。
 
-## Core
+## 核心
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Configuration | Vitest and Vite config integration, defineConfig usage | [core-config](references/core-config.md) |
-| CLI | Command line interface, commands and options | [core-cli](references/core-cli.md) |
-| Test API | test/it function, modifiers like skip, only, concurrent | [core-test-api](references/core-test-api.md) |
-| Describe API | describe/suite for grouping tests and nested suites | [core-describe](references/core-describe.md) |
-| Expect API | Assertions with toBe, toEqual, matchers and asymmetric matchers | [core-expect](references/core-expect.md) |
-| Hooks | beforeEach, afterEach, beforeAll, afterAll, aroundEach | [core-hooks](references/core-hooks.md) |
+| 配置 | Vitest 和 Vite 配置集成、defineConfig 用法 | [core-config](references/core-config.md) |
+| CLI | 命令行界面、命令和选项 | [core-cli](references/core-cli.md) |
+| 测试 API | test/it 函数、skip、only、concurrent 等修饰符 | [core-test-api](references/core-test-api.md) |
+| Describe API | describe/suite 用于分组测试和嵌套套件 | [core-describe](references/core-describe.md) |
+| Expect API | 断言,包括 toBe、toEqual、matchers 和非对称 matchers | [core-expect](references/core-expect.md) |
+| Hooks | beforeEach、afterEach、beforeAll、afterAll、aroundEach | [core-hooks](references/core-hooks.md) |
 
-## Features
+## 功能
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Mocking | Mock functions, modules, timers, dates with vi utilities | [features-mocking](references/features-mocking.md) |
-| Snapshots | Snapshot testing with toMatchSnapshot and inline snapshots | [features-snapshots](references/features-snapshots.md) |
-| Coverage | Code coverage with V8 or Istanbul providers | [features-coverage](references/features-coverage.md) |
-| Test Context | Test fixtures, context.expect, test.extend for custom fixtures | [features-context](references/features-context.md) |
-| Concurrency | Concurrent tests, parallel execution, sharding | [features-concurrency](references/features-concurrency.md) |
-| Filtering | Filter tests by name, file patterns, tags | [features-filtering](references/features-filtering.md) |
+| 模拟 | 使用 vi 工具模拟函数、模块、计时器、日期 | [features-mocking](references/features-mocking.md) |
+| 快照 | 使用 toMatchSnapshot 和内联快照进行快照测试 | [features-snapshots](references/features-snapshots.md) |
+| 覆盖率 | 使用 V8 或 Istanbul 提供程序的代码覆盖率 | [features-coverage](references/features-coverage.md) |
+| 测试上下文 | 测试 fixtures、context.expect、test.extend 用于自定义 fixtures | [features-context](references/features-context.md) |
+| 并发 | 并发测试、并行执行、分片 | [features-concurrency](references/features-concurrency.md) |
+| 过滤 | 按名称、文件模式、标签过滤测试 | [features-filtering](references/features-filtering.md) |
 
-## Advanced
+## 高级
 
-| Topic | Description | Reference |
+| 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| Vi Utilities | vi helper: mock, spyOn, fake timers, hoisted, waitFor | [advanced-vi](references/advanced-vi.md) |
-| Environments | Test environments: node, jsdom, happy-dom, custom | [advanced-environments](references/advanced-environments.md) |
-| Type Testing | Type-level testing with expectTypeOf and assertType | [advanced-type-testing](references/advanced-type-testing.md) |
-| Projects | Multi-project workspaces, different configs per project | [advanced-projects](references/advanced-projects.md) |
+| Vi 工具 | vi 辅助: mock、spyOn、假计时器、hoisted、waitFor | [advanced-vi](references/advanced-vi.md) |
+| 环境 | 测试环境: node、jsdom、happy-dom、自定义 | [advanced-environments](references/advanced-environments.md) |
+| 类型测试 | 使用 expectTypeOf 和 assertType 进行类型级测试 | [advanced-type-testing](references/advanced-type-testing.md) |
+| 项目 | 多项目工作区、每个项目不同配置 | [advanced-projects](references/advanced-projects.md) |

@@ -1,310 +1,219 @@
 ---
-title: Single-File Component Structure, Styling, and Template Patterns
+title: 单文件组件 (SFC) 最佳实践
 impact: MEDIUM
-impactDescription: Consistent SFC structure and styling choices improve maintainability, tooling support, and render performance
+impactDescription: SFC 是 Vue 的核心特性;遵循最佳实践可确保代码可维护和性能优化
 type: best-practice
-tags: [vue3, sfc, scoped-css, styles, build-tools, performance, template, v-html, v-for, computed, v-if, v-show]
+tags: [vue3, sfc, script-setup, style-scoped, organization]
 ---
 
-# Single-File Component Structure, Styling, and Template Patterns
+# 单文件组件 (SFC) 最佳实践
 
-**Impact: MEDIUM** - Using SFCs with consistent structure and performant styling keeps components easier to maintain and avoids unnecessary render overhead.
+**影响: MEDIUM** - 单文件组件是 Vue 的核心特性。遵循最佳实践可确保代码可维护、类型安全和性能优化。
 
-## Task List
+## 任务列表
 
-- Use `.vue` SFCs instead of separate `.js`/`.ts` and `.css` files for components
-- Colocate template, script, and styles in the same SFC by default
-- Use PascalCase for component names in templates and filenames
-- Prefer component-scoped styles
-- Prefer class selectors (not element selectors) in scoped CSS for performance
-- Access DOM / component refs with `useTemplateRef()` in Vue 3.5+
-- Use camelCase keys in `:style` bindings for consistency and IDE support
-- Use `v-for` and `v-if` correctly
-- Never use `v-html` with untrusted/user-provided content
-- Choose `v-if` vs `v-show` based on toggle frequency and initial render cost
+- 使用 `<script setup>` 语法
+- 为组件 props 和 emits 提供类型
+- 使用 `defineProps` 和 `defineEmits`
+- 使用 scoped 样式避免样式污染
+- 按逻辑组织组件代码
+- 避免在模板中使用复杂表达式
 
-## Colocate template, script, and styles
+## 使用 script setup
 
-**BAD:**
-```
-components/
-├── UserCard.vue
-├── UserCard.js
-└── UserCard.css
-```
-
-**GOOD:**
+**正确:**
 ```vue
-<!-- components/UserCard.vue -->
+<script setup>
+import { ref } from 'vue'
+
+const count = ref(0)
+
+function increment() {
+  count.value++
+}
+</script>
+
+<template>
+  <button @click="increment">{{ count }}</button>
+</template>
+```
+
+**错误:**
+```vue
+<script>
+import { ref } from 'vue'
+
+export default {
+  setup() {
+    const count = ref(0)
+
+    function increment() {
+      count.value++
+    }
+
+    return { count, increment }
+  }
+}
+</script>
+```
+
+## 类型化 Props 和 Emits
+
+**正确:**
+```vue
+<script setup lang="ts">
+interface Props {
+  title: string
+  count?: number
+}
+
+interface Emits {
+  (e: 'update', value: number): void
+  (e: 'delete', id: string): void
+}
+
+const props = defineProps<Props>()
+const emit = defineEmits<Emits>()
+</script>
+```
+
+## 使用 Scoped 样式
+
+**正确:**
+```vue
+<template>
+  <div class="container">
+    <h1 class="title">{{ title }}</h1>
+  </div>
+</template>
+
+<style scoped>
+.container {
+  padding: 16px;
+}
+
+.title {
+  font-size: 24px;
+}
+</style>
+```
+
+**错误:**
+```vue
+<template>
+  <div class="container">
+    <h1 class="title">{{ title }}</h1>
+  </div>
+</template>
+
+<style>
+.container {
+  padding: 16px;
+}
+
+.title {
+  font-size: 24px;
+}
+</style>
+```
+
+## 组织组件代码
+
+**推荐顺序:**
+1. `<script setup>` - 组件逻辑
+2. `<template>` - 组件模板
+3. `<style scoped>` - 组件样式
+
+在 `<script setup>` 内部:
+1. 导入
+2. Props 和 Emits 定义
+3. 响应式状态
+4. 计算属性
+5. 方法
+6. 生命周期钩子
+
+**正确:**
+```vue
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import type { User } from '@/types'
+
+// Props 和 Emits
+interface Props {
+  userId: string
+}
+
+const props = defineProps<Props>()
+
+// 响应式状态
+const user = ref<User | null>(null)
+const loading = ref(false)
+
+// 计算属性
+const displayName = computed(() => user.value?.name || '未知用户')
+
+// 方法
+async function fetchUser() {
+  loading.value = true
+  try {
+    user.value = await api.getUser(props.userId)
+  } finally {
+    loading.value = false
+  }
+}
+
+// 生命周期
+onMounted(fetchUser)
+</script>
+```
+
+## 避免复杂表达式
+
+**错误:**
+```vue
+<template>
+  <div>
+    {{ items.filter(item => item.active).map(item => item.name).join(', ') }}
+  </div>
+</template>
+```
+
+**正确:**
+```vue
 <script setup>
 import { computed } from 'vue'
 
-const props = defineProps({
-  user: { type: Object, required: true }
-})
-
-const displayName = computed(() =>
-  `${props.user.firstName} ${props.user.lastName}`
+const activeNames = computed(() =>
+  items.value
+    .filter(item => item.active)
+    .map(item => item.name)
+    .join(', ')
 )
 </script>
 
 <template>
-  <div class="user-card">
-    <h3 class="name">{{ displayName }}</h3>
-  </div>
-</template>
-
-<style scoped>
-.user-card {
-  padding: 1rem;
-}
-
-.name {
-  margin: 0;
-}
-</style>
-```
-
-## Use PascalCase for component names
-
-**BAD:**
-```vue
-<script setup>
-import userProfile from './user-profile.vue'
-</script>
-
-<template>
-  <user-profile :user="currentUser" />
+  <div>{{ activeNames }}</div>
 </template>
 ```
 
-**GOOD:**
-```vue
-<script setup>
-import UserProfile from './UserProfile.vue'
-</script>
+## 最佳实践
 
-<template>
-  <UserProfile :user="currentUser" />
-</template>
-```
+1. **组件命名:**
+   - 使用 PascalCase 命名组件文件
+   - 组件名应该具有描述性
+   - 避免通用名称如 `Component.vue`
 
-## Best practices for `<style>` block in SFCs
+2. **Props 定义:**
+   - 始终为 props 提供类型
+   - 为可选 props 提供默认值
+   - 使用验证函数进行复杂验证
 
-### Prefer component-scoped styles
+3. **样式组织:**
+   - 使用 scoped 样式避免污染
+   - 使用 CSS Modules 进行更复杂的样式需求
+   - 考虑使用 CSS-in-JS 库进行动态样式
 
-- Use `<style scoped>` for styles that belong to a component.
-- Keep **global CSS** in a dedicated file (e.g. `src/assets/main.css`) for resets, typography, tokens, etc.
-- Use `:deep()` sparingly (edge cases only).
-
-**BAD:**
-
-```vue
-<style>
-/* ❌ leaks everywhere */
-button { border-radius: 999px; }
-</style>
-```
-
-**GOOD:**
-
-```vue
-<style scoped>
-.button { border-radius: 999px; }
-</style>
-```
-
-**GOOD:**
-
-```css
-/* src/assets/main.css */
-/* ✅ resets, tokens, typography, app-wide rules */
-:root { --radius: 999px; }
-```
-
-### Use class selectors in scoped CSS
-
-**BAD:**
-```vue
-<template>
-  <article>
-    <h1>{{ title }}</h1>
-    <p>{{ subtitle }}</p>
-  </article>
-</template>
-
-<style scoped>
-article { max-width: 800px; }
-h1 { font-size: 2rem; }
-p { line-height: 1.6; }
-</style>
-```
-
-**GOOD:**
-```vue
-<template>
-  <article class="article">
-    <h1 class="article-title">{{ title }}</h1>
-    <p class="article-subtitle">{{ subtitle }}</p>
-  </article>
-</template>
-
-<style scoped>
-.article { max-width: 800px; }
-.article-title { font-size: 2rem; }
-.article-subtitle { line-height: 1.6; }
-</style>
-```
-
-## Access DOM / component refs with `useTemplateRef()`
-
-For Vue 3.5+: use `useTemplateRef()` to access template refs.
-
-```vue
-<script setup lang="ts">
-import { onMounted, useTemplateRef } from 'vue'
-
-const inputRef = useTemplateRef<HTMLInputElement>('input')
-
-onMounted(() => {
-  inputRef.value?.focus()
-})
-</script>
-
-<template>
-  <input ref="input" />
-</template>
-```
-
-## Use camelCase in `:style` bindings
-
-**BAD:**
-```vue
-<template>
-  <div :style="{ 'font-size': fontSize + 'px', 'background-color': bg }">
-    Content
-  </div>
-</template>
-```
-
-**GOOD:**
-```vue
-<template>
-  <div :style="{ fontSize: fontSize + 'px', backgroundColor: bg }">
-    Content
-  </div>
-</template>
-```
-
-## Use `v-for` and `v-if` correctly
-
-### Always provide a stable `:key`
-
-- Prefer primitive keys (`string | number`).
-- Avoid using objects as keys.
-
-**GOOD:**
-
-```vue
-<li v-for="item in items" :key="item.id">
-  <input v-model="item.text" />
-</li>
-```
-
-### Avoid `v-if` and `v-for` on the same element
-
-It leads to unclear intent and unnecessary work.
-([Reference](https://vuejs.org/guide/essentials/list.html#v-for-with-v-if))
-
-**To filter items**
-**BAD:**
-
-```vue
-<li v-for="user in users" v-if="user.active" :key="user.id">
-  {{ user.name }}
-</li>
-```
-
-**GOOD:**
-
-```vue
-<script setup lang="ts">
-import { computed } from 'vue'
-
-const activeUsers = computed(() => users.value.filter(u => u.active))
-</script>
-
-<template>
-  <li v-for="user in activeUsers" :key="user.id">
-    {{ user.name }}
-  </li>
-</template>
-```
-
-**To conditionally show/hide the entire list**
-**GOOD:**
-
-```vue
-<ul v-if="shouldShowUsers">
-  <li v-for="user in users" :key="user.id">
-    {{ user.name }}
-  </li>
-</ul>
-```
-
-## Never render untrusted HTML with `v-html`
-
-**BAD:**
-```vue
-<template>
-  <!-- DANGEROUS: untrusted input can inject scripts -->
-  <article v-html="userProvidedContent"></article>
-</template>
-```
-
-**GOOD:**
-```vue
-<script setup>
-import { computed } from 'vue'
-import DOMPurify from 'dompurify'
-
-const props = defineProps<{
-  trustedHtml?: string
-  plainText: string
-}>()
-
-const safeHtml = computed(() => DOMPurify.sanitize(props.trustedHtml ?? ''))
-</script>
-
-<template>
-  <!-- Preferred: escaped interpolation -->
-  <p>{{ props.plainText }}</p>
-
-  <!-- Only for trusted/sanitized HTML -->
-  <article v-html="safeHtml"></article>
-</template>
-```
-
-## Choose `v-if` vs `v-show` by toggle behavior
-
-**BAD:**
-```vue
-<template>
-  <!-- Frequent toggles with v-if cause repeated mount/unmount -->
-  <ComplexPanel v-if="isPanelOpen" />
-
-  <!-- Rarely shown content with v-show pays initial render cost -->
-  <AdminPanel v-show="isAdmin" />
-</template>
-```
-
-**GOOD:**
-```vue
-<template>
-  <!-- Frequent toggles: keep in DOM, toggle display -->
-  <ComplexPanel v-show="isPanelOpen" />
-
-  <!-- Rare condition: lazy render only when true -->
-  <AdminPanel v-if="isAdmin" />
-</template>
-```
+4. **性能优化:**
+   - 使用 `v-once` 优化静态内容
+   - 使用 `v-memo` 优化昂贵计算
+   - 避免不必要的响应式

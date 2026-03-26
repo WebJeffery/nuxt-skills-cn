@@ -1,32 +1,32 @@
 ---
-title: Use Vitest for Vue 3 Testing - Recommended by Vue Team
+title: 使用 Vitest 进行 Vue 3 测试 - Vue 团队推荐
 impact: MEDIUM
-impactDescription: Using Jest or other runners with Vite projects requires complex configuration and causes slower test runs
+impactDescription: 在 Vite 项目中使用 Jest 或其他运行器需要复杂的配置,并导致测试运行速度变慢
 type: best-practice
 tags: [vue3, testing, vitest, vite, configuration, setup]
 ---
 
-# Use Vitest for Vue 3 Testing - Recommended by Vue Team
+# 使用 Vitest 进行 Vue 3 测试 - Vue 团队推荐
 
-**Impact: MEDIUM** - Vitest is created and maintained by Vue/Vite team members and shares the same configuration and transform pipeline as Vite. Using Jest or other test runners with Vite-based projects requires additional configuration and can result in slower test execution and compatibility issues.
+**影响: MEDIUM** - Vitest 由 Vue/Vite 团队成员创建和维护,与 Vite 共享相同的配置和转换管道。在基于 Vite 的项目中使用 Jest 或其他测试运行器需要额外的配置,并可能导致测试执行速度变慢和兼容性问题。
 
-Use Vitest for new Vue 3 projects. Only consider Jest if migrating an existing test suite.
+为新的 Vue 3 项目使用 Vitest。仅在迁移现有测试套件时考虑 Jest。
 
-## Task Checklist
+## 任务清单
 
-- [ ] Install Vitest and related packages for Vue testing
-- [ ] Configure vitest in vite.config.js or vitest.config.js
-- [ ] Set up proper test environment (happy-dom or jsdom)
-- [ ] Add test scripts to package.json
-- [ ] Configure globals if desired for cleaner test syntax
-- [ ] Use @vue/test-utils for component mounting
+- [ ] 安装 Vitest 和 Vue 测试相关包
+- [ ] 在 vite.config.js 或 vitest.config.js 中配置 vitest
+- [ ] 设置正确的测试环境(happy-dom 或 jsdom)
+- [ ] 在 package.json 中添加测试脚本
+- [ ] 如果需要更简洁的测试语法,配置 globals
+- [ ] 使用 @vue/test-utils 进行组件挂载
 
-## Quick Setup
+## 快速设置
 
 ```bash
-# Install required packages
+# 安装必需的包
 npm install -D vitest @vue/test-utils happy-dom
-# or with jsdom
+# 或使用 jsdom
 npm install -D vitest @vue/test-utils jsdom
 ```
 
@@ -38,11 +38,11 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   test: {
-    // Enable global test APIs (describe, it, expect)
+    // 启用全局测试 API(describe, it, expect)
     globals: true,
-    // Use happy-dom for faster tests (or 'jsdom' for better compatibility)
+    // 使用 happy-dom 以获得更快的测试(或 'jsdom' 以获得更好的兼容性)
     environment: 'happy-dom',
-    // Optional: Setup files for global configuration
+    // 可选:用于全局配置的设置文件
     setupFiles: ['./src/test/setup.js']
   }
 })
@@ -59,7 +59,7 @@ export default defineConfig({
 }
 ```
 
-**tsconfig.json (if using TypeScript):**
+**tsconfig.json (如果使用 TypeScript):**
 ```json
 {
   "compilerOptions": {
@@ -68,11 +68,11 @@ export default defineConfig({
 }
 ```
 
-## Test File Example
+## 测试文件示例
 
 ```javascript
 // src/components/Counter.test.js
-import { describe, it, expect, beforeEach } from 'vitest'  // optional with globals: true
+import { describe, it, expect, beforeEach } from 'vitest'  // 使用 globals: true 时可选
 import { mount } from '@vue/test-utils'
 import Counter from './Counter.vue'
 
@@ -83,29 +83,29 @@ describe('Counter', () => {
     wrapper = mount(Counter)
   })
 
-  it('renders initial count', () => {
+  it('渲染初始计数', () => {
     expect(wrapper.find('[data-testid="count"]').text()).toBe('0')
   })
 
-  it('increments when button clicked', async () => {
+  it('点击按钮时递增', async () => {
     await wrapper.find('[data-testid="increment"]').trigger('click')
     expect(wrapper.find('[data-testid="count"]').text()).toBe('1')
   })
 })
 ```
 
-## Vitest vs Jest Comparison
+## Vitest vs Jest 比较
 
-| Feature | Vitest | Jest |
+| 功能 | Vitest | Jest |
 |---------|--------|------|
-| Vite Integration | Native | Requires config |
-| Speed | Very fast (ESM native) | Slower with Vite |
-| Watch Mode | Excellent | Good |
-| Vue SFC Support | Works with Vite | Needs vue-jest |
-| Config Sharing | Same as vite.config | Separate |
-| API | Jest-compatible | Standard |
+| Vite 集成 | 原生 | 需要配置 |
+| 速度 | 非常快(原生 ESM) | 与 Vite 一起使用时较慢 |
+| 监视模式 | 优秀 | 良好 |
+| Vue SFC 支持 | 与 Vite 一起工作 | 需要 vue-jest |
+| 配置共享 | 与 vite.config 相同 | 分离 |
+| API | Jest 兼容 | 标准 |
 
-## Using with Testing Library
+## 与 Testing Library 一起使用
 
 ```bash
 npm install -D @testing-library/vue @testing-library/jest-dom
@@ -124,7 +124,7 @@ expect.extend(matchers)
 import { render, screen, fireEvent } from '@testing-library/vue'
 import UserCard from './UserCard.vue'
 
-test('displays user name', () => {
+test('显示用户名', () => {
   render(UserCard, {
     props: { name: 'John Doe' }
   })
@@ -133,10 +133,10 @@ test('displays user name', () => {
 })
 ```
 
-## Advanced Configuration
+## 高级配置
 
 ```javascript
-// vitest.config.js (separate file if preferred)
+// vitest.config.js (如果首选单独文件)
 import { defineConfig } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
 
@@ -152,9 +152,9 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
       exclude: ['node_modules', 'test']
     },
-    // Helpful for debugging
+    // 有助于调试
     reporters: ['verbose'],
-    // Run tests in sequence in CI
+    // 在 CI 中按顺序运行测试
     poolOptions: {
       threads: {
         singleThread: process.env.CI === 'true'
@@ -164,9 +164,9 @@ export default defineConfig({
 })
 ```
 
-## Common Patterns
+## 常见模式
 
-### Mocking Modules
+### 模拟模块
 ```javascript
 import { vi } from 'vitest'
 
@@ -175,7 +175,7 @@ vi.mock('@/api/users', () => ({
 }))
 ```
 
-### Testing with Fake Timers
+### 使用假计时器测试
 ```javascript
 import { vi, beforeEach, afterEach } from 'vitest'
 
@@ -187,7 +187,7 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
-test('debounced search', async () => {
+test('防抖搜索', async () => {
   const wrapper = mount(SearchBox)
   await wrapper.find('input').setValue('vue')
 
@@ -198,7 +198,7 @@ test('debounced search', async () => {
 })
 ```
 
-## Reference
-- [Vitest Documentation](https://vitest.dev/)
-- [Vue.js Testing Guide](https://vuejs.org/guide/scaling-up/testing)
+## 参考
+- [Vitest 文档](https://vitest.dev/)
+- [Vue.js 测试指南](https://vuejs.org/guide/scaling-up/testing)
 - [Vue Test Utils](https://test-utils.vuejs.org/)

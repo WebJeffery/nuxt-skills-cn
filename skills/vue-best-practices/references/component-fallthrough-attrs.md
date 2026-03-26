@@ -1,42 +1,42 @@
 ---
-title: Component Fallthrough Attributes Best Practices
+title: 组件透传属性最佳实践
 impact: MEDIUM
-impactDescription: Incorrect $attrs access and reactivity assumptions can cause undefined values and watchers that never run
+impactDescription: 不当的 $attrs 访问和响应式假设可能导致未定义值和永不运行的侦听器
 type: best-practice
 tags: [vue3, attrs, fallthrough-attributes, composition-api, reactivity]
 ---
 
-# Component Fallthrough Attributes Best Practices
+# 组件透传属性最佳实践
 
-**Impact: MEDIUM** - Fallthrough attributes are straightforward once you follow Vue's conventions: hyphenated names use bracket notation, listener keys are camelCase `onX`, and `useAttrs()` is current-but-not-reactive.
+**影响: MEDIUM** - 一旦遵循 Vue 的约定,透传属性就很简单:连字符名称使用括号表示法,侦听器键是 camelCase `onX`,`useAttrs()` 是当前但非响应式的。
 
-## Task List
+## 任务列表
 
-- Access hyphenated attribute names with bracket notation (for example `attrs['data-testid']`)
-- Access event listeners with camelCase `onX` keys (for example `attrs.onClick`)
-- Do not `watch()` values returned from `useAttrs()`; those watchers do not trigger on attr changes
-- Use `onUpdated()` for attr-driven side effects
-- Promote frequently observed attrs to props when reactive observation is required
+- 使用括号表示法访问连字符属性名称(例如 `attrs['data-testid']`)
+- 使用 camelCase `onX` 键访问事件侦听器(例如 `attrs.onClick`)
+- 不要 `watch()` 从 `useAttrs()` 返回的值;这些侦听器不会在属性更改时触发
+- 使用 `onUpdated()` 进行属性驱动的副作用
+- 当需要响应式观察时,将频繁观察的属性提升为 props
 
-## Access Attribute and Listener Keys Correctly
+## 正确访问属性和侦听器键
 
-Hyphenated attribute names preserve their original casing in JavaScript, so dot notation does not work for keys that include `-`.
+连字符属性名称在 JavaScript 中保留其原始大小写,因此点表示法不适用于包含 `-` 的键。
 
-**BAD:**
+**错误:**
 ```vue
 <script setup>
 import { useAttrs } from 'vue'
 
 const attrs = useAttrs()
 
-console.log(attrs.data-testid)  // Syntax error
-console.log(attrs.dataTestid)   // undefined for data-testid
-console.log(attrs['on-click'])  // undefined
-console.log(attrs['@click'])    // undefined
+console.log(attrs.data-testid)  // 语法错误
+console.log(attrs.dataTestid)   // 对于 data-testid 未定义
+console.log(attrs['on-click'])  // 未定义
+console.log(attrs['@click'])    // 未定义
 </script>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <script setup>
 import { useAttrs } from 'vue'
@@ -53,9 +53,9 @@ console.log(attrs.onMouseEnter)
 </script>
 ```
 
-### Naming Reference
+### 命名参考
 
-| Parent Usage | Access in `attrs` |
+| 父级用法 | 在 `attrs` 中访问 |
 |--------------|-------------------|
 | `class="foo"` | `attrs.class` |
 | `data-id="123"` | `attrs['data-id']` |
@@ -65,11 +65,11 @@ console.log(attrs.onMouseEnter)
 | `@custom-event="fn"` | `attrs.onCustomEvent` |
 | `@update:modelValue="fn"` | `attrs['onUpdate:modelValue']` |
 
-## `useAttrs()` Is Not Reactive
+## `useAttrs()` 不是响应式的
 
-`useAttrs()` always reflects the latest values, but it is intentionally not reactive for watcher tracking.
+`useAttrs()` 始终反映最新值,但它有意不进行侦听器跟踪的响应式。
 
-**BAD:**
+**错误:**
 ```vue
 <script setup>
 import { watch, watchEffect, useAttrs } from 'vue'
@@ -79,17 +79,17 @@ const attrs = useAttrs()
 watch(
   () => attrs.someAttr,
   (newValue) => {
-    console.log('Changed:', newValue) // Never runs on attr changes
+    console.log('已更改:', newValue) // 永远不会在属性更改时运行
   }
 )
 
 watchEffect(() => {
-  console.log(attrs.class) // Runs on setup, not on attr updates
+  console.log(attrs.class) // 在设置时运行,不在属性更新时运行
 })
 </script>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <script setup>
 import { onUpdated, useAttrs } from 'vue'
@@ -97,12 +97,12 @@ import { onUpdated, useAttrs } from 'vue'
 const attrs = useAttrs()
 
 onUpdated(() => {
-  console.log('Latest attrs:', attrs)
+  console.log('最新 attrs:', attrs)
 })
 </script>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <script setup>
 import { watch } from 'vue'
@@ -114,15 +114,15 @@ const props = defineProps({
 watch(
   () => props.someAttr,
   (newValue) => {
-    console.log('Changed:', newValue)
+    console.log('已更改:', newValue)
   }
 )
 </script>
 ```
 
-## Common Patterns
+## 常见模式
 
-### Check for optional attrs safely
+### 安全检查可选属性
 
 ```vue
 <script setup>
@@ -131,11 +131,11 @@ import { computed, useAttrs } from 'vue'
 const attrs = useAttrs()
 
 const hasTestId = computed(() => 'data-testid' in attrs)
-const ariaLabel = computed(() => attrs['aria-label'] ?? 'Default label')
+const ariaLabel = computed(() => attrs['aria-label'] ?? '默认标签')
 </script>
 ```
 
-### Forward listeners after internal logic
+### 在内部逻辑后转发侦听器
 
 ```vue
 <script setup>
@@ -146,7 +146,7 @@ defineOptions({ inheritAttrs: false })
 const attrs = useAttrs()
 
 function handleClick(event) {
-  console.log('Internal handling first')
+  console.log('首先进行内部处理')
   attrs.onClick?.(event)
 }
 </script>
@@ -158,9 +158,9 @@ function handleClick(event) {
 </template>
 ```
 
-## TypeScript Notes
+## TypeScript 注意事项
 
-`useAttrs()` is typed as `Record<string, unknown>`, so cast individual keys when needed.
+`useAttrs()` 类型为 `Record<string, unknown>`,因此在需要时转换各个键。
 
 ```vue
 <script setup lang="ts">

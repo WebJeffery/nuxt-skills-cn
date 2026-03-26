@@ -1,62 +1,62 @@
 ---
 name: test-filtering
-description: Filter tests by name, file patterns, and tags
+description: 按名称、文件模式和标签过滤测试
 ---
 
-# Test Filtering
+# 测试过滤
 
-## CLI Filtering
+## CLI 过滤
 
-### By File Path
+### 按文件路径
 
 ```bash
-# Run files containing "user"
+# 运行包含 "user" 的文件
 vitest user
 
-# Multiple patterns
+# 多个模式
 vitest user auth
 
-# Specific file
+# 特定文件
 vitest src/user.test.ts
 
-# By line number
+# 按行号
 vitest src/user.test.ts:25
 ```
 
-### By Test Name
+### 按测试名称
 
 ```bash
-# Tests matching pattern
+# 匹配模式的测试
 vitest -t "login"
 vitest --testNamePattern "should.*work"
 
-# Regex patterns
+# 正则表达式模式
 vitest -t "/user|auth/"
 ```
 
-## Changed Files
+## 更改的文件
 
 ```bash
-# Uncommitted changes
+# 未提交的更改
 vitest --changed
 
-# Since specific commit
+# 自特定提交以来
 vitest --changed HEAD~1
 vitest --changed abc123
 
-# Since branch
+# 自分支以来
 vitest --changed origin/main
 ```
 
-## Related Files
+## 相关文件
 
-Run tests that import specific files:
+运行导入特定文件的测试:
 
 ```bash
 vitest related src/utils.ts src/api.ts --run
 ```
 
-Useful with lint-staged:
+与 lint-staged 一起使用:
 
 ```js
 // .lintstagedrc.js
@@ -65,7 +65,7 @@ export default {
 }
 ```
 
-## Focus Tests (.only)
+## 聚焦测试 (.only)
 
 ```ts
 test.only('only this runs', () => {})
@@ -75,41 +75,41 @@ describe.only('only this suite', () => {
 })
 ```
 
-In CI, `.only` throws error unless configured:
+在 CI 中,`.only` 抛出错误,除非配置:
 
 ```ts
 defineConfig({
   test: {
-    allowOnly: true, // Allow .only in CI
+    allowOnly: true, // 在 CI 中允许 .only
   },
 })
 ```
 
-## Skip Tests
+## 跳过测试
 
 ```ts
 test.skip('skipped', () => {})
 
-// Conditional
+// 条件
 test.skipIf(process.env.CI)('not in CI', () => {})
 test.runIf(!process.env.CI)('local only', () => {})
 
-// Dynamic skip
+// 动态跳过
 test('dynamic', ({ skip }) => {
   skip(someCondition, 'reason')
 })
 ```
 
-## Tags
+## 标签
 
-Filter by custom tags:
+按自定义标签过滤:
 
 ```ts
 test('database test', { tags: ['db'] }, () => {})
 test('slow test', { tags: ['slow', 'integration'] }, () => {})
 ```
 
-Run tagged tests:
+运行带标签的测试:
 
 ```bash
 vitest --tags db
@@ -117,56 +117,56 @@ vitest --tags "db,slow"      # OR
 vitest --tags db --tags slow # OR
 ```
 
-Configure allowed tags:
+配置允许的标签:
 
 ```ts
 defineConfig({
   test: {
     tags: ['db', 'slow', 'integration'],
-    strictTags: true, // Fail on unknown tags
+    strictTags: true, // 在未知标签上失败
   },
 })
 ```
 
-## Include/Exclude Patterns
+## 包含/排除模式
 
 ```ts
 defineConfig({
   test: {
-    // Test file patterns
+    // 测试文件模式
     include: ['**/*.{test,spec}.{ts,tsx}'],
     
-    // Exclude patterns
+    // 排除模式
     exclude: [
       '**/node_modules/**',
       '**/e2e/**',
       '**/*.skip.test.ts',
     ],
     
-    // Include source for in-source testing
+    // 包含源代码进行源内测试
     includeSource: ['src/**/*.ts'],
   },
 })
 ```
 
-## Watch Mode Filtering
+## 监视模式过滤
 
-In watch mode, press:
-- `p` - Filter by filename pattern
-- `t` - Filter by test name pattern
-- `a` - Run all tests
-- `f` - Run only failed tests
+在监视模式下,按:
+- `p` - 按文件名模式过滤
+- `t` - 按测试名模式过滤
+- `a` - 运行所有测试
+- `f` - 仅运行失败的测试
 
-## Projects Filtering
+## 项目过滤
 
-Run specific project:
+运行特定项目:
 
 ```bash
 vitest --project unit
 vitest --project integration --project e2e
 ```
 
-## Environment-based Filtering
+## 基于环境的过滤
 
 ```ts
 const isDev = process.env.NODE_ENV === 'development'
@@ -176,33 +176,33 @@ describe.skipIf(isCI)('local only tests', () => {})
 describe.runIf(isDev)('dev tests', () => {})
 ```
 
-## Combining Filters
+## 组合过滤器
 
 ```bash
-# File pattern + test name + changed
+# 文件模式 + 测试名称 + 更改
 vitest user -t "login" --changed
 
-# Related files + run mode
+# 相关文件 + 运行模式
 vitest related src/auth.ts --run
 ```
 
-## List Tests Without Running
+## 列出测试而不运行
 
 ```bash
-vitest list                 # Show all test names
-vitest list -t "user"       # Filter by name
-vitest list --filesOnly     # Show only file paths
-vitest list --json          # JSON output
+vitest list                 # 显示所有测试名称
+vitest list -t "user"       # 按名称过滤
+vitest list --filesOnly     # 仅显示文件路径
+vitest list --json          # JSON 输出
 ```
 
-## Key Points
+## 关键点
 
-- Use `-t` for test name pattern filtering
-- `--changed` runs only tests affected by changes
-- `--related` runs tests importing specific files
-- Tags provide semantic test grouping
-- Use `.only` for debugging, but configure CI to reject it
-- Watch mode has interactive filtering
+- 使用 `-t` 进行测试名称模式过滤
+- `--changed` 仅运行受更改影响的测试
+- `--related` 运行导入特定文件的测试
+- 标签提供语义测试分组
+- 使用 `.only` 进行调试,但配置 CI 拒绝它
+- 监视模式具有交互式过滤
 
 <!-- 
 Source references:

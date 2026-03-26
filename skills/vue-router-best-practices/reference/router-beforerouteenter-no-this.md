@@ -1,42 +1,26 @@
 ---
-title: beforeRouteEnter Cannot Access Component Instance
+title: 在 beforeRouteEnter 守卫中无法访问组件实例
 impact: MEDIUM
-impactDescription: The beforeRouteEnter guard runs before component creation, so 'this' is undefined; use the next callback to access the instance
+impactDescription: beforeRouteEnter 守卫在组件创建之前运行,导致无法通过 this 访问组件实例,需要使用 next() 回调
 type: gotcha
-tags: [vue3, vue-router, navigation-guards, lifecycle, this]
+tags: [vue3, vue-router, navigation-guards, component-instance]
 ---
 
-# beforeRouteEnter Cannot Access Component Instance
+# 在 beforeRouteEnter 守卫中无法访问组件实例
 
-**Impact: MEDIUM** - The `beforeRouteEnter` in-component navigation guard executes BEFORE the component is created, meaning you cannot access `this` or any component instance properties. This is the ONLY navigation guard that supports a callback in the `next()` function to access the component instance after navigation.
+**影响: MEDIUM** - `beforeRouteEnter` 守卫在组件实例创建之前运行,因此无法通过 `this` 访问组件实例。这是 Vue Router 的一个常见混淆点,因为其他守卫(如 `beforeRouteUpdate` 和 `beforeRouteLeave`)可以访问组件实例。
 
-## Task Checklist
+## 任务清单
 
-- [ ] Use next(vm => ...) callback to access component instance
-- [ ] Or use composition API guards which have different patterns
-- [ ] Move data fetching logic appropriately based on timing needs
-- [ ] Consider using global guards for data that doesn't need component access
+- [ ] 使用 `next()` 回调访问组件实例
+- [ ] 或使用 `onMounted` 进行数据获取
+- [ ] 对于新代码,考虑使用全局守卫
+- [ ] 理解每个守卫的执行时机
 
-## The Problem
-
-```javascript
-// Options API - WRONG: this is undefined
-export default {
-  data() {
-    return { user: null }
-  },
-  beforeRouteEnter(to, from, next) {
-    // BUG: this is undefined here - component doesn't exist yet!
-    this.user = await fetchUser(to.params.id)  // ERROR!
-    next()
-  }
-}
-```
-
-## Solution: Use next() Callback (Options API)
+## 问题
 
 ```javascript
-// Options API - CORRECT: Use callback to access vm
+// Options API - WRONG
 export default {
   data() {
     return {
@@ -46,131 +30,206 @@ export default {
   },
 
   beforeRouteEnter(to, from, next) {
-    // Fetch data before component exists
     fetchUser(to.params.id)
       .then(user => {
-        // Pass callback to next() - receives component instance as 'vm'
+        // BUG: 'this' 在此处未定义!
+        // 组件尚未创建
+        this.user = user
+        this.loading = false
+        next()
+      })
+  }
+}
+```
+
+**为什么失败:**
+- `beforeRouteEnter` 在组件实例创建之前运行
+- 此时 `this` 尚未指向组件实例
+- 尝试访问 `this` 会导致错误
+
+## 解决方案 1: 使用 next() 回调
+
+```javascript
+// Options API - CORRECT: 使用回调访问 vm
+export default {
+  data() {
+    return {
+      user: null,
+      loading: true
+    }
+  },
+
+  beforeRouteEnter(to, from, next) {
+    fetchUser(to.params.id)
+      .then(user => {
+        // 使用回调在组件实例创建后访问它
         next(vm => {
           vm.user = user
           vm.loading = false
         })
       })
-      .catch(error => {
-        next(vm => {
-          vm.error = error
-          vm.loading = false
-        })
-      })
+      .catch(next)  // 继续导航或处理错误
   }
 }
 ```
 
-## Solution: Async beforeRouteEnter (Options API)
-
-```javascript
-export default {
-  data() {
-    return { userData: null }
-  },
-
-  async beforeRouteEnter(to, from, next) {
-    try {
-      const user = await fetchUser(to.params.id)
-
-      // Still need callback for component access
-      next(vm => {
-        vm.userData = user
-      })
-    } catch (error) {
-      // Redirect on error
-      next('/error')
-    }
-  }
-}
-```
-
-## Composition API Alternative
-
-In Composition API with `<script setup>`, you cannot use `beforeRouteEnter` directly because the component instance is being set up. Use different patterns instead:
+## 解决方案 2: 使用 onMounted (Composition API)
 
 ```vue
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRoute, onBeforeRouteUpdate } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const user = ref(null)
 const loading = ref(true)
 
-// Option 1: Fetch in onMounted (after component exists)
+// 使用 onMounted 而不是 beforeRouteEnter
 onMounted(async () => {
-  user.value = await fetchUser(route.params.id)
-  loading.value = false
-})
-
-// Option 2: Handle subsequent param changes
-onBeforeRouteUpdate(async (to, from) => {
-  if (to.params.id !== from.params.id) {
-    loading.value = true
-    user.value = await fetchUser(to.params.id)
+  try {
+    user.value = await fetchUser(route.params.id)
+  } catch (error) {
+    console.error('Failed to fetch user:', error)
+  } finally {
     loading.value = false
   }
 })
 </script>
 ```
 
-## Route-Level Data Fetching
-
-For data that should load BEFORE navigation, use route-level guards:
+## 解决方案 3: 使用全局 beforeEach
 
 ```javascript
 // router.js
-const routes = [
-  {
-    path: '/users/:id',
-    component: () => import('./UserProfile.vue'),
-    beforeEnter: async (to, from) => {
-      try {
-        // Store data for component to access
-        const user = await fetchUser(to.params.id)
-        to.meta.user = user  // Attach to route meta
-      } catch (error) {
-        return '/error'
-      }
+router.beforeEach(async (to, from) => {
+  if (to.name === 'UserProfile') {
+    try {
+      const user = await fetchUser(to.params.id)
+
+      // 将数据存储在路由元中
+      to.meta.userData = user
+    } catch (error) {
+      return { name: 'Error', params: { message: 'User not found' } }
     }
   }
-]
+})
 ```
 
 ```vue
 <!-- UserProfile.vue -->
 <script setup>
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-// Access pre-fetched data from meta
-const user = route.meta.user
+const user = ref(route.meta.userData || null)
 </script>
 ```
 
-## Comparison of Navigation Guards
+## 解决方案 4: 使用 Pinia/Vuex 状态管理
 
-| Guard | Has `this`/component? | Can delay navigation? | Use case |
-|-------|----------------------|----------------------|----------|
-| beforeRouteEnter | NO (use next callback) | YES | Pre-fetch, redirect if data missing |
-| beforeRouteUpdate | YES | YES | React to param changes |
-| beforeRouteLeave | YES | YES | Unsaved changes warning |
-| Global beforeEach | NO | YES | Auth checks |
-| Route beforeEnter | NO | YES | Route-specific validation |
+```javascript
+// stores/user.js
+import { defineStore } from 'pinia'
 
-## Key Points
+export const useUserStore = defineStore('user', {
+  state: () => ({
+    currentUser: null,
+    loading: false
+  }),
 
-1. **beforeRouteEnter runs before component creation** - No access to `this`
-2. **Use next(vm => ...) callback** - Only way to access component instance
-3. **Composition API has limitations** - Use onMounted or global guards instead
-4. **Consider route meta for pre-fetched data** - Clean separation of concerns
-5. **beforeRouteUpdate and beforeRouteLeave have component access** - They run when component exists
+  actions: {
+    async fetchUser(id) {
+      this.loading = true
+      try {
+        this.currentUser = await fetchUser(id)
+      } finally {
+        this.loading = false
+      }
+    }
+  }
+})
+```
 
-## Reference
-- [Vue Router In-Component Guards](https://router.vuejs.org/guide/advanced/navigation-guards.html#in-component-guards)
-- [Vue Router Navigation Resolution Flow](https://router.vuejs.org/guide/advanced/navigation-guards.html#the-full-navigation-resolution-flow)
+```javascript
+// router.js
+import { useUserStore } from '@/stores/user'
+
+router.beforeEach(async (to, from) => {
+  if (to.name === 'UserProfile') {
+    const userStore = useUserStore()
+    await userStore.fetchUser(to.params.id)
+  }
+})
+```
+
+## 守卫执行时机对比
+
+| 守卫 | 可访问组件实例? | 何时运行 |
+|------|----------------|---------|
+| `beforeRouteEnter` | 否 | 在组件创建之前 |
+| `beforeRouteUpdate` | 是 | 当路由参数更改时 |
+| `beforeRouteLeave` | 是 | 当离开组件时 |
+| `onMounted` | 是 | 在组件挂载后 |
+
+## 完整示例: 使用 next() 回调
+
+```javascript
+// UserProfile.vue
+export default {
+  data() {
+    return {
+      user: null,
+      posts: [],
+      loading: true
+    }
+  },
+
+  beforeRouteEnter(to, from, next) {
+    Promise.all([
+      fetchUser(to.params.id),
+      fetchUserPosts(to.params.id)
+    ])
+      .then(([user, posts]) => {
+        // 在组件实例可用时设置数据
+        next(vm => {
+          vm.user = user
+          vm.posts = posts
+          vm.loading = false
+        })
+      })
+      .catch(error => {
+        console.error('Failed to load user data:', error)
+        next(false)  // 取消导航
+      })
+  },
+
+  // 处理参数更改
+  beforeRouteUpdate(to, from, next) {
+    // 在此处可以访问 this
+    this.loading = true
+    Promise.all([
+      fetchUser(to.params.id),
+      fetchUserPosts(to.params.id)
+    ])
+      .then(([user, posts]) => {
+        this.user = user
+        this.posts = posts
+        this.loading = false
+        next()
+      })
+  }
+}
+```
+
+## 关键点
+
+1. **beforeRouteEnter 运行太早** - 组件实例尚未创建
+2. **使用 next(vm => {}) 回调** - 在实例可用时访问它
+3. **考虑 Composition API** - onMounted 通常更清晰
+4. **全局守卫是替代方案** - 在路由级别处理数据获取
+5. **其他守卫可以访问 this** - beforeRouteUpdate 和 beforeRouteLeave
+
+## 参考
+- [Vue Router 导航守卫](https://router.vuejs.org/guide/advanced/navigation-guards.html)
+- [Vue Router beforeRouteEnter](https://router.vuejs.org/guide/advanced/navigation-guards.html#the-beforerouteenter-guard)

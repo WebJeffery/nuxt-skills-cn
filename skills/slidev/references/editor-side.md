@@ -1,23 +1,23 @@
 ---
 name: side-editor
-description: Edit slides source alongside the presentation
+description: 在演示文稿旁边编辑幻灯片源代码
 ---
 
-# Integrated Editor
+# 集成编辑器
 
-Edit slides source alongside the presentation.
+在演示文稿旁边编辑幻灯片源代码。
 
-## Open Editor
+## 打开编辑器
 
-Click the edit icon in the navigation panel.
+点击导航面板中的编辑图标。
 
-## Features
+## 功能
 
-- Live reload on changes
-- Auto-save to file
-- Side-by-side editing
-- Syntax highlighting
+- 更改时实时重新加载
+- 自动保存到文件
+- 并排编辑
+- 语法高亮
 
-## Use Case
+## 使用场景
 
-Make quick edits during presentation preparation without switching applications.
+在演示文稿准备期间进行快速编辑，而无需切换应用程序。

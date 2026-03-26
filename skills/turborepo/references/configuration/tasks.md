@@ -1,36 +1,36 @@
-# Task Configuration Reference
+# 任务配置参考
 
-Full docs: https://turborepo.dev/docs/reference/configuration#tasks
+完整文档：https://turborepo.dev/docs/reference/configuration#tasks
 
 ## dependsOn
 
-Controls task execution order.
+控制任务执行顺序。
 
 ```json
 {
   "tasks": {
     "build": {
       "dependsOn": [
-        "^build", // Dependencies' build tasks first
-        "codegen", // Same package's codegen task first
-        "shared#build" // Specific package's build task
+        "^build", // 首先运行依赖的 build 任务
+        "codegen", // 首先运行同一包的 codegen 任务
+        "shared#build" // 首先运行特定包的 build 任务
       ]
     }
   }
 }
 ```
 
-| Syntax     | Meaning                              |
+| 语法     | 含义                              |
 | ---------- | ------------------------------------ |
-| `^task`    | Run `task` in all dependencies first |
-| `task`     | Run `task` in same package first     |
-| `pkg#task` | Run specific package's task first    |
+| `^task`    | 首先在所有依赖中运行 `task` |
+| `task`     | 首先在同一包中运行 `task`     |
+| `pkg#task` | 首先运行特定包的任务    |
 
-The `^` prefix is crucial - without it, you're referencing the same package.
+`^` 前缀至关重要 - 没有它，你引用的是同一包。
 
-### Transit Nodes for Parallel Tasks
+### 并行任务的传递节点
 
-For tasks like `lint` and `check-types` that can run in parallel but need dependency-aware caching:
+对于像 `lint` 和 `check-types` 这样可以并行运行但需要依赖感知缓存的任务：
 
 ```json
 {
@@ -42,14 +42,14 @@ For tasks like `lint` and `check-types` that can run in parallel but need depend
 }
 ```
 
-**DO NOT use `dependsOn: ["^lint"]`** - this forces sequential execution.
-**DO NOT use `dependsOn: []`** - this breaks cache invalidation.
+**不要使用 `dependsOn: ["^lint"]`** - 这会强制顺序执行。
+**不要使用 `dependsOn: []`** - 这会破坏缓存失效。
 
-The `transit` task creates dependency relationships without running anything (no matching script), so tasks run in parallel with correct caching.
+`transit` 任务创建依赖关系而不运行任何内容（没有匹配的脚本），因此任务以正确的缓存并行运行。
 
 ## outputs
 
-Glob patterns for files to cache. **If omitted, nothing is cached.**
+要缓存的文件的 glob 模式。**如果省略，则不缓存任何内容。**
 
 ```json
 {
@@ -61,7 +61,7 @@ Glob patterns for files to cache. **If omitted, nothing is cached.**
 }
 ```
 
-**Framework examples:**
+**框架示例：**
 
 ```json
 // Next.js
@@ -73,15 +73,15 @@ Glob patterns for files to cache. **If omitted, nothing is cached.**
 // TypeScript (tsc)
 "outputs": ["dist/**", "*.tsbuildinfo"]
 
-// No file outputs (lint, typecheck)
+// 没有文件输出（lint、typecheck）
 "outputs": []
 ```
 
-Use `!` prefix to exclude patterns from caching.
+使用 `!` 前缀从缓存中排除模式。
 
 ## inputs
 
-Files considered when calculating task hash. Defaults to all tracked files in package.
+计算任务哈希时考虑的文件。默认为包中所有跟踪的文件。
 
 ```json
 {
@@ -93,12 +93,12 @@ Files considered when calculating task hash. Defaults to all tracked files in pa
 }
 ```
 
-**Special values:**
+**特殊值：**
 
-| Value                 | Meaning                                 |
+| 值                 | 含义                                 |
 | --------------------- | --------------------------------------- |
-| `$TURBO_DEFAULT$`     | Include default inputs, then add/remove |
-| `$TURBO_ROOT$/<path>` | Reference files from repo root          |
+| `$TURBO_DEFAULT$`     | 包含默认输入，然后添加/删除 |
+| `$TURBO_ROOT$/<path>` | 从仓库根目录引用文件          |
 
 ```json
 {
@@ -116,7 +116,7 @@ Files considered when calculating task hash. Defaults to all tracked files in pa
 
 ## env
 
-Environment variables to include in task hash.
+要包含在任务哈希中的环境变量。
 
 ```json
 {
@@ -124,19 +124,19 @@ Environment variables to include in task hash.
     "build": {
       "env": [
         "API_URL",
-        "NEXT_PUBLIC_*", // Wildcard matching
-        "!DEBUG" // Exclude from hash
+        "NEXT_PUBLIC_*", // 通配符匹配
+        "!DEBUG" // 从哈希中排除
       ]
     }
   }
 }
 ```
 
-Variables listed here affect cache hits - changing the value invalidates cache.
+此处列出的变量影响缓存命中 - 更改值会使缓存失效。
 
 ## cache
 
-Enable/disable caching for a task. Default: `true`.
+启用/禁用任务的缓存。默认：`true`。
 
 ```json
 {
@@ -147,11 +147,11 @@ Enable/disable caching for a task. Default: `true`.
 }
 ```
 
-Disable for: dev servers, deploy commands, tasks with side effects.
+禁用于：开发服务器、部署命令、具有副作用的任务。
 
 ## persistent
 
-Mark long-running tasks that don't exit. Default: `false`.
+标记不退出的长时间运行的任务。默认：`false`。
 
 ```json
 {
@@ -164,11 +164,11 @@ Mark long-running tasks that don't exit. Default: `false`.
 }
 ```
 
-Required for dev servers - without it, dependent tasks wait forever.
+开发服务器必需 - 没有它，依赖任务将无限期等待。
 
 ## interactive
 
-Allow task to receive stdin input. Default: `false`.
+允许任务接收 stdin 输入。默认：`false`。
 
 ```json
 {
@@ -183,13 +183,13 @@ Allow task to receive stdin input. Default: `false`.
 
 ## outputLogs
 
-Control when logs are shown. Options: `full`, `hash-only`, `new-only`, `errors-only`, `none`.
+控制何时显示日志。选项：`full`、`hash-only`、`new-only`、`errors-only`、`none`。
 
 ```json
 {
   "tasks": {
     "build": {
-      "outputLogs": "new-only" // Only show logs on cache miss
+      "outputLogs": "new-only" // 仅在缓存未命中时显示日志
     }
   }
 }
@@ -197,7 +197,7 @@ Control when logs are shown. Options: `full`, `hash-only`, `new-only`, `errors-o
 
 ## with
 
-Run tasks alongside this task. For long-running tasks that need runtime dependencies.
+与此任务一起运行任务。对于需要运行时依赖的长时间运行的任务。
 
 ```json
 {
@@ -211,11 +211,11 @@ Run tasks alongside this task. For long-running tasks that need runtime dependen
 }
 ```
 
-Unlike `dependsOn`, `with` runs tasks concurrently (not sequentially). Use for dev servers that need other services running.
+与 `dependsOn` 不同，`with` 并发运行任务（而不是顺序）。用于需要其他服务运行的开发服务器。
 
 ## interruptible
 
-Allow `turbo watch` to restart the task on changes. Default: `false`.
+允许 `turbo watch` 在更改时重新启动任务。默认：`false`。
 
 ```json
 {
@@ -229,27 +229,27 @@ Allow `turbo watch` to restart the task on changes. Default: `false`.
 }
 ```
 
-Use for dev servers that don't automatically detect dependency changes.
+用于不会自动检测依赖更改的开发服务器。
 
 ## description
 
-Human-readable description of the task.
+任务的可读描述。
 
 ```json
 {
   "tasks": {
     "build": {
-      "description": "Compiles the application for production deployment"
+      "description": "编译应用程序以进行生产部署"
     }
   }
 }
 ```
 
-For documentation only - doesn't affect execution or caching.
+仅用于文档 - 不影响执行或缓存。
 
 ## passThroughEnv
 
-Environment variables available at runtime but NOT included in cache hash.
+在运行时可用但不包含在缓存哈希中的环境变量。
 
 ```json
 {
@@ -261,11 +261,11 @@ Environment variables available at runtime but NOT included in cache hash.
 }
 ```
 
-**Warning**: Changes to these vars won't cause cache misses. Use `env` if changes should invalidate cache.
+**警告**：对这些变量的更改不会导致缓存未命中。如果更改应该使缓存失效，请使用 `env`。
 
-## extends (Package Configuration only)
+## extends（仅包配置）
 
-Control task inheritance in Package Configurations.
+控制包配置中的任务继承。
 
 ```json
 // packages/ui/turbo.json
@@ -273,13 +273,13 @@ Control task inheritance in Package Configurations.
   "extends": ["//"],
   "tasks": {
     "lint": {
-      "extends": false // Exclude from this package
+      "extends": false // 从此包中排除
     }
   }
 }
 ```
 
-| Value            | Behavior                                                       |
+| 值            | 行为                                                       |
 | ---------------- | -------------------------------------------------------------- |
-| `true` (default) | Inherit from root turbo.json                                   |
-| `false`          | Exclude task from package, or define fresh without inheritance |
+| `true`（默认） | 从根 turbo.json 继承                                   |
+| `false`          | 从包中排除任务，或在没有继承的情况下定义新任务 |

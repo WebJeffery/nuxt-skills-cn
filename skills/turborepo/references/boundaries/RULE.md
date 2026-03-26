@@ -1,27 +1,27 @@
-# Boundaries
+# 边界
 
-**Experimental feature** - See [RFC](https://github.com/vercel/turborepo/discussions/9435)
+**实验性功能** - 请参阅 [RFC](https://github.com/vercel/turborepo/discussions/9435)
 
-Full docs: https://turborepo.dev/docs/reference/boundaries
+完整文档：https://turborepo.dev/docs/reference/boundaries
 
-Boundaries enforce package isolation by detecting:
+边界通过检测以下内容来强制包隔离：
 
-1. Imports of files outside the package's directory
-2. Imports of packages not declared in `package.json` dependencies
+1. 包目录之外的文件导入
+2. 未在 `package.json` dependencies 中声明的包导入
 
-## Usage
+## 使用
 
 ```bash
 turbo boundaries
 ```
 
-Run this to check for workspace violations across your monorepo.
+运行此命令以检查 monorepo 中的工作区违规。
 
-## Tags
+## 标签
 
-Tags allow you to create rules for which packages can depend on each other.
+标签允许您创建规则，规定哪些包可以相互依赖。
 
-### Adding Tags to a Package
+### 向包添加标签
 
 ```json
 // packages/ui/turbo.json
@@ -30,9 +30,9 @@ Tags allow you to create rules for which packages can depend on each other.
 }
 ```
 
-### Configuring Tag Rules
+### 配置标签规则
 
-Rules go in root `turbo.json`:
+规则放在根 `turbo.json` 中：
 
 ```json
 // turbo.json
@@ -49,11 +49,11 @@ Rules go in root `turbo.json`:
 }
 ```
 
-This prevents `public`-tagged packages from importing `internal`-tagged packages.
+这可以防止 `public` 标记的包导入 `internal` 标记的包。
 
-### Rule Types
+### 规则类型
 
-**Allow-list approach** (only allow specific tags):
+**允许列表方法**（仅允许特定标签）：
 
 ```json
 {
@@ -69,7 +69,7 @@ This prevents `public`-tagged packages from importing `internal`-tagged packages
 }
 ```
 
-**Deny-list approach** (block specific tags):
+**拒绝列表方法**（阻止特定标签）：
 
 ```json
 {
@@ -85,7 +85,7 @@ This prevents `public`-tagged packages from importing `internal`-tagged packages
 }
 ```
 
-**Restrict dependents** (who can import this package):
+**限制依赖项**（谁可以导入此包）：
 
 ```json
 {
@@ -101,9 +101,9 @@ This prevents `public`-tagged packages from importing `internal`-tagged packages
 }
 ```
 
-### Using Package Names
+### 使用包名
 
-Package names work in place of tags:
+包名可以代替标签使用：
 
 ```json
 {
@@ -119,8 +119,8 @@ Package names work in place of tags:
 }
 ```
 
-## Key Points
+## 关键点
 
-- Rules apply transitively (dependencies of dependencies)
-- Helps enforce architectural boundaries at scale
-- Catches violations before runtime/build errors
+- 规则传递应用（依赖项的依赖项）
+- 有助于在大规模时强制执行架构边界
+- 在运行时/构建错误之前捕获违规

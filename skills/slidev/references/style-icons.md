@@ -1,21 +1,21 @@
 ---
 name: icons
-description: Using open-source icons in slides
+description: 在幻灯片中使用开源图标
 ---
 
-# Icons
+# 图标
 
-Use any open-source icon directly in markdown. Powered by unplugin-icons and Iconify.
+直接在 markdown 中使用任何开源图标。由 unplugin-icons 和 Iconify 提供支持。
 
-## Installation
+## 安装
 
 ```bash
 pnpm add @iconify-json/[collection-name]
 ```
 
-## Usage
+## 用法
 
-Use component syntax `<collection-icon-name />`:
+使用组件语法 `<collection-icon-name />`：
 
 ```md
 <mdi-account-circle />
@@ -24,23 +24,23 @@ Use component syntax `<collection-icon-name />`:
 <logos-vue />
 ```
 
-## Popular Collections
+## 热门图标集
 
-- `@iconify-json/mdi` - Material Design Icons
+- `@iconify-json/mdi` - Material Design 图标
 - `@iconify-json/carbon` - Carbon Design
-- `@iconify-json/logos` - SVG Logos
-- `@iconify-json/twemoji` - Twitter Emoji
+- `@iconify-json/logos` - SVG 徽标
+- `@iconify-json/twemoji` - Twitter 表情符号
 
-## Styling
+## 样式
 
-Style like any HTML element:
+像任何 HTML 元素一样设置样式：
 
 ```html
 <uim-rocket class="text-3xl text-red-400 mx-2" />
 <uim-rocket class="text-3xl text-orange-400 animate-ping" />
 ```
 
-## Browse Icons
+## 浏览图标
 
 - https://icones.js.org/
 - https://icon-sets.iconify.design/

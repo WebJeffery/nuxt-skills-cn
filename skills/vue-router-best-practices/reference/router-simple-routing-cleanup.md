@@ -1,23 +1,23 @@
 ---
-title: Simple Hash Routing Requires Event Listener Cleanup
+title: 简单哈希路由需要事件监听器清理
 impact: MEDIUM
-impactDescription: When implementing basic routing without Vue Router, forgetting to remove hashchange listeners causes memory leaks and multiple handler execution
+impactDescription: 在没有 Vue Router 的情况下实现基本路由时,忘记删除 hashchange 监听器会导致内存泄漏和多个处理程序执行
 type: gotcha
 tags: [vue3, routing, events, memory-leak, cleanup]
 ---
 
-# Simple Hash Routing Requires Event Listener Cleanup
+# 简单哈希路由需要事件监听器清理
 
-**Impact: MEDIUM** - When implementing basic client-side routing without Vue Router (using hash-based routing with `hashchange` events), you must clean up event listeners when the component unmounts. Failure to do so causes memory leaks and can result in multiple handlers firing after the component is recreated.
+**影响: MEDIUM** - 在没有 Vue Router 的情况下实现基本客户端路由(使用基于哈希的路由和 `hashchange` 事件)时,必须在组件卸载时清理事件监听器。不这样做会导致内存泄漏,并可能导致在组件重新创建后多个处理程序触发。
 
-## Task Checklist
+## 任务清单
 
-- [ ] Store event listener reference for cleanup
-- [ ] Use onUnmounted to remove event listener
-- [ ] Consider using Vue Router instead for production apps
-- [ ] Test component mount/unmount cycles
+- [ ] 存储事件监听器引用以进行清理
+- [ ] 使用 onUnmounted 删除事件监听器
+- [ ] 考虑在生产应用中使用 Vue Router
+- [ ] 测试组件挂载/卸载周期
 
-## The Problem
+## 问题
 
 ```vue
 <script setup>
@@ -32,9 +32,9 @@ const routes = {
 
 const currentPath = ref(window.location.hash)
 
-// BUG: Event listener is never removed!
-// Each time this component mounts, a NEW listener is added
-// After mounting 5 times, you have 5 listeners running
+// BUG: 事件监听器从未被删除!
+// 每次此组件挂载时,都会添加一个新监听器
+// 挂载 5 次后,你有 5 个监听器在运行
 window.addEventListener('hashchange', () => {
   currentPath.value = window.location.hash
 })
@@ -45,14 +45,14 @@ const currentView = computed(() => {
 </script>
 ```
 
-**What happens:**
-1. Component mounts, adds listener
-2. Component unmounts (e.g., route change, v-if toggle)
-3. Component mounts again, adds ANOTHER listener
-4. Now TWO listeners respond to each hash change
-5. Eventually causes performance issues and memory leaks
+**会发生什么:**
+1. 组件挂载,添加监听器
+2. 组件卸载(例如,路由更改,v-if 切换)
+3. 组件再次挂载,添加另一个监听器
+4. 现在两个监听器响应每个哈希更改
+5. 最终导致性能问题和内存泄漏
 
-## Solution: Proper Cleanup with onUnmounted
+## 解决方案: 使用 onUnmounted 进行适当清理
 
 ```vue
 <script setup>
@@ -68,15 +68,15 @@ const routes = {
 
 const currentPath = ref(window.location.hash)
 
-// Store handler reference for cleanup
+// 存储处理程序引用以进行清理
 function handleHashChange() {
   currentPath.value = window.location.hash
 }
 
-// Add listener
+// 添加监听器
 window.addEventListener('hashchange', handleHashChange)
 
-// CRITICAL: Remove listener on unmount
+// 关键: 在卸载时删除监听器
 onUnmounted(() => {
   window.removeEventListener('hashchange', handleHashChange)
 })
@@ -87,7 +87,7 @@ const currentView = computed(() => {
 </script>
 ```
 
-## Solution: Using Options API
+## 解决方案: 使用 Options API
 
 ```vue
 <script>
@@ -114,7 +114,7 @@ export default {
   },
 
   mounted() {
-    // Store bound handler for cleanup
+    // 存储绑定处理程序以进行清理
     this.hashHandler = () => {
       this.currentPath = window.location.hash
     }
@@ -122,14 +122,14 @@ export default {
   },
 
   beforeUnmount() {
-    // Clean up
+    // 清理
     window.removeEventListener('hashchange', this.hashHandler)
   }
 }
 </script>
 ```
 
-## Solution: Composable for Reusable Hash Routing
+## 解决方案: 用于可重用哈希路由的 Composable
 
 ```javascript
 // composables/useHashRouter.js
@@ -142,10 +142,10 @@ export function useHashRouter(routes, notFoundComponent = null) {
     currentPath.value = window.location.hash
   }
 
-  // Setup
+  // 设置
   window.addEventListener('hashchange', handleHashChange)
 
-  // Cleanup - handled automatically when component unmounts
+  // 清理 - 当组件卸载时自动处理
   onUnmounted(() => {
     window.removeEventListener('hashchange', handleHashChange)
   })
@@ -168,7 +168,7 @@ export function useHashRouter(routes, notFoundComponent = null) {
 ```
 
 ```vue
-<!-- Usage -->
+<!-- 使用 -->
 <script setup>
 import { useHashRouter } from '@/composables/useHashRouter'
 import Home from './Home.vue'
@@ -186,24 +186,24 @@ const { currentView } = useHashRouter({
 </template>
 ```
 
-## When to Use Simple Routing vs Vue Router
+## 何时使用简单路由 vs Vue Router
 
-| Use Simple Hash Routing | Use Vue Router |
+| 使用简单哈希路由 | 使用 Vue Router |
 |------------------------|----------------|
-| Learning/prototyping | Production apps |
-| Very simple apps (2-3 pages) | Nested routes needed |
-| No build step available | Navigation guards needed |
-| Bundle size critical | Lazy loading needed |
-| Static hosting only | History mode (clean URLs) |
+| 学习/原型设计 | 生产应用 |
+| 非常简单的应用(2-3 页) | 需要嵌套路由 |
+| 没有可用的构建步骤 | 需要导航守卫 |
+| 包大小至关重要 | 需要懒加载 |
+| 仅静态托管 | 历史模式(干净的 URL) |
 
-## Key Points
+## 关键点
 
-1. **Always clean up event listeners** - Use onUnmounted or beforeUnmount
-2. **Store handler reference** - Anonymous functions can't be removed
-3. **Consider Vue Router for real apps** - It handles cleanup automatically
-4. **Test unmount scenarios** - v-if toggling, hot module replacement
-5. **Composables help encapsulate cleanup logic** - Reusable and automatic
+1. **始终清理事件监听器** - 使用 onUnmounted 或 beforeUnmount
+2. **存储处理程序引用** - 匿名函数无法被删除
+3. **为真实应用考虑 Vue Router** - 它自动处理清理
+4. **测试卸载场景** - v-if 切换,热模块替换
+5. **Composables 有助于封装清理逻辑** - 可重用且自动
 
-## Reference
-- [Vue.js Routing Documentation](https://vuejs.org/guide/scaling-up/routing.html)
-- [Vue Router Official Library](https://router.vuejs.org/)
+## 参考
+- [Vue.js 路由文档](https://vuejs.org/guide/scaling-up/routing.html)
+- [Vue Router 官方库](https://router.vuejs.org/)

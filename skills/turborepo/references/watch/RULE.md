@@ -1,32 +1,32 @@
 # turbo watch
 
-Full docs: https://turborepo.dev/docs/reference/watch
+完整文档：https://turborepo.dev/docs/reference/watch
 
-Re-run tasks automatically when code changes. Dependency-aware.
+代码更改时自动重新运行任务。感知依赖关系。
 
 ```bash
 turbo watch [tasks]
 ```
 
-## Basic Usage
+## 基本用法
 
 ```bash
-# Watch and re-run build task when code changes
+# 代码更改时监视并重新运行 build 任务
 turbo watch build
 
-# Watch multiple tasks
+# 监视多个任务
 turbo watch build test lint
 ```
 
-Tasks re-run in order configured in `turbo.json` when source files change.
+当源文件更改时，任务按照 `turbo.json` 中配置的顺序重新运行。
 
-## With Persistent Tasks
+## 使用持久任务
 
-Persistent tasks (`"persistent": true`) won't exit, so they can't be depended on. They work the same in `turbo watch` as `turbo run`.
+持久任务（`"persistent": true`）不会退出，因此不能被依赖。它们在 `turbo watch` 中的工作方式与 `turbo run` 相同。
 
-### Dependency-Aware Persistent Tasks
+### 感知依赖关系的持久任务
 
-If your tool has built-in watching (like `next dev`), use its watcher:
+如果您的工具具有内置监视（如 `next dev`），请使用其监视器：
 
 ```json
 {
@@ -39,9 +39,9 @@ If your tool has built-in watching (like `next dev`), use its watcher:
 }
 ```
 
-### Non-Dependency-Aware Tools
+### 非感知依赖关系的工具
 
-For tools that don't detect dependency changes, use `interruptible`:
+对于不检测依赖关系更改的工具，使用 `interruptible`：
 
 ```json
 {
@@ -55,45 +55,45 @@ For tools that don't detect dependency changes, use `interruptible`:
 }
 ```
 
-`turbo watch` will restart interruptible tasks when dependencies change.
+当依赖关系更改时，`turbo watch` 将重新启动可中断的任务。
 
-## Limitations
+## 限制
 
-### Caching
+### 缓存
 
-Caching is experimental with watch mode:
+监视模式的缓存是实验性的：
 
 ```bash
 turbo watch your-tasks --experimental-write-cache
 ```
 
-### Task Outputs in Source Control
+### 源代码控制中的任务输出
 
-If tasks write files tracked by git, watch mode may loop infinitely. Watch mode uses file hashes to prevent this but it's not foolproof.
+如果任务写入 git 跟踪的文件，监视模式可能会无限循环。监视模式使用文件哈希来防止这种情况，但这并不完美。
 
-**Recommendation**: Remove task outputs from git.
+**建议**：从 git 中删除任务输出。
 
 ## vs turbo run
 
-| Feature           | `turbo run` | `turbo watch` |
+| 特性           | `turbo run` | `turbo watch` |
 | ----------------- | ----------- | ------------- |
-| Runs once         | Yes         | No            |
-| Re-runs on change | No          | Yes           |
-| Caching           | Full        | Experimental  |
-| Use case          | CI, one-off | Development   |
+| 运行一次         | 是         | 否            |
+| 更改时重新运行 | 否          | 是           |
+| 缓存           | 完整        | 实验性  |
+| 用例          | CI、一次性 | 开发   |
 
-## Common Patterns
+## 常见模式
 
-### Development Workflow
+### 开发工作流
 
 ```bash
-# Run dev servers and watch for build changes
+# 运行开发服务器并监视构建更改
 turbo watch dev build
 ```
 
-### Type Checking During Development
+### 开发期间类型检查
 
 ```bash
-# Watch and re-run type checks
+# 监视并重新运行类型检查
 turbo watch check-types
 ```

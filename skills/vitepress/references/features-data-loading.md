@@ -1,15 +1,15 @@
 ---
 name: vitepress-data-loading
-description: Build-time data loaders for fetching remote data or processing local files
+description: 用于获取远程数据或处理本地文件的构建时数据加载器
 ---
 
-# Data Loading
+# 数据加载
 
-VitePress data loaders run at build time to load arbitrary data that's serialized as JSON in the client bundle.
+VitePress 数据加载器在构建时运行以加载任意数据,这些数据被序列化为客户端包中的 JSON。
 
-## Basic Usage
+## 基本用法
 
-Create a file ending with `.data.js` or `.data.ts`:
+创建以 `.data.js` 或 `.data.ts` 结尾的文件:
 
 ```ts
 // example.data.ts
@@ -23,7 +23,7 @@ export default {
 }
 ```
 
-Import the `data` named export:
+导入 `data` 命名导出:
 
 ```vue
 <script setup>
@@ -35,9 +35,9 @@ import { data } from './example.data.ts'
 </template>
 ```
 
-## Async Data
+## 异步数据
 
-Fetch remote data:
+获取远程数据:
 
 ```ts
 // api.data.ts
@@ -49,9 +49,9 @@ export default {
 }
 ```
 
-## Local Files with Watch
+## 带监视的本地文件
 
-Process local files with hot reload:
+使用热重载处理本地文件:
 
 ```ts
 // posts.data.ts
@@ -61,7 +61,7 @@ import { parse } from 'csv-parse/sync'
 export default {
   watch: ['./data/*.csv'],
   load(watchedFiles) {
-    // watchedFiles = array of absolute paths
+    // watchedFiles = 绝对路径数组
     return watchedFiles.map(file => {
       return parse(fs.readFileSync(file, 'utf-8'), {
         columns: true,
@@ -74,7 +74,7 @@ export default {
 
 ## createContentLoader
 
-Helper for loading markdown content (common for blogs/archives):
+用于加载 markdown 内容的助手(常见于博客/档案):
 
 ```ts
 // posts.data.ts
@@ -83,31 +83,31 @@ import { createContentLoader } from 'vitepress'
 export default createContentLoader('posts/*.md')
 ```
 
-Returns array of `ContentData`:
+返回 `ContentData` 数组:
 
 ```ts
 interface ContentData {
-  url: string                    // e.g. /posts/hello.html
+  url: string                    // 例如 /posts/hello.html
   frontmatter: Record<string, any>
-  src?: string                   // raw markdown (opt-in)
-  html?: string                  // rendered HTML (opt-in)
-  excerpt?: string               // excerpt HTML (opt-in)
+  src?: string                   // 原始 markdown(可选)
+  html?: string                  // 渲染的 HTML(可选)
+  excerpt?: string               // 摘录 HTML(可选)
 }
 ```
 
-With options:
+使用选项:
 
 ```ts
 // posts.data.ts
 import { createContentLoader } from 'vitepress'
 
 export default createContentLoader('posts/*.md', {
-  includeSrc: true,     // Include raw markdown
-  render: true,         // Include rendered HTML
-  excerpt: true,        // Include excerpt (content before first ---)
+  includeSrc: true,     // 包含原始 markdown
+  render: true,         // 包含渲染的 HTML
+  excerpt: true,        // 包含摘录(第一个 --- 之前的内容)
   
   transform(rawData) {
-    // Sort by date, newest first
+    // 按日期排序,最新的在前
     return rawData
       .sort((a, b) => +new Date(b.frontmatter.date) - +new Date(a.frontmatter.date))
       .map(page => ({
@@ -120,7 +120,7 @@ export default createContentLoader('posts/*.md', {
 })
 ```
 
-## Usage Example: Blog Index
+## 用法示例:博客索引
 
 ```ts
 // posts.data.ts
@@ -152,7 +152,7 @@ import { data as posts } from './posts.data.ts'
 </template>
 ```
 
-## Typed Data Loaders
+## 类型化数据加载器
 
 ```ts
 // example.data.ts
@@ -174,9 +174,9 @@ export default defineLoader({
 })
 ```
 
-## In Build Hooks
+## 在构建钩子中
 
-Use in config for generating additional files:
+在配置中使用以生成附加文件:
 
 ```ts
 // .vitepress/config.ts
@@ -185,12 +185,12 @@ import { createContentLoader } from 'vitepress'
 export default {
   async buildEnd() {
     const posts = await createContentLoader('posts/*.md').load()
-    // Generate RSS feed, sitemap, etc.
+    // 生成 RSS feed、sitemap 等
   }
 }
 ```
 
-## Accessing Config
+## 访问配置
 
 ```ts
 // example.data.ts
@@ -204,15 +204,15 @@ export default {
 }
 ```
 
-## Key Points
+## 关键点
 
-- Data loaders run only at build time in Node.js
-- File must end with `.data.js` or `.data.ts`
-- Import the `data` named export (not default)
-- Use `watch` for local file hot reload during dev
-- `createContentLoader` simplifies loading markdown collections
-- Keep data small - it's inlined in the client bundle
-- Heavy data should use `transform` to reduce payload
+- 数据加载器仅在构建时在 Node.js 中运行
+- 文件必须以 `.data.js` 或 `.data.ts` 结尾
+- 导入 `data` 命名导出(不是默认)
+- 使用 `watch` 在开发期间进行本地文件热重载
+- `createContentLoader` 简化加载 markdown 集合
+- 保持数据小 - 它内联在客户端包中
+- 重数据应使用 `transform` 以减少负载
 
 <!--
 Source references:

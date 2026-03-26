@@ -1,13 +1,13 @@
 ---
 name: frontmatter
-description: Configuration options for individual slides
+description: 单张幻灯片的配置选项
 ---
 
-# Per-Slide Frontmatter
+# 单张幻灯片的 Frontmatter
 
-Configuration options for individual slides.
+单张幻灯片的配置选项。
 
-## Layout
+## 布局
 
 ```yaml
 ---
@@ -15,9 +15,9 @@ layout: center
 ---
 ```
 
-Available layouts: `default`, `cover`, `center`, `two-cols`, `two-cols-header`, `image`, `image-left`, `image-right`, `iframe`, `iframe-left`, `iframe-right`, `quote`, `section`, `statement`, `fact`, `full`, `intro`, `end`, `none`
+可用布局：`default`、`cover`、`center`、`two-cols`、`two-cols-header`、`image`、`image-left`、`image-right`、`iframe`、`iframe-left`、`iframe-right`、`quote`、`section`、`statement`、`fact`、`full`、`intro`、`end`、`none`
 
-## Background
+## 背景
 
 ```yaml
 ---
@@ -27,24 +27,24 @@ class: text-white
 ---
 ```
 
-## Click Count
+## 点击次数
 
 ```yaml
 ---
-clicks: 5                   # Total clicks for this slide
-clicksStart: 0              # Starting click number
+clicks: 5                   # 此幻灯片的总点击次数
+clicksStart: 0              # 起始点击次数
 ---
 ```
 
-## Transitions
+## 过渡效果
 
 ```yaml
 ---
-transition: fade            # Slide transition
+transition: fade            # 幻灯片过渡效果
 ---
 ```
 
-Or different for forward/backward:
+或前进/后退使用不同的过渡效果：
 
 ```yaml
 ---
@@ -52,77 +52,77 @@ transition: slide-left | slide-right
 ---
 ```
 
-## Zoom
+## 缩放
 
 ```yaml
 ---
-zoom: 0.8                   # Scale content (0.8 = 80%)
+zoom: 0.8                   # 缩放内容（0.8 = 80%）
 ---
 ```
 
-## Hide Slide
+## 隐藏幻灯片
 
 ```yaml
 ---
-disabled: true              # Hide this slide
-# or
+disabled: true              # 隐藏此幻灯片
+# 或
 hide: true
 ---
 ```
 
-## Table of Contents
+## 目录
 
 ```yaml
 ---
-hideInToc: true             # Hide from Toc component
-level: 2                    # Override heading level
-title: Custom Title         # Override slide title
+hideInToc: true             # 从目录组件中隐藏
+level: 2                    # 覆盖标题级别
+title: 自定义标题         # 覆盖幻灯片标题
 ---
 ```
 
-## Import External File
+## 导入外部文件
 
 ```yaml
 ---
-src: ./slides/intro.md      # Import markdown file
+src: ./slides/intro.md      # 导入 markdown 文件
 ---
 ```
 
-With specific slides:
+导入特定幻灯片：
 
 ```yaml
 ---
-src: ./other.md#2,5-7       # Import slides 2, 5, 6, 7
+src: ./other.md#2,5-7       # 导入幻灯片 2、5、6、7
 ---
 ```
 
-## Route Alias
+## 路由别名
 
 ```yaml
 ---
-routeAlias: intro           # URL: /intro instead of /1
+routeAlias: intro           # URL 使用 /intro 而不是 /1
 ---
 ```
 
-## Preload
+## 预加载
 
 ```yaml
 ---
-preload: false              # Don't mount until entering
+preload: false              # 进入前不挂载
 ---
 ```
 
-## Draggable Positions
+## 可拖动位置
 
 ```yaml
 ---
 dragPos:
-  logo: 100,50,200,100,0    # Left,Top,Width,Height,Rotate
+  logo: 100,50,200,100,0    # 左、上、宽、高、旋转
   arrow: 300,200,50,50,45
 ---
 ```
 
-## Image Layouts
+## 图片布局
 
 ```yaml
 ---
@@ -133,7 +133,7 @@ class: my-custom-class
 ---
 ```
 
-## Iframe Layouts
+## Iframe 布局
 
 ```yaml
 ---
@@ -142,43 +142,43 @@ url: https://example.com
 ---
 ```
 
-## Two Columns
+## 两列
 
 ```yaml
 ---
 layout: two-cols
 ---
 
-# Left Side
+# 左侧
 
-Content
+内容
 
 ::right::
 
-# Right Side
+# 右侧
 
-Content
+内容
 ```
 
-## Two Columns with Header
+## 带标题的两列
 
 ```yaml
 ---
 layout: two-cols-header
 ---
 
-# Header
+# 标题
 
 ::left::
 
-Left content
+左侧内容
 
 ::right::
 
-Right content
+右侧内容
 ```
 
-## Full Example
+## 完整示例
 
 ```yaml
 ---
@@ -191,5 +191,5 @@ zoom: 0.9
 hideInToc: false
 ---
 
-# Slide Content
+# 幻灯片内容
 ```

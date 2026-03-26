@@ -1,38 +1,38 @@
-# Output Format
+# 输出格式
 
-Configure the module format(s) for generated bundles.
+配置生成包的模块格式。
 
-## Overview
+## 概述
 
-tsdown can generate bundles in multiple formats. Default is ESM.
+tsdown 可以生成多种格式的包。默认为 ESM。
 
-## Available Formats
+## 可用格式
 
-| Format | Description | Use Case |
+| 格式 | 描述 | 用例 |
 |--------|-------------|----------|
-| `esm` | ECMAScript Module (default) | Modern Node.js, browsers, Deno |
-| `cjs` | CommonJS | Legacy Node.js, require() |
-| `iife` | Immediately Invoked Function Expression | Browser `<script>` tags |
-| `umd` | Universal Module Definition | AMD, CommonJS, and globals |
+| `esm` | ECMAScript 模块（默认） | 现代 Node.js、浏览器、Deno |
+| `cjs` | CommonJS | 传统 Node.js、require() |
+| `iife` | 立即调用函数表达式 | 浏览器 `<script>` 标签 |
+| `umd` | 通用模块定义 | AMD、CommonJS 和全局变量 |
 
-## Usage
+## 使用
 
 ### CLI
 
 ```bash
-# Single format
+# 单个格式
 tsdown --format esm
 
-# Multiple formats
+# 多个格式
 tsdown --format esm --format cjs
 
-# Or comma-separated
+# 或逗号分隔
 tsdown --format esm,cjs
 ```
 
-### Config File
+### 配置文件
 
-#### Single Format
+#### 单个格式
 
 ```ts
 export default defineConfig({
@@ -41,7 +41,7 @@ export default defineConfig({
 })
 ```
 
-#### Multiple Formats
+#### 多个格式
 
 ```ts
 export default defineConfig({
@@ -50,9 +50,9 @@ export default defineConfig({
 })
 ```
 
-## Per-Format Configuration
+## 每种格式配置
 
-Override options for specific formats:
+为特定格式覆盖选项：
 
 ```ts
 export default defineConfig({
@@ -68,11 +68,11 @@ export default defineConfig({
 })
 ```
 
-This allows different targets, platforms, or other settings per format.
+这允许每种格式有不同的目标、平台或其他设置。
 
-## Common Patterns
+## 常见模式
 
-### Modern Library (ESM + CJS)
+### 现代库（ESM + CJS）
 
 ```ts
 export default defineConfig({
@@ -82,12 +82,12 @@ export default defineConfig({
 })
 ```
 
-Output:
+输出：
 - `dist/index.mjs` (ESM)
 - `dist/index.cjs` (CJS)
-- `dist/index.d.ts` (Types)
+- `dist/index.d.ts` (类型)
 
-### Browser Library (IIFE)
+### 浏览器库（IIFE）
 
 ```ts
 export default defineConfig({
@@ -99,9 +99,9 @@ export default defineConfig({
 })
 ```
 
-Output: `dist/index.global.js` (IIFE with global `MyLib`)
+输出：`dist/index.global.js`（带有全局变量 `MyLib` 的 IIFE）
 
-### Universal Library (UMD)
+### 通用库（UMD）
 
 ```ts
 export default defineConfig({
@@ -112,9 +112,9 @@ export default defineConfig({
 })
 ```
 
-Works with AMD, CommonJS, and browser globals.
+适用于 AMD、CommonJS 和浏览器全局变量。
 
-### Node.js Package (CJS + ESM)
+### Node.js 包（CJS + ESM）
 
 ```ts
 export default defineConfig({
@@ -122,37 +122,37 @@ export default defineConfig({
   format: ['esm', 'cjs'],
   platform: 'node',
   dts: true,
-  shims: true, // Add __dirname, __filename for CJS compat
+  shims: true, // 为 CJS 兼容性添加 __dirname、__filename
 })
 ```
 
-### Framework Component Library
+### 框架组件库
 
 ```ts
 export default defineConfig({
   entry: ['src/index.tsx'],
   format: ['esm', 'cjs'],
   deps: {
-    neverBundle: ['react', 'react-dom'], // Don't bundle dependencies
+    neverBundle: ['react', 'react-dom'], // 不打包依赖项
   },
   dts: true,
 })
 ```
 
-## Format-Specific Outputs
+## 特定格式的输出
 
-### File Extensions
+### 文件扩展名
 
-| Format | Extension |
+| 格式 | 扩展名 |
 |--------|-----------|
-| ESM | `.mjs` or `.js` (with `"type": "module"`) |
-| CJS | `.cjs` or `.js` (without `"type": "module"`) |
+| ESM | `.mjs` 或 `.js`（带有 `"type": "module"`） |
+| CJS | `.cjs` 或 `.js`（不带有 `"type": "module"`） |
 | IIFE | `.global.js` |
 | UMD | `.umd.js` |
 
-### Customize Extensions
+### 自定义扩展名
 
-Use `outExtensions` to override:
+使用 `outExtensions` 覆盖：
 
 ```ts
 export default defineConfig({
@@ -164,18 +164,18 @@ export default defineConfig({
 })
 ```
 
-## Tips
+## 提示
 
-1. **Use ESM + CJS** for maximum compatibility
-2. **Use IIFE** for browser-only libraries
-3. **Use UMD** for universal compatibility (less common now)
-4. **Externalize dependencies** to avoid bundling framework code
-5. **Add shims** for CJS compatibility when using Node.js APIs
-6. **Set globalName** for IIFE/UMD formats
+1. **使用 ESM + CJS**以获得最大兼容性
+2. **使用 IIFE**用于仅浏览器的库
+3. **使用 UMD**用于通用兼容性（现在较少见）
+4. **外部化依赖项**以避免打包框架代码
+5. **添加 shims**以在使用 Node.js API 时提供 CJS 兼容性
+6. **设置 globalName**用于 IIFE/UMD 格式
 
-## Related Options
+## 相关选项
 
-- [Target](option-target.md) - Set JavaScript version
-- [Platform](option-platform.md) - Set platform (node, browser, neutral)
-- [Shims](option-shims.md) - Add ESM/CJS compatibility
-- [Output Directory](option-output-directory.md) - Customize output paths
+- [目标](option-target.md) - 设置 JavaScript 版本
+- [平台](option-platform.md) - 设置平台（node、browser、neutral）
+- [Shims](option-shims.md) - 添加 ESM/CJS 兼容性
+- [输出目录](option-output-directory.md) - 自定义输出路径

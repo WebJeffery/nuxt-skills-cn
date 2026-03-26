@@ -1,24 +1,24 @@
 ---
 name: monaco-write
-description: Edit code and save changes back to the file
+description: 编辑代码并将更改保存回文件
 ---
 
-# Writable Monaco Editor
+# 可写 Monaco 编辑器
 
-Edit code and save changes back to the file.
+编辑代码并将更改保存回文件。
 
-## Usage
+## 用法
 
 ```md
 <<< ./some-file.ts {monaco-write}
 ```
 
-## Behavior
+## 行为
 
-- Links Monaco editor to actual file on filesystem
-- Changes are saved directly to the file
-- Useful for live coding demonstrations
+- 将 Monaco 编辑器链接到文件系统上的实际文件
+- 更改直接保存到文件
+- 适用于实时编码演示
 
-## Warning
+## 警告
 
-Back up files before using - changes are saved directly.
+使用前备份文件 - 更改会直接保存。

@@ -1,13 +1,13 @@
 ---
 name: pdf
-description: Include downloadable PDF in SPA build
+description: 在 SPA 构建中包含可下载的 PDF
 ---
 
-# Generate PDF when Building
+# 构建时生成 PDF
 
-Generate a downloadable PDF alongside your built slides.
+在构建的幻灯片旁边生成可下载的 PDF。
 
-## Enable in Headmatter
+## 在 Headmatter 中启用
 
 ```md
 ---
@@ -15,11 +15,11 @@ download: true
 ---
 ```
 
-This generates a PDF and adds a download button to the built slides.
+这将生成 PDF 并向构建的幻灯片添加下载按钮。
 
-## Custom PDF URL
+## 自定义 PDF URL
 
-Skip generation and use an existing PDF:
+跳过生成并使用现有的 PDF：
 
 ```md
 ---
@@ -27,14 +27,14 @@ download: 'https://example.com/my-talk.pdf'
 ---
 ```
 
-## CLI Option
+## CLI 选项
 
 ```bash
 slidev build --download
 ```
 
-## Export Options
+## 导出选项
 
-Configure PDF export settings via:
-- CLI: `slidev build --download --with-clicks --timeout 60000`
-- Headmatter: Set `exportFilename`, `withClicks`, etc.
+通过以下方式配置 PDF 导出设置：
+- CLI：`slidev build --download --with-clicks --timeout 60000`
+- Headmatter：设置 `exportFilename`、`withClicks` 等。

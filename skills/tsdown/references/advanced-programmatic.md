@@ -1,14 +1,14 @@
-# Programmatic Usage
+# 编程用法
 
-Use tsdown from JavaScript/TypeScript code.
+从 JavaScript/TypeScript 代码中使用 tsdown。
 
-## Overview
+## 概述
 
-tsdown can be imported and used programmatically in your Node.js scripts, custom build tools, or automation workflows.
+tsdown 可以在您的 Node.js 脚本、自定义构建工具或自动化工作流中导入并以编程方式使用。
 
-## Basic Usage
+## 基本用法
 
-### Simple Build
+### 简单构建
 
 ```ts
 import { build } from 'tsdown'
@@ -20,7 +20,7 @@ await build({
 })
 ```
 
-### With Options
+### 带选项
 
 ```ts
 import { build } from 'tsdown'
@@ -36,11 +36,11 @@ await build({
 })
 ```
 
-## API Reference
+## API 参考
 
 ### build()
 
-Main function to run a build.
+运行构建的主要函数。
 
 ```ts
 import { build } from 'tsdown'
@@ -48,18 +48,18 @@ import { build } from 'tsdown'
 await build(options)
 ```
 
-**Parameters:**
-- `options` - Build configuration object (same as config file)
+**参数：**
+- `options` - 构建配置对象（与配置文件相同）
 
-**Returns:**
-- `Promise<void>` - Resolves when build completes
+**返回：**
+- `Promise<void>` - 构建完成时解析
 
-**Throws:**
-- Build errors if compilation fails
+**抛出：**
+- 如果编译失败则抛出构建错误
 
-## Configuration Object
+## 配置对象
 
-All config file options are available:
+所有配置文件选项都可用：
 
 ```ts
 import { build, defineConfig } from 'tsdown'
@@ -73,10 +73,10 @@ const config = defineConfig({
   deps: {
     neverBundle: ['react', 'react-dom'],
   },
-  plugins: [/* plugins */],
+  plugins: [/* 插件 */],
   hooks: {
     'build:done': async () => {
-      console.log('Build complete!')
+      console.log('构建完成!')
     },
   },
 })
@@ -84,18 +84,18 @@ const config = defineConfig({
 await build(config)
 ```
 
-See [Config Reference](option-config-file.md) for all options.
+所有选项请参阅[配置参考](option-config-file.md)。
 
-## Common Patterns
+## 常见模式
 
-### Custom Build Script
+### 自定义构建脚本
 
 ```ts
 // scripts/build.ts
 import { build } from 'tsdown'
 
 async function main() {
-  console.log('Building library...')
+  console.log('构建库...')
 
   await build({
     entry: ['src/index.ts'],
@@ -104,23 +104,23 @@ async function main() {
     clean: true,
   })
 
-  console.log('Build complete!')
+  console.log('构建完成!')
 }
 
 main().catch(console.error)
 ```
 
-Run with:
+运行：
 ```bash
 tsx scripts/build.ts
 ```
 
-### Multiple Builds
+### 多次构建
 
 ```ts
 import { build } from 'tsdown'
 
-// Build main library
+// 构建主库
 await build({
   entry: ['src/index.ts'],
   format: ['esm', 'cjs'],
@@ -128,7 +128,7 @@ await build({
   dts: true,
 })
 
-// Build CLI tool
+// 构建 CLI 工具
 await build({
   entry: ['src/cli.ts'],
   format: ['esm'],
@@ -138,7 +138,7 @@ await build({
 })
 ```
 
-### Conditional Build
+### 条件构建
 
 ```ts
 import { build } from 'tsdown'
@@ -154,7 +154,7 @@ await build({
 })
 ```
 
-### With Error Handling
+### 带错误处理
 
 ```ts
 import { build } from 'tsdown'
@@ -165,26 +165,26 @@ try {
     format: ['esm', 'cjs'],
     dts: true,
   })
-  console.log('✅ Build successful')
+  console.log('✅ 构建成功')
 } catch (error) {
-  console.error('❌ Build failed:', error)
+  console.error('❌ 构建失败:', error)
   process.exit(1)
 }
 ```
 
-### Automated Workflow
+### 自动化工作流
 
 ```ts
 import { build } from 'tsdown'
 import { execSync } from 'child_process'
 
 async function release() {
-  // Clean
-  console.log('Cleaning...')
+  // 清理
+  console.log('清理...')
   execSync('rm -rf dist')
 
-  // Build
-  console.log('Building...')
+  // 构建
+  console.log('构建...')
   await build({
     entry: ['src/index.ts'],
     format: ['esm', 'cjs'],
@@ -192,19 +192,19 @@ async function release() {
     minify: true,
   })
 
-  // Test
-  console.log('Testing...')
+  // 测试
+  console.log('测试...')
   execSync('npm test')
 
-  // Publish
-  console.log('Publishing...')
+  // 发布
+  console.log('发布...')
   execSync('npm publish')
 }
 
 release().catch(console.error)
 ```
 
-### Build with Post-Processing
+### 带后处理的构建
 
 ```ts
 import { build } from 'tsdown'
@@ -216,21 +216,21 @@ await build({
   dts: true,
   hooks: {
     'build:done': async () => {
-      // Copy additional files
+      // 复制其他文件
       copyFileSync('README.md', 'dist/README.md')
       copyFileSync('LICENSE', 'dist/LICENSE')
-      console.log('Copied additional files')
+      console.log('复制了其他文件')
     },
   },
 })
 ```
 
-## Watch Mode
+## 监视模式
 
-Unfortunately, watch mode is not directly exposed in the programmatic API. Use the CLI for watch mode:
+遗憾的是，监视模式未在编程 API 中直接公开。使用 CLI 进行监视模式：
 
 ```ts
-// Use CLI for watch mode
+// 使用 CLI 进行监视模式
 import { spawn } from 'child_process'
 
 spawn('tsdown', ['--watch'], {
@@ -239,9 +239,9 @@ spawn('tsdown', ['--watch'], {
 })
 ```
 
-## Integration Examples
+## 集成示例
 
-### With Task Runner
+### 与任务运行器
 
 ```ts
 // gulpfile.js
@@ -261,7 +261,7 @@ gulp.task('watch', () => {
 })
 ```
 
-### With Custom CLI
+### 与自定义 CLI
 
 ```ts
 // scripts/cli.ts
@@ -272,7 +272,7 @@ const program = new Command()
 
 program
   .command('build')
-  .option('--prod', 'Production build')
+  .option('--prod', '生产构建')
   .action(async (options) => {
     await build({
       entry: ['src/index.ts'],
@@ -285,7 +285,7 @@ program
 program.parse()
 ```
 
-### With CI/CD
+### 与 CI/CD
 
 ```ts
 // .github/scripts/build.ts
@@ -301,13 +301,13 @@ await build({
   clean: true,
 })
 
-// Upload to artifact storage
+// 上传到工件存储
 if (isCI) {
-  // Upload dist/ to S3, etc.
+  // 将 dist/ 上传到 S3 等
 }
 ```
 
-## TypeScript Support
+## TypeScript 支持
 
 ```ts
 // scripts/build.ts
@@ -322,34 +322,34 @@ const config: UserConfig = {
 await build(config)
 ```
 
-## Tips
+## 提示
 
-1. **Use TypeScript** for type safety
-2. **Handle errors** properly
-3. **Use hooks** for custom logic
-4. **Log progress** for visibility
-5. **Use CLI for watch** mode
-6. **Exit on error** in scripts
+1. **使用 TypeScript**以获得类型安全
+2. **正确处理错误**
+3. **使用钩子**进行自定义逻辑
+4. **记录进度**以获得可见性
+5. **使用 CLI 进行监视**模式
+6. **脚本中出错时退出**
 
-## Troubleshooting
+## 故障排除
 
-### Import Errors
+### 导入错误
 
-Ensure tsdown is installed:
+确保已安装 tsdown：
 ```bash
 pnpm add -D tsdown
 ```
 
-### Type Errors
+### 类型错误
 
-Import types:
+导入类型：
 ```ts
 import type { UserConfig } from 'tsdown'
 ```
 
-### Build Fails Silently
+### 构建静默失败
 
-Add error handling:
+添加错误处理：
 ```ts
 try {
   await build(config)
@@ -359,20 +359,20 @@ try {
 }
 ```
 
-### Options Not Working
+### 选项不工作
 
-Check spelling and types:
+检查拼写和类型：
 ```ts
-// ✅ Correct
+// ✅ 正确
 { format: ['esm', 'cjs'] }
 
-// ❌ Wrong
+// ❌ 错误
 { formats: ['esm', 'cjs'] }
 ```
 
-## Related
+## 相关
 
-- [Config File](option-config-file.md) - Configuration options
-- [Hooks](advanced-hooks.md) - Lifecycle hooks
-- [CLI](reference-cli.md) - Command-line interface
-- [Plugins](advanced-plugins.md) - Plugin system
+- [配置文件](option-config-file.md) - 配置选项
+- [Hooks](advanced-hooks.md) - 生命周期钩子
+- [CLI](reference-cli.md) - 命令行界面
+- [插件](advanced-plugins.md) - 插件系统

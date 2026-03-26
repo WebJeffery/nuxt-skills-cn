@@ -1,57 +1,57 @@
 ---
 name: draggable-elements
-description: Move, resize, and rotate elements by dragging during presentation
+description: 通过拖动在演示期间移动、调整大小和旋转元素
 ---
 
-# Draggable Elements
+# 可拖动元素
 
-Move, resize, and rotate elements by dragging during presentation.
+通过拖动在演示期间移动、调整大小和旋转元素。
 
-## Directive Usage
+## 指令用法
 
-### With Frontmatter Position
+### 使用 Frontmatter 位置
 
 ```md
 ---
 dragPos:
-  square: Left,Top,Width,Height,Rotate
+  square: 左,上,宽,高,旋转
 ---
 
 <img v-drag="'square'" src="https://sli.dev/logo.png">
 ```
 
-### Inline Position
+### 内联位置
 
 ```md
-<img v-drag="[Left,Top,Width,Height,Rotate]" src="https://sli.dev/logo.png">
+<img v-drag="[左,上,宽,高,旋转]" src="https://sli.dev/logo.png">
 ```
 
-## Component Usage
+## 组件用法
 
 ```md
 ---
 dragPos:
-  foo: Left,Top,Width,Height,Rotate
+  foo: 左,上,宽,高,旋转
 ---
 
 <v-drag pos="foo" text-3xl>
-  Draggable content
+  可拖动内容
 </v-drag>
 ```
 
-## Draggable Arrow
+## 可拖动箭头
 
 ```md
 <v-drag-arrow />
 ```
 
-## Controls
+## 控制
 
-- Double-click: Start dragging
-- Arrow keys: Move element
-- Shift + drag: Preserve aspect ratio
-- Click outside: Stop dragging
+- 双击：开始拖动
+- 箭头键：移动元素
+- Shift + 拖动：保持宽高比
+- 单击外部：停止拖动
 
-## Auto Height
+## 自动高度
 
-Set Height to `NaN` or `_` for auto height based on content.
+将高度设置为 `NaN` 或 `_` 以根据内容自动调整高度。

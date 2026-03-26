@@ -1,57 +1,57 @@
-# Lifecycle Hooks
+# 生命周期钩子
 
-Extend the build process with lifecycle hooks.
+使用生命周期钩子扩展构建过程。
 
-## Overview
+## 概述
 
-Hooks provide a way to inject custom logic at specific stages of the build lifecycle. Inspired by [unbuild](https://github.com/unjs/unbuild).
+钩子提供了一种在构建生命周期的特定阶段注入自定义逻辑的方法。灵感来自 [unbuild](https://github.com/unjs/unbuild)。
 
-**Recommendation:** Use [plugins](advanced-plugins.md) for most extensions. Use hooks for simple custom tasks or Rolldown plugin injection.
+**推荐：** 使用[插件](advanced-plugins.md)进行大多数扩展。使用钩子进行简单的自定义任务或 Rolldown 插件注入。
 
-## Usage Patterns
+## 使用模式
 
-### Object Syntax
+### 对象语法
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   hooks: {
     'build:prepare': async (context) => {
-      console.log('Build starting...')
+      console.log('构建开始...')
     },
     'build:done': async (context) => {
-      console.log('Build complete!')
+      console.log('构建完成!')
     },
   },
 })
 ```
 
-### Function Syntax
+### 函数语法
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   hooks(hooks) {
     hooks.hook('build:prepare', () => {
-      console.log('Preparing build...')
+      console.log('准备构建...')
     })
 
     hooks.hook('build:before', (context) => {
-      console.log(`Building format: ${context.format}`)
+      console.log(`构建格式: ${context.format}`)
     })
   },
 })
 ```
 
-## Available Hooks
+## 可用的钩子
 
 ### `build:prepare`
 
-Called before the build process starts.
+在构建过程开始之前调用。
 
-**When:** Once per build session
+**何时：** 每个构建会话一次
 
-**Context:**
+**上下文：**
 ```ts
 {
   options: ResolvedConfig,
@@ -59,16 +59,16 @@ Called before the build process starts.
 }
 ```
 
-**Use cases:**
-- Setup tasks
-- Validation
-- Environment preparation
+**用例：**
+- 设置任务
+- 验证
+- 环境准备
 
-**Example:**
+**示例：**
 ```ts
 hooks: {
   'build:prepare': async (context) => {
-    console.log('Starting build for:', context.options.entry)
+    console.log('开始构建:', context.options.entry)
     await cleanOldFiles()
   },
 }
@@ -76,11 +76,11 @@ hooks: {
 
 ### `build:before`
 
-Called before each Rolldown build.
+在每次 Rolldown 构建之前调用。
 
-**When:** Once per format (ESM, CJS, etc.)
+**何时：** 每种格式一次（ESM、CJS 等）
 
-**Context:**
+**上下文：**
 ```ts
 {
   options: ResolvedConfig,
@@ -89,18 +89,18 @@ Called before each Rolldown build.
 }
 ```
 
-**Use cases:**
-- Modify build options per format
-- Inject plugins dynamically
-- Format-specific setup
+**用例：**
+- 每种格式修改构建选项
+- 动态注入插件
+- 特定格式设置
 
-**Example:**
+**示例：**
 ```ts
 hooks: {
   'build:before': async (context) => {
-    console.log(`Building ${context.buildOptions.format} format...`)
+    console.log(`构建 ${context.buildOptions.format} 格式...`)
 
-    // Add format-specific plugin
+    // 添加特定格式的插件
     if (context.buildOptions.format === 'iife') {
       context.buildOptions.plugins.push(browserPlugin())
     }
@@ -110,11 +110,11 @@ hooks: {
 
 ### `build:done`
 
-Called after the build completes.
+构建完成后调用。
 
-**When:** Once per build session
+**何时：** 每个构建会话一次
 
-**Context:**
+**上下文：**
 ```ts
 {
   options: ResolvedConfig,
@@ -123,52 +123,52 @@ Called after the build completes.
 }
 ```
 
-**Use cases:**
-- Post-processing
-- Asset copying
-- Notifications
-- Deployment
+**用例：**
+- 后处理
+- 资源复制
+- 通知
+- 部署
 
-**Example:**
+**示例：**
 ```ts
 hooks: {
   'build:done': async (context) => {
-    console.log(`Built ${context.chunks.length} chunks`)
+    console.log(`构建了 ${context.chunks.length} 个块`)
 
-    // Copy additional files
+    // 复制其他文件
     await copyAssets()
 
-    // Send notification
+    // 发送通知
     notifyBuildComplete()
   },
 }
 ```
 
-## Common Patterns
+## 常见模式
 
-### Build Notifications
+### 构建通知
 
 ```ts
 export default defineConfig({
   hooks: {
     'build:prepare': () => {
-      console.log('🚀 Starting build...')
+      console.log('🚀 开始构建...')
     },
     'build:done': (context) => {
       const size = context.chunks.reduce((sum, c) => sum + c.code.length, 0)
-      console.log(`✅ Build complete! Total size: ${size} bytes`)
+      console.log(`✅ 构建完成! 总大小: ${size} 字节`)
     },
   },
 })
 ```
 
-### Conditional Plugin Injection
+### 条件插件注入
 
 ```ts
 export default defineConfig({
   hooks(hooks) {
     hooks.hook('build:before', (context) => {
-      // Add minification only for production
+      // 仅在生产中添加压缩
       if (process.env.NODE_ENV === 'production') {
         context.buildOptions.plugins.push(minifyPlugin())
       }
@@ -177,7 +177,7 @@ export default defineConfig({
 })
 ```
 
-### Custom File Copy
+### 自定义文件复制
 
 ```ts
 import { copyFile } from 'fs/promises'
@@ -185,14 +185,14 @@ import { copyFile } from 'fs/promises'
 export default defineConfig({
   hooks: {
     'build:done': async (context) => {
-      // Copy README to dist
+      // 将 README 复制到 dist
       await copyFile('README.md', `${context.options.outDir}/README.md`)
     },
   },
 })
 ```
 
-### Build Metrics
+### 构建指标
 
 ```ts
 export default defineConfig({
@@ -202,18 +202,18 @@ export default defineConfig({
     },
     'build:done': (context) => {
       const duration = Date.now() - context.startTime
-      console.log(`Build took ${duration}ms`)
+      console.log(`构建耗时 ${duration}ms`)
 
-      // Log chunk sizes
+      // 记录块大小
       context.chunks.forEach((chunk) => {
-        console.log(`${chunk.fileName}: ${chunk.code.length} bytes`)
+        console.log(`${chunk.fileName}: ${chunk.code.length} 字节`)
       })
     },
   },
 })
 ```
 
-### Format-Specific Logic
+### 特定格式逻辑
 
 ```ts
 export default defineConfig({
@@ -223,10 +223,10 @@ export default defineConfig({
       const format = context.buildOptions.format
 
       if (format === 'iife') {
-        // Browser-specific setup
+        // 浏览器特定设置
         context.buildOptions.globalName = 'MyLib'
       } else if (format === 'cjs') {
-        // Node-specific setup
+        // Node 特定设置
         context.buildOptions.platform = 'node'
       }
     },
@@ -234,14 +234,14 @@ export default defineConfig({
 })
 ```
 
-### Deployment Hook
+### 部署钩子
 
 ```ts
 export default defineConfig({
   hooks: {
     'build:done': async (context) => {
       if (process.env.DEPLOY === 'true') {
-        console.log('Deploying to CDN...')
+        console.log('部署到 CDN...')
         await deployToCDN(context.options.outDir)
       }
     },
@@ -249,14 +249,14 @@ export default defineConfig({
 })
 ```
 
-## Advanced Usage
+## 高级用法
 
-### Multiple Hooks
+### 多个钩子
 
 ```ts
 export default defineConfig({
   hooks(hooks) {
-    // Register multiple hooks
+    // 注册多个钩子
     hooks.hook('build:prepare', setupEnvironment)
     hooks.hook('build:prepare', validateConfig)
 
@@ -269,7 +269,7 @@ export default defineConfig({
 })
 ```
 
-### Async Hooks
+### 异步钩子
 
 ```ts
 export default defineConfig({
@@ -286,7 +286,7 @@ export default defineConfig({
 })
 ```
 
-### Error Handling
+### 错误处理
 
 ```ts
 export default defineConfig({
@@ -295,8 +295,8 @@ export default defineConfig({
       try {
         await riskyOperation()
       } catch (error) {
-        console.error('Hook failed:', error)
-        // Don't throw - allow build to complete
+        console.error('钩子失败:', error)
+        // 不要抛出 - 允许构建完成
       }
     },
   },
@@ -305,59 +305,59 @@ export default defineConfig({
 
 ## Hookable API
 
-tsdown uses [hookable](https://github.com/unjs/hookable) for hooks. Additional methods:
+tsdown 使用 [hookable](https://github.com/unjs/hookable) 进行钩子。其他方法：
 
 ```ts
 export default defineConfig({
   hooks(hooks) {
-    // Register hook
+    // 注册钩子
     hooks.hook('build:done', handler)
 
-    // Register hook once
+    // 注册钩子一次
     hooks.hookOnce('build:prepare', handler)
 
-    // Remove hook
+    // 移除钩子
     hooks.removeHook('build:done', handler)
 
-    // Clear all hooks for event
+    // 清除事件的所有钩子
     hooks.removeHooks('build:done')
 
-    // Call hooks manually
+    // 手动调用钩子
     await hooks.callHook('build:done', context)
   },
 })
 ```
 
-## Tips
+## 提示
 
-1. **Use plugins** for most extensions
-2. **Hooks for simple tasks** like notifications or file copying
-3. **Async hooks supported** for I/O operations
-4. **Don't throw errors** unless you want to fail the build
-5. **Context is mutable** in `build:before` for advanced use cases
-6. **Multiple hooks allowed** for the same event
+1. **使用插件**进行大多数扩展
+2. **钩子用于简单任务**，如通知或文件复制
+3. **支持异步钩子**用于 I/O 操作
+4. **不要抛出错误**，除非您想要失败构建
+5. **上下文是可变的**在 `build:before` 中用于高级用例
+6. **允许多个钩子**用于同一事件
 
-## Troubleshooting
+## 故障排除
 
-### Hook Not Called
+### 钩子未被调用
 
-- Verify hook name is correct
-- Check hook is registered in config
-- Ensure async hooks are awaited
+- 验证钩子名称正确
+- 检查钩子是否在配置中注册
+- 确保异步钩子被等待
 
-### Build Fails in Hook
+### 钩子中构建失败
 
-- Add try/catch for error handling
-- Don't throw unless intentional
-- Log errors for debugging
+- 添加 try/catch 进行错误处理
+- 除非有意为之，否则不要抛出
+- 记录错误以进行调试
 
-### Context Undefined
+### 上下文未定义
 
-- Check which hook you're using
-- Verify context properties available for that hook
+- 检查您正在使用哪个钩子
+- 验证该钩子可用的上下文属性
 
-## Related
+## 相关
 
-- [Plugins](advanced-plugins.md) - Plugin system
-- [Rolldown Options](advanced-rolldown-options.md) - Build options
-- [Watch Mode](option-watch-mode.md) - Development workflow
+- [插件](advanced-plugins.md) - 插件系统
+- [Rolldown 选项](advanced-rolldown-options.md) - 构建选项
+- [监视模式](option-watch-mode.md) - 开发工作流

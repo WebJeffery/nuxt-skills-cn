@@ -1,68 +1,68 @@
 ---
-description: Load Turborepo skill for creating workflows, tasks, and pipelines in monorepos. Use when users ask to "create a workflow", "make a task", "generate a pipeline", or set up build orchestration.
+description: 加载 Turborepo 技能，用于在 monorepos 中创建工作流、任务和管道。当用户要求"创建工作流"、"制作任务"、"生成管道"或设置构建编排时使用。
 ---
 
-Load the Turborepo skill and help with monorepo task orchestration: creating workflows, configuring tasks, setting up pipelines, and optimizing builds.
+加载 Turborepo 技能并帮助进行 monorepo 任务编排：创建工作流、配置任务、设置管道和优化构建。
 
-## Workflow
+## 工作流程
 
-### Step 1: Load turborepo skill
+### 步骤 1：加载 turborepo 技能
 
 ```
 skill({ name: 'turborepo' })
 ```
 
-### Step 2: Identify task type from user request
+### 步骤 2：从用户请求中识别任务类型
 
-Analyze $ARGUMENTS to determine:
+分析 $ARGUMENTS 以确定：
 
-- **Topic**: configuration, caching, filtering, environment, CI, or CLI
-- **Task type**: new setup, debugging, optimization, or implementation
+- **主题**：配置、缓存、过滤、环境、CI 或 CLI
+- **任务类型**：新设置、调试、优化或实现
 
-Use decision trees in SKILL.md to select the relevant reference files.
+使用 SKILL.md 中的决策树选择相关的参考文件。
 
-### Step 3: Read relevant reference files
+### 步骤 3：读取相关参考文件
 
-Based on task type, read from `references/<topic>/`:
+根据任务类型，从 `references/<topic>/` 读取：
 
-| Task                 | Files to Read                                           |
+| 任务                 | 要读取的文件                                           |
 | -------------------- | ------------------------------------------------------- |
-| Configure turbo.json | `configuration/RULE.md` + `configuration/tasks.md`      |
-| Debug cache issues   | `caching/gotchas.md`                                    |
-| Set up remote cache  | `caching/remote-cache.md`                               |
-| Filter packages      | `filtering/RULE.md` + `filtering/patterns.md`           |
-| Environment problems | `environment/gotchas.md` + `environment/modes.md`       |
-| Set up CI            | `ci/RULE.md` + `ci/github-actions.md` or `ci/vercel.md` |
-| CLI usage            | `cli/commands.md`                                       |
+| 配置 turbo.json | `configuration/RULE.md` + `configuration/tasks.md`      |
+| 调试缓存问题   | `caching/gotchas.md`                                    |
+| 设置远程缓存  | `caching/remote-cache.md`                               |
+| 过滤包      | `filtering/RULE.md` + `filtering/patterns.md`           |
+| 环境问题 | `environment/gotchas.md` + `environment/modes.md`       |
+| 设置 CI            | `ci/RULE.md` + `ci/github-actions.md` 或 `ci/vercel.md` |
+| CLI 使用            | `cli/commands.md`                                       |
 
-### Step 4: Execute task
+### 步骤 4：执行任务
 
-Apply Turborepo-specific patterns from references to complete the user's request.
+应用参考中的 Turborepo 特定模式来完成用户请求。
 
-**CRITICAL - When creating tasks/scripts/pipelines:**
+**关键 - 创建任务/脚本/管道时：**
 
-1. **DO NOT create Root Tasks** - Always create package tasks
-2. Add scripts to each relevant package's `package.json` (e.g., `apps/web/package.json`, `packages/ui/package.json`)
-3. Register the task in root `turbo.json`
-4. Root `package.json` only contains `turbo run <task>` - never actual task logic
+1. **不要创建根任务** - 始终创建包任务
+2. 将脚本添加到每个相关包的 `package.json`（例如 `apps/web/package.json`、`packages/ui/package.json`）
+3. 在根 `turbo.json` 中注册任务
+4. 根 `package.json` 仅包含 `turbo run <task>` - 绝不包含实际任务逻辑
 
-**Other things to verify:**
+**其他需要验证的事项：**
 
-- `outputs` defined for cacheable tasks
-- `dependsOn` uses correct syntax (`^task` vs `task`)
-- Environment variables in `env` key
-- `.env` files in `inputs` if used
-- Use `turbo run` (not `turbo`) in package.json and CI
+- 为可缓存任务定义了 `outputs`
+- `dependsOn` 使用正确的语法（`^task` vs `task`）
+- 环境变量在 `env` 键中
+- `.env` 文件在 `inputs` 中（如果使用）
+- 在 package.json 和 CI 中使用 `turbo run`（而不是 `turbo`）
 
-### Step 5: Summarize
+### 步骤 5：总结
 
 ```
-=== Turborepo Task Complete ===
+=== Turborepo 任务完成 ===
 
-Topic: <configuration|caching|filtering|environment|ci|cli>
-Files referenced: <reference files consulted>
+主题: <configuration|caching|filtering|environment|ci|cli>
+参考文件: <已查阅的参考文件>
 
-<brief summary of what was done>
+<简要总结所做的工作>
 ```
 
 <user-request>

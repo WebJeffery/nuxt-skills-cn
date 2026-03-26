@@ -1,12 +1,12 @@
-# Unbundle Mode
+# Unbundle 模式
 
-Preserve source directory structure in output.
+在输出中保留源目录结构。
 
-## Overview
+## 概述
 
-Unbundle mode (also called "bundleless" or "transpile-only") outputs files that mirror your source structure, rather than bundling everything into single files. Each source file is compiled individually with a one-to-one mapping.
+Unbundle 模式（也称为"无包"或"仅转译"）输出镜像源结构的文件，而不是将所有内容打包到单个文件中。每个源文件都是单独编译的，具有一对一的映射。
 
-## Basic Usage
+## 基本用法
 
 ### CLI
 
@@ -14,7 +14,7 @@ Unbundle mode (also called "bundleless" or "transpile-only") outputs files that 
 tsdown --unbundle
 ```
 
-### Config File
+### 配置文件
 
 ```ts
 export default defineConfig({
@@ -23,9 +23,9 @@ export default defineConfig({
 })
 ```
 
-## How It Works
+## 工作原理
 
-### Source Structure
+### 源结构
 
 ```
 src/
@@ -37,9 +37,9 @@ src/
     └── button.ts
 ```
 
-### With Unbundle
+### 使用 Unbundle
 
-**Config:**
+**配置：**
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
@@ -47,7 +47,7 @@ export default defineConfig({
 })
 ```
 
-**Output:**
+**输出：**
 ```
 dist/
 ├── index.mjs
@@ -58,38 +58,38 @@ dist/
     └── button.mjs
 ```
 
-All imported files are output individually, preserving structure.
+所有导入的文件都是单独输出的，保留结构。
 
-### Without Unbundle (Default)
+### 不使用 Unbundle（默认）
 
-**Output:**
+**输出：**
 ```
 dist/
-└── index.mjs  (all code bundled together)
+└── index.mjs  (所有代码打包在一起)
 ```
 
-## When to Use
+## 何时使用
 
-### Use Unbundle When:
+### 使用 Unbundle 当：
 
-✅ Building monorepo packages with shared utilities
-✅ Users need to import individual modules
-✅ Want clear source-to-output mapping
-✅ Library with many independent utilities
-✅ Debugging requires tracing specific files
-✅ Incremental builds for faster development
+✅ 构建具有共享工具的 monorepo 包
+✅ 用户需要导入单个模块
+✅ 想要清晰的源到输出映射
+✅ 具有许多独立工具的库
+✅ 调试需要跟踪特定文件
+✅ 增量构建以加快开发
 
-### Use Standard Bundling When:
+### 使用标准打包当：
 
-❌ Single entry point application
-❌ Want to optimize bundle size
-❌ Need aggressive tree shaking
-❌ Creating IIFE/UMD bundles
-❌ Deploying to browsers directly
+❌ 单入口点应用程序
+❌ 想要优化包大小
+❌ 需要激进的 tree shaking
+❌ 创建 IIFE/UMD 包
+❌ 直接部署到浏览器
 
-## Common Patterns
+## 常见模式
 
-### Utility Library
+### 工具库
 
 ```ts
 export default defineConfig({
@@ -100,19 +100,19 @@ export default defineConfig({
 })
 ```
 
-**Benefits:**
-- Users import only what they need
-- Tree shaking still works at user's build
-- Clear module boundaries
+**好处：**
+- 用户只导入他们需要的内容
+- Tree shaking 仍然在用户的构建中工作
+- 清晰的模块边界
 
-**Usage:**
+**用法：**
 ```ts
-// Users can import specific utilities
+// 用户可以导入特定工具
 import { helper } from 'my-lib/utils/helper'
 import { Button } from 'my-lib/components/button'
 ```
 
-### Monorepo Shared Package
+### Monorepo 共享包
 
 ```ts
 export default defineConfig({
@@ -123,7 +123,7 @@ export default defineConfig({
 })
 ```
 
-### TypeScript Compilation Only
+### 仅 TypeScript 编译
 
 ```ts
 export default defineConfig({
@@ -136,23 +136,23 @@ export default defineConfig({
 })
 ```
 
-Pure TypeScript to JavaScript transformation.
+纯 TypeScript 到 JavaScript 转换。
 
-### Development Mode
+### 开发模式
 
 ```ts
 export default defineConfig((options) => ({
   entry: ['src/**/*.ts'],
-  unbundle: options.watch,  // Unbundle in dev only
+  unbundle: options.watch,  // 仅在开发时 unbundle
   minify: !options.watch,
 }))
 ```
 
-Fast rebuilds during development, optimized for production.
+开发期间快速重建，为生产优化。
 
-## With Entry Patterns
+## 使用入口模式
 
-### Include/Exclude
+### 包含/排除
 
 ```ts
 export default defineConfig({
@@ -166,7 +166,7 @@ export default defineConfig({
 })
 ```
 
-### Multiple Entry Points
+### 多个入口点
 
 ```ts
 export default defineConfig({
@@ -178,11 +178,11 @@ export default defineConfig({
 })
 ```
 
-Both entry files and all imports preserved.
+入口文件和所有导入都保留。
 
-## Output Control
+## 输出控制
 
-### Custom Extension
+### 自定义扩展
 
 ```ts
 export default defineConfig({
@@ -192,7 +192,7 @@ export default defineConfig({
 })
 ```
 
-### Preserve Directory
+### 保留目录
 
 ```ts
 export default defineConfig({
@@ -202,7 +202,7 @@ export default defineConfig({
 })
 ```
 
-**Output:**
+**输出：**
 ```
 lib/
 ├── index.js
@@ -212,7 +212,7 @@ lib/
     └── button.js
 ```
 
-## Package.json Setup
+## Package.json 设置
 
 ```json
 {
@@ -229,82 +229,82 @@ lib/
 }
 ```
 
-Or use `exports: true` to auto-generate.
+或使用 `exports: true` 自动生成。
 
-## Comparison
+## 比较
 
-| Feature | Bundled | Unbundled |
+| 特性 | 打包 | Unbundle |
 |---------|---------|-----------|
-| Output files | Few | Many |
-| File size | Smaller | Larger |
-| Build speed | Slower | Faster |
-| Tree shaking | Build time | User's build |
-| Source mapping | Complex | Simple |
-| Module imports | Entry only | Any module |
-| Dev rebuilds | Slower | Faster |
+| 输出文件 | 少 | 多 |
+| 文件大小 | 更小 | 更大 |
+| 构建速度 | 更慢 | 更快 |
+| Tree shaking | 构建时 | 用户的构建 |
+| 源映射 | 复杂 | 简单 |
+| 模块导入 | 仅入口 | 任何模块 |
+| 开发重建 | 更慢 | 更快 |
 
-## Performance
+## 性能
 
-### Build Speed
+### 构建速度
 
-Unbundle is typically faster:
-- No bundling overhead
-- Parallel file processing
-- Incremental builds possible
+Unbundle 通常更快：
+- 无打包开销
+- 并行文件处理
+- 可能的增量构建
 
-### Bundle Size
+### 包大小
 
-Unbundle produces larger output:
-- Each file has its own overhead
-- No cross-module optimizations
-- User's bundler handles final optimization
+Unbundle 产生更大的输出：
+- 每个文件都有自己的开销
+- 无跨模块优化
+- 用户的打包器处理最终优化
 
-## Tips
+## 提示
 
-1. **Use with glob patterns** for multiple files
-2. **Enable in development** for faster rebuilds
-3. **Let users bundle** for production optimization
-4. **Preserve structure** for utilities/components
-5. **Combine with DTS** for type definitions
-6. **Use with monorepos** for shared code
+1. **使用 glob 模式**用于多个文件
+2. **在开发中启用**以加快重建
+3. **让用户打包**以进行生产优化
+4. **保留结构**用于工具/组件
+5. **与 DTS 结合**用于类型定义
+6. **与 monorepos 一起使用**用于共享代码
 
-## Troubleshooting
+## 故障排除
 
-### Too Many Files
+### 文件太多
 
-- Adjust entry patterns
-- Exclude unnecessary files
-- Use specific entry points
+- 调整入口模式
+- 排除不必要的文件
+- 使用特定的入口点
 
-### Missing Files
+### 缺少文件
 
-- Check entry patterns
-- Verify files are imported
-- Look for excluded patterns
+- 检查入口模式
+- 验证文件是否被导入
+- 查找排除的模式
 
-### Import Paths Wrong
+### 导入路径错误
 
-- Check relative paths
-- Verify output structure
-- Update package.json exports
+- 检查相对路径
+- 验证输出结构
+- 更新 package.json exports
 
-## CLI Examples
+## CLI 示例
 
 ```bash
-# Enable unbundle
+# 启用 unbundle
 tsdown --unbundle
 
-# With specific entry
+# 使用特定入口
 tsdown src/**/*.ts --unbundle
 
-# With other options
+# 使用其他选项
 tsdown --unbundle --format esm --dts
 ```
 
-## Related Options
+## 相关选项
 
-- [Root Directory](option-root.md) - Control output directory mapping
-- [Entry](option-entry.md) - Entry patterns
-- [Output Directory](option-output-directory.md) - Output location
-- [Output Format](option-output-format.md) - Module formats
-- [DTS](option-dts.md) - Type declarations
+- [根目录](option-root.md) - 控制输出目录映射
+- [入口点](option-entry.md) - 入口模式
+- [输出目录](option-output-directory.md) - 输出位置
+- [输出格式](option-output-format.md) - 模块格式
+- [DTS](option-dts.md) - 类型声明

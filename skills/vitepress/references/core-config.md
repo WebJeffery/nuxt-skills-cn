@@ -1,42 +1,42 @@
 ---
 name: vitepress-configuration
-description: Config file setup, defineConfig helper, site metadata, and build options
+description: 配置文件设置、defineConfig 助手、站点元数据和构建选项
 ---
 
-# Configuration
+# 配置
 
-VitePress configuration is defined in `.vitepress/config.[js|ts|mjs|mts]`. Use `defineConfig` for TypeScript intellisense.
+VitePress 配置定义在 `.vitepress/config.[js|ts|mjs|mts]` 中。使用 `defineConfig` 以获得 TypeScript 智能感知。
 
-## Basic Config
+## 基本配置
 
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  // Site metadata
+  // 站点元数据
   title: 'My Docs',
   description: 'Documentation site',
   lang: 'en-US',
   
-  // URL base path (for GitHub Pages: '/repo-name/')
+  // URL 基础路径(对于 GitHub Pages: '/repo-name/')
   base: '/',
   
-  // Theme configuration
+  // 主题配置
   themeConfig: {
-    // See theme-config.md
+    // 参见 theme-config.md
   }
 })
 ```
 
-## Site Metadata
+## 站点元数据
 
 ```ts
 export default defineConfig({
-  title: 'VitePress',           // Displayed in nav, used in page titles
-  titleTemplate: ':title - Docs', // Page title format (:title = h1)
-  description: 'Site description', // Meta description
-  lang: 'en-US',                 // HTML lang attribute
+  title: 'VitePress',           // 显示在导航中,用于页面标题
+  titleTemplate: ':title - Docs', // 页面标题格式(:title = h1)
+  description: 'Site description', // Meta 描述
+  lang: 'en-US',                 // HTML lang 属性
   
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
@@ -46,84 +46,84 @@ export default defineConfig({
 })
 ```
 
-## Build Options
+## 构建选项
 
 ```ts
 export default defineConfig({
-  // Source files directory (relative to project root)
+  // 源文件目录(相对于项目根目录)
   srcDir: './src',
   
-  // Exclude patterns from source
+  // 从源中排除的模式
   srcExclude: ['**/README.md', '**/TODO.md'],
   
-  // Output directory
+  // 输出目录
   outDir: './.vitepress/dist',
   
-  // Cache directory
+  // 缓存目录
   cacheDir: './.vitepress/cache',
   
-  // Clean URLs without .html extension (requires server support)
+  // 没有 .html 扩展名的干净 URL(需要服务器支持)
   cleanUrls: true,
   
-  // Ignore dead links during build
+  // 在构建期间忽略死链接
   ignoreDeadLinks: true,
-  // Or specific patterns:
+  // 或特定模式:
   ignoreDeadLinks: ['/playground', /^https?:\/\/localhost/],
   
-  // Get last updated timestamp from git
+  // 从 git 获取最后更新时间戳
   lastUpdated: true
 })
 ```
 
-## Route Rewrites
+## 路由重写
 
-Map source paths to different output paths:
+将源路径映射到不同的输出路径:
 
 ```ts
 export default defineConfig({
   rewrites: {
-    // Static mapping
+    // 静态映射
     'packages/pkg-a/src/index.md': 'pkg-a/index.md',
     
-    // Dynamic parameters
+    // 动态参数
     'packages/:pkg/src/:slug*': ':pkg/:slug*'
   }
 })
 ```
 
-## Appearance (Dark Mode)
+## 外观(暗色模式)
 
 ```ts
 export default defineConfig({
-  appearance: true,           // Enable toggle (default)
-  appearance: 'dark',         // Dark by default
-  appearance: 'force-dark',   // Always dark, no toggle
-  appearance: 'force-auto',   // Always follow system preference
-  appearance: false           // Disable dark mode
+  appearance: true,           // 启用切换(默认)
+  appearance: 'dark',         // 默认为暗色
+  appearance: 'force-dark',   // 始终为暗色,无切换
+  appearance: 'force-auto',   // 始终跟随系统首选项
+  appearance: false           // 禁用暗色模式
 })
 ```
 
-## Vite & Vue Configuration
+## Vite 和 Vue 配置
 
 ```ts
 export default defineConfig({
-  // Pass options to Vite
+  // 将选项传递给 Vite
   vite: {
     plugins: [],
     resolve: { alias: {} },
     css: { preprocessorOptions: {} }
   },
   
-  // Pass options to @vitejs/plugin-vue
+  // 将选项传递给 @vitejs/plugin-vue
   vue: {
     template: { compilerOptions: {} }
   },
   
-  // Configure markdown-it
+  // 配置 markdown-it
   markdown: {
     lineNumbers: true,
     toc: { level: [1, 2, 3] },
-    math: true, // Requires markdown-it-mathjax3
+    math: true, // 需要 markdown-it-mathjax3
     container: {
       tipLabel: 'TIP',
       warningLabel: 'WARNING',
@@ -133,11 +133,11 @@ export default defineConfig({
 })
 ```
 
-## Build Hooks
+## 构建钩子
 
 ```ts
 export default defineConfig({
-  // Transform page data
+  // 转换页面数据
   transformPageData(pageData, { siteConfig }) {
     pageData.frontmatter.head ??= []
     pageData.frontmatter.head.push([
@@ -145,21 +145,21 @@ export default defineConfig({
     ])
   },
   
-  // Transform head before generating each page
+  // 在生成每个页面之前转换 head
   async transformHead(context) {
     return [['meta', { name: 'custom', content: context.page }]]
   },
   
-  // After build completes
+  // 构建完成后
   async buildEnd(siteConfig) {
-    // Generate sitemap, RSS, etc.
+    // 生成 sitemap、RSS 等
   }
 })
 ```
 
-## Dynamic Config
+## 动态配置
 
-For async configuration:
+对于异步配置:
 
 ```ts
 export default async () => {
@@ -174,13 +174,13 @@ export default async () => {
 }
 ```
 
-## Key Points
+## 关键点
 
-- Config file supports `.js`, `.ts`, `.mjs`, `.mts` extensions
-- Use `defineConfig` for TypeScript support
-- `base` must start and end with `/` for sub-path deployments
-- `srcDir` separates source files from project root
-- Build hooks enable custom transformations and post-processing
+- 配置文件支持 `.js`、`.ts`、`.mjs`、`.mts` 扩展名
+- 使用 `defineConfig` 以获得 TypeScript 支持
+- `base` 必须以 `/` 开头和结尾以进行子路径部署
+- `srcDir` 将源文件与项目根目录分离
+- 构建钩子启用自定义转换和后处理
 
 <!--
 Source references:

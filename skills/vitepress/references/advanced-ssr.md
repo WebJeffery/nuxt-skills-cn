@@ -1,228 +1,293 @@
 ---
-name: vitepress-ssr-compatibility
-description: Server-side rendering compatibility, ClientOnly component, and handling browser-only code
+name: vitepress-ssr
+description: 服务器端渲染配置、自定义服务器、预渲染和 SSR 优化
 ---
 
-# SSR Compatibility
+# 服务器端渲染 (SSR)
 
-VitePress pre-renders pages on the server during build. All Vue code must be SSR-compatible.
+VitePress 默认为静态站点生成器(SSG),但支持自定义 SSR。
 
-## The Rule
+## SSG 与 SSR
 
-Only access browser/DOM APIs in Vue lifecycle hooks:
-- `onMounted()`
-- `onBeforeMount()`
+**SSG (默认):**
+- 在构建时预渲染所有路由
+- 生成静态 HTML 文件
+- 快速,易于部署到任何静态主机
 
-```vue
-<script setup>
-import { onMounted, ref } from 'vue'
+**SSR:**
+- 在服务器上动态渲染页面
+- 支持动态内容
+- 需要自定义服务器
 
-const windowWidth = ref(0)
+## 自定义 SSR
 
-onMounted(() => {
-  // Safe - runs only in browser
-  windowWidth.value = window.innerWidth
-})
-</script>
-```
-
-**Do NOT** access at top level:
-
-```vue
-<script setup>
-// WRONG - runs during SSR where window doesn't exist
-const width = window.innerWidth
-</script>
-```
-
-## ClientOnly Component
-
-Wrap non-SSR-friendly components:
-
-```vue
-<template>
-  <ClientOnly>
-    <BrowserOnlyComponent />
-  </ClientOnly>
-</template>
-```
-
-## Libraries That Access Browser on Import
-
-Some libraries access `window` or `document` when imported:
-
-### Dynamic Import in onMounted
-
-```vue
-<script setup>
-import { onMounted } from 'vue'
-
-onMounted(async () => {
-  const lib = await import('browser-only-library')
-  lib.doSomething()
-})
-</script>
-```
-
-### Conditional Import
+### 创建自定义服务器
 
 ```ts
-if (!import.meta.env.SSR) {
-  const lib = await import('browser-only-library')
-  lib.doSomething()
-}
-```
+// server.js
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { createServer as createViteServer } from 'vite'
 
-### In enhanceApp
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-```ts
-// .vitepress/theme/index.ts
-export default {
-  async enhanceApp({ app }) {
-    if (!import.meta.env.SSR) {
-      const plugin = await import('browser-plugin')
-      app.use(plugin.default)
+async function createServer() {
+  const vite = await createViteServer({
+    configFile: path.resolve(__dirname, '.vitepress/config.ts'),
+    server: { middlewareMode: true }
+  })
+  
+  const { render } = await vite.ssrLoadModule('/.vitepress/temp/app.js')
+  
+  return async (req, res) => {
+    try {
+      const url = req.url
+      const { app } = await render(url)
+      const html = await app.renderToString()
+      
+      const template = fs.readFileSync(
+        path.resolve(__dirname, '.vitepress/dist/client/index.html'),
+        'utf-8'
+      )
+      
+      const transformedHtml = template
+        .replace(`<!--app-html-->`, html)
+        .replace(
+          `<script type="module" src="/.vitepress/dist/client/app.js"></script>`,
+          ''
+        )
+      
+      res.setHeader('Content-Type', 'text/html')
+      res.end(transformedHtml)
+    } catch (e) {
+      vite.ssrFixStacktrace(e)
+      console.error(e)
+      res.statusCode = 500
+      res.end(e.message)
     }
   }
 }
 ```
 
-## defineClientComponent
+### 使用 Express
 
-Helper for components that access browser on import:
+```ts
+// server.js
+import express from 'express'
+import fs from 'node:fs'
+import path from 'node:path'
+import { createServer as createViteServer } from 'vite'
 
-```vue
-<script setup>
-import { defineClientComponent } from 'vitepress'
-
-const BrowserComponent = defineClientComponent(() => {
-  return import('browser-only-component')
+const app = express()
+const vite = await createViteServer({
+  server: { middlewareMode: true }
 })
-</script>
 
-<template>
-  <BrowserComponent />
-</template>
-```
+app.use(vite.middlewares)
 
-With props and slots:
-
-```vue
-<script setup>
-import { ref, h } from 'vue'
-import { defineClientComponent } from 'vitepress'
-
-const componentRef = ref(null)
-
-const BrowserComponent = defineClientComponent(
-  () => import('browser-only-component'),
-  // Props passed to h()
-  [
-    { ref: componentRef, someProp: 'value' },
-    {
-      default: () => 'Default slot content',
-      header: () => h('div', 'Header slot')
-    }
-  ],
-  // Callback after component loads
-  () => {
-    console.log('Component loaded', componentRef.value)
+app.use('*', async (req, res) => {
+  try {
+    const { render } = await vite.ssrLoadModule('/.vitepress/temp/app.js')
+    const { app } = await render(req.url)
+    const html = await app.renderToString()
+    
+    const template = fs.readFileSync(
+      path.resolve('.vitepress/dist/client/index.html'),
+      'utf-8'
+    )
+    
+    res.send(template.replace(`<!--app-html-->`, html))
+  } catch (e) {
+    vite.ssrFixStacktrace(e)
+    console.error(e)
+    res.status(500).end(e.message)
   }
-)
-</script>
+})
+
+app.listen(3000)
 ```
 
-## Teleports
+## 预渲染
 
-Teleport to body only with SSG:
-
-```vue
-<ClientOnly>
-  <Teleport to="body">
-    <div class="modal">Modal content</div>
-  </Teleport>
-</ClientOnly>
-```
-
-For other targets, use `postRender` hook:
+### 预渲染特定路由
 
 ```ts
 // .vitepress/config.ts
 export default {
-  async postRender(context) {
-    // Inject teleport content into final HTML
+  build: {
+    ssr: true,
+    // 预渲染这些路由
+    prerender: {
+      routes: [
+        '/',
+        '/guide/',
+        '/guide/getting-started'
+      ]
+    }
   }
 }
 ```
 
-## Common SSR Errors
-
-### "window is not defined"
-
-Code accesses `window` at module level:
+### 动态预渲染
 
 ```ts
-// BAD
-const width = window.innerWidth
-
-// GOOD
-let width: number
-onMounted(() => {
-  width = window.innerWidth
-})
-```
-
-### "document is not defined"
-
-Same issue with `document`:
-
-```ts
-// BAD
-const el = document.querySelector('#app')
-
-// GOOD
-onMounted(() => {
-  const el = document.querySelector('#app')
-})
-```
-
-### Hydration Mismatch
-
-Server and client render different content:
-
-```vue
-<!-- BAD - different on server vs client -->
-<div>{{ typeof window !== 'undefined' ? 'client' : 'server' }}</div>
-
-<!-- GOOD - consistent -->
-<ClientOnly>
-  <div>Client only content</div>
-</ClientOnly>
-```
-
-## Checking Environment
-
-```ts
-// In Vue component
-import.meta.env.SSR  // true on server, false on client
-
-// In VitePress
-import { inBrowser } from 'vitepress'
-if (inBrowser) {
-  // Client-only code
+// .vitepress/config.ts
+export default {
+  build: {
+    prerender: {
+      routes: async () => {
+        // 从 API 或文件系统获取路由
+        const posts = await fetch('https://api.example.com/posts').then(r => r.json())
+        return posts.map(post => `/posts/${post.slug}`)
+      }
+    }
+  }
 }
 ```
 
-## Key Points
+## SSR 优化
 
-- Access browser APIs only in `onMounted` or `onBeforeMount`
-- Use `<ClientOnly>` for non-SSR components
-- Use `defineClientComponent` for libraries that access browser on import
-- Check `import.meta.env.SSR` for environment-specific code
-- Teleport to body only, or use `postRender` hook
-- Consistent rendering prevents hydration mismatches
+### 服务器缓存
+
+```ts
+// server.js
+import LRU from 'lru-cache'
+
+const ssrCache = new LRU({
+  max: 1000,
+  ttl: 1000 * 60 * 15 // 15 分钟
+})
+
+app.use('*', async (req, res) => {
+  const cacheKey = req.url
+  
+  if (ssrCache.has(cacheKey)) {
+    return res.send(ssrCache.get(cacheKey))
+  }
+  
+  const html = await render(req.url)
+  ssrCache.set(cacheKey, html)
+  
+  res.send(html)
+})
+```
+
+### 流式渲染
+
+```ts
+// server.js
+import { renderToString } from 'vue/server-renderer'
+
+app.use('*', async (req, res) => {
+  const { app } = await render(req.url)
+  
+  res.setHeader('Content-Type', 'text/html')
+  
+  const stream = renderToNodeStream(app)
+  stream.pipe(res)
+})
+```
+
+## 处理客户端特定代码
+
+使用 `ClientOnly` 组件:
+
+```vue
+<ClientOnly>
+  <HeavyComponent />
+</ClientOnly>
+```
+
+或使用 `import.meta.env.SSR`:
+
+```vue
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const data = ref(null)
+
+onMounted(async () => {
+  if (!import.meta.env.SSR) {
+    data.value = await fetch('/api/data').then(r => r.json())
+  }
+})
+</script>
+```
+
+## 环境变量
+
+```ts
+// .vitepress/config.ts
+export default {
+  vite: {
+    define: {
+      'import.meta.env.SSR': JSON.stringify(true)
+    }
+  }
+}
+```
+
+## 部署
+
+### Vercel
+
+```js
+// vercel.json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".vitepress/dist",
+  "devCommand": "npm run dev"
+}
+```
+
+### Netlify
+
+```toml
+# netlify.toml
+[build]
+  command = "npm run build"
+  publish = ".vitepress/dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+```
+
+### Node.js 服务器
+
+```bash
+npm install -g pm2
+pm2 start server.js --name vitepress
+```
+
+### Docker
+
+```dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+RUN npm run build
+
+EXPOSE 3000
+CMD ["node", "server.js"]
+```
+
+## 关键点
+
+- SSG 是默认的,SSR 需要自定义服务器
+- 使用 `vite.ssrLoadModule()` 加载 SSR 入口
+- `ClientOnly` 组件包装客户端特定代码
+- 使用 `import.meta.env.SSR` 检测 SSR 环境
+- 实现缓存以提高性能
+- 预渲染静态路由以提高性能
 
 <!--
 Source references:
-- https://vitepress.dev/guide/ssr-compat
+- https://vitepress.dev/guide/ssr
 -->

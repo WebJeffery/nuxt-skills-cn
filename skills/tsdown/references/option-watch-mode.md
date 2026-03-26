@@ -250,9 +250,9 @@ export default defineConfig({
 
 Config file changes trigger full restart automatically.
 
-### Why Not Stub Mode?
+### 为什么不使用 Stub 模式？
 
-tsdown does not support stub mode. Watch mode is the recommended alternative for rapid development, providing instant rebuilds without the drawbacks of stub mode.
+tsdown 不支持 stub 模式。建议将监视模式作为快速开发的替代方案，提供即时重新构建而没有 stub 模式的缺点。
 
 ## Related Options
 

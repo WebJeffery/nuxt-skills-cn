@@ -1,30 +1,30 @@
-# Dependencies
+# 依赖项
 
-Control how dependencies are bundled or externalized.
+控制依赖项如何被打包或外部化。
 
-## Overview
+## 概述
 
-tsdown intelligently handles dependencies to keep your library lightweight while ensuring all necessary code is included.
+tsdown 智能地处理依赖项，以保持您的库轻量级，同时确保包含所有必要的代码。
 
-## Default Behavior
+## 默认行为
 
-### Auto-Externalized
+### 自动外部化
 
-These are **NOT bundled** by default:
+这些**默认情况下不打包**：
 
-- **`dependencies`** - Installed automatically with your package
-- **`peerDependencies`** - User must install manually
+- **`dependencies`** - 随您的包自动安装
+- **`peerDependencies`** - 用户必须手动安装
 
-### Conditionally Bundled
+### 有条件打包
 
-These are **bundled ONLY if imported**:
+这些**仅在导入时打包**：
 
-- **`devDependencies`** - Only if actually used in source code
-- **Phantom dependencies** - In node_modules but not in package.json
+- **`devDependencies`** - 仅在源代码中实际使用时
+- **幻影依赖** - 在 node_modules 中但不在 package.json 中
 
-## Configuration Options
+## 配置选项
 
-All dependency options are grouped under the `deps` field:
+所有依赖项选项都归在 `deps` 字段下：
 
 ```ts
 export default defineConfig({
@@ -39,17 +39,17 @@ export default defineConfig({
 
 ### `deps.neverBundle`
 
-Mark dependencies as external (not bundled):
+将依赖项标记为外部（不打包）：
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   deps: {
     neverBundle: [
-      'react',              // Single package
+      'react',              // 单个包
       'react-dom',
-      /^@myorg\//,         // Regex pattern (all @myorg/* packages)
-      /^lodash/,           // All lodash packages
+      /^@myorg\//,         // 正则表达式模式（所有 @myorg/* 包）
+      /^lodash/,           // 所有 lodash 包
     ],
   },
 })
@@ -57,14 +57,14 @@ export default defineConfig({
 
 ### `deps.alwaysBundle`
 
-Force dependencies to be bundled:
+强制打包依赖项：
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   deps: {
     alwaysBundle: [
-      'some-package',      // Bundle this even if in dependencies
+      'some-package',      // 即使在 dependencies 中也打包
       'vendor-lib',
     ],
   },
@@ -73,31 +73,31 @@ export default defineConfig({
 
 ### `deps.onlyBundle`
 
-Whitelist of dependencies allowed to be bundled from node_modules. Throws an error if any unlisted dependency is bundled:
+允许从 node_modules 打包的依赖项白名单。如果打包了任何未列出的依赖项，则抛出错误：
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   deps: {
     onlyBundle: [
-      'cac',               // Allow bundling cac
-      'bumpp',             // Allow bundling bumpp
-      /^my-utils/,         // Regex patterns supported
+      'cac',               // 允许打包 cac
+      'bumpp',             // 允许打包 bumpp
+      /^my-utils/,         // 支持正则表达式模式
     ],
   },
 })
 ```
 
-**Behavior:**
-- **Array** (`['cac', /^my-/]`): Only matching dependencies can be bundled. Error for others.
-- **`false`**: Suppress all warnings about bundled dependencies.
-- **Not set** (default): Warns if any node_modules dependencies are bundled.
+**行为：**
+- **数组** (`['cac', /^my-/]`)：仅匹配的依赖项可以打包。其他依赖项报错。
+- **`false`**：抑制关于打包依赖项的所有警告。
+- **未设置**（默认）：如果打包了任何 node_modules 依赖项，则发出警告。
 
-**Note:** Include all sub-dependencies in the list, not just top-level imports.
+**注意：** 在列表中包括所有子依赖项，而不仅仅是顶层导入。
 
 ### `deps.skipNodeModulesBundle`
 
-Skip resolving and bundling ALL node_modules:
+跳过解析和打包所有 node_modules：
 
 ```ts
 export default defineConfig({
@@ -108,13 +108,13 @@ export default defineConfig({
 })
 ```
 
-**Result:** No dependencies from node_modules are parsed or bundled.
+**结果：** 不解析或打包来自 node_modules 的依赖项。
 
-**Note:** Cannot be used together with `alwaysBundle`.
+**注意：** 不能与 `alwaysBundle` 一起使用。
 
-## Common Patterns
+## 常见模式
 
-### React Component Library
+### React 组件库
 
 ```ts
 export default defineConfig({
@@ -124,14 +124,14 @@ export default defineConfig({
     neverBundle: [
       'react',
       'react-dom',
-      /^react\//,          // react/jsx-runtime, etc.
+      /^react\//,          // react/jsx-runtime 等
     ],
   },
   dts: true,
 })
 ```
 
-### Utility Library with Shared Deps
+### 带有共享依赖的实用程序库
 
 ```ts
 export default defineConfig({
@@ -144,7 +144,7 @@ export default defineConfig({
 })
 ```
 
-### Monorepo Package
+### Monorepo 包
 
 ```ts
 export default defineConfig({
@@ -152,14 +152,14 @@ export default defineConfig({
   format: ['esm', 'cjs'],
   deps: {
     neverBundle: [
-      /^@mycompany\//,     // Don't bundle other workspace packages
+      /^@mycompany\//,     // 不打包其他工作区包
     ],
   },
   dts: true,
 })
 ```
 
-### CLI Tool (Bundle Everything)
+### CLI 工具（打包所有内容）
 
 ```ts
 export default defineConfig({
@@ -173,7 +173,7 @@ export default defineConfig({
 })
 ```
 
-### Library with Specific Externals
+### 带有特定外部化的库
 
 ```ts
 export default defineConfig({
@@ -190,48 +190,48 @@ export default defineConfig({
 })
 ```
 
-## Declaration Files
+## 声明文件
 
-Dependency handling for `.d.ts` files follows the same rules as JavaScript.
+`.d.ts` 文件的依赖项处理遵循与 JavaScript 相同的规则。
 
-### Complex Type Resolution
+### 复杂类型解析
 
-Use TypeScript resolver for complex third-party types:
+使用 TypeScript 解析器处理复杂的第三方类型：
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   dts: {
-    resolver: 'tsc',     // Use TypeScript resolver instead of Oxc
+    resolver: 'tsc',     // 使用 TypeScript 解析器而不是 Oxc
   },
 })
 ```
 
-**When to use `tsc` resolver:**
-- Types in `@types/*` packages with non-standard naming (e.g., `@types/babel__generator`)
-- Complex type dependencies
-- Issues with default Oxc resolver
+**何时使用 `tsc` 解析器：**
+- `@types/*` 包中具有非标准命名的类型（例如，`@types/babel__generator`）
+- 复杂的类型依赖项
+- 默认 Oxc 解析器的问题
 
-**Trade-off:** `tsc` is slower but more compatible.
+**权衡：** `tsc` 较慢但更兼容。
 
-## CLI Usage
+## CLI 用法
 
-### Never Bundle
+### 不打包
 
 ```bash
 tsdown --deps.never-bundle react --deps.never-bundle react-dom
 tsdown --deps.never-bundle '/^@myorg\/.*/'
 ```
 
-### Skip Node Modules
+### 跳过 Node 模块
 
 ```bash
 tsdown --deps.skip-node-modules-bundle
 ```
 
-## Migration from Deprecated Options
+## 从已弃用选项迁移
 
-| Deprecated Option | New Option |
+| 已弃用选项 | 新选项 |
 |---|---|
 | `external` | `deps.neverBundle` |
 | `noExternal` | `deps.alwaysBundle` |
@@ -239,12 +239,12 @@ tsdown --deps.skip-node-modules-bundle
 | `deps.onlyAllowBundle` | `deps.onlyBundle` |
 | `skipNodeModulesBundle` | `deps.skipNodeModulesBundle` |
 
-## Examples by Use Case
+## 按用例示例
 
-### Framework Component
+### 框架组件
 
 ```ts
-// Don't bundle framework
+// 不打包框架
 export default defineConfig({
   deps: {
     neverBundle: ['vue', 'react', 'solid-js', 'svelte'],
@@ -252,10 +252,10 @@ export default defineConfig({
 })
 ```
 
-### Standalone App
+### 独立应用程序
 
 ```ts
-// Bundle everything
+// 打包所有内容
 export default defineConfig({
   deps: {
     alwaysBundle: [/.*/],
@@ -263,41 +263,41 @@ export default defineConfig({
 })
 ```
 
-### Shared Library
+### 共享库
 
 ```ts
-// Bundle only specific utils
+// 仅打包特定的实用程序
 export default defineConfig({
   deps: {
-    neverBundle: [/.*/],        // External by default
-    alwaysBundle: ['tiny-utils'], // Except this one
+    neverBundle: [/.*/],        // 默认外部化
+    alwaysBundle: ['tiny-utils'], // 除了这个
   },
 })
 ```
 
-### Monorepo Package
+### Monorepo 包
 
 ```ts
-// External workspace packages, bundle utilities
+// 外部化工作区包，打包实用程序
 export default defineConfig({
   deps: {
     neverBundle: [
-      /^@workspace\//,     // Other workspace packages
+      /^@workspace\//,     // 其他工作区包
       'react',
       'react-dom',
     ],
     alwaysBundle: [
-      'lodash-es',         // Bundle utility libraries
+      'lodash-es',         // 打包实用程序库
     ],
   },
 })
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Dependency Bundled Unexpectedly
+### 意外打包依赖项
 
-Check if it's in `devDependencies` and imported. Move to `dependencies`:
+检查它是否在 `devDependencies` 中并被导入。移动到 `dependencies`：
 
 ```json
 {
@@ -307,7 +307,7 @@ Check if it's in `devDependencies` and imported. Move to `dependencies`:
 }
 ```
 
-Or explicitly externalize:
+或显式外部化：
 
 ```ts
 export default defineConfig({
@@ -317,9 +317,9 @@ export default defineConfig({
 })
 ```
 
-### Missing Dependency at Runtime
+### 运行时缺少依赖项
 
-Ensure it's in `dependencies` or `peerDependencies`:
+确保它在 `dependencies` 或 `peerDependencies` 中：
 
 ```json
 {
@@ -329,7 +329,7 @@ Ensure it's in `dependencies` or `peerDependencies`:
 }
 ```
 
-Or bundle it:
+或打包它：
 
 ```ts
 export default defineConfig({
@@ -339,9 +339,9 @@ export default defineConfig({
 })
 ```
 
-### Type Resolution Errors
+### 类型解析错误
 
-Use TypeScript resolver for complex types:
+使用 TypeScript 解析器处理复杂类型：
 
 ```ts
 export default defineConfig({
@@ -351,34 +351,34 @@ export default defineConfig({
 })
 ```
 
-## Summary
+## 总结
 
-**Default behavior:**
-- `dependencies` & `peerDependencies` → External
-- `devDependencies` & phantom deps → Bundled if imported
+**默认行为：**
+- `dependencies` & `peerDependencies` → 外部化
+- `devDependencies` & 幻影依赖 → 如果导入则打包
 
-**Override (under `deps`):**
-- `neverBundle` → Force external
-- `alwaysBundle` → Force bundled
-- `onlyBundle` → Whitelist bundled deps
-- `skipNodeModulesBundle` → Skip all node_modules
+**覆盖（在 `deps` 下）：**
+- `neverBundle` → 强制外部化
+- `alwaysBundle` → 强制打包
+- `onlyBundle` → 打包依赖项白名单
+- `skipNodeModulesBundle` → 跳过所有 node_modules
 
-**Declaration files:**
-- Same bundling logic as JavaScript
-- Use `resolver: 'tsc'` for complex types
+**声明文件：**
+- 与 JavaScript 相同的打包逻辑
+- 对复杂类型使用 `resolver: 'tsc'`
 
-## Tips
+## 提示
 
-1. **Keep dependencies external** for libraries
-2. **Bundle everything** for standalone CLIs
-3. **Use regex patterns** for namespaced packages
-4. **Check bundle size** to verify external/bundled split
-5. **Test with fresh install** to catch missing dependencies
-6. **Use tsc resolver** only when needed (slower)
+1. **保持依赖项外部化**用于库
+2. **打包所有内容**用于独立 CLI
+3. **使用正则表达式模式**用于命名空间包
+4. **检查包大小**以验证外部化/打包拆分
+5. **使用全新安装测试**以捕获缺少的依赖项
+6. **仅在需要时使用 tsc 解析器**（较慢）
 
-## Related Options
+## 相关选项
 
-- [External](option-dependencies.md) - This page
-- [Platform](option-platform.md) - Runtime environment
-- [Output Format](option-output-format.md) - Module formats
-- [DTS](option-dts.md) - Type declarations
+- [外部化](option-dependencies.md) - 此页面
+- [平台](option-platform.md) - 运行时环境
+- [输出格式](option-output-format.md) - 模块格式
+- [DTS](option-dts.md) - 类型声明

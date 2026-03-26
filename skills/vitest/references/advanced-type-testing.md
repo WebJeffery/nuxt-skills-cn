@@ -1,15 +1,15 @@
 ---
 name: type-testing
-description: Test TypeScript types with expectTypeOf and assertType
+description: 使用 expectTypeOf 和 assertType 测试 TypeScript 类型
 ---
 
-# Type Testing
+# 类型测试
 
-Test TypeScript types without runtime execution.
+在不运行时执行的情况下测试 TypeScript 类型。
 
-## Setup
+## 设置
 
-Type tests use `.test-d.ts` extension:
+类型测试使用 `.test-d.ts` 扩展名:
 
 ```ts
 // math.test-d.ts
@@ -21,7 +21,7 @@ test('add returns number', () => {
 })
 ```
 
-## Configuration
+## 配置
 
 ```ts
 defineConfig({
@@ -29,16 +29,16 @@ defineConfig({
     typecheck: {
       enabled: true,
       
-      // Only type check
+      // 仅类型检查
       only: false,
       
-      // Checker: 'tsc' or 'vue-tsc'
+      // 检查器: 'tsc' 或 'vue-tsc'
       checker: 'tsc',
       
-      // Include patterns
+      // 包含模式
       include: ['**/*.test-d.ts'],
       
-      // tsconfig to use
+      // 要使用的 tsconfig
       tsconfig: './tsconfig.json',
     },
   },
@@ -50,7 +50,7 @@ defineConfig({
 ```ts
 import { expectTypeOf } from 'vitest'
 
-// Basic type checks
+// 基本类型检查
 expectTypeOf<string>().toBeString()
 expectTypeOf<number>().toBeNumber()
 expectTypeOf<boolean>().toBeBoolean()
@@ -66,7 +66,7 @@ expectTypeOf<[]>().toBeArray()
 expectTypeOf<symbol>().toBeSymbol()
 ```
 
-## Value Type Checking
+## 值类型检查
 
 ```ts
 const value = 'hello'
@@ -77,7 +77,7 @@ expectTypeOf(obj).toMatchTypeOf<{ name: string }>()
 expectTypeOf(obj).toHaveProperty('name')
 ```
 
-## Function Types
+## 函数类型
 
 ```ts
 function greet(name: string): string {
@@ -88,11 +88,11 @@ expectTypeOf(greet).toBeFunction()
 expectTypeOf(greet).parameters.toEqualTypeOf<[string]>()
 expectTypeOf(greet).returns.toBeString()
 
-// Parameter checking
+// 参数检查
 expectTypeOf(greet).parameter(0).toBeString()
 ```
 
-## Object Types
+## 对象类型
 
 ```ts
 interface User {
@@ -104,25 +104,25 @@ interface User {
 expectTypeOf<User>().toHaveProperty('id')
 expectTypeOf<User>().toHaveProperty('name').toBeString()
 
-// Check shape
+// 检查形状
 expectTypeOf({ id: 1, name: 'test' }).toMatchTypeOf<User>()
 ```
 
-## Equality vs Matching
+## 相等性 vs 匹配
 
 ```ts
 interface A { x: number }
 interface B { x: number; y: string }
 
-// toMatchTypeOf - subset matching
+// toMatchTypeOf - 子集匹配
 expectTypeOf<B>().toMatchTypeOf<A>()  // B extends A
 
-// toEqualTypeOf - exact match
-expectTypeOf<A>().not.toEqualTypeOf<B>()  // Not exact match
-expectTypeOf<A>().toEqualTypeOf<{ x: number }>()  // Exact match
+// toEqualTypeOf - 精确匹配
+expectTypeOf<A>().not.toEqualTypeOf<B>()  // 不是精确匹配
+expectTypeOf<A>().toEqualTypeOf<{ x: number }>()  // 精确匹配
 ```
 
-## Branded Types
+## 品牌类型
 
 ```ts
 type UserId = number & { __brand: 'UserId' }
@@ -132,7 +132,7 @@ expectTypeOf<UserId>().not.toEqualTypeOf<PostId>()
 expectTypeOf<UserId>().not.toEqualTypeOf<number>()
 ```
 
-## Generic Types
+## 泛型类型
 
 ```ts
 function identity<T>(value: T): T {
@@ -143,7 +143,7 @@ expectTypeOf(identity<string>).returns.toBeString()
 expectTypeOf(identity<number>).returns.toBeNumber()
 ```
 
-## Nullable Types
+## 可空类型
 
 ```ts
 type MaybeString = string | null | undefined
@@ -154,7 +154,7 @@ expectTypeOf<string>().not.toBeNullable()
 
 ## assertType
 
-Assert a value matches a type (no assertion at runtime):
+断言值匹配类型(运行时无断言):
 
 ```ts
 import { assertType } from 'vitest'
@@ -166,43 +166,43 @@ function getUser(): User | null {
 test('returns user', () => {
   const result = getUser()
   
-  // @ts-expect-error - should fail type check
+  // @ts-expect-error - 应该使类型检查失败
   assertType<string>(result)
   
-  // Correct type
+  // 正确的类型
   assertType<User | null>(result)
 })
 ```
 
-## Using @ts-expect-error
+## 使用 @ts-expect-error
 
-Test that code produces type error:
+测试代码产生类型错误:
 
 ```ts
 test('rejects wrong types', () => {
   function requireString(s: string) {}
   
-  // @ts-expect-error - number not assignable to string
+  // @ts-expect-error - number 不能赋值给 string
   requireString(123)
 })
 ```
 
-## Running Type Tests
+## 运行类型测试
 
 ```bash
-# Run type tests
+# 运行类型测试
 vitest typecheck
 
-# Run alongside unit tests
+# 与单元测试一起运行
 vitest --typecheck
 
-# Type tests only
+# 仅类型测试
 vitest --typecheck.only
 ```
 
-## Mixed Test Files
+## 混合测试文件
 
-Combine runtime and type tests:
+结合运行时和类型测试:
 
 ```ts
 // user.test.ts
@@ -221,14 +221,14 @@ describe('createUser', () => {
 })
 ```
 
-## Key Points
+## 关键点
 
-- Use `.test-d.ts` for type-only tests
-- `expectTypeOf` for type assertions
-- `toMatchTypeOf` for subset matching
-- `toEqualTypeOf` for exact type matching
-- Use `@ts-expect-error` to test type errors
-- Run with `vitest typecheck` or `--typecheck`
+- 使用 `.test-d.ts` 进行仅类型测试
+- `expectTypeOf` 用于类型断言
+- `toMatchTypeOf` 用于子集匹配
+- `toEqualTypeOf` 用于精确类型匹配
+- 使用 `@ts-expect-error` 测试类型错误
+- 使用 `vitest typecheck` 或 `--typecheck` 运行
 
 <!-- 
 Source references:

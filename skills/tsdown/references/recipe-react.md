@@ -1,26 +1,26 @@
-# React Support
+# React 支持
 
-Build React component libraries with tsdown.
+使用 tsdown 构建 React 组件库。
 
-## Overview
+## 概述
 
-tsdown provides first-class support for React libraries. Rolldown natively supports JSX/TSX, so no additional plugins are required for basic React components.
+tsdown 为 React 库提供一流的支持。Rolldown 原生支持 JSX/TSX，因此基本的 React 组件不需要额外的插件。
 
-## Quick Start
+## 快速开始
 
-### Use Starter Template
+### 使用启动模板
 
 ```bash
-# Basic React library
+# 基本 React 库
 npx create-tsdown@latest -t react
 
-# With React Compiler
+# 使用 React Compiler
 npx create-tsdown@latest -t react-compiler
 ```
 
-## Basic Configuration
+## 基本配置
 
-### Minimal Setup
+### 最小设置
 
 ```ts
 // tsdown.config.ts
@@ -35,7 +35,7 @@ export default defineConfig({
 })
 ```
 
-### Component Example
+### 组件示例
 
 ```tsx
 // src/MyButton.tsx
@@ -60,54 +60,54 @@ export const MyButton: React.FC<MyButtonProps> = ({ type = 'primary', onClick })
 export { MyButton } from './MyButton'
 ```
 
-## JSX Transform
+## JSX 转换
 
-### Automatic (Default)
+### 自动转换（默认）
 
-Modern JSX transform (React 17+):
+现代 JSX 转换（React 17+）：
 
 ```ts
 export default defineConfig({
   entry: ['src/index.tsx'],
-  // Automatic JSX is default
+  // 自动 JSX 是默认的
 })
 ```
 
-**Characteristics:**
-- No `import React` needed
-- Smaller bundle size
-- React 17+ required
+**特点：**
+- 不需要 `import React`
+- 更小的打包体积
+- 需要 React 17+
 
-### Classic
+### 经典转换
 
-Legacy JSX transform:
+传统 JSX 转换：
 
 ```ts
 export default defineConfig({
   entry: ['src/index.tsx'],
   inputOptions: {
     transform: {
-      jsx: 'react',  // Classic transform
+      jsx: 'react',  // 经典转换
     },
   },
 })
 ```
 
-**Characteristics:**
-- Requires `import React from 'react'`
-- Compatible with older React versions
+**特点：**
+- 需要 `import React from 'react'`
+- 与旧版本 React 兼容
 
 ## React Compiler
 
-React Compiler automatically optimizes React code at build time.
+React Compiler 在构建时自动优化 React 代码。
 
-### Install Dependencies
+### 安装依赖
 
 ```bash
 pnpm add -D @rollup/plugin-babel babel-plugin-react-compiler
 ```
 
-### Configure
+### 配置
 
 ```ts
 import pluginBabel from '@rollup/plugin-babel'
@@ -133,9 +133,9 @@ export default defineConfig({
 })
 ```
 
-## Common Patterns
+## 常见模式
 
-### Component Library
+### 组件库
 
 ```ts
 export default defineConfig({
@@ -146,7 +146,7 @@ export default defineConfig({
     neverBundle: [
       'react',
       'react-dom',
-      /^react\//,  // react/jsx-runtime, etc.
+      /^react\//,  // react/jsx-runtime 等。
     ],
   },
   dts: true,
@@ -154,7 +154,7 @@ export default defineConfig({
 })
 ```
 
-### Multiple Components
+### 多个组件
 
 ```ts
 export default defineConfig({
@@ -172,7 +172,7 @@ export default defineConfig({
 })
 ```
 
-### Hooks Library
+### Hooks 库
 
 ```ts
 export default defineConfig({
@@ -180,14 +180,14 @@ export default defineConfig({
   format: ['esm', 'cjs'],
   platform: 'neutral',
   deps: {
-    neverBundle: ['react'],  // Only React needed
+    neverBundle: ['react'],  // 只需要 React
   },
   dts: true,
   treeshake: true,
 })
 ```
 
-### Monorepo React Packages
+### Monorepo React 包
 
 ```ts
 export default defineConfig({
@@ -198,16 +198,16 @@ export default defineConfig({
     neverBundle: [
       'react',
       'react-dom',
-      /^@mycompany\//,  // Other workspace packages
+      /^@mycompany\//,  // 其他工作区包
     ],
   },
   dts: true,
 })
 ```
 
-## TypeScript Configuration
+## TypeScript 配置
 
-### Recommended tsconfig.json
+### 推荐的 tsconfig.json
 
 ```json
 {
@@ -215,18 +215,18 @@ export default defineConfig({
     "target": "ES2020",
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "jsx": "react-jsx",  // or "react" for classic
+    "jsx": "react-jsx",  // 或 "react" 用于经典模式
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "strict": true,
-    "isolatedDeclarations": true,  // Fast DTS generation
+    "isolatedDeclarations": true,  // 快速 DTS 生成
     "skipLibCheck": true
   },
   "include": ["src"]
 }
 ```
 
-## Package.json Configuration
+## Package.json 配置
 
 ```json
 {
@@ -259,9 +259,9 @@ export default defineConfig({
 }
 ```
 
-## Advanced Patterns
+## 高级模式
 
-### With Fast Refresh (Development)
+### 使用 Fast Refresh（开发）
 
 ```ts
 import react from '@vitejs/plugin-react'
@@ -274,28 +274,28 @@ export default defineConfig((options) => ({
   },
   plugins: options.watch
     ? [
-        // @ts-expect-error Vite plugin
+        // @ts-expect-error Vite 插件
         react({ fastRefresh: true }),
       ]
     : [],
 }))
 ```
 
-## Tips
+## 提示
 
-1. **Always externalize React** - Don't bundle React/ReactDOM
-2. **Use automatic JSX** - Smaller bundles with React 17+
-3. **Enable DTS generation** - TypeScript support essential
-4. **Use platform: 'neutral'** - For maximum compatibility
-5. **Add peer dependencies** - Let users provide React
-6. **Enable tree shaking** - Reduce bundle size
-7. **Use React Compiler** - Better runtime performance
+1. **始终外部化 React** - 不要打包 React/ReactDOM
+2. **使用自动 JSX** - React 17+ 更小的打包体积
+3. **启用 DTS 生成** - TypeScript 支持必不可少
+4. **使用 platform: 'neutral'** - 获得最大兼容性
+5. **添加 peer dependencies** - 让用户提供 React
+6. **启用 tree shaking** - 减少打包体积
+7. **使用 React Compiler** - 更好的运行时性能
 
-## Troubleshooting
+## 故障排除
 
-### React Hook Errors
+### React Hook 错误
 
-Ensure React is externalized:
+确保 React 已外部化：
 
 ```ts
 deps: {
@@ -303,21 +303,21 @@ deps: {
 }
 ```
 
-### Type Errors with JSX
+### JSX 类型错误
 
-Check `tsconfig.json`:
+检查 `tsconfig.json`：
 
 ```json
 {
   "compilerOptions": {
-    "jsx": "react-jsx"  // or "react"
+    "jsx": "react-jsx"  // 或 "react"
   }
 }
 ```
 
-### Duplicate React
+### 重复的 React
 
-Add to deps.neverBundle:
+添加到 deps.neverBundle：
 
 ```ts
 deps: {
@@ -330,9 +330,9 @@ deps: {
 }
 ```
 
-## Related
+## 相关内容
 
-- [Plugins](advanced-plugins.md) - Extend functionality
-- [Dependencies](option-dependencies.md) - External packages
-- [DTS](option-dts.md) - Type declarations
-- [Vue Recipe](recipe-vue.md) - Vue component libraries
+- [插件](advanced-plugins.md) - 扩展功能
+- [依赖](option-dependencies.md) - 外部包
+- [DTS](option-dts.md) - 类型声明
+- [Vue 配方](recipe-vue.md) - Vue 组件库

@@ -1,13 +1,13 @@
 ---
 name: slot-sugar
-description: Shorthand syntax for layout named slots in multi-column layouts
+description: 多列布局中布局命名插槽的简写语法
 ---
 
-# Slot Sugar for Layouts
+# 布局的插槽简写
 
-Shorthand syntax for layout named slots.
+布局命名插槽的简写语法。
 
-## Standard Vue Slot Syntax
+## 标准 Vue 插槽语法
 
 ```md
 ---
@@ -16,39 +16,39 @@ layout: two-cols
 
 <template v-slot:default>
 
-# Left
+# 左侧
 
-This shows on the left
+这显示在左侧
 
 </template>
 <template v-slot:right>
 
-# Right
+# 右侧
 
-This shows on the right
+这显示在右侧
 
 </template>
 ```
 
-## Shorthand Syntax
+## 简写语法
 
 ```md
 ---
 layout: two-cols
 ---
 
-# Left
+# 左侧
 
-This shows on the left
+这显示在左侧
 
 ::right::
 
-# Right
+# 右侧
 
-This shows on the right
+这显示在右侧
 ```
 
-## Explicit Default Slot
+## 显式默认插槽
 
 ```md
 ---
@@ -57,19 +57,19 @@ layout: two-cols
 
 ::right::
 
-# Right
+# 右侧
 
-This shows on the right
+这显示在右侧
 
 ::default::
 
-# Left
+# 左侧
 
-This shows on the left
+这显示在左侧
 ```
 
-## Common Layouts with Slots
+## 带插槽的常用布局
 
-- `two-cols`: `default` (left) and `right`
-- `two-cols-header`: `default`, `left`, `right`
-- `image-left/right`: `default` for content
+- `two-cols`：`default`（左）和 `right`
+- `two-cols-header`：`default`、`left`、`right`
+- `image-left/right`：内容的 `default`

@@ -1,28 +1,28 @@
 ---
 name: vite-plugin-api
-description: Vite plugin authoring with Vite-specific hooks
+description: 使用 Vite 特定钩子的 Vite 插件编写
 ---
 
-# Vite Plugin API
+# Vite 插件 API
 
-Vite plugins extend Rolldown's plugin interface with Vite-specific hooks.
+Vite 插件使用 Vite 特定钩子扩展 Rolldown 的插件接口。
 
-## Basic Structure
+## 基本结构
 
 ```ts
 function myPlugin(): Plugin {
   return {
     name: 'my-plugin',
-    // hooks...
+    // 钩子...
   }
 }
 ```
 
-## Vite-Specific Hooks
+## Vite 特定钩子
 
 ### config
 
-Modify config before resolution:
+在解析之前修改配置:
 
 ```ts
 const plugin = () => ({
@@ -37,7 +37,7 @@ const plugin = () => ({
 
 ### configResolved
 
-Access final resolved config:
+访问最终解析的配置:
 
 ```ts
 const plugin = () => {
@@ -48,7 +48,7 @@ const plugin = () => {
       config = resolvedConfig
     },
     transform(code, id) {
-      if (config.command === 'serve') { /* dev */ }
+      if (config.command === 'serve') { /* 开发 */ }
     },
   }
 }
@@ -56,27 +56,27 @@ const plugin = () => {
 
 ### configureServer
 
-Add custom middleware to dev server:
+向开发服务器添加自定义中间件:
 
 ```ts
 const plugin = () => ({
   name: 'custom-middleware',
   configureServer(server) {
     server.middlewares.use((req, res, next) => {
-      // handle request
+      // 处理请求
       next()
     })
   },
 })
 ```
 
-Return function to run **after** internal middlewares:
+返回函数在内部中间件**之后**运行:
 
 ```ts
 configureServer(server) {
   return () => {
     server.middlewares.use((req, res, next) => {
-      // runs after Vite's middlewares
+      // 在 Vite 的中间件之后运行
     })
   }
 }
@@ -84,7 +84,7 @@ configureServer(server) {
 
 ### transformIndexHtml
 
-Transform HTML entry files:
+转换 HTML 入口文件:
 
 ```ts
 const plugin = () => ({
@@ -95,7 +95,7 @@ const plugin = () => ({
 })
 ```
 
-Inject tags:
+注入标签:
 
 ```ts
 transformIndexHtml() {
@@ -107,18 +107,18 @@ transformIndexHtml() {
 
 ### handleHotUpdate
 
-Custom HMR handling:
+自定义 HMR 处理:
 
 ```ts
 handleHotUpdate({ server, modules, timestamp }) {
   server.ws.send({ type: 'custom', event: 'special-update', data: {} })
-  return [] // empty = skip default HMR
+  return [] // 空 = 跳过默认 HMR
 }
 ```
 
-## Virtual Modules
+## 虚拟模块
 
-Serve virtual content without files on disk:
+在没有磁盘文件的情况下提供虚拟内容:
 
 ```ts
 const plugin = () => {
@@ -139,41 +139,41 @@ const plugin = () => {
 }
 ```
 
-Usage:
+使用:
 
 ```ts
 import { msg } from 'virtual:my-module'
 ```
 
-Convention: prefix user-facing path with `virtual:`, prefix resolved id with `\0`.
+约定: 使用 `virtual:` 前缀用户可见路径,使用 `\0` 前缀解析的 id。
 
-## Plugin Ordering
+## 插件顺序
 
-Use `enforce` to control execution order:
+使用 `enforce` 控制执行顺序:
 
 ```ts
 {
   name: 'pre-plugin',
-  enforce: 'pre',  // runs before core plugins
+  enforce: 'pre',  // 在核心插件之前运行
 }
 
 {
   name: 'post-plugin',
-  enforce: 'post', // runs after build plugins
+  enforce: 'post', // 在构建插件之后运行
 }
 ```
 
-Order: Alias → `enforce: 'pre'` → Core → User (no enforce) → Build → `enforce: 'post'` → Post-build
+顺序: 别名 → `enforce: 'pre'` → 核心 → 用户(无 enforce) → 构建 → `enforce: 'post'` → 后构建
 
-## Conditional Application
+## 条件应用
 
 ```ts
 {
   name: 'build-only',
-  apply: 'build',  // or 'serve'
+  apply: 'build',  // 或 'serve'
 }
 
-// Function form:
+// 函数形式:
 {
   apply(config, { command }) {
     return command === 'build' && !config.build.ssr
@@ -181,13 +181,13 @@ Order: Alias → `enforce: 'pre'` → Core → User (no enforce) → Build → `
 }
 ```
 
-## Universal Hooks (from Rolldown)
+## 通用钩子(来自 Rolldown)
 
-These work in both dev and build:
+这些在开发和构建中都有效:
 
-- `resolveId(id, importer)` - Resolve import paths
-- `load(id)` - Load module content
-- `transform(code, id)` - Transform module code
+- `resolveId(id, importer)` - 解析导入路径
+- `load(id)` - 加载模块内容
+- `transform(code, id)` - 转换模块代码
 
 ```ts
 transform(code, id) {
@@ -197,9 +197,9 @@ transform(code, id) {
 }
 ```
 
-## Client-Server Communication
+## 客户端-服务器通信
 
-Server to client:
+服务器到客户端:
 
 ```ts
 configureServer(server) {
@@ -207,7 +207,7 @@ configureServer(server) {
 }
 ```
 
-Client side:
+客户端:
 
 ```ts
 if (import.meta.hot) {
@@ -217,13 +217,13 @@ if (import.meta.hot) {
 }
 ```
 
-Client to server:
+客户端到服务器:
 
 ```ts
-// Client
+// 客户端
 import.meta.hot.send('my:from-client', { msg: 'Hey!' })
 
-// Server
+// 服务器
 server.ws.on('my:from-client', (data, client) => {
   client.send('my:ack', { msg: 'Got it!' })
 })

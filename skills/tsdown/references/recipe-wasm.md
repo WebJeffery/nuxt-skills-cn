@@ -1,20 +1,20 @@
-# WASM Support
+# WASM 支持
 
-Bundle WebAssembly modules in your TypeScript/JavaScript project.
+在 TypeScript/JavaScript 项目中打包 WebAssembly 模块。
 
-## Overview
+## 概述
 
-tsdown supports WASM through [`rolldown-plugin-wasm`](https://github.com/sxzz/rolldown-plugin-wasm), enabling direct `.wasm` imports with synchronous and asynchronous instantiation.
+tsdown 通过 [`rolldown-plugin-wasm`](https://github.com/sxzz/rolldown-plugin-wasm) 支持 WASM，支持同步和异步实例化的直接 `.wasm` 导入。
 
-## Setup
+## 设置
 
-### Install
+### 安装
 
 ```bash
 pnpm add -D rolldown-plugin-wasm
 ```
 
-### Configure
+### 配置
 
 ```ts
 import { wasm } from 'rolldown-plugin-wasm'
@@ -26,9 +26,9 @@ export default defineConfig({
 })
 ```
 
-### TypeScript Support
+### TypeScript 支持
 
-Add type declarations to `tsconfig.json`:
+将类型声明添加到 `tsconfig.json`：
 
 ```jsonc
 {
@@ -38,45 +38,45 @@ Add type declarations to `tsconfig.json`:
 }
 ```
 
-## Importing WASM Modules
+## 导入 WASM 模块
 
-### Direct Import
+### 直接导入
 
 ```ts
 import { add } from './add.wasm'
 add(1, 2)
 ```
 
-### Async Init
+### 异步初始化
 
-Use `?init` query for async initialization:
+使用 `?init` 查询进行异步初始化：
 
 ```ts
 import init from './add.wasm?init'
-const instance = await init(imports) // imports optional
+const instance = await init(imports) // imports 可选
 instance.exports.add(1, 2)
 ```
 
-### Sync Init
+### 同步初始化
 
-Use `?init&sync` query for synchronous initialization:
+使用 `?init&sync` 查询进行同步初始化：
 
 ```ts
 import initSync from './add.wasm?init&sync'
-const instance = initSync(imports) // imports optional
+const instance = initSync(imports) // imports 可选
 instance.exports.add(1, 2)
 ```
 
-## wasm-bindgen Support
+## wasm-bindgen 支持
 
-### Target `bundler` (Recommended)
+### 目标 `bundler`（推荐）
 
 ```ts
 import { add } from 'some-pkg'
 add(1, 2)
 ```
 
-### Target `web` (Node.js)
+### 目标 `web`（Node.js）
 
 ```ts
 import { readFile } from 'node:fs/promises'
@@ -89,7 +89,7 @@ await init({
 add(1, 2)
 ```
 
-### Target `web` (Browser)
+### 目标 `web`（浏览器）
 
 ```ts
 import init, { add } from 'some-pkg/add.js'
@@ -99,27 +99,27 @@ await init({ module_or_path: wasmUrl })
 add(1, 2)
 ```
 
-`nodejs` and `no-modules` wasm-bindgen targets are not supported.
+不支持 `nodejs` 和 `no-modules` wasm-bindgen 目标。
 
-## Plugin Options
+## 插件选项
 
 ```ts
 wasm({
-  maxFileSize: 14 * 1024, // Max size for inline (default: 14KB)
-  fileName: '[hash][extname]', // Output file name pattern
-  publicPath: '',         // Prefix for non-inlined file paths
+  maxFileSize: 14 * 1024, // 内联的最大大小（默认：14KB）
+  fileName: '[hash][extname]', // 输出文件名模式
+  publicPath: '',         // 非内联文件路径的前缀
   targetEnv: 'auto',      // 'auto' | 'auto-inline' | 'browser' | 'node'
 })
 ```
 
-| Option | Default | Description |
+| 选项 | 默认值 | 描述 |
 |--------|---------|-------------|
-| `maxFileSize` | `14 * 1024` | Max file size for inlining. Set to `0` to always copy. |
-| `fileName` | `'[hash][extname]'` | Pattern for emitted WASM files |
-| `publicPath` | — | Prefix for non-inlined WASM file paths |
-| `targetEnv` | `'auto'` | `'auto'` detects at runtime; `'browser'` omits Node builtins; `'node'` omits fetch |
+| `maxFileSize` | `14 * 1024` | 内联的最大文件大小。设置为 `0` 始终复制。 |
+| `fileName` | `'[hash][extname]'` | 发出的 WASM 文件的模式 |
+| `publicPath` | — | 非内联 WASM 文件路径的前缀 |
+| `targetEnv` | `'auto'` | `'auto'` 在运行时检测；`'browser'` 省略 Node 内置模块；`'node'` 省略 fetch |
 
-## Related Options
+## 相关选项
 
-- [Plugins](advanced-plugins.md) - Plugin system overview
-- [Platform](option-platform.md) - Target platform configuration
+- [插件](advanced-plugins.md) - 插件系统概述
+- [平台](option-platform.md) - 目标平台配置

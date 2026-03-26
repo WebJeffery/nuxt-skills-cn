@@ -1,13 +1,13 @@
 ---
 name: vitest-configuration
-description: Configure Vitest with vite.config.ts or vitest.config.ts
+description: 使用 vite.config.ts 或 vitest.config.ts 配置 Vitest
 ---
 
-# Configuration
+# 配置
 
-Vitest reads configuration from `vitest.config.ts` or `vite.config.ts`. It shares the same config format as Vite.
+Vitest 从 `vitest.config.ts` 或 `vite.config.ts` 读取配置。它与 Vite 共享相同的配置格式。
 
-## Basic Setup
+## 基本设置
 
 ```ts
 // vitest.config.ts
@@ -15,14 +15,14 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
-    // test options
+    // 测试选项
   },
 })
 ```
 
-## Using with Existing Vite Config
+## 与现有 Vite 配置一起使用
 
-Add Vitest types reference and use the `test` property:
+添加 Vitest 类型引用并使用 `test` 属性:
 
 ```ts
 // vite.config.ts
@@ -37,9 +37,9 @@ export default defineConfig({
 })
 ```
 
-## Merging Configs
+## 合并配置
 
-If you have separate config files, use `mergeConfig`:
+如果您有单独的配置文件,使用 `mergeConfig`:
 
 ```ts
 // vitest.config.ts
@@ -53,49 +53,49 @@ export default mergeConfig(viteConfig, defineConfig({
 }))
 ```
 
-## Common Options
+## 常用选项
 
 ```ts
 defineConfig({
   test: {
-    // Enable global APIs (describe, it, expect) without imports
+    // 启用全局 API(describe, it, expect)而无需导入
     globals: true,
     
-    // Test environment: 'node', 'jsdom', 'happy-dom'
+    // 测试环境: 'node', 'jsdom', 'happy-dom'
     environment: 'node',
     
-    // Setup files to run before each test file
+    // 在每个测试文件之前运行的设置文件
     setupFiles: ['./tests/setup.ts'],
     
-    // Include patterns for test files
+    // 测试文件的包含模式
     include: ['**/*.{test,spec}.{js,ts,jsx,tsx}'],
     
-    // Exclude patterns
+    // 排除模式
     exclude: ['**/node_modules/**', '**/dist/**'],
     
-    // Test timeout in ms
+    // 测试超时(毫秒)
     testTimeout: 5000,
     
-    // Hook timeout in ms
+    // 钩子超时(毫秒)
     hookTimeout: 10000,
     
-    // Enable watch mode by default
+    // 默认启用监视模式
     watch: true,
     
-    // Coverage configuration
+    // 覆盖率配置
     coverage: {
-      provider: 'v8', // or 'istanbul'
+      provider: 'v8', // 或 'istanbul'
       reporter: ['text', 'html'],
       include: ['src/**/*.ts'],
     },
     
-    // Run tests in isolation (each file in separate process)
+    // 在隔离中运行测试(每个文件在单独的进程中)
     isolate: true,
     
-    // Pool for running tests: 'threads', 'forks', 'vmThreads'
+    // 用于运行测试的池: 'threads', 'forks', 'vmThreads'
     pool: 'threads',
     
-    // Number of threads/processes
+    // 线程/进程数
     poolOptions: {
       threads: {
         maxThreads: 4,
@@ -103,37 +103,37 @@ defineConfig({
       },
     },
     
-    // Automatically clear mocks between tests
+    // 在测试之间自动清除模拟
     clearMocks: true,
     
-    // Restore mocks between tests
+    // 在测试之间恢复模拟
     restoreMocks: true,
     
-    // Retry failed tests
+    // 重试失败的测试
     retry: 0,
     
-    // Stop after first failure
+    // 第一次失败后停止
     bail: 0,
   },
 })
 ```
 
-## Conditional Configuration
+## 条件配置
 
-Use `mode` or `process.env.VITEST` for test-specific config:
+使用 `mode` 或 `process.env.VITEST` 进行特定测试的配置:
 
 ```ts
 export default defineConfig(({ mode }) => ({
   plugins: mode === 'test' ? [] : [myPlugin()],
   test: {
-    // test options
+    // 测试选项
   },
 }))
 ```
 
-## Projects (Monorepos)
+## 项目 (Monorepos)
 
-Run different configurations in the same Vitest process:
+在同一个 Vitest 进程中运行不同的配置:
 
 ```ts
 defineConfig({
@@ -159,13 +159,13 @@ defineConfig({
 })
 ```
 
-## Key Points
+## 关键点
 
-- Vitest uses Vite's transformation pipeline - same `resolve.alias`, plugins work
-- `vitest.config.ts` takes priority over `vite.config.ts`
-- Use `--config` flag to specify a custom config path
-- `process.env.VITEST` is set to `true` when running tests
-- Test config uses `test` property, rest is Vite config
+- Vitest 使用 Vite 的转换管道 - 相同的 `resolve.alias`、插件有效
+- `vitest.config.ts` 优先于 `vite.config.ts`
+- 使用 `--config` 标志指定自定义配置路径
+- 运行测试时 `process.env.VITEST` 被设置为 `true`
+- 测试配置使用 `test` 属性,其余是 Vite 配置
 
 <!-- 
 Source references:

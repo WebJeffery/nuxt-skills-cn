@@ -1,23 +1,23 @@
 ---
 name: projects-workspaces
-description: Multi-project configuration for monorepos and different test types
+description: 用于 monorepos 和不同测试类型的多项目配置
 ---
 
-# Projects
+# 项目
 
-Run different test configurations in the same Vitest process.
+在同一个 Vitest 进程中运行不同的测试配置。
 
-## Basic Projects Setup
+## 基本项目设置
 
 ```ts
 // vitest.config.ts
 defineConfig({
   test: {
     projects: [
-      // Glob patterns for config files
+      // 配置文件的 glob 模式
       'packages/*',
       
-      // Inline config
+      // 内联配置
       {
         test: {
           name: 'unit',
@@ -37,13 +37,13 @@ defineConfig({
 })
 ```
 
-## Monorepo Pattern
+## Monorepo 模式
 
 ```ts
 defineConfig({
   test: {
     projects: [
-      // Each package has its own vitest.config.ts
+      // 每个包都有自己的 vitest.config.ts
       'packages/core',
       'packages/cli',
       'packages/utils',
@@ -52,7 +52,7 @@ defineConfig({
 })
 ```
 
-Package config:
+包配置:
 
 ```ts
 // packages/core/vitest.config.ts
@@ -67,9 +67,9 @@ export default defineConfig({
 })
 ```
 
-## Different Environments
+## 不同环境
 
-Run same tests in different environments:
+在不同环境中运行相同的测试:
 
 ```ts
 defineConfig({
@@ -96,7 +96,7 @@ defineConfig({
 })
 ```
 
-## Browser + Node Projects
+## 浏览器 + Node 项目
 
 ```ts
 defineConfig({
@@ -125,7 +125,7 @@ defineConfig({
 })
 ```
 
-## Shared Configuration
+## 共享配置
 
 ```ts
 // vitest.shared.ts
@@ -159,9 +159,9 @@ defineConfig({
 })
 ```
 
-## Project-Specific Dependencies
+## 项目特定依赖
 
-Each project can have different dependencies inlined:
+每个项目可以有不同的内联依赖:
 
 ```ts
 defineConfig({
@@ -182,23 +182,23 @@ defineConfig({
 })
 ```
 
-## Running Specific Projects
+## 运行特定项目
 
 ```bash
-# Run specific project
+# 运行特定项目
 vitest --project unit
 vitest --project integration
 
-# Multiple projects
+# 多个项目
 vitest --project unit --project e2e
 
-# Exclude project
+# 排除项目
 vitest --project.ignore browser
 ```
 
-## Providing Values to Projects
+## 向项目提供值
 
-Share values from config to tests:
+从配置共享值到测试:
 
 ```ts
 // vitest.config.ts
@@ -227,7 +227,7 @@ defineConfig({
   },
 })
 
-// In tests, use inject
+// 在测试中,使用 inject
 import { inject } from 'vitest'
 
 test('uses correct api', () => {
@@ -236,7 +236,7 @@ test('uses correct api', () => {
 })
 ```
 
-## With Fixtures
+## 使用 Fixtures
 
 ```ts
 const test = base.extend({
@@ -244,13 +244,13 @@ const test = base.extend({
 })
 
 test('uses injected url', ({ apiUrl }) => {
-  // apiUrl comes from project's provide config
+  // apiUrl 来自项目的 provide 配置
 })
 ```
 
-## Project Isolation
+## 项目隔离
 
-Each project runs in its own thread pool by default:
+默认情况下,每个项目在自己的线程池中运行:
 
 ```ts
 defineConfig({
@@ -259,7 +259,7 @@ defineConfig({
       {
         test: {
           name: 'isolated',
-          isolate: true, // Full isolation
+          isolate: true, // 完全隔离
           pool: 'forks',
         },
       },
@@ -268,7 +268,7 @@ defineConfig({
 })
 ```
 
-## Global Setup per Project
+## 每项目全局设置
 
 ```ts
 defineConfig({
@@ -285,14 +285,14 @@ defineConfig({
 })
 ```
 
-## Key Points
+## 关键点
 
-- Projects run in same Vitest process
-- Each project can have different environment, config
-- Use glob patterns for monorepo packages
-- Run specific projects with `--project` flag
-- Use `provide` to inject config values into tests
-- Projects inherit from root config unless overridden
+- 项目在同一个 Vitest 进程中运行
+- 每个项目可以有不同的环境、配置
+- 使用 glob 模式进行 monorepo 包
+- 使用 `--project` 标志运行特定项目
+- 使用 `provide` 将配置值注入到测试中
+- 项目继承根配置,除非被覆盖
 
 <!-- 
 Source references:

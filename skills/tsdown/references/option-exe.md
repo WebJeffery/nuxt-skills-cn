@@ -1,13 +1,13 @@
-# Executable - `exe`
+# 可执行文件 - `exe`
 
-**[experimental]** Bundle as a standalone executable using [Node.js Single Executable Applications](https://nodejs.org/api/single-executable-applications.html).
+**[实验性]** 使用 [Node.js 单一可执行应用程序](https://nodejs.org/api/single-executable-applications.html) 打包为独立可执行文件。
 
-## Requirements
+## 要求
 
-- Node.js >= 25.5.0 (ESM support requires >= 25.7.0)
-- Not supported in Bun or Deno
+- Node.js >= 25.5.0（ESM 支持需要 >= 25.7.0）
+- 不支持 Bun 或 Deno
 
-## Basic Usage
+## 基本用法
 
 ```ts
 export default defineConfig({
@@ -16,15 +16,15 @@ export default defineConfig({
 })
 ```
 
-## Behavior When Enabled
+## 启用时的行为
 
-- Default output format changes from `esm` to `cjs` (unless Node.js >= 25.7.0)
-- Declaration file generation (`dts`) is disabled by default
-- Code splitting is disabled
-- Only single entry points are supported
-- Legacy CJS warnings are suppressed
+- 默认输出格式从 `esm` 更改为 `cjs`（除非 Node.js >= 25.7.0）
+- 默认禁用声明文件生成（`dts`）
+- 禁用代码分割
+- 仅支持单个入口点
+- 抑制传统 CJS 警告
 
-## Advanced Configuration
+## 高级配置
 
 ```ts
 export default defineConfig({
@@ -42,28 +42,28 @@ export default defineConfig({
 
 ## `ExeOptions`
 
-| Option | Type | Description |
+| 选项 | 类型 | 描述 |
 |--------|------|-------------|
-| `seaConfig` | `Omit<SeaConfig, 'main' \| 'output' \| 'mainFormat'>` | Node.js configuration options |
-| `fileName` | `string \| ((chunk) => string)` | Custom output file name (without `.exe` or platform suffixes) |
-| `targets` | `ExeTarget[]` | Cross-platform build targets (requires `@tsdown/exe`) |
+| `seaConfig` | `Omit<SeaConfig, 'main' \| 'output' \| 'mainFormat'>` | Node.js 配置选项 |
+| `fileName` | `string \| ((chunk) => string)` | 自定义输出文件名（不带 `.exe` 或平台后缀）|
+| `targets` | `ExeTarget[]` | 跨平台构建目标（需要 `@tsdown/exe`）|
 
 ## `SeaConfig`
 
-See [Node.js Single Executable Applications documentation](https://nodejs.org/api/single-executable-applications.html).
+请参阅 [Node.js 单一可执行应用程序文档](https://nodejs.org/api/single-executable-applications.html)。
 
-| Option | Type | Default | Description |
+| 选项 | 类型 | 默认值 | 描述 |
 |--------|------|---------|-------------|
-| `disableExperimentalSEAWarning` | `boolean` | `true` | Disable the experimental warning |
-| `useSnapshot` | `boolean` | `false` | Use V8 snapshot |
-| `useCodeCache` | `boolean` | `false` | Use V8 code cache |
-| `execArgv` | `string[]` | - | Extra Node.js arguments |
-| `execArgvExtension` | `'none' \| 'env' \| 'cli'` | `'env'` | How to extend execArgv |
-| `assets` | `Record<string, string>` | - | Assets to embed |
+| `disableExperimentalSEAWarning` | `boolean` | `true` | 禁用实验性警告 |
+| `useSnapshot` | `boolean` | `false` | 使用 V8 快照 |
+| `useCodeCache` | `boolean` | `false` | 使用 V8 代码缓存 |
+| `execArgv` | `string[]` | - | 额外的 Node.js 参数 |
+| `execArgvExtension` | `'none' \| 'env' \| 'cli'` | `'env'` | 如何扩展 execArgv |
+| `assets` | `Record<string, string>` | - | 要嵌入的资源 |
 
-## Cross-Platform Builds
+## 跨平台构建
 
-Install `@tsdown/exe` to build executables for multiple platforms from a single machine:
+安装 `@tsdown/exe` 以从单台机器为多个平台构建可执行文件：
 
 ```bash
 pnpm add -D @tsdown/exe
@@ -82,7 +82,7 @@ export default defineConfig({
 })
 ```
 
-This downloads the target platform's Node.js binary, caches it locally, and produces platform-suffixed output:
+这会下载目标平台的 Node.js 二进制文件，在本地缓存它，并生成带平台后缀的输出：
 
 ```
 dist/
@@ -93,24 +93,24 @@ dist/
 
 ### `ExeTarget`
 
-| Field | Type | Description |
+| 字段 | 类型 | 描述 |
 |-------|------|-------------|
-| `platform` | `'win' \| 'darwin' \| 'linux'` | Target OS (nodejs.org naming) |
-| `arch` | `'x64' \| 'arm64'` | Target CPU architecture |
-| `nodeVersion` | `string` | Node.js version (must be `>=25.7.0`) |
+| `platform` | `'win' \| 'darwin' \| 'linux'` | 目标操作系统（nodejs.org 命名）|
+| `arch` | `'x64' \| 'arm64'` | 目标 CPU 架构 |
+| `nodeVersion` | `string` | Node.js 版本（必须 `>=25.7.0`）|
 
-### Caching
+### 缓存
 
-Downloaded Node.js binaries are cached in system cache directories:
+下载的 Node.js 二进制文件缓存在系统缓存目录中：
 - **macOS:** `~/Library/Caches/tsdown/node/`
 - **Linux:** `~/.cache/tsdown/node/`
 - **Windows:** `%LOCALAPPDATA%/tsdown/Caches/node/`
 
-## Platform Notes
+## 平台说明
 
-- On macOS, the executable is automatically codesigned (ad-hoc) for Gatekeeper compatibility
-- On Windows, the `.exe` extension is automatically appended
-- When `targets` is specified, `seaConfig.executable` is ignored
+- 在 macOS 上，可执行文件会自动进行代码签名（临时）以兼容 Gatekeeper
+- 在 Windows 上，会自动附加 `.exe` 扩展名
+- 指定 `targets` 时，会忽略 `seaConfig.executable`
 
 ## CLI
 

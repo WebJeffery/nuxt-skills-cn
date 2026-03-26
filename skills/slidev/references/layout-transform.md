@@ -1,13 +1,13 @@
 ---
 name: transform-component
-description: Scale elements without affecting slide layout using the Transform component
+description: 使用 Transform 组件缩放元素而不影响幻灯片布局
 ---
 
-# Transform Component
+# Transform 组件
 
-Scale elements without affecting slide layout.
+缩放元素而不影响幻灯片布局。
 
-## Usage
+## 用法
 
 ```md
 <Transform :scale="0.5" origin="top center">
@@ -15,19 +15,19 @@ Scale elements without affecting slide layout.
 </Transform>
 ```
 
-## Props
+## 属性
 
-- `scale`: Scale factor (0.5 = 50%, 2 = 200%)
-- `origin`: Transform origin (CSS transform-origin value)
+- `scale`：缩放因子（0.5 = 50%，2 = 200%）
+- `origin`：变换原点（CSS transform-origin 值）
 
-## Use Cases
+## 使用场景
 
-- Shrink large diagrams
-- Scale code blocks
-- Fit oversized content
-- Create emphasis effects
+- 缩小大型图表
+- 缩放代码块
+- 适应超大的内容
+- 创建强调效果
 
-## Related Features
+## 相关功能
 
-- Scale all slides: Use `canvasWidth` / `aspectRatio` in headmatter
-- Scale individual slides: Use `zoom` frontmatter option
+- 缩放所有幻灯片：在 headmatter 中使用 `canvasWidth` / `aspectRatio`
+- 缩放单张幻灯片：使用 `zoom` frontmatter 选项

@@ -1,14 +1,14 @@
-# Migrate from tsup
+# 从 tsup 迁移
 
-Migration guide for switching from tsup to tsdown.
+从 tsup 切换到 tsdown 的迁移指南。
 
-## Overview
+## 概述
 
-tsdown is built on Rolldown (Rust-based) vs tsup's esbuild, providing faster and more powerful bundling while maintaining compatibility.
+tsdown 基于 Rolldown（基于 Rust）vs tsup 的 esbuild，在保持兼容性的同时提供更快、更强大的打包。
 
-## Automatic Migration
+## 自动迁移
 
-### Single Package
+### 单个包
 
 ```bash
 npx tsdown-migrate
@@ -17,65 +17,65 @@ npx tsdown-migrate
 ### Monorepo
 
 ```bash
-# Using glob patterns
+# 使用 glob 模式
 npx tsdown-migrate packages/*
 
-# Multiple directories
+# 多个目录
 npx tsdown-migrate packages/foo packages/bar
 ```
 
-### Migration Options
+### 迁移选项
 
-- `[...dirs]` - Directories to migrate (supports globs)
-- `--dry-run` or `-d` - Preview changes without modifying files
+- `[...dirs]` - 要迁移的目录（支持 glob）
+- `--dry-run` 或 `-d` - 预览更改而不修改文件
 
-**Important:** Commit your changes before running migration.
+**重要：** 运行迁移之前提交您的更改。
 
-## Key Differences
+## 主要区别
 
-### Default Values
+### 默认值
 
-| Option | tsup | tsdown |
+| 选项 | tsup | tsdown |
 |--------|------|--------|
 | `format` | `['cjs']` | `['esm']` |
 | `clean` | `false` | `true` |
-| `dts` | `false` | Auto-enabled if `types`/`typings` in package.json |
-| `target` | Manual | Auto-read from `engines.node` in package.json |
+| `dts` | `false` | 如果 package.json 中有 `types`/`typings` 则自动启用 |
+| `target` | 手动 | 从 package.json 中的 `engines.node` 自动读取 |
 
-### New Features in tsdown
+### tsdown 中的新功能
 
-#### Node Protocol Control
-
-```ts
-export default defineConfig({
-  nodeProtocol: true,      // Add node: prefix (fs → node:fs)
-  nodeProtocol: 'strip',   // Remove node: prefix (node:fs → fs)
-  nodeProtocol: false,     // Keep as-is (default)
-})
-```
-
-#### Better Workspace Support
+#### Node 协议控制
 
 ```ts
 export default defineConfig({
-  workspace: 'packages/*',  // Build all packages
+  nodeProtocol: true,      // 添加 node: 前缀（fs → node:fs）
+  nodeProtocol: 'strip',   // 移除 node: 前缀（node:fs → fs）
+  nodeProtocol: false,     // 保持原样（默认）
 })
 ```
 
-## Migration Checklist
+#### 更好的工作区支持
 
-1. **Backup your code** - Commit all changes
-2. **Run migration tool** - `npx tsdown-migrate`
-3. **Review changes** - Check modified config files
-4. **Update scripts** - Change `tsup` to `tsdown` in package.json
-5. **Test build** - Run `pnpm build` to verify
-6. **Adjust config** - Fine-tune based on your needs
+```ts
+export default defineConfig({
+  workspace: 'packages/*',  // 构建所有包
+})
+```
 
-## Common Migration Patterns
+## 迁移清单
 
-### Basic Library
+1. **备份您的代码** - 提交所有更改
+2. **运行迁移工具** - `npx tsdown-migrate`
+3. **审查更改** - 检查修改的配置文件
+4. **更新脚本** - 在 package.json 中将 `tsup` 更改为 `tsdown`
+5. **测试构建** - 运行 `pnpm build` 进行验证
+6. **调整配置** - 根据您的需求进行微调
 
-**Before (tsup):**
+## 常见迁移模式
+
+### 基本库
+
+**之前（tsup）：**
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
@@ -84,19 +84,19 @@ export default defineConfig({
 })
 ```
 
-**After (tsdown):**
+**之后（tsdown）：**
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
-  format: ['esm', 'cjs'],  // ESM now default
+  format: ['esm', 'cjs'],  // ESM 现在是默认值
   dts: true,
-  clean: true,  // Now enabled by default
+  clean: true,  // 现在默认启用
 })
 ```
 
-### With Custom Target
+### 使用自定义目标
 
-**Before (tsup):**
+**之前（tsup）：**
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
@@ -104,19 +104,19 @@ export default defineConfig({
 })
 ```
 
-**After (tsdown):**
+**之后（tsdown）：**
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
-  // target auto-reads from package.json engines.node
-  // Or override explicitly:
+  // target 从 package.json engines.node 自动读取
+  // 或显式覆盖：
   target: 'es2020',
 })
 ```
 
-### CLI Scripts
+### CLI 脚本
 
-**Before (package.json):**
+**之前（package.json）：**
 ```json
 {
   "scripts": {
@@ -126,7 +126,7 @@ export default defineConfig({
 }
 ```
 
-**After (package.json):**
+**之后（package.json）：**
 ```json
 {
   "scripts": {
@@ -136,54 +136,54 @@ export default defineConfig({
 }
 ```
 
-## Feature Compatibility
+## 功能兼容性
 
-### Supported tsup Features
+### 支持的 tsup 功能
 
-Most tsup features are supported:
-- ✅ Multiple entry points
-- ✅ Multiple formats (ESM, CJS, IIFE, UMD)
-- ✅ TypeScript declarations
-- ✅ Source maps
-- ✅ Minification
-- ✅ Watch mode
-- ✅ External dependencies
+大多数 tsup 功能都受支持：
+- ✅ 多个入口点
+- ✅ 多种格式（ESM、CJS、IIFE、UMD）
+- ✅ TypeScript 声明
+- ✅ 源映射
+- ✅ 压缩
+- ✅ 监视模式
+- ✅ 外部依赖项
 - ✅ Tree shaking
 - ✅ Shims
-- ✅ Plugins (Rollup compatible)
+- ✅ 插件（Rollup 兼容）
 
-### Missing Features
+### 缺失的功能
 
-Some tsup features are not yet available. Check [GitHub issues](https://github.com/rolldown/tsdown/issues) for status and request features.
+某些 tsup 功能尚不可用。请查看 [GitHub issues](https://github.com/rolldown/tsdown/issues) 了解状态并请求功能。
 
-## Troubleshooting
+## 故障排除
 
-### Build Fails After Migration
+### 迁移后构建失败
 
-1. **Check Node.js version** - Requires Node.js 20.19+
-2. **Install TypeScript** - Required for DTS generation
-3. **Review config changes** - Ensure format and options are correct
-4. **Check dependencies** - Verify all dependencies are installed
+1. **检查 Node.js 版本** - 需要 Node.js 20.19+
+2. **安装 TypeScript** - DTS 生成需要
+3. **审查配置更改** - 确保格式和选项正确
+4. **检查依赖项** - 验证所有依赖项都已安装
 
-### Different Output
+### 不同的输出
 
-- **Format order** - tsdown defaults to ESM first
-- **Clean behavior** - tsdown cleans outDir by default
-- **Target** - tsdown auto-detects from package.json
+- **格式顺序** - tsdown 默认为 ESM 优先
+- **清理行为** - tsdown 默认清理 outDir
+- **目标** - tsdown 从 package.json 自动检测
 
-### Performance Issues
+### 性能问题
 
-tsdown should be faster than tsup. If not:
-1. Enable `isolatedDeclarations` for faster DTS generation
-2. Check for large dependencies being bundled
-3. Use `skipNodeModulesBundle` if needed
+tsdown 应该比 tsup 更快。如果不是：
+1. 启用 `isolatedDeclarations` 以加快 DTS 生成
+2. 检查是否有大型依赖项被打包
+3. 如有必要，使用 `skipNodeModulesBundle`
 
-## Getting Help
+## 获取帮助
 
-- [GitHub Issues](https://github.com/rolldown/tsdown/issues) - Report bugs or request features
-- [Documentation](https://tsdown.dev) - Full documentation
-- [Migration Tool](https://github.com/rolldown/tsdown/tree/main/packages/tsdown-migrate) - Source code
+- [GitHub Issues](https://github.com/rolldown/tsdown/issues) - 报告错误或请求功能
+- [文档](https://tsdown.dev) - 完整文档
+- [迁移工具](https://github.com/rolldown/tsdown/tree/main/packages/tsdown-migrate) - 源代码
 
-## Acknowledgements
+## 致谢
 
-tsdown is heavily inspired by tsup and incorporates parts of its codebase. Thanks to [@egoist](https://github.com/egoist) and the tsup community.
+tsdown 深受 tsup 启发，并集成了其代码库的部分内容。感谢 [@egoist](https://github.com/egoist) 和 tsup 社区。

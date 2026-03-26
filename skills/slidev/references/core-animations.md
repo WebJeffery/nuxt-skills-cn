@@ -1,85 +1,85 @@
 ---
 name: animations
-description: Click animations, motion effects, and slide transitions
+description: 点击动画、运动效果和幻灯片过渡
 ---
 
-# Animations
+# 动画
 
-Click animations, motion effects, and slide transitions.
+点击动画、运动效果和幻灯片过渡。
 
-## Click Animations
+## 点击动画
 
-### v-click Directive
+### v-click 指令
 
 ```md
-<div v-click>Appears on click</div>
-<div v-click>Appears on next click</div>
+<div v-click>点击时显示</div>
+<div v-click>下次点击时显示</div>
 ```
 
-### v-clicks Component
+### v-clicks 组件
 
-Animate list items:
+为列表项添加动画：
 
 ```md
 <v-clicks>
 
-- Item 1
-- Item 2
-- Item 3
+- 项目 1
+- 项目 2
+- 项目 3
 
 </v-clicks>
 ```
 
-With depth for nested lists:
+为嵌套列表设置深度：
 
 ```md
 <v-clicks depth="2">
 
-- Parent 1
-  - Child 1
-  - Child 2
-- Parent 2
+- 父项 1
+  - 子项 1
+  - 子项 2
+- 父项 2
 
 </v-clicks>
 ```
 
-### Click Positioning
+### 点击定位
 
-Relative positioning:
+相对定位：
 ```md
-<div v-click>1st (default)</div>
-<div v-click="+1">2nd</div>
-<div v-click="-1">Same as previous</div>
+<div v-click>第 1 个（默认）</div>
+<div v-click="+1">第 2 个</div>
+<div v-click="-1">与前一个相同</div>
 ```
 
-Absolute positioning:
+绝对定位：
 ```md
-<div v-click="3">Appears on click 3</div>
-<div v-click="[2,5]">Visible clicks 2-5</div>
+<div v-click="3">在第 3 次点击时显示</div>
+<div v-click="[2,5]">在第 2-5 次点击时可见</div>
 ```
 
 ### v-after
 
-Show with previous element:
+与前一个元素一起显示：
 
 ```md
-<div v-click>Main element</div>
-<div v-after>Appears with main element</div>
+<div v-click>主元素</div>
+<div v-after>与主元素一起显示</div>
 ```
 
 ### v-switch
 
-Conditional rendering by click:
+根据点击进行条件渲染：
 
 ```md
 <v-switch>
-  <template #1>First state</template>
-  <template #2>Second state</template>
-  <template #3>Third state</template>
+  <template #1>第一个状态</template>
+  <template #2>第二个状态</template>
+  <template #3>第三个状态</template>
 </v-switch>
 ```
 
-## Custom Click Count
+## 自定义点击次数
 
 ```md
 ---
@@ -87,7 +87,7 @@ clicks: 10
 ---
 ```
 
-Or starting from specific count:
+或从特定次数开始：
 
 ```md
 ---
@@ -95,9 +95,9 @@ clicksStart: 5
 ---
 ```
 
-## Motion Animations
+## 运动动画
 
-Using @vueuse/motion:
+使用 @vueuse/motion：
 
 ```md
 <div
@@ -105,11 +105,11 @@ Using @vueuse/motion:
   :initial="{ x: -100, opacity: 0 }"
   :enter="{ x: 0, opacity: 1 }"
 >
-  Animated content
+  动画内容
 </div>
 ```
 
-Click-based motion:
+基于点击的运动：
 
 ```md
 <div
@@ -118,13 +118,13 @@ Click-based motion:
   :click-1="{ scale: 1.5 }"
   :click-2="{ scale: 1 }"
 >
-  Scales on clicks
+  点击时缩放
 </div>
 ```
 
-## Slide Transitions
+## 幻灯片过渡
 
-In headmatter (all slides):
+在 headmatter 中（所有幻灯片）：
 
 ```md
 ---
@@ -132,7 +132,7 @@ transition: slide-left
 ---
 ```
 
-Per-slide:
+单张幻灯片：
 
 ```md
 ---
@@ -140,16 +140,16 @@ transition: fade
 ---
 ```
 
-### Built-in Transitions
+### 内置过渡效果
 
 - `fade` / `fade-out`
 - `slide-left` / `slide-right`
 - `slide-up` / `slide-down`
-- `view-transition` (View Transitions API)
+- `view-transition`（View Transitions API）
 
-### Directional Transitions
+### 方向性过渡
 
-Different transitions for forward/backward:
+前进/后退使用不同的过渡效果：
 
 ```md
 ---
@@ -157,9 +157,9 @@ transition: slide-left | slide-right
 ---
 ```
 
-### Custom Transitions
+### 自定义过渡
 
-Define CSS classes:
+定义 CSS 类：
 
 ```css
 .my-transition-enter-active,
@@ -173,17 +173,17 @@ Define CSS classes:
 }
 ```
 
-Use: `transition: my-transition`
+使用：`transition: my-transition`
 
-## CSS Classes
+## CSS 类
 
-Animation targets get these classes:
-- `.slidev-vclick-target` - Animated element
-- `.slidev-vclick-hidden` - Hidden state
-- `.slidev-vclick-current` - Current click target
-- `.slidev-vclick-prior` - Previously shown
+动画目标获得这些类：
+- `.slidev-vclick-target` - 动画元素
+- `.slidev-vclick-hidden` - 隐藏状态
+- `.slidev-vclick-current` - 当前点击目标
+- `.slidev-vclick-prior` - 之前显示的
 
-## Default Animation CSS
+## 默认动画 CSS
 
 ```css
 .slidev-vclick-target {

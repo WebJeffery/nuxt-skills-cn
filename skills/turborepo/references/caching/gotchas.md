@@ -1,57 +1,57 @@
-# Debugging Cache Issues
+# 调试缓存问题
 
-## Diagnostic Tools
+## 诊断工具
 
 ### `--summarize`
 
-Generates a JSON file with all hash inputs. Compare two runs to find differences.
+生成包含所有哈希输入的 JSON 文件。比较两次运行以查找差异。
 
 ```bash
 turbo build --summarize
-# Creates .turbo/runs/<run-id>.json
+# 创建 .turbo/runs/<run-id>.json
 ```
 
-The summary includes:
+摘要包括：
 
-- Global hash and its inputs
-- Per-task hashes and their inputs
-- Environment variables that affected the hash
+- 全局哈希及其输入
+- 每个任务的哈希及其输入
+- 影响哈希的环境变量
 
-**Comparing runs:**
+**比较运行：**
 
 ```bash
-# Run twice, compare the summaries
+# 运行两次，比较摘要
 diff .turbo/runs/<first-run>.json .turbo/runs/<second-run>.json
 ```
 
 ### `--dry` / `--dry=json`
 
-See what would run without executing anything:
+查看将要运行的内容而不执行任何操作：
 
 ```bash
 turbo build --dry
-turbo build --dry=json  # machine-readable output
+turbo build --dry=json  # 机器可读输出
 ```
 
-Shows cache status for each task without running them.
+显示每个任务的缓存状态而不运行它们。
 
 ### `--force`
 
-Skip reading cache, re-execute all tasks:
+跳过读取缓存，重新执行所有任务：
 
 ```bash
 turbo build --force
 ```
 
-Useful to verify tasks actually work (not just cached results).
+用于验证任务实际工作（不仅仅是缓存结果）。
 
-## Unexpected Cache Misses
+## 意外的缓存未命中
 
-**Symptom:** Task runs when you expected a cache hit.
+**症状：** 当你预期缓存命中时任务运行。
 
-### Environment Variable Changed
+### 环境变量改变
 
-Check if an env var in the `env` key changed:
+检查 `env` 键中的环境变量是否改变：
 
 ```json
 {
@@ -63,11 +63,11 @@ Check if an env var in the `env` key changed:
 }
 ```
 
-Different `API_URL` between runs = cache miss.
+运行之间不同的 `API_URL` = 缓存未命中。
 
-### .env File Changed
+### .env 文件改变
 
-`.env` files aren't tracked by default. Add to `inputs`:
+`.env` 文件默认不被跟踪。添加到 `inputs`：
 
 ```json
 {
@@ -79,7 +79,7 @@ Different `API_URL` between runs = cache miss.
 }
 ```
 
-Or use `globalDependencies` for repo-wide env files:
+或对仓库范围的 env 文件使用 `globalDependencies`：
 
 ```json
 {
@@ -87,32 +87,32 @@ Or use `globalDependencies` for repo-wide env files:
 }
 ```
 
-### Lockfile Changed
+### Lockfile 改变
 
-Installing/updating packages changes the global hash.
+安装/更新包会改变全局哈希。
 
-### Source Files Changed
+### 源文件改变
 
-Any file in the package (or in `inputs`) triggers a miss.
+包中的任何文件（或在 `inputs` 中）都会触发未命中。
 
-### turbo.json Changed
+### turbo.json 改变
 
-Config changes invalidate the global hash.
+配置更改会使全局哈希失效。
 
-## Incorrect Cache Hits
+## 不正确的缓存命中
 
-**Symptom:** Cached output is stale/wrong.
+**症状：** 缓存的输出是过时的/错误的。
 
-### Missing Environment Variable
+### 缺少环境变量
 
-Task uses an env var not listed in `env`:
+任务使用了未在 `env` 中列出的环境变量：
 
 ```javascript
 // build.js
-const apiUrl = process.env.API_URL; // not tracked!
+const apiUrl = process.env.API_URL; // 未跟踪！
 ```
 
-Fix: add to task config:
+修复：添加到任务配置：
 
 ```json
 {
@@ -124,9 +124,9 @@ Fix: add to task config:
 }
 ```
 
-### Missing File in Inputs
+### 输入中缺少文件
 
-Task reads a file outside default inputs:
+任务读取默认输入之外的文件：
 
 ```json
 {
@@ -134,36 +134,36 @@ Task reads a file outside default inputs:
     "build": {
       "inputs": [
         "$TURBO_DEFAULT$",
-        "../../shared-config.json" // file outside package
+        "../../shared-config.json" // 包外的文件
       ]
     }
   }
 }
 ```
 
-## Useful Flags
+## 有用的标志
 
 ```bash
-# Only show output for cache misses
+# 仅显示缓存未命中的输出
 turbo build --output-logs=new-only
 
-# Show output for everything (debugging)
+# 显示所有内容的输出（调试）
 turbo build --output-logs=full
 
-# See why tasks are running
+# 查看任务为什么运行
 turbo build --verbosity=2
 ```
 
-## Quick Checklist
+## 快速检查清单
 
-Cache miss when expected hit:
+预期命中但缓存未命中：
 
-1. Run with `--summarize`, compare with previous run
-2. Check env vars with `--dry=json`
-3. Look for lockfile/config changes in git
+1. 使用 `--summarize` 运行，与之前的运行比较
+2. 使用 `--dry=json` 检查环境变量
+3. 在 git 中查找 lockfile/配置更改
 
-Cache hit when expected miss:
+预期未命中但缓存命中：
 
-1. Verify env var is in `env` array
-2. Verify file is in `inputs` array
-3. Check if file is outside package directory
+1. 验证环境变量在 `env` 数组中
+2. 验证文件在 `inputs` 数组中
+3. 检查文件是否在包目录之外

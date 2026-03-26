@@ -1,21 +1,21 @@
 ---
 name: prettier-plugin
-description: Format Slidev markdown files correctly
+description: 正确格式化 Slidev markdown 文件
 ---
 
-# Prettier Plugin
+# Prettier 插件
 
-Format Slidev markdown files correctly.
+正确格式化 Slidev markdown 文件。
 
-## Installation
+## 安装
 
 ```bash
 pnpm i -D prettier prettier-plugin-slidev
 ```
 
-## Configuration
+## 配置
 
-Create/modify `.prettierrc`:
+创建/修改 `.prettierrc`：
 
 ```json
 {
@@ -31,10 +31,10 @@ Create/modify `.prettierrc`:
 }
 ```
 
-## Why Needed
+## 为什么需要
 
-Slidev's syntax (frontmatter, code blocks) may conflict with default Markdown formatting. This plugin understands Slidev-specific syntax.
+Slidev 的语法（frontmatter、代码块）可能与默认的 Markdown 格式化冲突。此插件理解 Slidev 特定的语法。
 
-## Note
+## 注意
 
-Must specify files via `overrides` since Slidev and regular Markdown share `.md` extension.
+必须通过 `overrides` 指定文件，因为 Slidev 和常规 Markdown 共享 `.md` 扩展名。

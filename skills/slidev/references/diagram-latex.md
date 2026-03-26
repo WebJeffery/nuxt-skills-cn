@@ -1,19 +1,19 @@
 ---
 name: latex
-description: Render mathematical equations using KaTeX
+description: 使用 KaTeX 渲染数学公式
 ---
 
 # LaTeX
 
-Render mathematical equations. Powered by KaTeX.
+渲染数学公式。由 KaTeX 提供支持。
 
-## Inline Math
+## 行内数学公式
 
 ```md
 $\sqrt{3x-1}+(1+x)^2$
 ```
 
-## Block Math
+## 块级数学公式
 
 ```md
 $$
@@ -24,7 +24,7 @@ $$
 $$
 ```
 
-## Line Highlighting
+## 行高亮
 
 ```md
 $$ {1|3|all}
@@ -36,9 +36,9 @@ $$ {1|3|all}
 $$
 ```
 
-## Chemical Equations
+## 化学方程式
 
-Enable mhchem extension in `vite.config.ts`:
+在 `vite.config.ts` 中启用 mhchem 扩展：
 
 ```ts
 import 'katex/contrib/mhchem'
@@ -46,7 +46,7 @@ import 'katex/contrib/mhchem'
 export default {}
 ```
 
-Then use:
+然后使用：
 
 ```md
 $$

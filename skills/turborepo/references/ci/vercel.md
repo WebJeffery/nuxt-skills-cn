@@ -1,102 +1,102 @@
-# Vercel Deployment
+# Vercel 部署
 
-Turborepo integrates seamlessly with Vercel for monorepo deployments.
+Turborepo 与 Vercel 无缝集成，用于 monorepo 部署。
 
-## Remote Cache
+## 远程缓存
 
-Remote caching is **automatically enabled** when deploying to Vercel. No configuration needed - Vercel detects Turborepo and enables caching.
+部署到 Vercel 时，远程缓存**自动启用**。无需配置 - Vercel 检测 Turborepo 并启用缓存。
 
-This means:
+这意味着：
 
-- No `TURBO_TOKEN` or `TURBO_TEAM` setup required on Vercel
-- Cache is shared across all deployments
-- Preview and production builds benefit from cache
+- 在 Vercel 上不需要 `TURBO_TOKEN` 或 `TURBO_TEAM` 设置
+- 缓存在所有部署之间共享
+- 预览和生产构建受益于缓存
 
 ## turbo-ignore
 
-Skip unnecessary builds when a package hasn't changed using `turbo-ignore`.
+当包未更改时，使用 `turbo-ignore` 跳过不必要的构建。
 
-### Installation
+### 安装
 
 ```bash
 npx turbo-ignore
 ```
 
-Or install globally in your project:
+或在项目中全局安装：
 
 ```bash
 pnpm add -D turbo-ignore
 ```
 
-### Setup in Vercel
+### 在 Vercel 中设置
 
-1. Go to your project in Vercel Dashboard
-2. Navigate to Settings > Git > Ignored Build Step
-3. Select "Custom" and enter:
+1. 转到 Vercel 仪表板中的项目
+2. 导航到设置 > Git > 忽略构建步骤
+3. 选择"自定义"并输入：
 
 ```bash
 npx turbo-ignore
 ```
 
-### How It Works
+### 工作原理
 
-`turbo-ignore` checks if the current package (or its dependencies) changed since the last successful deployment:
+`turbo-ignore` 检查当前包（或其依赖）自上次成功部署以来是否更改：
 
-1. Compares current commit to last deployed commit
-2. Uses Turborepo's dependency graph
-3. Returns exit code 0 (skip) if no changes
-4. Returns exit code 1 (build) if changes detected
+1. 将当前提交与上次部署的提交进行比较
+2. 使用 Turborepo 的依赖图
+3. 如果没有更改，返回退出代码 0（跳过）
+4. 如果检测到更改，返回退出代码 1（构建）
 
-### Options
+### 选项
 
 ```bash
-# Check specific package
+# 检查特定包
 npx turbo-ignore web
 
-# Use specific comparison ref
+# 使用特定的比较引用
 npx turbo-ignore --fallback=HEAD~1
 
-# Verbose output
+# 详细输出
 npx turbo-ignore --verbose
 ```
 
-## Environment Variables
+## 环境变量
 
-Set environment variables in Vercel Dashboard:
+在 Vercel 仪表板中设置环境变量：
 
-1. Go to Project Settings > Environment Variables
-2. Add variables for each environment (Production, Preview, Development)
+1. 转到项目设置 > 环境变量
+2. 为每个环境（生产、预览、开发）添加变量
 
-Common variables:
+常见变量：
 
 - `DATABASE_URL`
 - `API_KEY`
-- Package-specific config
+- 特定于包的配置
 
-## Monorepo Root Directory
+## Monorepo 根目录
 
-For monorepos, set the root directory in Vercel:
+对于 monorepo，在 Vercel 中设置根目录：
 
-1. Project Settings > General > Root Directory
-2. Set to the package path (e.g., `apps/web`)
+1. 项目设置 > 常规 > 根目录
+2. 设置为包路径（例如，`apps/web`）
 
-Vercel automatically:
+Vercel 自动：
 
-- Installs dependencies from monorepo root
-- Runs build from the package directory
-- Detects framework settings
+- 从 monorepo 根目录安装依赖
+- 从包目录运行构建
+- 检测框架设置
 
-## Build Command
+## 构建命令
 
-Vercel auto-detects `turbo run build` when `turbo.json` exists at root.
+当根目录存在 `turbo.json` 时，Vercel 自动检测 `turbo run build`。
 
-Override if needed:
+如果需要，覆盖：
 
 ```bash
 turbo run build --filter=web
 ```
 
-Or for production-only optimizations:
+或用于仅生产优化：
 
 ```bash
 turbo run build --filter=web --env-mode=strict

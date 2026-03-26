@@ -1,35 +1,35 @@
 # Shims
 
-Add compatibility between ESM and CommonJS module systems.
+在 ESM 和 CommonJS 模块系统之间添加兼容性。
 
-## Overview
+## 概述
 
-Shims provide small pieces of code that bridge the gap between CommonJS (CJS) and ECMAScript Modules (ESM), enabling cross-module-system compatibility.
+Shims 提供小块代码来桥接 CommonJS (CJS) 和 ECMAScript 模块 (ESM) 之间的差距，实现跨模块系统兼容性。
 
-## What Shims Provide
+## Shims 提供的内容
 
-### ESM Output (when enabled)
+### ESM 输出（启用时）
 
-With `shims: true`, adds CommonJS variables to ESM:
+使用 `shims: true`，将 CommonJS 变量添加到 ESM：
 
-- `__dirname` - Current directory path
-- `__filename` - Current file path
+- `__dirname` - 当前目录路径
+- `__filename` - 当前文件路径
 
-### ESM Output (automatic)
+### ESM 输出（自动）
 
-Always added when using `require` in ESM on Node.js:
+在 Node.js 上的 ESM 中使用 `require` 时始终添加：
 
-- `require` function via `createRequire(import.meta.url)`
+- 通过 `createRequire(import.meta.url)` 的 `require` 函数
 
-### CJS Output (automatic)
+### CJS 输出（自动）
 
-Always added to CommonJS output:
+始终添加到 CommonJS 输出：
 
 - `import.meta.url`
 - `import.meta.dirname`
 - `import.meta.filename`
 
-## Usage
+## 用法
 
 ### CLI
 
@@ -37,7 +37,7 @@ Always added to CommonJS output:
 tsdown --shims
 ```
 
-### Config File
+### 配置文件
 
 ```ts
 export default defineConfig({
@@ -47,17 +47,17 @@ export default defineConfig({
 })
 ```
 
-## Generated Code
+## 生成的代码
 
-### ESM with Shims
+### 带有 Shims 的 ESM
 
-**Source:**
+**源代码：**
 ```ts
 console.log(__dirname)
 console.log(__filename)
 ```
 
-**Output (shims: true):**
+**输出（shims: true）：**
 ```js
 import { fileURLToPath } from 'node:url'
 import { dirname } from 'node:path'
@@ -69,14 +69,14 @@ console.log(__dirname)
 console.log(__filename)
 ```
 
-### ESM with require
+### 带有 require 的 ESM
 
-**Source:**
+**源代码：**
 ```ts
 const mod = require('some-module')
 ```
 
-**Output (automatic on Node.js):**
+**输出（在 Node.js 上自动）：**
 ```js
 import { createRequire } from 'node:module'
 const require = createRequire(import.meta.url)
@@ -84,15 +84,15 @@ const require = createRequire(import.meta.url)
 const mod = require('some-module')
 ```
 
-### CJS with import.meta
+### 带有 import.meta 的 CJS
 
-**Source:**
+**源代码：**
 ```ts
 console.log(import.meta.url)
 console.log(import.meta.dirname)
 ```
 
-**Output (automatic):**
+**输出（自动）：**
 ```js
 const import_meta = {
   url: require('url').pathToFileURL(__filename).toString(),
@@ -104,32 +104,32 @@ console.log(import_meta.url)
 console.log(import_meta.dirname)
 ```
 
-## Common Patterns
+## 常见模式
 
-### Node.js CLI Tool
+### Node.js CLI 工具
 
 ```ts
 export default defineConfig({
   entry: ['src/cli.ts'],
   format: ['esm'],
   platform: 'node',
-  shims: true,  // Add __dirname, __filename
+  shims: true,  // 添加 __dirname, __filename
 })
 ```
 
-### Dual Format Library
+### 双格式库
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   format: ['esm', 'cjs'],
   platform: 'node',
-  shims: true,  // ESM gets __dirname/__filename
-                // CJS gets import.meta.* (automatic)
+  shims: true,  // ESM 获得 __dirname/__filename
+                // CJS 获得 import.meta.*（自动）
 })
 ```
 
-### Server-Side Code
+### 服务器端代码
 
 ```ts
 export default defineConfig({
@@ -138,56 +138,56 @@ export default defineConfig({
   platform: 'node',
   shims: true,
   deps: {
-    neverBundle: [/.*/],  // External all deps
+    neverBundle: [/.*/],  // 外部化所有依赖项
   },
 })
 ```
 
-### File System Operations
+### 文件系统操作
 
 ```ts
-// Source code
+// 源代码
 import { readFileSync } from 'fs'
 import { join } from 'path'
 
-// Read file relative to current module
+// 读取相对于当前模块的文件
 const content = readFileSync(join(__dirname, 'data.json'), 'utf-8')
 ```
 
 ```ts
-// tsdown config
+// tsdown 配置
 export default defineConfig({
   entry: ['src/index.ts'],
   format: ['esm'],
-  shims: true,  // Enables __dirname
+  shims: true,  // 启用 __dirname
 })
 ```
 
-## When to Use Shims
+## 何时使用 Shims
 
-### Use `shims: true` when:
+### 使用 `shims: true` 时：
 
-- ✅ Building Node.js tools/CLIs
-- ✅ Code uses `__dirname` or `__filename`
-- ✅ Need file system operations relative to module
-- ✅ Migrating from CommonJS to ESM
-- ✅ Need cross-format compatibility
+- ✅ 构建 Node.js 工具/CLI
+- ✅ 代码使用 `__dirname` 或 `__filename`
+- ✅ 需要相对于模块的文件系统操作
+- ✅ 从 CommonJS 迁移到 ESM
+- ✅ 需要跨格式兼容性
 
-### Don't need shims when:
+### 不需要 shims 时：
 
-- ❌ Browser-only code
-- ❌ No file system operations
-- ❌ Using only `import.meta.url`
-- ❌ Pure ESM without CJS variables
+- ❌ 仅浏览器代码
+- ❌ 没有文件系统操作
+- ❌ 仅使用 `import.meta.url`
+- ❌ 没有 CJS 变量的纯 ESM
 
-## Performance Impact
+## 性能影响
 
-### Runtime Overhead
+### 运行时开销
 
-Shims add minimal runtime overhead:
+Shims 添加最小的运行时开销：
 
 ```js
-// Added to output when shims enabled
+// 启用 shims 时添加到输出
 import { fileURLToPath } from 'node:url'
 import { dirname } from 'node:path'
 
@@ -197,66 +197,66 @@ const __dirname = dirname(__filename)
 
 ### Tree Shaking
 
-If `__dirname` or `__filename` are not used, they're automatically removed during bundling (no overhead).
+如果未使用 `__dirname` 或 `__filename`，它们会在打包期间自动删除（无开销）。
 
-## Platform Considerations
+## 平台注意事项
 
-### Node.js Platform
+### Node.js 平台
 
 ```ts
 export default defineConfig({
   platform: 'node',
   format: ['esm'],
-  shims: true,  // Recommended for Node.js
+  shims: true,  // 推荐 Node.js 使用
 })
 ```
 
-- `require` shim added automatically
-- `__dirname` and `__filename` available with `shims: true`
+- 自动添加 `require` shim
+- 使用 `shims: true` 时可用 `__dirname` 和 `__filename`
 
-### Browser Platform
+### 浏览器平台
 
 ```ts
 export default defineConfig({
   platform: 'browser',
   format: ['esm'],
-  shims: false,  // Not needed for browser
+  shims: false,  // 浏览器不需要
 })
 ```
 
-- Shims not needed (no Node.js variables)
-- Will cause warnings if Node.js APIs used
+- 不需要 shims（没有 Node.js 变量）
+- 如果使用 Node.js API 会发出警告
 
-### Neutral Platform
+### 中立平台
 
 ```ts
 export default defineConfig({
   platform: 'neutral',
   format: ['esm'],
-  shims: false,  // Avoid platform-specific code
+  shims: false,  // 避免平台特定代码
 })
 ```
 
-- Avoid shims for maximum portability
+- 避免使用 shims 以获得最大可移植性
 
-## CLI Examples
+## CLI 示例
 
 ```bash
-# Enable shims
+# 启用 shims
 tsdown --shims
 
-# ESM with shims for Node.js
+# Node.js 的 ESM 配合 shims
 tsdown --format esm --platform node --shims
 
-# Dual format with shims
+# 双格式配合 shims
 tsdown --format esm --format cjs --shims
 ```
 
-## Troubleshooting
+## 故障排除
 
 ### `__dirname is not defined`
 
-Enable shims:
+启用 shims：
 
 ```ts
 export default defineConfig({
@@ -264,36 +264,36 @@ export default defineConfig({
 })
 ```
 
-### `require is not defined` in ESM
+### ESM 中的 `require is not defined`
 
-Automatic on Node.js platform. If not working:
-
-```ts
-export default defineConfig({
-  platform: 'node',  // Ensure Node.js platform
-})
-```
-
-### Import.meta not working in CJS
-
-Automatic - no configuration needed. If still failing, check output format:
+在 Node.js 平台上自动。如果不工作：
 
 ```ts
 export default defineConfig({
-  format: ['cjs'],  // Shims added automatically
+  platform: 'node',  // 确保 Node.js 平台
 })
 ```
 
-## Tips
+### CJS 中的 Import.meta 不工作
 
-1. **Enable for Node.js tools** - Use `shims: true` for CLIs and servers
-2. **Skip for browsers** - Not needed for browser code
-3. **No overhead if unused** - Automatically tree-shaken
-4. **Automatic require shim** - No config needed for `require` in ESM
-5. **CJS shims automatic** - `import.meta.*` always available in CJS
+自动 - 无需配置。如果仍然失败，检查输出格式：
 
-## Related Options
+```ts
+export default defineConfig({
+  format: ['cjs'],  // 自动添加 shims
+})
+```
 
-- [Platform](option-platform.md) - Runtime environment
-- [Output Format](option-output-format.md) - Module formats
-- [Target](option-target.md) - Syntax transformations
+## 提示
+
+1. **为 Node.js 工具启用** - 对 CLI 和服务器使用 `shims: true`
+2. **为浏览器跳过** - 浏览器代码不需要
+3. **未使用时无开销** - 自动 tree-shaken
+4. **自动 require shim** - ESM 中的 `require` 无需配置
+5. **CJS shims 自动** - CJS 中始终可用 `import.meta.*`
+
+## 相关选项
+
+- [平台](option-platform.md) - 运行时环境
+- [输出格式](option-output-format.md) - 模块格式
+- [目标](option-target.md) - 语法转换

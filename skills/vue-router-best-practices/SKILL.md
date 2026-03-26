@@ -1,23 +1,20 @@
 ---
 name: vue-router-best-practices
-description: "Vue Router 4 patterns, navigation guards, route params, and route-component lifecycle interactions."
-version: 1.0.0
-license: MIT
-author: github.com/vuejs-ai
+description: "Vue Router 4 模式、导航守卫、路由参数和路由组件生命周期交互。"
 ---
 
-Vue Router best practices, common gotchas, and navigation patterns.
+Vue Router 最佳实践、常见陷阱和导航模式。
 
-### Navigation Guards
-- Navigating between same route with different params → See [router-beforeenter-no-param-trigger](reference/router-beforeenter-no-param-trigger.md)
-- Accessing component instance in beforeRouteEnter guard → See [router-beforerouteenter-no-this](reference/router-beforerouteenter-no-this.md)
-- Navigation guard making API calls without awaiting → See [router-guard-async-await-pattern](reference/router-guard-async-await-pattern.md)
-- Users trapped in infinite redirect loops → See [router-navigation-guard-infinite-loop](reference/router-navigation-guard-infinite-loop.md)
-- Navigation guard using deprecated next() function → See [router-navigation-guard-next-deprecated](reference/router-navigation-guard-next-deprecated.md)
+### 导航守卫
+- 在不同参数之间导航到同一路由 → 见 [router-beforeenter-no-param-trigger](reference/router-beforeenter-no-param-trigger.md)
+- 在 beforeRouteEnter 守卫中访问组件实例 → 见 [router-beforerouteenter-no-this](reference/router-beforerouteenter-no-this.md)
+- 导航守卫进行 API 调用而不等待 → 见 [router-guard-async-await-pattern](reference/router-guard-async-await-pattern.md)
+- 用户陷入无限重定向循环 → 见 [router-navigation-guard-infinite-loop](reference/router-navigation-guard-infinite-loop.md)
+- 导航守卫使用已弃用的 next() 函数 → 见 [router-navigation-guard-next-deprecated](reference/router-navigation-guard-next-deprecated.md)
 
-### Route Lifecycle
-- Stale data when navigating between same route → See [router-param-change-no-lifecycle](reference/router-param-change-no-lifecycle.md)
-- Event listeners persisting after component unmounts → See [router-simple-routing-cleanup](reference/router-simple-routing-cleanup.md)
+### 路由生命周期
+- 在同一路由之间导航时数据过时 → 见 [router-param-change-no-lifecycle](reference/router-param-change-no-lifecycle.md)
+- 组件卸载后事件监听器持续存在 → 见 [router-simple-routing-cleanup](reference/router-simple-routing-cleanup.md)
 
-### Setup
-- Building production single-page application → See [router-use-vue-router-for-production](reference/router-use-vue-router-for-production.md)
+### 设置
+- 构建生产单页应用 → 见 [router-use-vue-router-for-production](reference/router-use-vue-router-for-production.md)

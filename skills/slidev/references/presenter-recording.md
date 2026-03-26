@@ -1,30 +1,30 @@
 ---
 name: recording
-description: Record presentations with camera and screen capture
+description: 使用摄像头和屏幕捕获录制演示文稿
 ---
 
-# Recording
+# 录制
 
-Record presentations with built-in camera and screen capture.
+使用内置摄像头和屏幕捕获录制演示文稿。
 
-## Camera View
+## 摄像头视图
 
-Click the camera icon in navigation bar to show camera overlay.
+点击导航栏中的摄像头图标以显示摄像头叠加层。
 
-- Drag to move
-- Resize from bottom-right corner
-- Position persists across reloads
+- 拖动以移动
+- 从右下角调整大小
+- 位置在重新加载后保持不变
 
-## Start Recording
+## 开始录制
 
-Click the video icon in navigation bar.
+点击导航栏中的视频图标。
 
-Options:
-- Camera embedded in slides
-- Separate video files for camera and slides
+选项：
+- 摄像头嵌入在幻灯片中
+- 摄像头和幻灯片分别保存为视频文件
 
-Saves as WebM video.
+保存为 WebM 视频。
 
-## Technology
+## 技术
 
-Powered by RecordRTC and WebRTC API.
+由 RecordRTC 和 WebRTC API 提供支持。

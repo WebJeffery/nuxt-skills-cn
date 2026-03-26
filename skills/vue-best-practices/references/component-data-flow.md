@@ -1,34 +1,34 @@
 ---
-title: Component Data Flow Best Practices
+title: 组件数据流最佳实践
 impact: HIGH
-impactDescription: Clear data flow between components prevents state bugs, stale UI, and brittle coupling
+impactDescription: 组件之间清晰的数据流可防止状态错误、过时的 UI 和脆弱的耦合
 type: best-practice
 tags: [vue3, props, emits, v-model, provide-inject, data-flow, typescript]
 ---
 
-# Component Data Flow Best Practices
+# 组件数据流最佳实践
 
-**Impact: HIGH** - Vue components stay reliable when data flow is explicit: props go down, events go up, `v-model` handles two-way bindings, and provide/inject supports cross-tree dependencies. Blurring these boundaries leads to stale state, hidden coupling, and hard-to-debug UI.
+**影响: HIGH** - Vue 组件在数据流明确时保持可靠:props 向下,events 向上,`v-model` 处理双向绑定,provide/inject 支持跨树依赖。模糊这些边界会导致过时状态、隐藏耦合和难以调试的 UI。
 
-The main principle of data flow in Vue.js is **Props Down / Events Up**. This is the most maintainable default, and one-way flow scales well.
+Vue.js 中数据流的主要原则是 **Props 向下 / Events 向上**。这是最可维护的默认设置,单向流扩展性良好。
 
-## Task List
+## 任务列表
 
-- Treat props as read-only inputs
-- Use props/emit for component communication; reserve refs for imperative actions
-- When refs are required for imperative APIs, type them with template refs
-- Emit events instead of mutating parent state directly
-- Use `defineModel` for v-model in modern Vue (3.4+)
-- Handle v-model modifiers deliberately in child components
-- Use symbols for provide/inject keys to avoid props drilling (over ~3 layers)
-- Keep mutations in the provider or expose explicit actions
-- In TypeScript projects, prefer type-based `defineProps`, `defineEmits`, and `InjectionKey`
+- 将 props 视为只读输入
+- 使用 props/emit 进行组件通信;将 refs 保留给命令式操作
+- 当需要命令式 API 时,使用模板 refs 类型化 refs
+- 发出事件而不是直接修改父状态
+- 在现代 Vue(3.4+)中使用 `defineModel` 进行 v-model
+- 在子组件中故意处理 v-model 修饰符
+- 使用符号作为 provide/inject 键以避免 props 钻取(超过 ~3 层)
+- 在提供者中保持变异或暴露显式操作
+- 在 TypeScript 项目中,偏好基于类型的 `defineProps`、`defineEmits` 和 `InjectionKey`
 
-## Props: One-Way Data Down
+## Props: 单向数据向下
 
-Props are inputs. Do not mutate them in the child.
+Props 是输入。不要在子组件中修改它们。
 
-**BAD:**
+**错误:**
 ```vue
 <script setup>
 const props = defineProps({ count: Number })
@@ -39,13 +39,13 @@ function increment() {
 </script>
 ```
 
-**GOOD:**
+**正确:**
 
-If state needs to change, emit an event, use `v-model` or create a local copy.
+如果状态需要更改,发出事件,使用 `v-model` 或创建本地副本。
 
-## Prefer props/emit over component refs
+## 偏好 props/emit 而不是组件 refs
 
-**BAD:**
+**错误:**
 ```vue
 <script setup>
 import { ref } from 'vue'
@@ -62,11 +62,11 @@ function submitForm() {
 
 <template>
   <UserForm ref="formRef" />
-  <button @click="submitForm">Submit</button>
+  <button @click="submitForm">提交</button>
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <script setup>
 import UserForm from './UserForm.vue'
@@ -81,11 +81,11 @@ function handleSubmit(formData) {
 </template>
 ```
 
-## Type component refs when imperative access is required
+## 当需要命令式访问时类型化组件 refs
 
-Prefer props/emits by default. When a parent must call an exposed child method, type the ref explicitly and expose only the intended API from the child with `defineExpose`.
+默认偏好 props/emits。当父级必须调用暴露的子方法时,显式类型化 ref 并仅从子组件暴露预期的 API,使用 `defineExpose`。
 
-**BAD:**
+**错误:**
 ```vue
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
@@ -103,7 +103,7 @@ onMounted(() => {
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <!-- DialogPanel.vue -->
 <script setup lang="ts">
@@ -119,10 +119,10 @@ defineExpose({ open })
 import { onMounted, useTemplateRef } from 'vue'
 import DialogPanel from './DialogPanel.vue'
 
-// Vue 3.5+ with useTemplateRef
+// Vue 3.5+ 使用 useTemplateRef
 const panelRef = useTemplateRef('panelRef')
 
-// Before Vue 3.5 with manual typing and ref
+// Vue 3.5 之前使用手动类型化和 ref
 // const panelRef = ref<InstanceType<typeof DialogPanel> | null>(null)
 
 onMounted(() => {
@@ -135,17 +135,17 @@ onMounted(() => {
 </template>
 ```
 
-## Emits: Explicit Events Up
+## Emits: 显式事件向上
 
-Component events do not bubble. If a parent needs to know about an event, re-emit it explicitly.
+组件事件不冒泡。如果父级需要了解事件,则显式重新发出。
 
-**BAD:**
+**错误:**
 ```vue
-<!-- Parent expects "saved" from grandchild, but it won't bubble -->
+<!-- 父级期望从孙组件获得 "saved",但它不会冒泡 -->
 <Child @saved="onSaved" />
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <!-- Child.vue -->
 <script setup>
@@ -161,7 +161,7 @@ function onGrandchildSaved(payload) {
 </template>
 ```
 
-**Event naming:** use kebab-case in templates and camelCase in script:
+**事件命名:** 在模板中使用 kebab-case,在脚本中使用 camelCase:
 ```vue
 <script setup>
 const emit = defineEmits(['updateUser'])
@@ -172,11 +172,11 @@ const emit = defineEmits(['updateUser'])
 </template>
 ```
 
-## `v-model`: Predictable Two-Way Bindings
+## `v-model`: 可预测的双向绑定
 
-Use `defineModel` by default for component bindings and emit updates on input. Only use the `modelValue` + `update:modelValue` pattern if you are on Vue < 3.4.
+默认使用 `defineModel` 进行组件绑定并在输入时发出更新。仅当您在 Vue < 3.4 时使用 `modelValue` + `update:modelValue` 模式。
 
-**BAD:**
+**错误:**
 ```vue
 <script setup>
 const props = defineProps({ value: String })
@@ -187,7 +187,7 @@ const props = defineProps({ value: String })
 </template>
 ```
 
-**GOOD (Vue 3.4+):**
+**正确 (Vue 3.4+):**
 ```vue
 <script setup>
 const model = defineModel({ type: String })
@@ -198,7 +198,7 @@ const model = defineModel({ type: String })
 </template>
 ```
 
-**GOOD (Vue < 3.4):**
+**正确 (Vue < 3.4):**
 ```vue
 <script setup>
 const props = defineProps({ modelValue: String })
@@ -213,24 +213,24 @@ const emit = defineEmits(['update:modelValue'])
 </template>
 ```
 
-If you need the updated value immediately after a change, use the input event value or `nextTick` in the parent.
+如果您需要在更改后立即获得更新的值,请在父级中使用输入事件值或 `nextTick`。
 
-## Provide/Inject: Shared Context Without Prop Drilling
+## Provide/Inject: 无 Prop 钻取的共享上下文
 
-Use provide/inject for cross-tree state, but keep mutations centralized in the provider and expose explicit actions.
+对跨树状态使用 provide/inject,但在提供者中保持变异集中并暴露显式操作。
 
-**BAD:**
+**错误:**
 ```vue
 // Provider.vue
 provide('theme', reactive({ dark: false }))
 
 // Consumer.vue
 const theme = inject('theme')
-// Mutating shared state from any depth becomes hard to track
+// 从任何深度变异共享状态变得难以跟踪
 theme.dark = true
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 // Provider.vue
 const theme = reactive({ dark: false })
@@ -244,17 +244,17 @@ const theme = inject(themeKey)
 const { toggleTheme } = inject(themeActionsKey)
 ```
 
-Use symbols for keys to avoid collisions in large apps:
+使用符号作为键以避免大型应用中的冲突:
 ```ts
 export const themeKey = Symbol('theme')
 export const themeActionsKey = Symbol('theme-actions')
 ```
 
-## Use TypeScript Contracts for Public Component APIs
+## 使用 TypeScript 契约作为公共组件 API
 
-In TypeScript projects, type component boundaries directly with `defineProps`, `defineEmits`, and `InjectionKey` so invalid payloads and mismatched injections fail at compile time.
+在 TypeScript 项目中,使用 `defineProps`、`defineEmits` 和 `InjectionKey` 直接类型化组件边界,以便无效负载和不匹配的注入在编译时失败。
 
-**BAD:**
+**错误:**
 ```vue
 <script setup lang="ts">
 import { inject } from 'vue'
@@ -266,15 +266,15 @@ const props = defineProps({
 const emit = defineEmits(['save'])
 const settings = inject('settings')
 
-// Payload shape is not checked here
+// 此处未检查负载形状
 emit('save', 123)
 
-// Key is string-based and not type-safe
+// 键是基于字符串的,不是类型安全的
 settings?.theme = 'dark'
 </script>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <script setup lang="ts">
 import { inject, provide } from 'vue'

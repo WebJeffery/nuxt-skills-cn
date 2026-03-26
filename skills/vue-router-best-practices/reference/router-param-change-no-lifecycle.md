@@ -1,26 +1,26 @@
 ---
-title: Route Param Changes Do Not Trigger Lifecycle Hooks
+title: 路由参数更改不触发生命周期钩子
 impact: HIGH
-impactDescription: Navigating between routes with different params reuses the component instance, skipping created/mounted hooks and leaving stale data
+impactDescription: 在使用不同参数的路由之间导航会重用组件实例,跳过 created/mounted 钩子并留下过时数据
 type: gotcha
 tags: [vue3, vue-router, lifecycle, params, reactivity]
 ---
 
-# Route Param Changes Do Not Trigger Lifecycle Hooks
+# 路由参数更改不触发生命周期钩子
 
-**Impact: HIGH** - When navigating between routes that use the same component (e.g., `/users/1` to `/users/2`), Vue Router reuses the existing component instance for performance. This means `onMounted`, `created`, and other lifecycle hooks do NOT fire, leaving you with stale data from the previous route.
+**影响: HIGH** - 在使用相同组件的路由之间导航时(例如,`/users/1` 到 `/users/2`),Vue Router 为了性能会重用现有的组件实例。这意味着 `onMounted`、`created` 和其他生命周期钩子**不会**触发,导致你拥有来自上一个路由的过时数据。
 
-## Task Checklist
+## 任务清单
 
-- [ ] Use `watch` on route params for data fetching
-- [ ] Or use `onBeforeRouteUpdate` in-component guard
-- [ ] Or use `:key="route.params.id"` to force re-creation (less efficient)
-- [ ] Never rely solely on `onMounted` for route-param-dependent data
+- [ ] 使用 `watch` 监听路由参数以获取数据
+- [ ] 或使用 `onBeforeRouteUpdate` 组件内守卫
+- [ ] 或使用 `:key="route.params.id"` 强制重新创建(效率较低)
+- [ ] 不要仅依赖 `onMounted` 获取依赖路由参数的数据
 
-## The Problem
+## 问题
 
 ```vue
-<!-- UserProfile.vue - Used for /users/:id -->
+<!-- UserProfile.vue - 用于 /users/:id -->
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
@@ -28,8 +28,8 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const user = ref(null)
 
-// BUG: Only runs once when component first mounts!
-// Navigating from /users/1 to /users/2 does NOT trigger this
+// BUG: 仅在组件首次挂载时运行一次!
+// 从 /users/1 导航到 /users/2 不会触发此操作!
 onMounted(async () => {
   user.value = await fetchUser(route.params.id)
 })
@@ -37,18 +37,18 @@ onMounted(async () => {
 
 <template>
   <div>
-    <!-- Still shows User 1 data when navigating to /users/2! -->
+    <!-- 导航到 /users/2 时仍显示用户 1 的数据! -->
     <h1>{{ user?.name }}</h1>
   </div>
 </template>
 ```
 
-**Scenario:**
-1. Visit `/users/1` - Component mounts, fetches User 1 data
-2. Navigate to `/users/2` - Component is REUSED, onMounted doesn't run
-3. UI still shows User 1's data!
+**场景:**
+1. 访问 `/users/1` - 组件挂载,获取用户 1 数据
+2. 导航到 `/users/2` - 组件被重用,onMounted 不运行
+3. UI 仍显示用户 1 的数据!
 
-## Solution 1: Watch Route Params (Recommended)
+## 解决方案 1: 监听路由参数(推荐)
 
 ```vue
 <script setup>
@@ -59,7 +59,7 @@ const route = useRoute()
 const user = ref(null)
 const loading = ref(false)
 
-// Watch for param changes - handles both initial load and navigation
+// 监听参数更改 - 处理初始加载和导航
 watch(
   () => route.params.id,
   async (newId) => {
@@ -67,12 +67,12 @@ watch(
     user.value = await fetchUser(newId)
     loading.value = false
   },
-  { immediate: true }  // Run immediately for initial load
+  { immediate: true }  // 立即运行以进行初始加载
 )
 </script>
 ```
 
-## Solution 2: Use onBeforeRouteUpdate Guard
+## 解决方案 2: 使用 onBeforeRouteUpdate 守卫
 
 ```vue
 <script setup>
@@ -86,10 +86,10 @@ async function loadUser(id) {
   user.value = await fetchUser(id)
 }
 
-// Initial load
+// 初始加载
 onMounted(() => loadUser(route.params.id))
 
-// Handle param changes within same route
+// 处理同一路由内的参数更改
 onBeforeRouteUpdate(async (to, from) => {
   if (to.params.id !== from.params.id) {
     await loadUser(to.params.id)
@@ -98,22 +98,22 @@ onBeforeRouteUpdate(async (to, from) => {
 </script>
 ```
 
-## Solution 3: Force Component Re-creation with Key
+## 解决方案 3: 使用 Key 强制组件重新创建
 
 ```vue
-<!-- App.vue or parent component -->
+<!-- App.vue 或父组件 -->
 <template>
   <router-view :key="$route.fullPath" />
 </template>
 ```
 
-**Tradeoffs:**
-- Simple but less performant
-- Destroys and recreates component on every param change
-- Loses component state
-- Use only when component state should reset completely
+**权衡:**
+- 简单但性能较低
+- 在每次参数更改时销毁并重新创建组件
+- 丢失组件状态
+- 仅在组件状态应完全重置时使用
 
-## Solution 4: Composable for Route-Reactive Data
+## 解决方案 4: 用于路由响应式数据的 Composable
 
 ```javascript
 // composables/useRouteData.js
@@ -150,7 +150,7 @@ export function useRouteData(paramName, fetcher) {
 ```
 
 ```vue
-<!-- Usage in component -->
+<!-- 在组件中使用 -->
 <script setup>
 import { useRouteData } from '@/composables/useRouteData'
 import { fetchUser } from '@/api/users'
@@ -159,23 +159,23 @@ const { data: user, loading, error } = useRouteData('id', fetchUser)
 </script>
 ```
 
-## What Triggers vs. What Doesn't
+## 什么触发 vs 什么不触发
 
-| Navigation Type | Lifecycle Hooks | beforeRouteUpdate | Watch on params |
+| 导航类型 | 生命周期钩子 | beforeRouteUpdate | 监听参数 |
 |----------------|-----------------|-------------------|-----------------|
-| `/users/1` to `/posts/1` | YES | NO | YES |
-| `/users/1` to `/users/2` | NO | YES | YES |
-| `/users/1?tab=a` to `/users/1?tab=b` | NO | YES | NO (different watch) |
-| `/users/1` to `/users/1` (same) | NO | NO | NO |
+| `/users/1` 到 `/posts/1` | 是 | 否 | 是 |
+| `/users/1` 到 `/users/2` | 否 | 是 | 是 |
+| `/users/1?tab=a` 到 `/users/1?tab=b` | 否 | 是 | 否(不同的监听器) |
+| `/users/1` 到 `/users/1` (相同) | 否 | 否 | 否 |
 
-## Key Points
+## 关键点
 
-1. **Same route, different params = same component instance** - This is a performance optimization
-2. **Lifecycle hooks only fire once** - When component first mounts
-3. **Use `watch` with `immediate: true`** - Covers both initial load and updates
-4. **`onBeforeRouteUpdate` is navigation-aware** - Good for data that must load before view updates
-5. **`:key="route.fullPath"` is a sledgehammer** - Use only when necessary
+1. **相同路由,不同参数 = 相同组件实例** - 这是一个性能优化
+2. **生命周期钩子仅触发一次** - 当组件首次挂载时
+3. **使用 `watch` 并设置 `immediate: true`** - 涵盖初始加载和更新
+4. **`onBeforeRouteUpdate` 是导航感知的** - 适合必须在视图更新前加载的数据
+5. **`:key="route.fullPath"` 是一把大锤** - 仅在必要时使用
 
-## Reference
-- [Vue Router Dynamic Route Matching](https://router.vuejs.org/guide/essentials/dynamic-matching.html#reacting-to-params-changes)
-- [Vue School: Reacting to Param Changes](https://vueschool.io/lessons/reacting-to-param-changes)
+## 参考
+- [Vue Router 动态路由匹配](https://router.vuejs.org/guide/essentials/dynamic-matching.html#reacting-to-params-changes)
+- [Vue School: 响应参数更改](https://vueschool.io/lessons/reacting-to-param-changes)

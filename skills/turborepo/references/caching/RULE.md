@@ -1,25 +1,25 @@
-# How Turborepo Caching Works
+# Turborepo 缓存如何工作
 
-Turborepo's core principle: **never do the same work twice**.
+Turborepo 的核心原则：**永远不要做两次相同的工作**。
 
-## The Cache Equation
+## 缓存方程
 
 ```
 fingerprint(inputs) → stored outputs
 ```
 
-If inputs haven't changed, restore outputs from cache instead of re-running the task.
+如果输入没有改变，从缓存恢复输出而不是重新运行任务。
 
-## What Determines the Cache Key
+## 什么决定缓存键
 
-### Global Hash Inputs
+### 全局哈希输入
 
-These affect ALL tasks in the repo:
+这些影响仓库中的所有任务：
 
 - `package-lock.json` / `yarn.lock` / `pnpm-lock.yaml`
-- Files listed in `globalDependencies`
-- Environment variables in `globalEnv`
-- `turbo.json` configuration
+- `globalDependencies` 中列出的文件
+- `globalEnv` 中的环境变量
+- `turbo.json` 配置
 
 ```json
 {
@@ -28,15 +28,15 @@ These affect ALL tasks in the repo:
 }
 ```
 
-### Task Hash Inputs
+### 任务哈希输入
 
-These affect specific tasks:
+这些影响特定任务：
 
-- All files in the package (unless filtered by `inputs`)
-- `package.json` contents
-- Environment variables in task's `env` key
-- Task configuration (command, outputs, dependencies)
-- Hashes of dependent tasks (`dependsOn`)
+- 包中的所有文件（除非被 `inputs` 过滤）
+- `package.json` 内容
+- 任务 `env` 键中的环境变量
+- 任务配置（命令、输出、依赖）
+- 依赖任务的哈希（`dependsOn`）
 
 ```json
 {
@@ -50,10 +50,10 @@ These affect specific tasks:
 }
 ```
 
-## What Gets Cached
+## 什么被缓存
 
-1. **File outputs** - files/directories specified in `outputs`
-2. **Task logs** - stdout/stderr for replay on cache hit
+1. **文件输出** - `outputs` 中指定的文件/目录
+2. **任务日志** - stdout/stderr 用于缓存命中时重放
 
 ```json
 {
@@ -65,43 +65,43 @@ These affect specific tasks:
 }
 ```
 
-## Local Cache Location
+## 本地缓存位置
 
 ```
 .turbo/cache/
-├── <hash1>.tar.zst    # compressed outputs
+├── <hash1>.tar.zst    # 压缩的输出
 ├── <hash2>.tar.zst
 └── ...
 ```
 
-Add `.turbo` to `.gitignore`.
+将 `.turbo` 添加到 `.gitignore`。
 
-## Cache Restoration
+## 缓存恢复
 
-On cache hit, Turborepo:
+缓存命中时，Turborepo：
 
-1. Extracts archived outputs to their original locations
-2. Replays the logged stdout/stderr
-3. Reports the task as cached (shows `FULL TURBO` in output)
+1. 将归档输出提取到其原始位置
+2. 重放记录的 stdout/stderr
+3. 将任务报告为已缓存（在输出中显示 `FULL TURBO`）
 
-## Example Flow
+## 示例流程
 
 ```bash
-# First run - executes build, caches result
+# 第一次运行 - 执行构建，缓存结果
 turbo build
-# → packages/ui: cache miss, executing...
-# → packages/web: cache miss, executing...
+# → packages/ui: 缓存未命中，正在执行...
+# → packages/web: 缓存未命中，正在执行...
 
-# Second run - same inputs, restores from cache
+# 第二次运行 - 相同的输入，从缓存恢复
 turbo build
-# → packages/ui: cache hit, replaying output
-# → packages/web: cache hit, replaying output
+# → packages/ui: 缓存命中，正在重放输出
+# → packages/web: 缓存命中，正在重放输出
 # → FULL TURBO
 ```
 
-## Key Points
+## 关键点
 
-- Cache is content-addressed (based on input hash, not timestamps)
-- Empty `outputs` array means task runs but nothing is cached
-- Tasks without `outputs` key cache nothing (use `"outputs": []` to be explicit)
-- Cache is invalidated when ANY input changes
+- 缓存是内容寻址的（基于输入哈希，而不是时间戳）
+- 空的 `outputs` 数组意味着任务运行但没有任何内容被缓存
+- 没有 `outputs` 键的任务不缓存任何内容（使用 `"outputs": []` 以明确）
+- 当任何输入改变时缓存失效

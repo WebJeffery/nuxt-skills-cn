@@ -1,18 +1,18 @@
 ---
 name: test-environments
-description: Configure environments like jsdom, happy-dom for browser APIs
+description: 配置环境,如 jsdom、happy-dom 用于浏览器 API
 ---
 
-# Test Environments
+# 测试环境
 
-## Available Environments
+## 可用环境
 
-- `node` (default) - Node.js environment
-- `jsdom` - Browser-like with DOM APIs
-- `happy-dom` - Faster alternative to jsdom
+- `node`(默认) - Node.js 环境
+- `jsdom` - 具有浏览器 API 的类浏览器环境
+- `happy-dom` - jsdom 的更快替代品
 - `edge-runtime` - Vercel Edge Runtime
 
-## Configuration
+## 配置
 
 ```ts
 // vitest.config.ts
@@ -20,7 +20,7 @@ defineConfig({
   test: {
     environment: 'jsdom',
     
-    // Environment-specific options
+    // 环境特定选项
     environmentOptions: {
       jsdom: {
         url: 'http://localhost',
@@ -30,19 +30,19 @@ defineConfig({
 })
 ```
 
-## Installing Environment Packages
+## 安装环境包
 
 ```bash
 # jsdom
 npm i -D jsdom
 
-# happy-dom (faster, fewer APIs)
+# happy-dom(更快,API 更少)
 npm i -D happy-dom
 ```
 
-## Per-File Environment
+## 每文件环境
 
-Use magic comment at top of file:
+在文件顶部使用魔术注释:
 
 ```ts
 // @vitest-environment jsdom
@@ -55,9 +55,9 @@ test('DOM test', () => {
 })
 ```
 
-## jsdom Environment
+## jsdom 环境
 
-Full browser environment simulation:
+完整的浏览器环境模拟:
 
 ```ts
 // @vitest-environment jsdom
@@ -77,7 +77,7 @@ test('window APIs', () => {
 })
 ```
 
-### jsdom Options
+### jsdom 选项
 
 ```ts
 defineConfig({
@@ -94,9 +94,9 @@ defineConfig({
 })
 ```
 
-## happy-dom Environment
+## happy-dom 环境
 
-Faster but fewer APIs:
+更快但 API 更少:
 
 ```ts
 // @vitest-environment happy-dom
@@ -108,9 +108,9 @@ test('basic DOM', () => {
 })
 ```
 
-## Multiple Environments per Project
+## 每项目多个环境
 
-Use projects for different environments:
+使用项目进行不同环境:
 
 ```ts
 defineConfig({
@@ -135,9 +135,9 @@ defineConfig({
 })
 ```
 
-## Custom Environment
+## 自定义环境
 
-Create custom environment package:
+创建自定义环境包:
 
 ```ts
 // vitest-environment-custom/index.ts
@@ -145,10 +145,10 @@ import type { Environment } from 'vitest/runtime'
 
 export default <Environment>{
   name: 'custom',
-  viteEnvironment: 'ssr', // or 'client'
+  viteEnvironment: 'ssr', // 或 'client'
   
   setup() {
-    // Setup global state
+    // 设置全局状态
     globalThis.myGlobal = 'value'
     
     return {
@@ -160,7 +160,7 @@ export default <Environment>{
 }
 ```
 
-Use with:
+使用:
 
 ```ts
 defineConfig({
@@ -170,9 +170,9 @@ defineConfig({
 })
 ```
 
-## Environment with VM
+## 使用 VM 的环境
 
-For full isolation:
+用于完全隔离:
 
 ```ts
 export default <Environment>{
@@ -197,32 +197,32 @@ export default <Environment>{
 }
 ```
 
-## Browser Mode (Separate from Environments)
+## 浏览器模式(与环境分离)
 
-For real browser testing, use Vitest Browser Mode:
+对于真正的浏览器测试,使用 Vitest 浏览器模式:
 
 ```ts
 defineConfig({
   test: {
     browser: {
       enabled: true,
-      name: 'chromium', // or 'firefox', 'webkit'
+      name: 'chromium', // 或 'firefox'、'webkit'
       provider: 'playwright',
     },
   },
 })
 ```
 
-## CSS and Assets
+## CSS 和资源
 
-In jsdom/happy-dom, configure CSS handling:
+在 jsdom/happy-dom 中,配置 CSS 处理:
 
 ```ts
 defineConfig({
   test: {
-    css: true, // Process CSS
+    css: true, // 处理 CSS
     
-    // Or with options
+    // 或使用选项
     css: {
       include: /\.module\.css$/,
       modules: {
@@ -233,9 +233,9 @@ defineConfig({
 })
 ```
 
-## Fixing External Dependencies
+## 修复外部依赖
 
-If external deps fail with CSS/asset errors:
+如果外部依赖因 CSS/资源错误而失败:
 
 ```ts
 defineConfig({
@@ -249,14 +249,14 @@ defineConfig({
 })
 ```
 
-## Key Points
+## 关键点
 
-- Default is `node` - no browser APIs
-- Use `jsdom` for full browser simulation
-- Use `happy-dom` for faster tests with basic DOM
-- Per-file environment via `// @vitest-environment` comment
-- Use projects for multiple environment configurations
-- Browser Mode is for real browser testing, not environment
+- 默认是 `node` - 没有浏览器 API
+- 使用 `jsdom` 进行完整的浏览器模拟
+- 使用 `happy-dom` 进行具有基本 DOM 的更快测试
+- 通过 `// @vitest-environment` 注释进行每文件环境
+- 使用项目进行多个环境配置
+- 浏览器模式用于真正的浏览器测试,而不是环境
 
 <!-- 
 Source references:

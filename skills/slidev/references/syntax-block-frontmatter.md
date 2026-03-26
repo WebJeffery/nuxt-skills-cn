@@ -1,22 +1,22 @@
 ---
 name: block-frontmatter
-description: Using YAML code blocks as slide frontmatter for syntax highlighting
+description: 使用 YAML 代码块作为幻灯片 frontmatter 以支持语法高亮
 ---
 
-# Block Frontmatter
+# 块 Frontmatter
 
-Use a YAML code block as the frontmatter for slides when you need syntax highlighting and formatter support.
+当您需要语法高亮和格式化程序支持时，使用 YAML 代码块作为幻灯片的 frontmatter。
 
-## Usage
+## 用法
 
-Instead of traditional frontmatter `---`, use a yaml code block at the start of a slide:
+不要使用传统的 frontmatter `---`，而是在幻灯片开头使用 yaml 代码块：
 
 ````md
 ---
 theme: default
 ---
 
-# Slide 1
+# 幻灯片 1
 
 ---
 
@@ -24,16 +24,16 @@ theme: default
 layout: quote
 ```
 
-# Slide 2
+# 幻灯片 2
 
 ---
 
-# Slide 3
+# 幻灯片 3
 ````
 
-## Key Points
+## 要点
 
-- Works for per-slide frontmatter only
-- Cannot use for headmatter (first frontmatter of the deck)
-- Provides syntax highlighting in editors
-- Compatible with prettier-plugin-slidev
+- 仅适用于每张幻灯片的 frontmatter
+- 不能用于 headmatter（演示文稿的第一个 frontmatter）
+- 在编辑器中提供语法高亮
+- 与 prettier-plugin-slidev 兼容

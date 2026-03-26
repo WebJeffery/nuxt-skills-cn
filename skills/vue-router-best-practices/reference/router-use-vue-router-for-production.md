@@ -1,26 +1,26 @@
 ---
-title: Use Vue Router Library for Production Applications
+title: 为生产应用使用 Vue Router 库
 impact: LOW
-impactDescription: Simple hash routing lacks essential features for production SPAs; Vue Router provides navigation guards, lazy loading, and proper history management
+impactDescription: 简单哈希路由缺乏生产 SPA 所需的基本功能;Vue Router 提供导航守卫、懒加载和适当的历史管理
 type: best-practice
 tags: [vue3, vue-router, spa, production, architecture]
 ---
 
-# Use Vue Router Library for Production Applications
+# 为生产应用使用 Vue Router 库
 
-**Impact: LOW** - While you can implement basic routing with hash changes and dynamic components, the official Vue Router library should be used for any production single-page application. It provides essential features like navigation guards, nested routes, lazy loading, and proper browser history integration that are tedious and error-prone to implement manually.
+**影响: LOW** - 虽然你可以使用哈希更改和动态组件实现基本路由,但对于任何生产单页应用,应使用官方 Vue Router 库。它提供了手动实现既繁琐又容易出错的基本功能,如导航守卫、嵌套路由、懒加载和适当的浏览器历史集成。
 
-## Task Checklist
+## 任务清单
 
-- [ ] Install Vue Router for production SPAs
-- [ ] Use simple routing only for learning or tiny prototypes
-- [ ] Leverage built-in features: guards, lazy loading, meta fields
-- [ ] Consider router-based state and data loading patterns
+- [ ] 为生产 SPA 安装 Vue Router
+- [ ] 仅将简单路由用于学习或微型原型
+- [ ] 利用内置功能:守卫、懒加载、元字段
+- [ ] 考虑基于路由的状态和数据加载模式
 
-## When Simple Routing is Acceptable
+## 何时简单路由可接受
 
 ```vue
-<!-- Only for: learning, prototypes, or micro-apps with 2-3 pages -->
+<!-- 仅用于:学习、原型或 2-3 页的微应用 -->
 <script setup>
 import { ref, computed } from 'vue'
 import Home from './Home.vue'
@@ -45,24 +45,24 @@ const currentView = computed(() => routes[currentPath.value])
 </template>
 ```
 
-## Why Vue Router for Production
+## 为什么生产环境需要 Vue Router
 
-### Features You'd Have to Implement Manually
+### 你必须手动实现的功能
 
-| Feature | Simple Routing | Vue Router |
+| 功能 | 简单路由 | Vue Router |
 |---------|---------------|------------|
-| Navigation guards | Manual, error-prone | Built-in, composable |
-| Nested routes | Complex to implement | Native support |
-| Route params | Parse manually | Automatic extraction |
-| Lazy loading | DIY with dynamic imports | Built-in with code splitting |
-| History mode (clean URLs) | Requires server config + manual | Built-in |
-| Scroll behavior | Manual | Configurable |
-| Route transitions | DIY | Integrated with Transition |
-| Active link styling | Manual class toggling | `router-link-active` class |
-| Programmatic navigation | `location.hash = ...` | `router.push()`, `router.replace()` |
-| Route meta fields | N/A | Built-in |
+| 导航守卫 | 手动,容易出错 | 内置,可组合 |
+| 嵌套路由 | 实现复杂 | 原生支持 |
+| 路由参数 | 手动解析 | 自动提取 |
+| 懒加载 | 使用动态导入 DIY | 内置代码分割 |
+| 历史模式(干净的 URL) | 需要服务器配置 + 手动 | 内置 |
+| 滚动行为 | 手动 | 可配置 |
+| 路由过渡 | DIY | 与 Transition 集成 |
+| 活动链接样式 | 手动类切换 | `router-link-active` 类 |
+| 编程式导航 | `location.hash = ...` | `router.push()`, `router.replace()` |
+| 路由元字段 | 不适用 | 内置 |
 
-## Production Setup with Vue Router
+## 使用 Vue Router 的生产设置
 
 ```javascript
 // router/index.js
@@ -72,7 +72,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('@/views/Home.vue'),  // Lazy loaded
+    component: () => import('@/views/Home.vue'),  // 懒加载
     meta: { requiresAuth: false }
   },
   {
@@ -92,7 +92,7 @@ const routes = [
     path: '/users/:id',
     name: 'UserProfile',
     component: () => import('@/views/UserProfile.vue'),
-    props: true  // Pass params as props
+    props: true  // 将参数作为 props 传递
   },
   {
     path: '/:pathMatch(.*)*',
@@ -109,7 +109,7 @@ const router = createRouter({
   }
 })
 
-// Global navigation guard
+// 全局导航守卫
 router.beforeEach((to, from) => {
   if (to.meta.requiresAuth && !isAuthenticated()) {
     return { name: 'Login', query: { redirect: to.fullPath } }
@@ -146,38 +146,38 @@ createApp(App)
 </template>
 ```
 
-## Modern Vue Router Features (2025+)
+## 现代 Vue Router 功能(2025+)
 
 ```javascript
-// Data Loading API (Vue Router 4.2+)
+// 数据加载 API(Vue Router 4.2+)
 const routes = [
   {
     path: '/users/:id',
     component: UserProfile,
-    // Load data at route level
+    // 在路由级别加载数据
     loader: async (route) => {
       return { user: await fetchUser(route.params.id) }
     }
   }
 ]
 
-// View Transitions API integration
+// 视图转换 API 集成
 const router = createRouter({
-  // Enable native browser view transitions
-  // Requires browser support (Chrome 111+)
+  // 启用原生浏览器视图转换
+  // 需要浏览器支持(Chrome 111+)
 })
 ```
 
-## Key Points
+## 关键点
 
-1. **Use Vue Router for any app beyond a prototype** - The features are essential
-2. **Simple routing is for learning** - Understand the concepts, then use the library
-3. **Lazy loading is critical for bundle size** - Vue Router makes it trivial
-4. **Navigation guards prevent security issues** - Hard to get right manually
-5. **History mode requires Vue Router** - Clean URLs need proper handling
-6. **New features keep coming** - Data Loading API, View Transitions
+1. **为任何超越原型的应用使用 Vue Router** - 这些功能是必不可少的
+2. **简单路由用于学习** - 理解概念,然后使用库
+3. **懒加载对包大小至关重要** - Vue Router 使其变得微不足道
+4. **导航守卫防止安全问题** - 手动实现很难正确
+5. **历史模式需要 Vue Router** - 干净的 URL 需要适当处理
+6. **新功能不断推出** - 数据加载 API,视图转换
 
-## Reference
-- [Vue.js Routing Guide](https://vuejs.org/guide/scaling-up/routing.html)
-- [Vue Router Documentation](https://router.vuejs.org/)
-- [Vue Router Getting Started](https://router.vuejs.org/guide/)
+## 参考
+- [Vue.js 路由指南](https://vuejs.org/guide/scaling-up/routing.html)
+- [Vue Router 文档](https://router.vuejs.org/)
+- [Vue Router 入门](https://router.vuejs.org/guide/)

@@ -1,50 +1,50 @@
-# CI Environment Support
+# CI 环境支持
 
-Automatically detect CI environments and toggle features based on local vs CI builds.
+自动检测 CI 环境并根据本地与 CI 构建切换功能。
 
-## Overview
+## 概述
 
-tsdown uses the [`is-in-ci`](https://www.npmjs.com/package/is-in-ci) package to detect CI environments. This covers GitHub Actions, GitLab CI, Jenkins, CircleCI, Travis CI, and more.
+tsdown 使用 [`is-in-ci`](https://www.npmjs.com/package/is-in-ci) 包来检测 CI 环境。这涵盖了 GitHub Actions、GitLab CI、Jenkins、CircleCI、Travis CI 等。
 
-## CI-Aware Values
+## CI 感知值
 
-Several options accept CI-aware string values:
+几个选项接受 CI 感知字符串值：
 
-| Value | Behavior |
+| 值 | 行为 |
 |-------|----------|
-| `true` | Always enabled |
-| `false` | Always disabled |
-| `'ci-only'` | Enabled only in CI, disabled locally |
-| `'local-only'` | Enabled only locally, disabled in CI |
+| `true` | 始终启用 |
+| `false` | 始终禁用 |
+| `'ci-only'` | 仅在 CI 中启用，本地禁用 |
+| `'local-only'` | 仅在本地启用，在 CI 中禁用 |
 
-## Supported Options
+## 支持的选项
 
-These options accept CI-aware values:
+这些选项接受 CI 感知值：
 
-- `dts` - TypeScript declaration file generation
-- `publint` - Package lint validation
-- `attw` - "Are the types wrong" validation
-- `report` - Bundle size reporting
-- `exports` - Auto-generate `package.json` exports
-- `unused` - Unused dependency check
-- `devtools` - DevTools integration
-- `failOnWarn` - Fail on warnings (defaults to `false`)
+- `dts` - TypeScript 声明文件生成
+- `publint` - 包 lint 验证
+- `attw` - "Are you types wrong" 验证
+- `report` - 包大小报告
+- `exports` - 自动生成 `package.json` exports
+- `unused` - 未使用的依赖检查
+- `devtools` - DevTools 集成
+- `failOnWarn` - 在警告时失败（默认为 `false`）
 
-## Usage
+## 使用
 
-### String Form
+### 字符串形式
 
 ```ts
 export default defineConfig({
-  dts: 'local-only',        // Skip DTS in CI for faster builds
-  publint: 'ci-only',       // Only run publint in CI
-  failOnWarn: 'ci-only',    // Fail on warnings in CI only (opt-in)
+  dts: 'local-only',        // 在 CI 中跳过 DTS 以加快构建
+  publint: 'ci-only',       // 仅在 CI 中运行 publint
+  failOnWarn: 'ci-only',    // 仅在 CI 中在警告时失败（可选）
 })
 ```
 
-### Object Form
+### 对象形式
 
-When an option takes a configuration object, set `enabled` to a CI-aware value:
+当选项接受配置对象时，将 `enabled` 设置为 CI 感知值：
 
 ```ts
 export default defineConfig({
@@ -59,9 +59,9 @@ export default defineConfig({
 })
 ```
 
-### Config Function
+### 配置函数
 
-The config function receives a `ci` boolean in its context:
+配置函数在其上下文中接收一个 `ci` 布尔值：
 
 ```ts
 export default defineConfig((_, { ci }) => ({
@@ -70,7 +70,7 @@ export default defineConfig((_, { ci }) => ({
 }))
 ```
 
-## Typical CI Configuration
+## 典型 CI 配置
 
 ```ts
 export default defineConfig({
@@ -83,7 +83,7 @@ export default defineConfig({
 })
 ```
 
-## Related Options
+## 相关选项
 
-- [Package Validation](option-lint.md) - publint and attw configuration
-- [Log Level](option-log-level.md) - `failOnWarn` option details
+- [包验证](option-lint.md) - publint 和 attw 配置
+- [日志级别](option-log-level.md) - `failOnWarn` 选项详细信息

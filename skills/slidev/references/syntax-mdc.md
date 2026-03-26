@@ -1,13 +1,13 @@
 ---
 name: comark
-description: Comark Syntax support
+description: Comark 语法支持
 ---
 
-# Comark Syntax
+# Comark 语法
 
-Enhanced Markdown with component and style syntax.
+带有组件和样式语法的增强 Markdown。
 
-## Enable
+## 启用
 
 ```md
 ---
@@ -15,37 +15,37 @@ comark: true
 ---
 ```
 
-## Inline Styles
+## 内联样式
 
 ```md
-This is a [red text]{style="color:red"}
+这是一段 [红色文本]{style="color:red"}
 ```
 
-## Inline Components
+## 内联组件
 
 ```md
 :inline-component{prop="value"}
 ```
 
-## Image Attributes
+## 图像属性
 
 ```md
 ![](/image.png){width=500px lazy}
 ```
 
-## Block Components
+## 块组件
 
 ```md
 ::block-component{prop="value"}
-The **default** slot content
+**默认**插槽内容
 ::
 ```
 
-## Use Cases
+## 使用场景
 
-- Add inline styles without HTML
-- Use Vue components inline
-- Add attributes to images
-- Create complex component layouts
+- 添加内联样式而无需 HTML
+- 内联使用 Vue 组件
+- 向图像添加属性
+- 创建复杂的组件布局
 
-Based on Comark Syntax.
+基于 Comark 语法。

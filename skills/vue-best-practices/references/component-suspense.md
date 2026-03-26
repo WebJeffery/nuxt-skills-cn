@@ -1,30 +1,30 @@
 ---
-title: Suspense Component Best Practices
+title: Suspense 组件最佳实践
 impact: MEDIUM
-impactDescription: Suspense coordinates async dependencies with fallback UI; misconfiguration leads to missing loading states or confusing UX
+impactDescription: Suspense 协调异步依赖与回退 UI;配置不当会导致缺少加载状态或令人困惑的 UX
 type: best-practice
 tags: [vue3, suspense, async-components, async-setup, loading, fallback, router, transition, keepalive]
 ---
 
-# Suspense Component Best Practices
+# Suspense 组件最佳实践
 
-**Impact: MEDIUM** - `<Suspense>` coordinates async dependencies (async components or async setup) and renders a fallback while they resolve. Misconfiguration leads to missing loading states, empty renders, or subtle UX bugs.
+**影响: MEDIUM** - `<Suspense>` 协调异步依赖(异步组件或异步设置)并在它们解析时渲染回退。配置不当会导致缺少加载状态、空渲染或微妙的 UX 错误。
 
-## Task List
+## 任务列表
 
-- Wrap default and fallback slot content in a single root node
-- Use `timeout` when you need the fallback to appear on reverts
-- Force root replacement with `:key` when you need Suspense to re-trigger
-- Add `suspensible` to nested Suspense boundaries (Vue 3.3+)
-- Use `@pending`, `@resolve`, and `@fallback` for programmatic loading state
-- Nest `RouterView` -> `Transition` -> `KeepAlive` -> `Suspense` in that order
-- Keep Suspense usage centralized and documented in production
+- 将默认和回退插槽内容包装在单个根节点中
+- 当您需要回退在恢复时出现时使用 `timeout`
+- 当您需要 Suspense 重新触发时使用 `:key` 强制根替换
+- 将 `suspensible` 添加到嵌套的 Suspense 边界(Vue 3.3+)
+- 使用 `@pending`、`@resolve` 和 `@fallback` 进行程序化加载状态
+- 按该顺序嵌套 `RouterView` -> `Transition` -> `KeepAlive` -> `Suspense`
+- 在生产中保持 Suspense 使用集中和文档化
 
-## Single Root in Default and Fallback Slots
+## 默认和回退插槽中的单个根
 
-Suspense tracks a single immediate child in both slots. Wrap multiple elements in a single element or component.
+Suspense 在两个插槽中跟踪单个直接子级。将多个元素包装在单个元素或组件中。
 
-**BAD:**
+**错误:**
 ```vue
 <template>
   <Suspense>
@@ -39,7 +39,7 @@ Suspense tracks a single immediate child in both slots. Wrap multiple elements i
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <template>
   <Suspense>
@@ -58,41 +58,41 @@ Suspense tracks a single immediate child in both slots. Wrap multiple elements i
 </template>
 ```
 
-## Fallback Timing on Reverts (`timeout`)
+## 恢复时的回退时机(`timeout`)
 
-When Suspense is already resolved and new async work starts, the previous content remains visible until the timeout elapses. Use `timeout="0"` for immediate fallback or a short delay to avoid flicker.
+当 Suspense 已经解析并开始新的异步工作时,先前的内容保持可见,直到超时结束。使用 `timeout="0"` 进行立即回退或短延迟以避免闪烁。
 
-**BAD:**
+**错误:**
 ```vue
 <template>
   <Suspense>
     <component :is="currentView" :key="viewKey" />
 
     <template #fallback>
-      Loading...
+      加载中...
     </template>
   </Suspense>
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <template>
   <Suspense :timeout="200">
     <component :is="currentView" :key="viewKey" />
 
     <template #fallback>
-      Loading...
+      加载中...
     </template>
   </Suspense>
 </template>
 ```
 
-## Pending State Only Re-triggers on Root Replacement
+## 挂起状态仅在根替换时重新触发
 
-Once resolved, Suspense only re-enters pending when the root node of the default slot changes. If async work happens deeper in the tree, no fallback appears.
+一旦解析,Suspense 仅在默认插槽的根节点更改时重新进入挂起。如果异步工作在树的更深处发生,则不会出现回退。
 
-**BAD:**
+**错误:**
 ```vue
 <template>
   <Suspense>
@@ -102,64 +102,64 @@ Once resolved, Suspense only re-enters pending when the root node of the default
     </TabContainer>
 
     <template #fallback>
-      Loading...
+      加载中...
     </template>
   </Suspense>
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <template>
   <Suspense>
     <component :is="tabs[tab]" :key="tab" />
 
     <template #fallback>
-      Loading...
+      加载中...
     </template>
   </Suspense>
 </template>
 ```
 
-## Use `suspensible` for Nested Suspense (Vue 3.3+)
+## 使用 `suspensible` 进行嵌套 Suspense (Vue 3.3+)
 
-Nested Suspense boundaries need `suspensible` on the inner boundary so the parent can coordinate loading state. Without it, inner async content may render empty nodes until resolved.
+嵌套的 Suspense 边界需要 `suspensible` 在内部边界上,以便父级可以协调加载状态。没有它,内部异步内容可能会渲染空节点直到解析。
 
-**BAD:**
+**错误:**
 ```vue
 <template>
   <Suspense>
     <LayoutShell>
       <Suspense>
         <AsyncWidget />
-        <template #fallback>Loading widget...</template>
+        <template #fallback>加载小部件...</template>
       </Suspense>
     </LayoutShell>
 
-    <template #fallback>Loading layout...</template>
+    <template #fallback>加载布局...</template>
   </Suspense>
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <template>
   <Suspense>
     <LayoutShell>
       <Suspense suspensible>
         <AsyncWidget />
-        <template #fallback>Loading widget...</template>
+        <template #fallback>加载小部件...</template>
       </Suspense>
     </LayoutShell>
 
-    <template #fallback>Loading layout...</template>
+    <template #fallback>加载布局...</template>
   </Suspense>
 </template>
 ```
 
-## Track Loading with Suspense Events
+## 使用 Suspense 事件跟踪加载
 
-Use `@pending`, `@resolve`, and `@fallback` for analytics, global loading indicators, or coordinating UI outside the Suspense boundary.
+使用 `@pending`、`@resolve` 和 `@fallback` 进行分析、全局加载指示器或协调 Suspense 边界之外的 UI。
 
 ```vue
 <script setup>
@@ -188,11 +188,11 @@ const onResolve = () => {
 </template>
 ```
 
-## Recommended Nesting with RouterView, Transition, KeepAlive
+## 与 RouterView、Transition、KeepAlive 的推荐嵌套
 
-When combining these components, the nesting order should be `RouterView` -> `Transition` -> `KeepAlive` -> `Suspense` so each wrapper works correctly.
+组合这些组件时,嵌套顺序应该是 `RouterView` -> `Transition` -> `KeepAlive` -> `Suspense`,以便每个包装器正确工作。
 
-**BAD:**
+**错误:**
 ```vue
 <template>
   <RouterView v-slot="{ Component }">
@@ -207,7 +207,7 @@ When combining these components, the nesting order should be `RouterView` -> `Tr
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <template>
   <RouterView v-slot="{ Component }">
@@ -215,7 +215,7 @@ When combining these components, the nesting order should be `RouterView` -> `Tr
       <KeepAlive>
         <Suspense>
           <component :is="Component" />
-          <template #fallback>Loading...</template>
+          <template #fallback>加载中...</template>
         </Suspense>
       </KeepAlive>
     </Transition>
@@ -223,6 +223,6 @@ When combining these components, the nesting order should be `RouterView` -> `Tr
 </template>
 ```
 
-## Treat Suspense Cautiously in Production
+## 在生产中谨慎对待 Suspense
 
-In production code, keep Suspense boundaries minimal, document where they are used, and have a fallback loading strategy if you ever need to replace or refactor them.
+在生产代码中,保持 Suspense 边界最小,记录它们的使用位置,并拥有回退加载策略,如果您需要替换或重构它们。

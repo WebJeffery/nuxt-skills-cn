@@ -1,40 +1,40 @@
 ---
 name: remote-access
-description: Share presentation across network or internet
+description: 在网络或互联网上共享演示文稿
 ---
 
-# Remote Access
+# 远程访问
 
-Share presentation across network or internet.
+在网络或互联网上共享演示文稿。
 
-## Enable Remote Access
+## 启用远程访问
 
 ```bash
 slidev --remote
 ```
 
-## Password Protection
+## 密码保护
 
 ```bash
 slidev --remote=your_password
 ```
 
-Password required for presenter mode access.
+访问演讲者模式需要密码。
 
-## Remote Tunnel
+## 远程隧道
 
-Expose to internet via Cloudflare Quick Tunnels:
+通过 Cloudflare Quick Tunnels 暴露到互联网：
 
 ```bash
 slidev --remote --tunnel
 ```
 
-Creates public URL for sharing without server setup.
+创建公共 URL 以便在无需服务器设置的情况下进行共享。
 
-## Use Cases
+## 使用场景
 
-- Control presentation from phone/tablet
-- Multiple presenters
-- Remote presentations
-- Live streaming
-- Audience viewing on their devices
+- 从手机/平板电脑控制演示文稿
+- 多个演讲者
+- 远程演示
+- 实时流式传输
+- 观众在自己的设备上观看

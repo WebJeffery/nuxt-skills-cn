@@ -1,21 +1,21 @@
 ---
 name: vite-environment-api
-description: Vite 6+ Environment API for multiple runtime environments
+description: Vite 6+ 多运行时环境的环境 API
 ---
 
-# Environment API (Vite 6+)
+# 环境 API (Vite 6+)
 
-The Environment API formalizes multiple runtime environments beyond the traditional client/SSR split.
+环境 API 将多个运行时环境形式化,超越传统的客户端/SSR 分离。
 
-## Concept
+## 概念
 
-Before Vite 6: Two implicit environments (`client` and `ssr`).
+Vite 6 之前: 两个隐式环境(`client` 和 `ssr`)。
 
-Vite 6+: Configure as many environments as needed (browser, node server, edge server, etc.).
+Vite 6+: 根据需要配置任意数量的环境(浏览器、node 服务器、edge 服务器等)。
 
-## Basic Configuration
+## 基本配置
 
-For SPA/MPA, nothing changes—options apply to the implicit `client` environment:
+对于 SPA/MPA,没有任何变化——选项应用于隐式 `client` 环境:
 
 ```ts
 export default defineConfig({
@@ -24,16 +24,16 @@ export default defineConfig({
 })
 ```
 
-## Multiple Environments
+## 多个环境
 
 ```ts
 export default defineConfig({
-  build: { sourcemap: false },  // Inherited by all environments
-  optimizeDeps: { include: ['lib'] },  // Client only
+  build: { sourcemap: false },  // 被所有环境继承
+  optimizeDeps: { include: ['lib'] },  // 仅客户端
   environments: {
-    // SSR environment
+    // SSR 环境
     server: {},
-    // Edge runtime environment
+    // Edge 运行时环境
     edge: {
       resolve: { noExternal: true },
     },
@@ -41,9 +41,9 @@ export default defineConfig({
 })
 ```
 
-Environments inherit top-level config. Some options (like `optimizeDeps`) only apply to `client` by default.
+环境继承顶级配置。某些选项(如 `optimizeDeps`)默认仅应用于 `client`。
 
-## Environment Options
+## 环境选项
 
 ```ts
 interface EnvironmentOptions {
@@ -56,9 +56,9 @@ interface EnvironmentOptions {
 }
 ```
 
-## Custom Environment Instances
+## 自定义环境实例
 
-Runtime providers can define custom environments:
+运行时提供程序可以定义自定义环境:
 
 ```ts
 import { customEnvironment } from 'vite-environment-provider'
@@ -72,30 +72,30 @@ export default defineConfig({
 })
 ```
 
-Example: Cloudflare's Vite plugin runs code in `workerd` runtime during development.
+示例: Cloudflare 的 Vite 插件在开发期间在 `workerd` 运行时中运行代码。
 
-## Backward Compatibility
+## 向后兼容性
 
-- `server.moduleGraph` returns mixed client/SSR view
-- `ssrLoadModule` still works
-- Existing SSR apps work unchanged
+- `server.moduleGraph` 返回混合的客户端/SSR 视图
+- `ssrLoadModule` 仍然有效
+- 现有的 SSR 应用程序保持不变
 
-## When to Use
+## 何时使用
 
-- **End users**: Usually don't need to configure—frameworks handle it
-- **Plugin authors**: Use for environment-aware transformations
-- **Framework authors**: Create custom environments for their runtime needs
+- **最终用户**: 通常不需要配置——框架处理它
+- **插件作者**: 使用它进行环境感知转换
+- **框架作者**: 为其运行时需求创建自定义环境
 
-## Plugin Environment Access
+## 插件环境访问
 
-Plugins can access environment in hooks:
+插件可以在钩子中访问环境:
 
 ```ts
 {
   name: 'env-aware',
   transform(code, id, options) {
     if (options?.ssr) {
-      // SSR-specific transform
+      // SSR 特定转换
     }
   },
 }

@@ -1,34 +1,34 @@
 ---
 name: vite-rolldown
-description: Vite 8 Rolldown bundler and Oxc transformer migration
+description: Vite 8 Rolldown 打包器和 Oxc 转换器迁移
 ---
 
-# Rolldown Migration (Vite 8)
+# Rolldown 迁移 (Vite 8)
 
-Vite 8 replaces esbuild+Rollup with Rolldown, a unified Rust-based bundler.
+Vite 8 用 Rolldown 替换了 esbuild+Rollup,这是一个统一的基于 Rust 的打包器。
 
-## What Changed
+## 更改内容
 
-| Before (Vite 7) | After (Vite 8) |
+| 之前 (Vite 7) | 之后 (Vite 8) |
 |-----------------|----------------|
-| esbuild (dev transform) | Oxc Transformer |
-| esbuild (dep pre-bundling) | Rolldown |
-| Rollup (production build) | Rolldown |
+| esbuild (开发转换) | Oxc Transformer |
+| esbuild (依赖预打包) | Rolldown |
+| Rollup (生产构建) | Rolldown |
 | `rollupOptions` | `rolldownOptions` |
-| `esbuild` option | `oxc` option |
+| `esbuild` 选项 | `oxc` 选项 |
 
-## Performance Impact
+## 性能影响
 
-- 10-30x faster than Rollup for production builds
-- Matches esbuild's dev performance
-- Unified behavior between dev and build
+- 生产构建比 Rollup 快 10-30 倍
+- 匹配 esbuild 的开发性能
+- 开发和构建之间的统一行为
 
-## Config Migration
+## 配置迁移
 
 ### rollupOptions → rolldownOptions
 
 ```ts
-// Before (Vite 7)
+// 之前 (Vite 7)
 export default defineConfig({
   build: {
     rollupOptions: {
@@ -38,7 +38,7 @@ export default defineConfig({
   },
 })
 
-// After (Vite 8)
+// 之后 (Vite 8)
 export default defineConfig({
   build: {
     rolldownOptions: {
@@ -52,7 +52,7 @@ export default defineConfig({
 ### esbuild → oxc
 
 ```ts
-// Before (Vite 7)
+// 之前 (Vite 7)
 export default defineConfig({
   esbuild: {
     jsxFactory: 'h',
@@ -60,7 +60,7 @@ export default defineConfig({
   },
 })
 
-// After (Vite 8)
+// 之后 (Vite 8)
 export default defineConfig({
   oxc: {
     jsx: {
@@ -72,21 +72,21 @@ export default defineConfig({
 })
 ```
 
-### JSX Configuration
+### JSX 配置
 
 ```ts
 export default defineConfig({
   oxc: {
     jsx: {
-      runtime: 'automatic',  // or 'classic'
-      importSource: 'react', // for automatic runtime
+      runtime: 'automatic',  // 或 'classic'
+      importSource: 'react', // 用于自动运行时
     },
-    jsxInject: `import React from 'react'`,  // auto-inject
+    jsxInject: `import React from 'react'`,  // 自动注入
   },
 })
 ```
 
-### Custom Transform Targets
+### 自定义转换目标
 
 ```ts
 export default defineConfig({
@@ -97,11 +97,11 @@ export default defineConfig({
 })
 ```
 
-## Plugin Compatibility
+## 插件兼容性
 
-Most Vite plugins work unchanged. Rolldown supports Rollup's plugin API.
+大多数 Vite 插件保持不变。Rolldown 支持 Rollup 的插件 API。
 
-If a plugin only works during build:
+如果插件仅在构建期间工作:
 
 ```ts
 {
@@ -111,33 +111,33 @@ If a plugin only works during build:
 }
 ```
 
-## New Capabilities
+## 新功能
 
-Rolldown unlocks features not possible before:
+Rolldown 解锁了以前不可能的功能:
 
-- Full bundle mode (experimental)
-- Module-level persistent cache
-- More flexible chunk splitting
-- Module Federation support
+- 完整包模式(实验性)
+- 模块级持久缓存
+- 更灵活的代码分割
+- 模块联邦支持
 
-## Gradual Migration
+## 渐进式迁移
 
-For large projects, migrate via `rolldown-vite` first:
+对于大型项目,首先通过 `rolldown-vite` 迁移:
 
 ```bash
-# Step 1: Test with rolldown-vite
+# 步骤 1: 使用 rolldown-vite 测试
 pnpm add -D rolldown-vite
 
-# Replace vite import in config
+# 在配置中替换 vite 导入
 import { defineConfig } from 'rolldown-vite'
 
-# Step 2: Once stable, upgrade to Vite 8
+# 步骤 2: 稳定后,升级到 Vite 8
 pnpm add -D vite@8
 ```
 
-## Overriding Vite in Frameworks
+## 在框架中覆盖 Vite
 
-When framework depends on older Vite:
+当框架依赖较旧的 Vite 时:
 
 ```json
 {

@@ -1,13 +1,13 @@
 ---
 name: max-height
-description: Set a fixed height for code blocks with scrolling for long code
+description: 为代码块设置固定高度，长代码可滚动
 ---
 
-# Code Block Max Height
+# 代码块最大高度
 
-Set a fixed height for code blocks with scrolling.
+为代码块设置固定高度，长代码可滚动。
 
-## Usage
+## 用法
 
 ````md
 ```ts {2|3|7|12}{maxHeight:'100px'}
@@ -17,21 +17,21 @@ function add(
 ) {
   return computed(() => unref(a) + unref(b))
 }
-/// ...as many lines as you want
+/// ...根据需要添加任意多行
 const c = add(1, 2)
 ```
 ````
 
-## With Line Highlighting Placeholder
+## 与行高亮占位符结合使用
 
-Use `{*}` when you only need maxHeight:
+当您只需要 maxHeight 时，使用 `{*}`：
 
 ````md
 ```ts {*}{maxHeight:'100px'}
-// long code here
+// 此处为长代码
 ```
 ````
 
-## Use Case
+## 使用场景
 
-When code is too long to fit on one slide but you want to show it all with scrolling.
+当代码太长无法放在一张幻灯片上，但您希望通过滚动显示全部代码时。

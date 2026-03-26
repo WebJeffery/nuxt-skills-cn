@@ -1,17 +1,17 @@
 ---
 name: layouts
-description: Available layouts for slides
+description: 可用的幻灯片布局
 ---
 
-# Built-in Layouts
+# 内置布局
 
-Available layouts for slides.
+可用的幻灯片布局。
 
-## Basic Layouts
+## 基本布局
 
 ### default
 
-Standard slide layout.
+标准幻灯片布局。
 ```yaml
 ---
 layout: default
@@ -20,7 +20,7 @@ layout: default
 
 ### center
 
-Content centered horizontally and vertically.
+内容水平和垂直居中。
 ```yaml
 ---
 layout: center
@@ -29,7 +29,7 @@ layout: center
 
 ### cover
 
-Title/cover slide with centered content.
+标题/封面幻灯片，内容居中。
 ```yaml
 ---
 layout: cover
@@ -38,7 +38,7 @@ layout: cover
 
 ### end
 
-End slide.
+结束幻灯片。
 ```yaml
 ---
 layout: end
@@ -47,7 +47,7 @@ layout: end
 
 ### full
 
-Full-screen content, no padding.
+全屏内容，无内边距。
 ```yaml
 ---
 layout: full
@@ -56,18 +56,18 @@ layout: full
 
 ### none
 
-No layout styling.
+无布局样式。
 ```yaml
 ---
 layout: none
 ---
 ```
 
-## Text Layouts
+## 文本布局
 
 ### intro
 
-Introduction slide.
+介绍幻灯片。
 ```yaml
 ---
 layout: intro
@@ -76,7 +76,7 @@ layout: intro
 
 ### quote
 
-Large quotation display.
+大型引用展示。
 ```yaml
 ---
 layout: quote
@@ -85,7 +85,7 @@ layout: quote
 
 ### section
 
-Section divider.
+章节分隔符。
 ```yaml
 ---
 layout: section
@@ -94,7 +94,7 @@ layout: section
 
 ### statement
 
-Statement/affirmation display.
+陈述/声明展示。
 ```yaml
 ---
 layout: statement
@@ -103,58 +103,58 @@ layout: statement
 
 ### fact
 
-Fact/data display.
+事实/数据展示。
 ```yaml
 ---
 layout: fact
 ---
 ```
 
-## Multi-Column Layouts
+## 多列布局
 
 ### two-cols
 
-Two columns side by side:
+两列并排：
 ```md
 ---
 layout: two-cols
 ---
 
-# Left Column
+# 左列
 
-Left content
+左列内容
 
 ::right::
 
-# Right Column
+# 右列
 
-Right content
+右列内容
 ```
 
 ### two-cols-header
 
-Header with two columns below:
+标题下方两列：
 ```md
 ---
 layout: two-cols-header
 ---
 
-# Header
+# 标题
 
 ::left::
 
-Left content
+左列内容
 
 ::right::
 
-Right content
+右列内容
 ```
 
-## Image Layouts
+## 图片布局
 
 ### image
 
-Full-screen image:
+全屏图片：
 ```yaml
 ---
 layout: image
@@ -165,7 +165,7 @@ backgroundSize: cover
 
 ### image-left
 
-Image on left, content on right:
+左侧图片，右侧内容：
 ```yaml
 ---
 layout: image-left
@@ -173,28 +173,28 @@ image: /photo.jpg
 class: my-class
 ---
 
-# Content on Right
+# 右侧内容
 ```
 
 ### image-right
 
-Image on right, content on left:
+右侧图片，左侧内容：
 ```yaml
 ---
 layout: image-right
 image: /photo.jpg
 ---
 
-# Content on Left
+# 左侧内容
 ```
 
-Props: `image`, `class`, `backgroundSize`
+属性：`image`、`class`、`backgroundSize`
 
-## Iframe Layouts
+## Iframe 布局
 
 ### iframe
 
-Full-screen iframe:
+全屏 iframe：
 ```yaml
 ---
 layout: iframe
@@ -204,40 +204,40 @@ url: https://example.com
 
 ### iframe-left
 
-Iframe on left, content on right:
+左侧 iframe，右侧内容：
 ```yaml
 ---
 layout: iframe-left
 url: https://example.com
 ---
 
-# Content
+# 内容
 ```
 
 ### iframe-right
 
-Iframe on right, content on left:
+右侧 iframe，左侧内容：
 ```yaml
 ---
 layout: iframe-right
 url: https://example.com
 ---
 
-# Content
+# 内容
 ```
 
-## Layout Loading Order
+## 布局加载顺序
 
-1. Slidev default layouts
-2. Theme layouts
-3. Addon layouts
-4. Custom layouts (`./layouts/`)
+1. Slidev 默认布局
+2. 主题布局
+3. 插件布局
+4. 自定义布局（`./layouts/`）
 
-Later sources override earlier ones.
+后加载的源会覆盖先加载的。
 
-## Custom Layouts
+## 自定义布局
 
-Create `layouts/my-layout.vue`:
+创建 `layouts/my-layout.vue`：
 
 ```vue
 <template>
@@ -255,7 +255,7 @@ Create `layouts/my-layout.vue`:
 </style>
 ```
 
-With named slots:
+带命名插槽：
 
 ```vue
 <template>
@@ -270,7 +270,7 @@ With named slots:
 </template>
 ```
 
-Usage:
+用法：
 ```md
 ---
 layout: two-areas
@@ -278,9 +278,9 @@ layout: two-areas
 
 ::top::
 
-Top content
+顶部内容
 
 ::default::
 
-Bottom content
+底部内容
 ```

@@ -1,13 +1,13 @@
 ---
 name: describe-api
-description: describe/suite for grouping tests into logical blocks
+description: describe/suite 用于将测试分组为逻辑块
 ---
 
 # Describe API
 
-Group related tests into suites for organization and shared setup.
+将相关测试分组为套件,以便组织和共享设置。
 
-## Basic Usage
+## 基本用法
 
 ```ts
 import { describe, expect, test } from 'vitest'
@@ -22,12 +22,12 @@ describe('Math', () => {
   })
 })
 
-// Alias: suite
+// 别名: suite
 import { suite } from 'vitest'
 suite('equivalent to describe', () => {})
 ```
 
-## Nested Suites
+## 嵌套套件
 
 ```ts
 describe('User', () => {
@@ -42,31 +42,31 @@ describe('User', () => {
 })
 ```
 
-## Suite Options
+## 套件选项
 
 ```ts
-// All tests inherit options
+// 所有测试继承选项
 describe('slow tests', { timeout: 30_000 }, () => {
-  test('test 1', () => {}) // 30s timeout
-  test('test 2', () => {}) // 30s timeout
+  test('test 1', () => {}) // 30s 超时
+  test('test 2', () => {}) // 30s 超时
 })
 ```
 
-## Suite Modifiers
+## 套件修饰符
 
-### Skip Suites
+### 跳过套件
 
 ```ts
 describe.skip('skipped suite', () => {
   test('wont run', () => {})
 })
 
-// Conditional
+// 条件
 describe.skipIf(process.env.CI)('not in CI', () => {})
 describe.runIf(!process.env.CI)('only local', () => {})
 ```
 
-### Focus Suites
+### 聚焦套件
 
 ```ts
 describe.only('only this suite runs', () => {
@@ -74,23 +74,23 @@ describe.only('only this suite runs', () => {
 })
 ```
 
-### Todo Suites
+### 待办套件
 
 ```ts
 describe.todo('implement later')
 ```
 
-### Concurrent Suites
+### 并发套件
 
 ```ts
-// All tests run in parallel
+// 所有测试并行运行
 describe.concurrent('parallel tests', () => {
   test('test 1', async ({ expect }) => {})
   test('test 2', async ({ expect }) => {})
 })
 ```
 
-### Sequential in Concurrent
+### 并发中的顺序
 
 ```ts
 describe.concurrent('parallel', () => {
@@ -103,7 +103,7 @@ describe.concurrent('parallel', () => {
 })
 ```
 
-### Shuffle Tests
+### 随机化测试
 
 ```ts
 describe.shuffle('random order', () => {
@@ -112,11 +112,11 @@ describe.shuffle('random order', () => {
   test('test 3', () => {})
 })
 
-// Or with option
+// 或使用选项
 describe('random', { shuffle: true }, () => {})
 ```
 
-## Parameterized Suites
+## 参数化套件
 
 ### describe.each
 
@@ -144,7 +144,7 @@ describe.for([
 })
 ```
 
-## Hooks in Suites
+## 套件中的钩子
 
 ```ts
 describe('Database', () => {
@@ -169,9 +169,9 @@ describe('Database', () => {
 })
 ```
 
-## Modifier Combinations
+## 修饰符组合
 
-All modifiers can be chained:
+所有修饰符都可以链接:
 
 ```ts
 describe.skip.concurrent('skipped concurrent', () => {})
@@ -179,13 +179,13 @@ describe.only.shuffle('only and shuffled', () => {})
 describe.concurrent.skip('equivalent', () => {})
 ```
 
-## Key Points
+## 关键点
 
-- Top-level tests belong to an implicit file suite
-- Nested suites inherit parent's options (timeout, retry, etc.)
-- Hooks are scoped to their suite and nested suites
-- Use `describe.concurrent` with context's `expect` for snapshots
-- Shuffle order depends on `sequence.seed` config
+- 顶级测试属于隐式文件套件
+- 嵌套套件继承父级的选项(超时、重试等)
+- 钩子作用于其套件和嵌套套件
+- 使用 `describe.concurrent` 与上下文的 `expect` 进行快照
+- 随机顺序取决于 `sequence.seed` 配置
 
 <!-- 
 Source references:

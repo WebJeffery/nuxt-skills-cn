@@ -1,28 +1,28 @@
 ---
-title: TransitionGroup Component Best Practices
+title: TransitionGroup 组件最佳实践
 impact: MEDIUM
-impactDescription: TransitionGroup animates list items; missing keys or misuse leads to broken list transitions
+impactDescription: TransitionGroup 为列表项设置动画;缺少键或误用会导致列表过渡损坏
 type: best-practice
 tags: [vue3, transition-group, animation, lists, keys]
 ---
 
-# TransitionGroup Component Best Practices
+# TransitionGroup 组件最佳实践
 
-**Impact: MEDIUM** - `<TransitionGroup>` animates lists of items entering, leaving, and moving. Use it for `v-for` lists or dynamic collections where individual items change over time.
+**影响: MEDIUM** - `<TransitionGroup>` 为进入、离开和移动的列表项设置动画。将其用于 `v-for` 列表或单个项目随时间变化的动态集合。
 
-## Task List
+## 任务列表
 
-- Use `<TransitionGroup>` only for lists and repeated items
-- Provide unique, stable keys for every direct child
-- Use `tag` when you need semantic or layout wrappers
-- Avoid the `mode` prop (not supported)
-- Use JavaScript hooks for staggered effects
+- 仅对列表和重复项使用 `<TransitionGroup>`
+- 为每个直接子级提供唯一、稳定的键
+- 当您需要语义或布局包装器时使用 `tag`
+- 避免使用 `mode` 属性(不支持)
+- 使用 JavaScript 钩子进行交错效果
 
-## Use TransitionGroup for Lists
+## 对列表使用 TransitionGroup
 
-`<TransitionGroup>` is designed for list items. Use `tag` to control the wrapper element when needed.
+`<TransitionGroup>` 专为列表项设计。在需要时使用 `tag` 控制包装器元素。
 
-**BAD:**
+**错误:**
 ```vue
 <template>
   <TransitionGroup name="fade">
@@ -32,7 +32,7 @@ tags: [vue3, transition-group, animation, lists, keys]
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <template>
   <TransitionGroup name="list" tag="ul">
@@ -43,11 +43,11 @@ tags: [vue3, transition-group, animation, lists, keys]
 </template>
 ```
 
-## Always Provide Stable Keys
+## 始终提供稳定的键
 
-Keys are required. Without stable keys, Vue cannot track item positions and animations break.
+需要键。没有稳定的键,Vue 无法跟踪项目位置,动画会损坏。
 
-**BAD:**
+**错误:**
 ```vue
 <template>
   <TransitionGroup name="list" tag="ul">
@@ -58,7 +58,7 @@ Keys are required. Without stable keys, Vue cannot track item positions and anim
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <template>
   <TransitionGroup name="list" tag="ul">
@@ -69,11 +69,11 @@ Keys are required. Without stable keys, Vue cannot track item positions and anim
 </template>
 ```
 
-## Do Not Use `mode` on TransitionGroup
+## 不要在 TransitionGroup 上使用 `mode`
 
-`mode` is only for `<Transition>` because it swaps a single element. Use `<Transition>` if you need in/out sequencing.
+`mode` 仅用于 `<Transition>`,因为它替换单个元素。如果您需要进/出排序,请使用 `<Transition>`。
 
-**BAD:**
+**错误:**
 ```vue
 <template>
   <TransitionGroup name="list" tag="div" mode="out-in">
@@ -82,7 +82,7 @@ Keys are required. Without stable keys, Vue cannot track item positions and anim
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <template>
   <Transition name="fade" mode="out-in">
@@ -91,9 +91,9 @@ Keys are required. Without stable keys, Vue cannot track item positions and anim
 </template>
 ```
 
-## Stagger List Animations with Data Attributes
+## 使用数据属性交错列表动画
 
-For cascading list animations, pass the index to JavaScript hooks and compute delay per item.
+对于级联列表动画,将索引传递给 JavaScript 钩子并为每个项目计算延迟。
 
 ```vue
 <template>

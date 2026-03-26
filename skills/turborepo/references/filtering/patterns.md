@@ -1,151 +1,151 @@
-# Common Filter Patterns
+# 常见过滤模式
 
-Practical examples for typical monorepo scenarios.
+典型 monorepo 场景的实用示例。
 
-## Single Package
+## 单个包
 
-Run task in one package:
+在一个包中运行任务：
 
 ```bash
 turbo run build --filter=web
 turbo run test --filter=@acme/api
 ```
 
-## Package with Dependencies
+## 包及其依赖项
 
-Build a package and everything it depends on:
+构建包及其所有依赖项：
 
 ```bash
 turbo run build --filter=web...
 ```
 
-Useful for: ensuring all dependencies are built before the target.
+适用于：确保在目标之前构建所有依赖项。
 
-## Package Dependents
+## 包的依赖项
 
-Run in all packages that depend on a library:
+在依赖于库的所有包中运行：
 
 ```bash
 turbo run test --filter=...ui
 ```
 
-Useful for: testing consumers after changing a shared package.
+适用于：在更改共享包后测试使用者。
 
-## Dependents Only (Exclude Target)
+## 仅依赖项（排除目标）
 
-Test packages that depend on ui, but not ui itself:
+测试依赖于 ui 的包，但不包括 ui 本身：
 
 ```bash
 turbo run test --filter=...^ui
 ```
 
-## Changed Packages
+## 更改的包
 
-Run only in packages with file changes since last commit:
+仅在自上次提交以来有文件更改的包中运行：
 
 ```bash
 turbo run lint --filter=[HEAD^1]
 ```
 
-Since a specific branch point:
+自特定分支点以来：
 
 ```bash
 turbo run lint --filter=[main...HEAD]
 ```
 
-## Changed + Dependents (PR Builds)
+## 更改 + 依赖项（PR 构建）
 
-Run in changed packages AND packages that depend on them:
+在更改的包及其依赖它们的包中运行：
 
 ```bash
 turbo run build test --filter=...[HEAD^1]
 ```
 
-Or use the shortcut:
+或使用快捷方式：
 
 ```bash
 turbo run build test --affected
 ```
 
-## Directory-Based
+## 基于目录
 
-Run in all apps:
+在所有应用中运行：
 
 ```bash
 turbo run build --filter=./apps/*
 ```
 
-Run in specific directories:
+在特定目录中运行：
 
 ```bash
 turbo run build --filter=./apps/web --filter=./apps/api
 ```
 
-## Scope-Based
+## 基于作用域
 
-Run in all packages under a scope:
+在作用域下的所有包中运行：
 
 ```bash
 turbo run build --filter=@acme/*
 ```
 
-## Exclusions
+## 排除
 
-Run in all apps except admin:
+在所有应用中运行，除了 admin：
 
 ```bash
 turbo run build --filter=./apps/* --filter=!admin
 ```
 
-Run everywhere except specific packages:
+在任何地方运行，除了特定包：
 
 ```bash
 turbo run lint --filter=!legacy-app --filter=!deprecated-pkg
 ```
 
-## Complex Combinations
+## 复杂组合
 
-Apps that changed, plus their dependents:
+更改的应用及其依赖项：
 
 ```bash
 turbo run build --filter=...[HEAD^1] --filter=./apps/*
 ```
 
-All packages except docs, but only if changed:
+除 docs 外的所有包，但仅当更改时：
 
 ```bash
 turbo run build --filter=[main...HEAD] --filter=!docs
 ```
 
-## Debugging Filters
+## 调试过滤器
 
-Use `--dry` to see what would run without executing:
+使用 `--dry` 查看将要运行的内容而不执行：
 
 ```bash
 turbo run build --filter=web... --dry
 ```
 
-Use `--dry=json` for machine-readable output:
+使用 `--dry=json` 获取机器可读的输出：
 
 ```bash
 turbo run build --filter=...[HEAD^1] --dry=json
 ```
 
-## CI/CD Patterns
+## CI/CD 模式
 
-PR validation (most common):
+PR 验证（最常见）：
 
 ```bash
 turbo run build test lint --affected
 ```
 
-Deploy only changed apps:
+仅部署更改的应用：
 
 ```bash
 turbo run deploy --filter=./apps/* --filter=[main...HEAD]
 ```
 
-Full rebuild of specific app and deps:
+特定应用及其依赖项的完整重建：
 
 ```bash
 turbo run build --filter=production-app...

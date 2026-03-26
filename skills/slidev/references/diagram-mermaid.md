@@ -1,44 +1,44 @@
 ---
 name: mermaid
-description: Create diagrams from text descriptions
+description: 从文本描述创建图表
 ---
 
-# Mermaid Diagrams
+# Mermaid 图表
 
-Create diagrams from text descriptions.
+从文本描述创建图表。
 
-## Basic Usage
+## 基本用法
 
 ````md
 ```mermaid
 sequenceDiagram
-  Alice->John: Hello John, how are you?
-  Note over Alice,John: A typical interaction
+  Alice->John: 你好 John，你好吗？
+  Note over Alice,John: 典型的交互
 ```
 ````
 
-## With Options
+## 带选项
 
 ````md
 ```mermaid {theme: 'neutral', scale: 0.8}
 graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
+B[文本] --> C{决策}
+C -->|选项1| D[结果 1]
+C -->|选项2| E[结果 2]
 ```
 ````
 
-## Diagram Types
+## 图表类型
 
-- `graph` / `flowchart` - Flow diagrams
-- `sequenceDiagram` - Sequence diagrams
-- `classDiagram` - Class diagrams
-- `stateDiagram` - State diagrams
-- `erDiagram` - Entity relationship
-- `gantt` - Gantt charts
-- `pie` - Pie charts
+- `graph` / `flowchart` - 流程图
+- `sequenceDiagram` - 序列图
+- `classDiagram` - 类图
+- `stateDiagram` - 状态图
+- `erDiagram` - 实体关系图
+- `gantt` - 甘特图
+- `pie` - 饼图
 
-## Resources
+## 资源
 
-- Mermaid docs: https://mermaid.js.org/
-- Live editor: https://mermaid.live/
+- Mermaid 文档：https://mermaid.js.org/
+- 在线编辑器：https://mermaid.live/

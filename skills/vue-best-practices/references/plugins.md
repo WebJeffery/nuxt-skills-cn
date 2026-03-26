@@ -1,166 +1,136 @@
 ---
-title: Vue Plugin Best Practices
+title: 插件最佳实践
 impact: MEDIUM
-impactDescription: Incorrect plugin structure or injection key strategy causes install failures, collisions, and unsafe APIs
+impactDescription: 插件提供全局功能,但滥用会导致命名冲突、难以调试和紧耦合
 type: best-practice
-tags: [vue3, plugins, provide-inject, typescript, dependency-injection]
+tags: [vue3, plugins, app, global, composition]
 ---
 
-# Vue Plugin Best Practices
+# 插件最佳实践
 
-**Impact: MEDIUM** - Vue plugins should follow the `app.use()` contract, expose explicit capabilities, and use collision-safe injection keys. This keeps plugin setup predictable and composable across large apps.
+**影响: MEDIUM** - 插件为 Vue 应用添加全局级功能。谨慎使用它们,避免命名冲突,并偏好 composables 而不是全局属性。
 
-## Task List
+## 任务列表
 
-- Export plugins as an object with `install()` or as an install function
-- Use the `app` instance in `install()` to register components/directives/provides
-- Type plugin APIs with `Plugin` (and options tuple types when needed)
-- Use symbol keys (prefer `InjectionKey<T>`) for `provide/inject` in plugins
-- Add a small typed composable wrapper for required injections to fail fast
+- 仅在需要全局功能时使用插件
+- 避免在插件中添加全局属性
+- 使用 provide/inject 进行依赖注入
+- 保持插件专注且可测试
+- 为插件提供 TypeScript 类型
+- 在插件中处理 SSR 兼容性
 
-## Structure Plugins for `app.use()`
+## 插件结构
 
-A Vue plugin must be either:
-- An object with `install(app, options?)`
-- A function with the same signature
-
-**BAD:**
-```ts
-const notAPlugin = {
-  doSomething() {}
+**正确示例:**
+```javascript
+// plugins/myPlugin.js
+export default {
+  install(app, options) {
+    app.provide('myPlugin', {
+      doSomething() {
+        // 实现
+      }
+    })
+  }
 }
-
-app.use(notAPlugin)
 ```
 
-**GOOD:**
-```ts
-import type { App } from 'vue'
-
-interface PluginOptions {
-  prefix?: string
-  debug?: boolean
-}
-
-const myPlugin = {
-  install(app: App, options: PluginOptions = {}) {
-    const { prefix = 'my', debug = false } = options
-
-    if (debug) {
-      console.log('Installing myPlugin with prefix:', prefix)
+**错误示例:**
+```javascript
+// 不要添加全局属性
+export default {
+  install(app, options) {
+    app.config.globalProperties.$myPlugin = {
+      doSomething() {
+        // 实现
+      }
     }
+  }
+}
+```
 
-    app.provide('myPlugin', { prefix })
+## 使用 Provide/Inject
+
+**正确:**
+```javascript
+// 插件
+export default {
+  install(app) {
+    const api = {
+      doSomething() {}
+    }
+    app.provide('myPlugin', api)
   }
 }
 
-app.use(myPlugin, { prefix: 'custom', debug: true })
+// 组件中使用
+const myPlugin = inject('myPlugin')
 ```
 
-**GOOD:**
-```ts
+## TypeScript 支持
+
+```typescript
+// plugins/myPlugin.ts
 import type { App } from 'vue'
 
-function simplePlugin(app: App, options?: { message: string }) {
-  app.config.globalProperties.$greet = () => options?.message ?? 'Hello!'
-}
-
-app.use(simplePlugin, { message: 'Welcome!' })
-```
-
-## Register Capabilities Explicitly in `install()`
-
-Inside `install()`, wire behavior through Vue application APIs:
-- `app.component()` for global components
-- `app.directive()` for global directives
-- `app.provide()` for injectable services and config
-- `app.config.globalProperties` for optional global helpers (sparingly)
-
-**BAD:**
-```ts
-const uselessPlugin = {
-  install(app, options) {
-    const service = createService(options)
-  }
-}
-```
-
-**GOOD:**
-```ts
-const usefulPlugin = {
-  install(app, options) {
-    const service = createService(options)
-    app.provide(serviceKey, service)
-  }
-}
-```
-
-## Type Plugin Contracts
-
-Use Vue's `Plugin` type to keep install signatures and options type-safe.
-
-```ts
-import type { App, Plugin } from 'vue'
-
-interface MyOptions {
+export interface MyPluginOptions {
   apiKey: string
 }
 
-const myPlugin: Plugin<[MyOptions]> = {
-  install(app: App, options: MyOptions) {
-    app.provide(apiKeyKey, options.apiKey)
-  }
+export interface MyPluginApi {
+  doSomething(): void
 }
-```
-
-## Use Symbol Injection Keys in Plugins
-
-String keys can collide (`'http'`, `'config'`, `'i18n'`). Use symbol keys with `InjectionKey<T>` so injections are unique and typed.
-
-**BAD:**
-```ts
-export default {
-  install(app) {
-    app.provide('http', axios)
-    app.provide('config', appConfig)
-  }
-}
-```
-
-**GOOD:**
-```ts
-import type { InjectionKey } from 'vue'
-import type { AxiosInstance } from 'axios'
-
-interface AppConfig {
-  apiUrl: string
-  timeout: number
-}
-
-export const httpKey: InjectionKey<AxiosInstance> = Symbol('http')
-export const configKey: InjectionKey<AppConfig> = Symbol('appConfig')
 
 export default {
+  install(app: App, options: MyPluginOptions) {
+    const api: MyPluginApi = {
+      doSomething() {}
+    }
+    app.provide('myPlugin', api)
+  }
+}
+
+// 声明模块类型
+declare module 'vue' {
+  export interface ComponentCustomProperties {
+    $myPlugin: MyPluginApi
+  }
+}
+```
+
+## SSR 兼容性
+
+```javascript
+export default {
   install(app) {
-    app.provide(httpKey, axios)
-    app.provide(configKey, { apiUrl: '/api', timeout: 5000 })
+    if (import.meta.env.SSR) {
+      // SSR 特定逻辑
+      return
+    }
+    
+    // 客户端特定逻辑
   }
 }
 ```
 
-## Provide Required Injection Helpers
+## 最佳实践
 
-Wrap required injections in composables that throw clear setup errors.
+1. **保持插件专注:**
+   - 每个插件只做一件事
+   - 避免插件之间的依赖
+   - 提供清晰的 API
 
-```ts
-import { inject } from 'vue'
-import { authKey, type AuthService } from '@/injection-keys'
+2. **避免全局污染:**
+   - 使用 provide/inject 而不是全局属性
+   - 避免修改 Vue 原型
+   - 使用前缀避免命名冲突
 
-export function useAuth(): AuthService {
-  const auth = inject(authKey)
-  if (!auth) {
-    throw new Error('Auth plugin not installed. Did you forget app.use(authPlugin)?')
-  }
-  return auth
-}
-```
+3. **文档化插件:**
+   - 提供清晰的安装说明
+   - 说明插件的功能和限制
+   - 提供使用示例
+
+4. **考虑替代方案:**
+   - 对于可重用逻辑,使用 composables
+   - 对于全局样式,使用 CSS
+   - 对于全局状态,使用状态管理库

@@ -1,23 +1,23 @@
 ---
 name: drawing
-description: Draw and annotate slides during presentation
+description: 在演示期间绘制和注释幻灯片
 ---
 
-# Drawing & Annotations
+# 绘图和注释
 
-Draw and annotate slides during presentation. Powered by drauu.
+在演示期间绘制和注释幻灯片。由 drauu 提供支持。
 
-## Enable Drawing
+## 启用绘图
 
-Click the pen icon in the navigation bar or press `C`.
+点击导航栏中的笔图标或按 `C`。
 
-## Stylus Support
+## 手写笔支持
 
-Stylus pens (iPad + Apple Pencil) work automatically - draw with pen, navigate with fingers.
+手写笔（iPad + Apple Pencil）自动工作 - 用笔绘图，用手指导航。
 
-## Persist Drawings
+## 持久化绘图
 
-Save drawings as SVGs and include in exports:
+将绘图保存为 SVG 并包含在导出中：
 
 ```md
 ---
@@ -26,11 +26,11 @@ drawings:
 ---
 ```
 
-Drawings saved to `.slidev/drawings/`.
+绘图保存到 `.slidev/drawings/`。
 
-## Disable Drawing
+## 禁用绘图
 
-Entirely:
+完全禁用：
 ```md
 ---
 drawings:
@@ -38,7 +38,7 @@ drawings:
 ---
 ```
 
-Only in development:
+仅在开发中：
 ```md
 ---
 drawings:
@@ -46,7 +46,7 @@ drawings:
 ---
 ```
 
-Only in presenter mode:
+仅在演讲者模式中：
 ```md
 ---
 drawings:
@@ -54,9 +54,9 @@ drawings:
 ---
 ```
 
-## Sync Settings
+## 同步设置
 
-Disable sync across instances:
+禁用跨实例同步：
 
 ```md
 ---
@@ -65,4 +65,4 @@ drawings:
 ---
 ```
 
-Only presenter's drawings sync to others.
+仅演讲者的绘图同步到其他人。

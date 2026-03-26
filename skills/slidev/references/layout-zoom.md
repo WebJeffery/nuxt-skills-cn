@@ -1,39 +1,39 @@
 ---
 name: zoom-slides
-description: Scale individual slide content using the zoom frontmatter option
+description: 使用 zoom frontmatter 选项缩放单张幻灯片内容
 ---
 
-# Zoom Slides
+# 缩放幻灯片
 
-Scale individual slide content.
+缩放单张幻灯片内容。
 
-## Usage
+## 用法
 
 ```md
 ---
 zoom: 0.8
 ---
 
-# A Slide with lots of content
+# 包含大量内容的幻灯片
 
 ---
 
-# Other slides aren't affected
+# 其他幻灯片不受影响
 ```
 
-## Values
+## 值
 
-- `zoom: 0.8` - 80% size (fits more content)
-- `zoom: 1.2` - 120% size (larger, less content)
-- `zoom: 1` - Normal (default)
+- `zoom: 0.8` - 80% 大小（容纳更多内容）
+- `zoom: 1.2` - 120% 大小（更大，内容更少）
+- `zoom: 1` - 正常（默认）
 
-## Use Cases
+## 使用场景
 
-- Fit dense content on one slide
-- Make text more readable
-- Adjust for different content densities
+- 将密集内容放在一张幻灯片上
+- 使文本更易读
+- 针对不同的内容密度进行调整
 
-## Related Features
+## 相关功能
 
-- Scale all slides: Use `canvasWidth` / `aspectRatio` in headmatter
-- Scale elements: Use `<Transform>` component
+- 缩放所有幻灯片：在 headmatter 中使用 `canvasWidth` / `aspectRatio`
+- 缩放元素：使用 `<Transform>` 组件

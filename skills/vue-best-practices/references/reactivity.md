@@ -1,344 +1,173 @@
 ---
-title: Reactivity Core Patterns (ref, reactive, shallowRef, computed, watch)
-impact: MEDIUM
-impactDescription: Clear reactivity choices keep state predictable and reduce unnecessary updates in Vue 3 apps
-type: efficiency
-tags: [vue3, reactivity, ref, reactive, shallowRef, computed, watch, watchEffect, external-state, best-practice]
+title: 响应式系统最佳实践
+impact: HIGH
+impactDescription: 正确使用响应式系统对性能和可维护性至关重要;误用会导致内存泄漏和难以调试的问题
+type: best-practice
+tags: [vue3, reactivity, ref, reactive, computed, watch, performance]
 ---
 
-# Reactivity Core Patterns (ref, reactive, shallowRef, computed, watch)
+# 响应式系统最佳实践
 
-**Impact: MEDIUM** - Choose the right reactive primitive first, derive with `computed`, and use watchers only for side effects.
+**影响: HIGH** - 正确使用响应式系统对性能和可维护性至关重要。误用会导致内存泄漏、性能问题和难以调试的响应式行为。
 
-This reference covers the core reactivity decisions for local state, external data, derived values, and effects.
+## 任务列表
 
-## Task List
+- 对原始值使用 `ref`,对对象使用 `reactive`
+- 避免解构 `reactive` 对象
+- 使用 `computed` 进行派生状态
+- 使用 `watch` 进行副作用,使用 `watchEffect` 进行即时响应
+- 在侦听器中正确清理副作用
+- 避免在模板中直接修改响应式状态
 
-- Declare reactive state correctly
-  - Always use `shallowRef()` instead of `ref()` for primitive values
-  - Choose the correct reactive declaration method for objects/arrays/map/set
-- Follow best practices for `reactive`
-  - Avoid destructuring from `reactive()` directly
-  - Watch correctly for `reactive`
-- Follow best practices for `computed`
-  - Prefer `computed` over watcher-assigned derived refs
-  - Keep filtered/sorted derivations out of templates
-  - Use `computed` for reusable class/style logic
-  - Keep computed getters pure (no side effects) and put side effects in watchers
-- Follow best practices for watchers
-  - Use `immediate: true` instead of duplicate initial calls
-  - Clean up async effects for watchers
+## 对原始值使用 ref
 
-## Declare reactive state correctly
-
-### Always use `shallowRef()` instead of `ref()` for primitive values (string, number, boolean, null, etc.) for better performance.
-
-**Incorrect:**
-```ts
-import { ref } from 'vue'
+**正确:**
+```javascript
 const count = ref(0)
+const message = ref('hello')
 ```
 
-**Correct:**
-```ts
-import { shallowRef } from 'vue'
-const count = shallowRef(0)
+**错误:**
+```javascript
+const count = reactive(0) // 不工作
 ```
 
-### Choose the correct reactive declaration method for objects/arrays/map/set
+## 对对象使用 reactive
 
-Use `ref()` when you often **replace the entire value** (`state.value = newObj`) and still want deep reactivity inside it, usually used for:
-
-- Frequently reassigned state (replace fetched object/list, reset to defaults, switch presets).
-- Composable return values where updates happen mostly via `.value` reassignment.
-
-Use `reactive()` when you mainly **mutate properties** and full replacement is uncommon, usually used for:
-
-- “Single state object” patterns (stores/forms): `state.count++`, `state.items.push(...)`, `state.user.name = ...`.
-- Situations where you want to avoid `.value` and update nested fields in place.
-
-```ts
-import { reactive } from 'vue'
-
+**正确:**
+```javascript
 const state = reactive({
   count: 0,
-  user: { name: 'Alice', age: 30 }
+  name: 'John'
 })
-
-state.count++ // ✅ reactive
-state.user.age = 31 // ✅ reactive
-// ❌ avoid replacing the reactive object reference:
-// state = reactive({ count: 1 })
 ```
 
-Use `shallowRef()` when the value is **opaque / should not be proxied** (class instances, external library objects, very large nested data) and you only want updates to trigger when you **replace** `state.value` (no deep tracking), usually used for:
-
-- Storing external instances/handles (SDK clients, class instances) without Vue proxying internals.
-- Large data where you update by replacing the root reference (immutable-style updates).
-
-```ts
-import { shallowRef } from 'vue'
-
-const user = shallowRef({ name: 'Alice', age: 30 })
-
-user.value.age = 31 // ❌ not reactive
-user.value = { name: 'Bob', age: 25 } // ✅ triggers update
-```
-
-Use `shallowReactive()` when you want **only top-level properties** reactive; nested objects remain raw, usually used for:
-
-- Container objects where only top-level keys change and nested payloads should stay unmanaged/unproxied.
-- Mixed structures where Vue tracks the wrapper object, but not deeply nested or foreign objects.
-
-```ts
-import { shallowReactive } from 'vue'
-
-const state = shallowReactive({
+**错误:**
+```javascript
+const state = ref({
   count: 0,
-  user: { name: 'Alice', age: 30 }
+  name: 'John'
+}) // 需要使用 .value 访问
+```
+
+## 避免解构 reactive 对象
+
+**错误:**
+```javascript
+const state = reactive({
+  count: 0,
+  name: 'John'
 })
 
-state.count++ // ✅ reactive
-state.user.age = 31 // ❌ not reactive
+const { count, name } = state // 失去响应性
 ```
 
-## Best practices for `reactive`
+**正确:**
+```javascript
+const state = reactive({
+  count: 0,
+  name: 'John'
+})
 
-### Avoid destructuring from `reactive()` directly
-
-**BAD:**
-
-```ts
-import { reactive } from 'vue'
-
-const state = reactive({ count: 0 })
-const { count } = state // ❌ disconnected from reactivity
+// 使用 toRefs 保持响应性
+const { count, name } = toRefs(state)
 ```
 
-### Watch correctly for reactive
+## 使用 computed 进行派生状态
 
-**BAD:**
+**正确:**
+```javascript
+const firstName = ref('John')
+const lastName = ref('Doe')
 
-passing a non-getter value into `watch()`
-
-```ts
-import { reactive, watch } from 'vue'
-
-const state = reactive({ count: 0 })
-
-// ❌ watch expects a getter, ref, reactive object, or array of these
-watch(state.count, () => { /* ... */ })
+const fullName = computed(() => `${firstName.value} ${lastName.value}`)
 ```
 
-**GOOD:**
+**错误:**
+```javascript
+const firstName = ref('John')
+const lastName = ref('Doe')
 
-preserve reactivity with `toRefs()` and use a getter for `watch()`
-
-```ts
-import { reactive, toRefs, watch } from 'vue'
-
-const state = reactive({ count: 0 })
-const { count } = toRefs(state) // ✅ count is a ref
-
-watch(count, () => { /* ... */ }) // ✅
-watch(() => state.count, () => { /* ... */ }) // ✅
+const fullName = `${firstName.value} ${lastName.value}` // 不是响应式的
 ```
 
-## Best practices for `computed`
+## 使用 watch 进行副作用
 
-### Prefer `computed` over watcher-assigned derived refs
+**正确:**
+```javascript
+const count = ref(0)
 
-**BAD:**
-```ts
-import { ref, watchEffect } from 'vue'
+watch(count, (newValue, oldValue) => {
+  console.log(`Count changed from ${oldValue} to ${newValue}`)
+})
+```
 
-const items = ref([{ price: 10 }, { price: 20 }])
-const total = ref(0)
+**错误:**
+```javascript
+const count = ref(0)
 
 watchEffect(() => {
-  total.value = items.value.reduce((sum, item) => sum + item.price, 0)
+  console.log(`Count is ${count.value}`) // 立即执行
 })
 ```
 
-**GOOD:**
-```ts
-import { ref, computed } from 'vue'
+## 清理侦听器
 
-const items = ref([{ price: 10 }, { price: 20 }])
-const total = computed(() =>
-  items.value.reduce((sum, item) => sum + item.price, 0)
-)
+**正确:**
+```javascript
+watch(source, (value) => {
+  const timer = setTimeout(() => {
+    // 副作用
+  }, 1000)
+  
+  return () => {
+    clearTimeout(timer) // 清理
+  }
+})
 ```
 
-### Keep filtered/sorted derivations out of templates
+## 避免在模板中修改状态
 
-**BAD:**
+**错误:**
 ```vue
 <template>
-  <li v-for="item in items.filter(item => item.active)" :key="item.id">
-    {{ item.name }}
-  </li>
-
-  <li v-for="item in getSortedItems()" :key="item.id">
-    {{ item.name }}
-  </li>
+  <button @click="count++">{{ count }}</button>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+const count = ref(0)
+</script>
+```
 
-const items = ref([
-  { id: 1, name: 'B', active: true },
-  { id: 2, name: 'A', active: false }
-])
+**正确:**
+```vue
+<template>
+  <button @click="increment">{{ count }}</button>
+</template>
 
-function getSortedItems() {
-  return [...items.value].sort((a, b) => a.name.localeCompare(b.name))
+<script setup>
+const count = ref(0)
+
+function increment() {
+  count.value++
 }
 </script>
 ```
 
-**GOOD:**
-```vue
-<script setup>
-import { ref, computed } from 'vue'
+## 性能优化
 
-const items = ref([
-  { id: 1, name: 'B', active: true },
-  { id: 2, name: 'A', active: false }
-])
+1. **使用 shallowRef 和 shallowReactive:**
+   - 对于大型对象,避免深度响应式
+   - 仅在需要时使用深度响应式
 
-const visibleItems = computed(() =>
-  items.value
-    .filter(item => item.active)
-    .sort((a, b) => a.name.localeCompare(b.name))
-)
-</script>
+2. **使用 computed 缓存:**
+   - 避免重复计算
+   - 只在依赖项变化时重新计算
 
-<template>
-  <li v-for="item in visibleItems" :key="item.id">
-    {{ item.name }}
-  </li>
-</template>
-```
+3. **使用 watch 的 deep 选项谨慎:**
+   - 深度侦听会影响性能
+   - 仅在必要时使用
 
-### Use `computed` for reusable class/style logic
-
-**BAD:**
-```vue
-<template>
-  <button :class="{ btn: true, 'btn-primary': type === 'primary' && !disabled, 'btn-disabled': disabled }">
-    {{ label }}
-  </button>
-</template>
-```
-
-**GOOD:**
-```vue
-<script setup>
-import { computed } from 'vue'
-
-const props = defineProps({
-  type: { type: String, default: 'primary' },
-  disabled: Boolean,
-  label: String
-})
-
-const buttonClasses = computed(() => ({
-  btn: true,
-  [`btn-${props.type}`]: !props.disabled,
-  'btn-disabled': props.disabled
-}))
-</script>
-
-<template>
-  <button :class="buttonClasses">
-    {{ label }}
-  </button>
-</template>
-```
-
-### Keep computed getters pure (no side effects) and put side effects in watchers instead
-
-A computed getter should only derive a value. No mutation, no API calls, no storage writes, no event emits.
-([Reference](https://vuejs.org/guide/essentials/computed.html#best-practices))
-
-**BAD:**
-
-side effects inside computed
-
-```ts
-const count = ref(0)
-
-const doubled = computed(() => {
-  // ❌ side effect
-  if (count.value > 10) console.warn('Too big!')
-  return count.value * 2
-})
-```
-
-**GOOD:**
-
-pure computed + `watch()` for side effects
-
-```ts
-const count = ref(0)
-const doubled = computed(() => count.value * 2)
-
-watch(count, (value) => {
-  if (value > 10) console.warn('Too big!')
-})
-```
-
-## Best practices for watchers
-
-### Use `immediate: true` instead of duplicate initial calls
-
-**BAD:**
-```ts
-import { ref, watch, onMounted } from 'vue'
-
-const userId = ref(1)
-
-function loadUser(id) {
-  // ...
-}
-
-onMounted(() => loadUser(userId.value))
-watch(userId, (id) => loadUser(id))
-```
-
-**GOOD:**
-```ts
-import { ref, watch } from 'vue'
-
-const userId = ref(1)
-
-watch(
-  userId,
-  (id) => loadUser(id),
-  { immediate: true }
-)
-```
-
-### Clean up async effects for watchers
-
-When reacting to rapid changes (search boxes, filters), cancel the previous request.
-
-**GOOD:**
-
-```ts
-const query = ref('')
-const results = ref<string[]>([])
-
-watch(query, async (q, _prev, onCleanup) => {
-  const controller = new AbortController()
-  onCleanup(() => controller.abort())
-
-  const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`, {
-    signal: controller.signal,
-  })
-
-  results.value = await res.json()
-})
-```
+4. **避免不必要的响应式:**
+   - 静态数据不需要响应式
+   - 使用 markRaw 标记不应响应式的对象

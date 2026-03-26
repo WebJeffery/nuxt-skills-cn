@@ -1,38 +1,38 @@
 ---
 name: mocking
-description: Mock functions, modules, timers, and dates with vi utilities
+description: 使用 vi 工具模拟函数、模块、计时器和日期
 ---
 
-# Mocking
+# 模拟
 
-## Mock Functions
+## 模拟函数
 
 ```ts
 import { expect, vi } from 'vitest'
 
-// Create mock function
+// 创建模拟函数
 const fn = vi.fn()
 fn('hello')
 
 expect(fn).toHaveBeenCalled()
 expect(fn).toHaveBeenCalledWith('hello')
 
-// With implementation
+// 使用实现
 const add = vi.fn((a, b) => a + b)
 expect(add(1, 2)).toBe(3)
 
-// Mock return values
+// 模拟返回值
 fn.mockReturnValue(42)
 fn.mockReturnValueOnce(1).mockReturnValueOnce(2)
 fn.mockResolvedValue({ data: true })
 fn.mockRejectedValue(new Error('fail'))
 
-// Mock implementation
+// 模拟实现
 fn.mockImplementation((x) => x * 2)
 fn.mockImplementationOnce(() => 'first call')
 ```
 
-## Spying on Objects
+## 监视对象
 
 ```ts
 const cart = {
@@ -44,18 +44,18 @@ cart.getTotal()
 
 expect(spy).toHaveBeenCalled()
 
-// Mock implementation
+// 模拟实现
 spy.mockReturnValue(200)
 expect(cart.getTotal()).toBe(200)
 
-// Restore original
+// 恢复原始
 spy.mockRestore()
 ```
 
-## Module Mocking
+## 模块模拟
 
 ```ts
-// vi.mock is hoisted to top of file
+// vi.mock 被提升到文件顶部
 vi.mock('./api', () => ({
   fetchUser: vi.fn(() => ({ id: 1, name: 'Mock' })),
 }))
@@ -67,7 +67,7 @@ test('mocked module', () => {
 })
 ```
 
-### Partial Mock
+### 部分模拟
 
 ```ts
 vi.mock('./utils', async (importOriginal) => {
@@ -79,42 +79,42 @@ vi.mock('./utils', async (importOriginal) => {
 })
 ```
 
-### Auto-mock with Spy
+### 使用 Spy 自动模拟
 
 ```ts
-// Keep implementation but spy on calls
+// 保留实现但监视调用
 vi.mock('./calculator', { spy: true })
 
 import { add } from './calculator'
 
 test('spy on module', () => {
-  const result = add(1, 2) // Real implementation
+  const result = add(1, 2) // 真实实现
   expect(result).toBe(3)
   expect(add).toHaveBeenCalledWith(1, 2)
 })
 ```
 
-### Manual Mocks (__mocks__)
+### 手动模拟 (__mocks__)
 
 ```
 src/
   __mocks__/
-    axios.ts      # Mocks 'axios'
+    axios.ts      # 模拟 'axios'
   api/
     __mocks__/
-      client.ts   # Mocks './client'
+      client.ts   # 模拟 './client'
     client.ts
 ```
 
 ```ts
-// Just call vi.mock with no factory
+// 只需调用 vi.mock 而无需工厂
 vi.mock('axios')
 vi.mock('./api/client')
 ```
 
-## Dynamic Mocking (vi.doMock)
+## 动态模拟 (vi.doMock)
 
-Not hoisted - use for dynamic imports:
+不提升 - 用于动态导入:
 
 ```ts
 test('dynamic mock', async () => {
@@ -129,7 +129,7 @@ test('dynamic mock', async () => {
 })
 ```
 
-## Mock Timers
+## 模拟计时器
 
 ```ts
 import { afterEach, beforeEach, vi } from 'vitest'
@@ -152,13 +152,13 @@ test('timers', () => {
   expect(fn).toHaveBeenCalled()
 })
 
-// Other timer methods
-vi.runAllTimers()           // Run all pending timers
-vi.runOnlyPendingTimers()   // Run only currently pending
-vi.advanceTimersToNextTimer() // Advance to next timer
+// 其他计时器方法
+vi.runAllTimers()           // 运行所有挂起的计时器
+vi.runOnlyPendingTimers()   // 仅运行当前挂起的
+vi.advanceTimersToNextTimer() // 前进到下一个计时器
 ```
 
-### Async Timer Methods
+### 异步计时器方法
 
 ```ts
 test('async timers', async () => {
@@ -172,68 +172,68 @@ test('async timers', async () => {
 })
 ```
 
-## Mock Dates
+## 模拟日期
 
 ```ts
 vi.setSystemTime(new Date('2024-01-01'))
 expect(new Date().getFullYear()).toBe(2024)
 
-vi.useRealTimers() // Restore
+vi.useRealTimers() // 恢复
 ```
 
-## Mock Globals
+## 模拟全局变量
 
 ```ts
 vi.stubGlobal('fetch', vi.fn(() => 
   Promise.resolve({ json: () => ({ data: 'mock' }) })
 ))
 
-// Restore
+// 恢复
 vi.unstubAllGlobals()
 ```
 
-## Mock Environment Variables
+## 模拟环境变量
 
 ```ts
 vi.stubEnv('API_KEY', 'test-key')
 expect(import.meta.env.API_KEY).toBe('test-key')
 
-// Restore
+// 恢复
 vi.unstubAllEnvs()
 ```
 
-## Clearing Mocks
+## 清除模拟
 
 ```ts
 const fn = vi.fn()
 fn()
 
-fn.mockClear()       // Clear call history
-fn.mockReset()       // Clear history + implementation
-fn.mockRestore()     // Restore original (for spies)
+fn.mockClear()       // 清除调用历史
+fn.mockReset()       // 清除历史 + 实现
+fn.mockRestore()     // 恢复原始(用于 spies)
 
-// Global
+// 全局
 vi.clearAllMocks()
 vi.resetAllMocks()
 vi.restoreAllMocks()
 ```
 
-## Config Auto-Reset
+## 配置自动重置
 
 ```ts
 // vitest.config.ts
 defineConfig({
   test: {
-    clearMocks: true,    // Clear before each test
-    mockReset: true,     // Reset before each test
-    restoreMocks: true,  // Restore after each test
-    unstubEnvs: true,    // Restore env vars
-    unstubGlobals: true, // Restore globals
+    clearMocks: true,    // 在每个测试之前清除
+    mockReset: true,     // 在每个测试之前重置
+    restoreMocks: true,  // 在每个测试之后恢复
+    unstubEnvs: true,    // 恢复环境变量
+    unstubGlobals: true, // 恢复全局变量
   },
 })
 ```
 
-## Hoisted Variables for Mocks
+## 模拟的提升变量
 
 ```ts
 const mockFn = vi.hoisted(() => vi.fn())
@@ -250,13 +250,13 @@ test('hoisted mock', () => {
 })
 ```
 
-## Key Points
+## 关键点
 
-- `vi.mock` is hoisted - called before imports
-- Use `vi.doMock` for dynamic, non-hoisted mocking
-- Always restore mocks to avoid test pollution
-- Use `{ spy: true }` to keep implementation but track calls
-- `vi.hoisted` lets you reference variables in mock factories
+- `vi.mock` 被提升 - 在导入之前调用
+- 使用 `vi.doMock` 进行动态、非提升模拟
+- 始终恢复模拟以避免测试污染
+- 使用 `{ spy: true }` 保留实现但跟踪调用
+- `vi.hoisted` 允许您在模拟工厂中引用变量
 
 <!-- 
 Source references:

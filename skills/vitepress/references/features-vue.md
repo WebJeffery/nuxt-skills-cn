@@ -1,15 +1,15 @@
 ---
 name: vue-in-vitepress-markdown
-description: Using Vue components, script setup, directives, and templating in markdown files
+description: 在 markdown 文件中使用 Vue 组件、script setup、指令和模板
 ---
 
-# Vue in Markdown
+# Markdown 中的 Vue
 
-VitePress markdown files are compiled as Vue Single-File Components, enabling full Vue functionality.
+VitePress markdown 文件被编译为 Vue 单文件组件,启用完整的 Vue 功能。
 
-## Interpolation
+## 插值
 
-Vue expressions work in markdown:
+Vue 表达式在 markdown 中工作:
 
 ```md
 {{ 1 + 1 }}
@@ -17,9 +17,9 @@ Vue expressions work in markdown:
 {{ new Date().toLocaleDateString() }}
 ```
 
-## Directives
+## 指令
 
-HTML with Vue directives:
+带有 Vue 指令的 HTML:
 
 ```md
 <span v-for="i in 3">{{ i }}</span>
@@ -29,9 +29,9 @@ HTML with Vue directives:
 </div>
 ```
 
-## Script and Style
+## Script 和 Style
 
-Add `<script setup>` and `<style>` after frontmatter:
+在 frontmatter 之后添加 `<script setup>` 和 `<style>`:
 
 ```md
 ---
@@ -60,11 +60,11 @@ Count: {{ count }}
 </style>
 ```
 
-**Note:** Use `<style module>` instead of `<style scoped>` to avoid bloating page size.
+**注意:** 使用 `<style module>` 而不是 `<style scoped>` 以避免页面大小膨胀。
 
-## Importing Components
+## 导入组件
 
-Local import (code-split per page):
+本地导入(每页代码分割):
 
 ```md
 <script setup>
@@ -74,9 +74,9 @@ import CustomComponent from '../components/CustomComponent.vue'
 <CustomComponent />
 ```
 
-## Global Components
+## 全局组件
 
-Register in theme for use everywhere:
+在主题中注册以随处使用:
 
 ```ts
 // .vitepress/theme/index.ts
@@ -91,17 +91,17 @@ export default {
 }
 ```
 
-Then use in any markdown:
+然后在任何 markdown 中使用:
 
 ```md
 <MyGlobalComponent />
 ```
 
-**Important:** Component names must contain a hyphen or be PascalCase to avoid being treated as inline HTML elements.
+**重要:** 组件名称必须包含连字符或为 PascalCase,以避免被视为内联 HTML 元素。
 
-## Runtime API
+## 运行时 API
 
-Access VitePress data:
+访问 VitePress 数据:
 
 ```md
 <script setup>
@@ -115,9 +115,9 @@ const router = useRouter()
 Current page: {{ page.relativePath }}
 ```
 
-## Global Variables
+## 全局变量
 
-Available without import:
+无需导入即可使用:
 
 ```md
 # {{ $frontmatter.title }}
@@ -125,21 +125,21 @@ Available without import:
 Params: {{ $params.id }}
 ```
 
-## Components in Headers
+## 标题中的组件
 
 ```md
 # My Title <Badge type="tip" text="v2.0" />
 ```
 
-## Escaping Vue Syntax
+## 转义 Vue 语法
 
-Prevent Vue interpolation:
+防止 Vue 插值:
 
 ```md
 <span v-pre>{{ will be displayed as-is }}</span>
 ```
 
-Or use container:
+或使用容器:
 
 ```md
 ::: v-pre
@@ -147,9 +147,9 @@ Or use container:
 :::
 ```
 
-## Vue in Code Blocks
+## 代码块中的 Vue
 
-Enable Vue processing in fenced code with `-vue` suffix:
+使用 `-vue` 后缀在围栏代码中启用 Vue 处理:
 
 ````md
 ```js-vue
@@ -157,9 +157,9 @@ Hello {{ 1 + 1 }}
 ```
 ````
 
-## CSS Pre-processors
+## CSS 预处理器
 
-Supported out of the box (install the preprocessor):
+开箱即用支持(安装预处理器):
 
 ```bash
 npm install -D sass  # for .scss/.sass
@@ -175,9 +175,9 @@ npm install -D stylus # for .styl/.stylus
 </style>
 ```
 
-## Using Teleports
+## 使用 Teleports
 
-Teleport to body only with SSG:
+仅使用 SSG 传送到 body:
 
 ```md
 <ClientOnly>
@@ -189,7 +189,7 @@ Teleport to body only with SSG:
 
 ## VS Code IntelliSense
 
-Enable Vue language features for `.md` files:
+为 `.md` 文件启用 Vue 语言功能:
 
 ```json
 // tsconfig.json
@@ -208,14 +208,14 @@ Enable Vue language features for `.md` files:
 }
 ```
 
-## Key Points
+## 关键点
 
-- Markdown files are Vue SFCs - use `<script setup>` and `<style>`
-- Access page data via `useData()` or `$frontmatter` global
-- Import components locally or register globally in theme
-- Use `<style module>` instead of `<style scoped>`
-- Wrap non-SSR components in `<ClientOnly>`
-- Component names must be PascalCase or contain hyphens
+- Markdown 文件是 Vue SFC - 使用 `<script setup>` 和 `<style>`
+- 通过 `useData()` 或 `$frontmatter` 全局访问页面数据
+- 本地导入组件或在主题中全局注册
+- 使用 `<style module>` 而不是 `<style scoped>`
+- 用 `<ClientOnly>` 包装非 SSR 组件
+- 组件名称必须是 PascalCase 或包含连字符
 
 <!--
 Source references:

@@ -1,21 +1,21 @@
-# Creating Internal Packages
+# 创建内部包
 
-How to create and structure internal packages in your monorepo.
+如何在 monorepo 中创建和构建内部包。
 
-## Package Creation Checklist
+## 包创建清单
 
-1. Create directory in `packages/`
-2. Add `package.json` with name and exports
-3. Add source code in `src/`
-4. Add `tsconfig.json` if using TypeScript
-5. Install as dependency in consuming packages
-6. Run package manager install to update lockfile
+1. 在 `packages/` 中创建目录
+2. 添加带有名称和导出的 `package.json`
+3. 在 `src/` 中添加源代码
+4. 如果使用 TypeScript，添加 `tsconfig.json`
+5. 在使用包中作为依赖安装
+6. 运行包管理器安装以更新锁文件
 
-## Package Compilation Strategies
+## 包编译策略
 
-### Just-in-Time (JIT)
+### 即时编译（JIT）
 
-Export TypeScript directly. The consuming app's bundler compiles it.
+直接导出 TypeScript。使用它的应用的打包器编译它。
 
 ```json
 // packages/ui/package.json
@@ -32,21 +32,21 @@ Export TypeScript directly. The consuming app's bundler compiles it.
 }
 ```
 
-**When to use:**
+**何时使用：**
 
-- Apps use modern bundlers (Turbopack, webpack, Vite)
-- You want minimal configuration
-- Build times are acceptable without caching
+- 应用使用现代打包器（Turbopack、webpack、Vite）
+- 您想要最少的配置
+- 没有缓存的情况下构建时间可接受
 
-**Limitations:**
+**限制：**
 
-- No Turborepo cache for the package itself
-- Consumer must support TypeScript compilation
-- Can't use TypeScript `paths` (use Node.js subpath imports instead)
+- 包本身没有 Turborepo 缓存
+- 使用者必须支持 TypeScript 编译
+- 不能使用 TypeScript `paths`（改用 Node.js 子路径导入）
 
-### Compiled
+### 编译
 
-Package handles its own compilation.
+包处理自己的编译。
 
 ```json
 // packages/ui/package.json
@@ -78,17 +78,17 @@ Package handles its own compilation.
 }
 ```
 
-**When to use:**
+**何时使用：**
 
-- You want Turborepo to cache builds
-- Package will be used by non-bundler tools
-- You need maximum compatibility
+- 您希望 Turborepo 缓存构建
+- 包将被非打包器工具使用
+- 您需要最大兼容性
 
-**Remember:** Add `dist/**` to turbo.json outputs!
+**记住：** 将 `dist/**` 添加到 turbo.json 输出中！
 
-## Defining Exports
+## 定义导出
 
-### Multiple Entrypoints
+### 多个入口点
 
 ```json
 {
@@ -101,7 +101,7 @@ Package handles its own compilation.
 }
 ```
 
-### Conditional Exports (Compiled)
+### 条件导出（编译）
 
 ```json
 {
@@ -116,9 +116,9 @@ Package handles its own compilation.
 }
 ```
 
-## Installing Internal Packages
+## 安装内部包
 
-### Add to Consuming Package
+### 添加到使用包
 
 ```json
 // apps/web/package.json
@@ -130,13 +130,13 @@ Package handles its own compilation.
 }
 ```
 
-### Run Install
+### 运行安装
 
 ```bash
-pnpm install  # Updates lockfile with new dependency
+pnpm install  # 使用新依赖更新锁文件
 ```
 
-### Import and Use
+### 导入和使用
 
 ```typescript
 // apps/web/src/page.tsx
@@ -147,25 +147,25 @@ export default function Page() {
 }
 ```
 
-## One Purpose Per Package
+## 每个包一个目的
 
-### Good Examples
+### 好的示例
 
 ```
 packages/
-├── ui/                  # Shared UI components
-├── utils/               # General utilities
-├── auth/                # Authentication logic
-├── database/            # Database client/schemas
-├── eslint-config/       # ESLint configuration
-├── typescript-config/   # TypeScript configuration
-└── api-client/          # Generated API client
+├── ui/                  # 共享 UI 组件
+├── utils/               # 通用工具
+├── auth/                # 身份验证逻辑
+├── database/            # 数据库客户端/模式
+├── eslint-config/       # ESLint 配置
+├── typescript-config/   # TypeScript 配置
+└── api-client/          # 生成的 API 客户端
 ```
 
-### Avoid Mega-Packages
+### 避免巨型包
 
 ```
-// BAD: One package for everything
+// 错误：一个包用于所有内容
 packages/
 └── shared/
     ├── components/
@@ -174,18 +174,18 @@ packages/
     ├── types/
     └── api/
 
-// GOOD: Separate by purpose
+// 好：按目的分离
 packages/
-├── ui/          # Components
-├── utils/       # Utilities
-├── hooks/       # React hooks
-├── types/       # Shared TypeScript types
-└── api-client/  # API utilities
+├── ui/          # 组件
+├── utils/       # 工具
+├── hooks/       # React 钩子
+├── types/       # 共享 TypeScript 类型
+└── api-client/  # API 工具
 ```
 
-## Config Packages
+## 配置包
 
-### TypeScript Config
+### TypeScript 配置
 
 ```json
 // packages/typescript-config/package.json
@@ -199,7 +199,7 @@ packages/
 }
 ```
 
-### ESLint Config
+### ESLint 配置
 
 ```json
 // packages/eslint-config/package.json
@@ -216,17 +216,17 @@ packages/
 }
 ```
 
-## Common Mistakes
+## 常见错误
 
-### Forgetting to Export
+### 忘记导出
 
 ```json
-// BAD: No exports defined
+// 错误：没有定义导出
 {
   "name": "@repo/ui"
 }
 
-// GOOD: Clear exports
+// 好：清晰的导出
 {
   "name": "@repo/ui",
   "exports": {
@@ -235,30 +235,30 @@ packages/
 }
 ```
 
-### Wrong Workspace Syntax
+### 错误的工作区语法
 
 ```json
 // pnpm/bun
-{ "@repo/ui": "workspace:*" }  // Correct
+{ "@repo/ui": "workspace:*" }  // 正确
 
 // npm/yarn
-{ "@repo/ui": "*" }            // Correct
-{ "@repo/ui": "workspace:*" }  // Wrong for npm/yarn!
+{ "@repo/ui": "*" }            // 正确
+{ "@repo/ui": "workspace:*" }  // npm/yarn 错误！
 ```
 
-### Missing from turbo.json Outputs
+### 缺少 turbo.json 输出
 
 ```json
-// Package builds to dist/, but turbo.json doesn't know
+// 包构建到 dist/，但 turbo.json 不知道
 {
   "tasks": {
     "build": {
-      "outputs": [".next/**"]  // Missing dist/**!
+      "outputs": [".next/**"]  // 缺少 dist/**！
     }
   }
 }
 
-// Correct
+// 正确
 {
   "tasks": {
     "build": {
@@ -268,13 +268,13 @@ packages/
 }
 ```
 
-## TypeScript Best Practices
+## TypeScript 最佳实践
 
-### Use Node.js Subpath Imports (Not `paths`)
+### 使用 Node.js 子路径导入（不是 `paths`）
 
-TypeScript `compilerOptions.paths` breaks with JIT packages. Use Node.js subpath imports instead (TypeScript 5.4+).
+TypeScript `compilerOptions.paths` 在 JIT 包中会中断。改用 Node.js 子路径导入（TypeScript 5.4+）。
 
-**JIT Package:**
+**JIT 包：**
 
 ```json
 // packages/ui/package.json
@@ -287,10 +287,10 @@ TypeScript `compilerOptions.paths` breaks with JIT packages. Use Node.js subpath
 
 ```typescript
 // packages/ui/button.tsx
-import { MY_STRING } from "#utils.ts"; // Uses .ts extension
+import { MY_STRING } from "#utils.ts"; // 使用 .ts 扩展名
 ```
 
-**Compiled Package:**
+**编译包：**
 
 ```json
 // packages/ui/package.json
@@ -303,16 +303,16 @@ import { MY_STRING } from "#utils.ts"; // Uses .ts extension
 
 ```typescript
 // packages/ui/button.tsx
-import { MY_STRING } from "#utils.js"; // Uses .js extension
+import { MY_STRING } from "#utils.js"; // 使用 .js 扩展名
 ```
 
-### Use `tsc` for Internal Packages
+### 对内部包使用 `tsc`
 
-For internal packages, prefer `tsc` over bundlers. Bundlers can mangle code before it reaches your app's bundler, causing hard-to-debug issues.
+对于内部包，优先使用 `tsc` 而不是打包器。打包器可能会在代码到达应用的打包器之前对其进行混淆，导致难以调试的问题。
 
-### Enable Go-to-Definition
+### 启用转到定义
 
-For Compiled Packages, enable declaration maps:
+对于编译包，启用声明映射：
 
 ```json
 // tsconfig.json
@@ -324,12 +324,12 @@ For Compiled Packages, enable declaration maps:
 }
 ```
 
-This creates `.d.ts` and `.d.ts.map` files for IDE navigation.
+这会创建 `.d.ts` 和 `.d.ts.map` 文件用于 IDE 导航。
 
-### No Root tsconfig.json Needed
+### 不需要根 tsconfig.json
 
-Each package should have its own `tsconfig.json`. A root one causes all tasks to miss cache when changed. Only use root `tsconfig.json` for non-package scripts.
+每个包应该有自己的 `tsconfig.json`。根目录的 tsconfig.json 会在更改时导致所有任务缓存未命中。仅对非包脚本使用根 `tsconfig.json`。
 
-### Avoid TypeScript Project References
+### 避免 TypeScript 项目引用
 
-They add complexity and another caching layer. Turborepo handles dependencies better.
+它们增加了复杂性和另一个缓存层。Turborepo 更好地处理依赖关系。

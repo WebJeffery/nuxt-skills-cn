@@ -1,14 +1,14 @@
-# Auto-Generate Package Exports
+# 自动生成包导出
 
-Automatically generate package.json exports field from build output.
+根据构建输出自动生成 package.json exports 字段。
 
-## Overview
+## 概述
 
-tsdown can automatically infer and generate the `exports`, `main`, `module`, and `types` fields in your `package.json` based on your build outputs.
+tsdown 可以根据您的构建输出自动推断和生成 `package.json` 中的 `exports`、`main`、`module` 和 `types` 字段。
 
-**Status:** Experimental - review before publishing.
+**状态：** 实验性 - 发布前请审查。
 
-## Basic Usage
+## 基本用法
 
 ### CLI
 
@@ -16,7 +16,7 @@ tsdown can automatically infer and generate the `exports`, `main`, `module`, and
 tsdown --exports
 ```
 
-### Config File
+### 配置文件
 
 ```ts
 export default defineConfig({
@@ -27,11 +27,11 @@ export default defineConfig({
 })
 ```
 
-## What Gets Generated
+## 生成的内容
 
-### Single Entry
+### 单个入口
 
-**Config:**
+**配置：**
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
@@ -41,7 +41,7 @@ export default defineConfig({
 })
 ```
 
-**Generated in package.json:**
+**在 package.json 中生成：**
 ```json
 {
   "main": "./dist/index.cjs",
@@ -57,9 +57,9 @@ export default defineConfig({
 }
 ```
 
-### Multiple Entries
+### 多个入口
 
-**Config:**
+**配置：**
 ```ts
 export default defineConfig({
   entry: {
@@ -72,7 +72,7 @@ export default defineConfig({
 })
 ```
 
-**Generated in package.json:**
+**在 package.json 中生成：**
 ```json
 {
   "main": "./dist/index.cjs",
@@ -93,9 +93,9 @@ export default defineConfig({
 }
 ```
 
-## Export All Files
+## 导出所有文件
 
-Include all output files, not just entry points:
+包括所有输出文件，而不仅仅是入口点：
 
 ```ts
 export default defineConfig({
@@ -107,13 +107,13 @@ export default defineConfig({
 })
 ```
 
-**Result:** All `.mjs`, `.cjs`, and `.d.ts` files will be added to exports.
+**结果：** 所有 `.mjs`、`.cjs` 和 `.d.ts` 文件都将添加到 exports。
 
-## Dev-Time Source Linking
+## 开发时源链接
 
-### Dev Exports
+### 开发导出
 
-Link to source files during development:
+在开发期间链接到源文件：
 
 ```ts
 export default defineConfig({
@@ -125,11 +125,11 @@ export default defineConfig({
 })
 ```
 
-**Generated:**
+**生成：**
 ```json
 {
   "exports": {
-    ".": "./src/index.ts"  // Points to source
+    ".": "./src/index.ts"  // 指向源文件
   },
   "publishConfig": {
     "exports": {
@@ -142,11 +142,11 @@ export default defineConfig({
 }
 ```
 
-**Note:** Supported by pnpm/yarn, not npm.
+**注意：** pnpm/yarn 支持，npm 不支持。
 
-### Conditional Dev Exports
+### 条件开发导出
 
-Use specific condition for dev exports:
+为开发导出使用特定条件：
 
 ```ts
 export default defineConfig({
@@ -156,7 +156,7 @@ export default defineConfig({
 })
 ```
 
-**Generated:**
+**生成：**
 ```json
 {
   "exports": {
@@ -169,7 +169,7 @@ export default defineConfig({
 }
 ```
 
-**Use with TypeScript customConditions:**
+**与 TypeScript customConditions 一起使用：**
 ```json
 // tsconfig.json
 {
@@ -179,19 +179,19 @@ export default defineConfig({
 }
 ```
 
-## Custom Exports
+## 自定义导出
 
-Add custom export mappings:
+添加自定义导出映射：
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   exports: {
     customExports(pkg, context) {
-      // Add custom export
+      // 添加自定义导出
       pkg['./foo'] = './dist/foo.js'
 
-      // Add package.json export
+      // 添加 package.json 导出
       pkg['./package.json'] = './package.json'
 
       return pkg
@@ -200,9 +200,9 @@ export default defineConfig({
 })
 ```
 
-## Common Patterns
+## 常见模式
 
-### Complete Library Setup
+### 完整的库设置
 
 ```ts
 export default defineConfig({
@@ -214,7 +214,7 @@ export default defineConfig({
 })
 ```
 
-### Multiple Exports with Dev Mode
+### 带有开发模式的多个导出
 
 ```ts
 export default defineConfig({
@@ -226,13 +226,13 @@ export default defineConfig({
   format: ['esm', 'cjs'],
   dts: true,
   exports: {
-    all: false,  // Only entries
+    all: false,  // 仅入口点
     devExports: 'development',
   },
 })
 ```
 
-### Monorepo Package
+### Monorepo 包
 
 ```ts
 export default defineConfig({
@@ -240,81 +240,81 @@ export default defineConfig({
   entry: ['src/index.ts'],
   format: ['esm', 'cjs'],
   dts: true,
-  exports: true,  // Generate for each package
+  exports: true,  // 为每个包生成
 })
 ```
 
-## Validation
+## 验证
 
-### Enable Publint
+### 启用 Publint
 
-Validate generated exports:
+验证生成的导出：
 
 ```bash
 tsdown --exports --publint
 ```
 
-Or in config:
+或在配置中：
 
 ```ts
 export default defineConfig({
   exports: true,
-  publint: true,  // Validate exports
+  publint: true,  // 验证导出
 })
 ```
 
-## Tips
+## 提示
 
-1. **Review before publishing** - Check generated fields
-2. **Use with publint** - Validate exports field
-3. **Enable for libraries** - Especially with multiple exports
-4. **Use devExports** - Better DX during development
-5. **Test exports** - Verify imports work correctly
+1. **发布前审查** - 检查生成的字段
+2. **与 publint 一起使用** - 验证 exports 字段
+3. **为库启用** - 特别是多个导出
+4. **使用 devExports** - 开发期间更好的 DX
+5. **测试导出** - 验证导入正常工作
 
-## Troubleshooting
+## 故障排除
 
-### Exports Not Generated
+### 未生成导出
 
-- Ensure `exports: true` is set
-- Check build completed successfully
-- Verify output files exist
+- 确保设置了 `exports: true`
+- 检查构建成功完成
+- 验证输出文件存在
 
-### Wrong Export Paths
+### 导出路径错误
 
-- Check `outDir` configuration
-- Verify entry names match expectations
-- Review `format` settings
+- 检查 `outDir` 配置
+- 验证入口名称符合预期
+- 审查 `format` 设置
 
-### Dev Exports Not Working
+### 开发导出不工作
 
-- Only supported by pnpm/yarn
-- Check package manager
-- Use `publishConfig` for publishing
+- 仅 pnpm/yarn 支持
+- 检查包管理器
+- 使用 `publishConfig` 进行发布
 
-### Types Not Exported
+### 未导出类型
 
-- Enable `dts: true`
-- Ensure TypeScript is installed
-- Check `.d.ts` files are generated
+- 启用 `dts: true`
+- 确保安装了 TypeScript
+- 检查是否生成了 `.d.ts` 文件
 
-## CLI Examples
+## CLI 示例
 
 ```bash
-# Generate exports
+# 生成导出
 tsdown --exports
 
-# With publint validation
+# 带有 publint 验证
 tsdown --exports --publint
 
-# Export all files
+# 导出所有文件
 tsdown --exports
 
-# With dev exports
+# 带有开发导出
 tsdown --exports
 ```
 
-## Related Options
+## 相关选项
 
-- [Entry](option-entry.md) - Configure entry points
-- [Output Format](option-output-format.md) - Module formats
-- [DTS](option-dts.md) - Type declarations
+- [入口点](option-entry.md) - 配置入口点
+- [输出格式](option-output-format.md) - 模块格式
+- [DTS](option-dts.md) - 类型声明

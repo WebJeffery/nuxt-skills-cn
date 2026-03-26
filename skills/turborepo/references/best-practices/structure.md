@@ -1,10 +1,10 @@
-# Repository Structure
+# 仓库结构
 
-Detailed guidance on structuring a Turborepo monorepo.
+构建 Turborepo monorepo 的详细指南。
 
-## Workspace Configuration
+## 工作区配置
 
-### pnpm (Recommended)
+### pnpm（推荐）
 
 ```yaml
 # pnpm-workspace.yaml
@@ -22,7 +22,7 @@ packages:
 }
 ```
 
-## Root package.json
+## 根 package.json
 
 ```json
 {
@@ -41,16 +41,16 @@ packages:
 }
 ```
 
-Key points:
+关键点：
 
-- `private: true` - Prevents accidental publishing
-- `packageManager` - Enforces consistent package manager version
-- **Scripts only delegate to `turbo run`** - No actual build logic here!
-- Minimal devDependencies (just turbo and repo tools)
+- `private: true` - 防止意外发布
+- `packageManager` - 强制执行一致的包管理器版本
+- **脚本仅委派给 `turbo run`** - 这里没有实际的构建逻辑！
+- 最少的 devDependencies（只有 turbo 和仓库工具）
 
-## Always Prefer Package Tasks
+## 始终优先使用包任务
 
-**Always use package tasks. Only use Root Tasks if you cannot succeed with package tasks.**
+**始终使用包任务。只有在无法使用包任务成功时才使用根任务。**
 
 ```json
 // packages/web/package.json
@@ -74,16 +74,16 @@ Key points:
 }
 ```
 
-Package tasks enable Turborepo to:
+包任务使 Turborepo 能够：
 
-1. **Parallelize** - Run `web#lint` and `api#lint` simultaneously
-2. **Cache individually** - Each package's task output is cached separately
-3. **Filter precisely** - Run `turbo run test --filter=web` for just one package
+1. **并行化** - 同时运行 `web#lint` 和 `api#lint`
+2. **单独缓存** - 每个包的任务输出单独缓存
+3. **精确过滤** - 运行 `turbo run test --filter=web` 仅针对一个包
 
-**Root Tasks are a fallback** for tasks that truly cannot run per-package:
+**根任务是后备**，用于真正无法按包运行的任务：
 
 ```json
-// AVOID unless necessary - sequential, not parallelized, can't filter
+// 除非必要，否则避免 - 顺序执行，未并行化，无法过滤
 {
   "scripts": {
     "lint": "eslint apps/web && eslint apps/api && eslint packages/ui"
@@ -91,7 +91,7 @@ Package tasks enable Turborepo to:
 }
 ```
 
-## Root turbo.json
+## 根 turbo.json
 
 ```json
 {
@@ -113,22 +113,22 @@ Package tasks enable Turborepo to:
 }
 ```
 
-## Directory Organization
+## 目录组织
 
-### Grouping Packages
+### 分组包
 
-You can group packages by adding more workspace paths:
+您可以通过添加更多工作区路径来对包进行分组：
 
 ```yaml
 # pnpm-workspace.yaml
 packages:
   - "apps/*"
   - "packages/*"
-  - "packages/config/*" # Grouped configs
-  - "packages/features/*" # Feature packages
+  - "packages/config/*" # 分组配置
+  - "packages/features/*" # 功能包
 ```
 
-This allows:
+这允许：
 
 ```
 packages/
@@ -143,45 +143,45 @@ packages/
     └── payments/
 ```
 
-### What NOT to Do
+### 不应该做什么
 
 ```yaml
-# BAD: Nested wildcards cause ambiguous behavior
+# 错误：嵌套通配符会导致行为不明确
 packages:
-  - "packages/**" # Don't do this!
+  - "packages/**" # 不要这样做！
 ```
 
-## Package Anatomy
+## 包结构
 
-### Minimum Required Files
+### 最低要求文件
 
 ```
 packages/ui/
-├── package.json    # Required: Makes it a package
-├── src/            # Source code
+├── package.json    # 必需：使其成为一个包
+├── src/            # 源代码
 │   └── button.tsx
-└── tsconfig.json   # TypeScript config (if using TS)
+└── tsconfig.json   # TypeScript 配置（如果使用 TS）
 ```
 
-### package.json Requirements
+### package.json 要求
 
 ```json
 {
-  "name": "@repo/ui", // Unique, namespaced name
-  "version": "0.0.0", // Version (can be 0.0.0 for internal)
-  "private": true, // Prevents accidental publishing
+  "name": "@repo/ui", // 唯一的、命名空间的名称
+  "version": "0.0.0", // 版本（内部包可以是 0.0.0）
+  "private": true, // 防止意外发布
   "exports": {
-    // Entry points
+    // 入口点
     "./button": "./src/button.tsx"
   }
 }
 ```
 
-## TypeScript Configuration
+## TypeScript 配置
 
-### Shared Base Config
+### 共享基础配置
 
-Create a shared TypeScript config package:
+创建共享的 TypeScript 配置包：
 
 ```
 packages/
@@ -206,7 +206,7 @@ packages/
 }
 ```
 
-### Extending in Packages
+### 在包中扩展
 
 ```json
 // packages/ui/tsconfig.json
@@ -221,13 +221,13 @@ packages/
 }
 ```
 
-### No Root tsconfig.json
+### 没有根 tsconfig.json
 
-You likely don't need a `tsconfig.json` in the workspace root. Each package should have its own config extending from the shared config package.
+您可能不需要在工作区根目录中使用 `tsconfig.json`。每个包都应该有自己的配置，从共享配置包扩展而来。
 
-## ESLint Configuration
+## ESLint 配置
 
-### Shared Config Package
+### 共享配置包
 
 ```
 packages/
@@ -250,7 +250,7 @@ packages/
 }
 ```
 
-### Using in Packages
+### 在包中使用
 
 ```js
 // apps/web/.eslintrc.js
@@ -259,12 +259,12 @@ module.exports = {
 };
 ```
 
-## Lockfile
+## 锁文件
 
-A lockfile is **required** for:
+锁文件对于以下情况是**必需的**：
 
-- Reproducible builds
-- Turborepo to understand package dependencies
-- Cache correctness
+- 可重现的构建
+- Turborepo 了解包依赖关系
+- 缓存正确性
 
-Without a lockfile, you'll see unpredictable behavior.
+没有锁文件，您将看到不可预测的行为。

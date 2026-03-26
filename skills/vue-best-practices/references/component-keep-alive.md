@@ -1,56 +1,56 @@
 ---
-title: KeepAlive Component Best Practices
+title: KeepAlive 组件最佳实践
 impact: HIGH
-impactDescription: KeepAlive caches component instances; misuse causes stale data, memory growth, or unexpected lifecycle behavior
+impactDescription: KeepAlive 缓存组件实例;误用会导致数据陈旧、内存增长或意外的生命周期行为
 type: best-practice
 tags: [vue3, keepalive, cache, performance, router, dynamic-components]
 ---
 
-# KeepAlive Component Best Practices
+# KeepAlive 组件最佳实践
 
-**Impact: HIGH** - `<KeepAlive>` caches component instances instead of destroying them. Use it to preserve state across switches, but manage cache size and freshness explicitly to avoid memory growth or stale UI.
+**影响: HIGH** - `<KeepAlive>` 缓存组件实例而不是销毁它们。使用它在切换之间保留状态,但显式管理缓存大小和新鲜度以避免内存增长或过时的 UI。
 
-## Task List
+## 任务列表
 
-- Use KeepAlive only where state preservation improves UX
-- Set a reasonable `max` to cap cache size
-- Declare component names for include/exclude matching
-- Use `onActivated`/`onDeactivated` for cache-aware logic
-- Decide how and when cached views refresh their data
-- Avoid caching memory-heavy or security-sensitive views
+- 仅在状态保留改善 UX 时使用 KeepAlive
+- 设置合理的 `max` 以限制缓存大小
+- 声明组件名称以进行 include/exclude 匹配
+- 使用 `onActivated`/`onDeactivated` 进行缓存感知逻辑
+- 决定缓存视图如何以及何时刷新其数据
+- 避免缓存内存繁重或安全敏感的视图
 
-## When to Use KeepAlive
+## 何时使用 KeepAlive
 
-Use KeepAlive when switching between views where state should persist (tabs, multi-step forms, dashboards). Avoid it when each visit should start fresh.
+当在状态应该持久化的视图之间切换时使用 KeepAlive(选项卡、多步骤表单、仪表板)。当每次访问都应该开始新鲜时避免使用它。
 
-**BAD:**
+**错误:**
 ```vue
 <template>
-  <!-- State resets on every switch -->
+  <!-- 状态在每次切换时重置 -->
   <component :is="currentTab" />
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <template>
-  <!-- State preserved between switches -->
+  <!-- 状态在切换之间保留 -->
   <KeepAlive>
     <component :is="currentTab" />
   </KeepAlive>
 </template>
 ```
 
-## When NOT to Use KeepAlive
+## 何时不使用 KeepAlive
 
-- Search or filter pages where users expect fresh results
-- Memory-heavy components (maps, large tables, media players)
-- Sensitive flows where data must be cleared on exit
-- Components with heavy background activity you cannot pause
+- 用户期望新鲜结果的搜索或筛选页面
+- 内存繁重的组件(地图、大型表格、媒体播放器)
+- 数据必须在退出时清除的敏感流程
+- 具有您无法暂停的繁重后台活动的组件
 
-## Limit and Control the Cache
+## 限制和控制缓存
 
-Always cap cache size with `max` and restrict caching to specific components when possible.
+始终使用 `max` 限制缓存大小,并在可能时将缓存限制为特定组件。
 
 ```vue
 <template>
@@ -60,9 +60,9 @@ Always cap cache size with `max` and restrict caching to specific components whe
 </template>
 ```
 
-## Ensure Component Names Match include/exclude
+## 确保组件名称匹配 include/exclude
 
-`include` and `exclude` match the component `name` option. Explicitly set names for reliable caching.
+`include` 和 `exclude` 匹配组件 `name` 选项。显式设置名称以实现可靠缓存。
 
 ```vue
 <!-- TabA.vue -->
@@ -79,9 +79,9 @@ defineOptions({ name: 'TabA' })
 </template>
 ```
 
-## Cache Invalidation Strategies
+## 缓存失效策略
 
-Vue 3 has no direct API to remove a specific cached instance. Use keys or dynamic include/exclude to force refreshes.
+Vue 3 没有直接 API 来移除特定的缓存实例。使用键或动态 include/exclude 来强制刷新。
 
 ```vue
 <script setup>
@@ -102,9 +102,9 @@ function invalidateCache(view) {
 </template>
 ```
 
-## Lifecycle Hooks for Cached Components
+## 缓存组件的生命周期钩子
 
-Cached components are not destroyed on switch. Use activation hooks for refresh and cleanup.
+缓存的组件在切换时不会被销毁。使用激活钩子进行刷新和清理。
 
 ```vue
 <script setup>
@@ -120,9 +120,9 @@ onDeactivated(() => {
 </script>
 ```
 
-## Router Caching and Freshness
+## 路由缓存和新鲜度
 
-Decide whether navigation should show cached state or a fresh view. A common pattern is to key by route when params change.
+决定导航应该显示缓存状态还是新视图。常见模式是在参数更改时按路由键入。
 
 ```vue
 <template>
@@ -134,4 +134,4 @@ Decide whether navigation should show cached state or a fresh view. A common pat
 </template>
 ```
 
-If you want cache reuse but fresh data, refresh in `onActivated` and compare query/params before fetching.
+如果您想要缓存重用但新数据,请在 `onActivated` 中刷新并在获取之前比较 query/params。

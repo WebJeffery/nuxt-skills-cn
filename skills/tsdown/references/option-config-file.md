@@ -1,14 +1,14 @@
-# Configuration File
+# 配置文件
 
-Centralize and manage build settings with a configuration file.
+使用配置文件集中和管理构建设置。
 
-## Overview
+## 概述
 
-tsdown searches for config files automatically in the current directory and parent directories.
+tsdown 会自动在当前目录和父目录中搜索配置文件。
 
-## Supported File Names
+## 支持的文件名
 
-tsdown looks for these files (in order):
+tsdown 按顺序查找以下文件：
 - `tsdown.config.ts`
 - `tsdown.config.mts`
 - `tsdown.config.cts`
@@ -17,11 +17,11 @@ tsdown looks for these files (in order):
 - `tsdown.config.cjs`
 - `tsdown.config.json`
 - `tsdown.config`
-- `package.json` (in `tsdown` field)
+- `package.json`（在 `tsdown` 字段中）
 
-## Basic Configuration
+## 基本配置
 
-### TypeScript Config
+### TypeScript 配置
 
 ```ts
 // tsdown.config.ts
@@ -35,7 +35,7 @@ export default defineConfig({
 })
 ```
 
-### JavaScript Config
+### JavaScript 配置
 
 ```js
 // tsdown.config.js
@@ -46,7 +46,7 @@ export default {
 }
 ```
 
-### JSON Config
+### JSON 配置
 
 ```json
 // tsdown.config.json
@@ -57,7 +57,7 @@ export default {
 }
 ```
 
-### Package.json Config
+### Package.json 配置
 
 ```json
 // package.json
@@ -71,9 +71,9 @@ export default {
 }
 ```
 
-## Multiple Configurations
+## 多个配置
 
-Build multiple outputs with different settings:
+使用不同设置构建多个输出：
 
 ```ts
 export default defineConfig([
@@ -93,11 +93,11 @@ export default defineConfig([
 ])
 ```
 
-Each configuration runs as a separate build.
+每个配置作为单独的构建运行。
 
-## Dynamic Configuration
+## 动态配置
 
-Use a function for conditional config:
+使用函数进行条件配置：
 
 ```ts
 export default defineConfig((options) => {
@@ -113,75 +113,75 @@ export default defineConfig((options) => {
 })
 ```
 
-Available options:
-- `watch` - Whether watch mode is enabled
-- Other CLI flags passed to config
+可用选项：
+- `watch` - 是否启用监视模式
+- 传递给配置的其他 CLI 标志
 
-## Config Loaders
+## 配置加载器
 
-Control how TypeScript config files are loaded:
+控制如何加载 TypeScript 配置文件：
 
-### Auto Loader (Default)
+### 自动加载器（默认）
 
-Uses native TypeScript support if available, otherwise falls back to `unrun`:
+如果可用，使用原生 TypeScript 支持，否则回退到 `unrun`：
 
 ```bash
-tsdown # Uses auto loader
+tsdown # 使用自动加载器
 ```
 
-### Native Loader
+### 原生加载器
 
-Uses runtime's native TypeScript support (Node.js 23+, Bun, Deno):
+使用运行时的原生 TypeScript 支持（Node.js 23+、Bun、Deno）：
 
 ```bash
 tsdown --config-loader native
 ```
 
-### Unrun Loader
+### Unrun 加载器
 
-Uses [unrun](https://gugustinette.github.io/unrun/) library for loading:
+使用 [unrun](https://gugustinette.github.io/unrun/) 库进行加载：
 
 ```bash
 tsdown --config-loader unrun
 ```
 
-**Tip:** Use `unrun` loader if you need to load TypeScript configs without file extensions in Node.js.
+**提示：** 如果需要在 Node.js 中加载没有文件扩展名的 TypeScript 配置，请使用 `unrun` 加载器。
 
-## Custom Config Path
+## 自定义配置路径
 
-Specify a custom config file location:
+指定自定义配置文件位置：
 
 ```bash
 tsdown --config ./configs/build.config.ts
-# or
+# 或
 tsdown -c custom-config.ts
 ```
 
-## Disable Config File
+## 禁用配置文件
 
-Ignore config files and use CLI options only:
+忽略配置文件，仅使用 CLI 选项：
 
 ```bash
 tsdown --no-config src/index.ts --format esm
 ```
 
-## Extend Vite/Vitest Config (Experimental)
+## 扩展 Vite/Vitest 配置（实验性）
 
-Reuse existing Vite or Vitest configurations:
+重用现有的 Vite 或 Vitest 配置：
 
 ```bash
-# Extend vite.config.*
+# 扩展 vite.config.*
 tsdown --from-vite
 
-# Extend vitest.config.*
+# 扩展 vitest.config.*
 tsdown --from-vite vitest
 ```
 
-**Note:** Only specific options like `resolve` and `plugins` are reused. Test thoroughly as this feature is experimental.
+**注意：** 仅重用特定选项，如 `resolve` 和 `plugins`。由于此功能是实验性的，请充分测试。
 
-## Workspace / Monorepo
+## 工作区 / Monorepo
 
-Build multiple packages with a single config:
+使用单个配置构建多个包：
 
 ```ts
 export default defineConfig({
@@ -192,22 +192,22 @@ export default defineConfig({
 })
 ```
 
-Each package directory matching the glob pattern will be built with the same configuration.
+每个匹配 glob 模式的包目录都将使用相同的配置进行构建。
 
-## Common Patterns
+## 常见模式
 
-### Library with Multiple Builds
+### 带有多个构建的库
 
 ```ts
 export default defineConfig([
-  // Node.js build
+  // Node.js 构建
   {
     entry: ['src/index.ts'],
     format: ['esm', 'cjs'],
     platform: 'node',
     dts: true,
   },
-  // Browser build
+  // 浏览器构建
   {
     entry: ['src/browser.ts'],
     format: ['iife'],
@@ -217,7 +217,7 @@ export default defineConfig([
 ])
 ```
 
-### Development vs Production
+### 开发 vs 生产
 
 ```ts
 export default defineConfig((options) => ({
@@ -229,7 +229,7 @@ export default defineConfig((options) => ({
 }))
 ```
 
-### Monorepo Root Config
+### Monorepo 根配置
 
 ```ts
 // Root tsdown.config.ts
@@ -239,43 +239,43 @@ export default defineConfig({
   format: ['esm', 'cjs'],
   dts: true,
   clean: true,
-  // Shared config for all packages
+  // 所有包的共享配置
 })
 ```
 
-### Per-Package Override
+### 每个包的覆盖
 
 ```ts
 // packages/special/tsdown.config.ts
 export default defineConfig({
   entry: ['src/index.ts'],
-  format: ['esm'], // Override: only ESM
-  platform: 'browser', // Override: browser only
+  format: ['esm'], // 覆盖：仅 ESM
+  platform: 'browser', // 覆盖：仅浏览器
 })
 ```
 
-## Config Precedence
+## 配置优先级
 
-When multiple configs exist:
+当存在多个配置时：
 
-1. CLI options (highest priority)
-2. Config file specified with `--config`
-3. Auto-discovered config files
-4. Package.json `tsdown` field
-5. Default values
+1. CLI 选项（最高优先级）
+2. 使用 `--config` 指定的配置文件
+3. 自动发现的配置文件
+4. Package.json `tsdown` 字段
+5. 默认值
 
-## Tips
+## 提示
 
-1. **Use TypeScript config** for type checking and autocomplete
-2. **Use defineConfig** helper for better DX
-3. **Export arrays** for multiple build configurations
-4. **Use functions** for dynamic/conditional configs
-5. **Keep configs simple** - prefer convention over configuration
-6. **Use workspace** for monorepo builds
-7. **Test experimental features** thoroughly before production use
+1. **使用 TypeScript 配置**以进行类型检查和自动完成
+2. **使用 defineConfig** 辅助函数以获得更好的 DX
+3. **导出数组**以进行多个构建配置
+4. **使用函数**进行动态/条件配置
+5. **保持配置简单** - 优先使用约定而非配置
+6. **使用 workspace**进行 monorepo 构建
+7. 在生产使用前充分测试实验性功能
 
-## Related Options
+## 相关选项
 
-- [Entry](option-entry.md) - Configure entry points
-- [Output Format](option-output-format.md) - Output formats
-- [Watch Mode](option-watch-mode.md) - Watch mode configuration
+- [入口点](option-entry.md) - 配置入口点
+- [输出格式](option-output-format.md) - 输出格式
+- [监视模式](option-watch-mode.md) - 监视模式配置

@@ -1,13 +1,13 @@
 ---
 name: vite-build-ssr
-description: Vite library mode, multi-page apps, JavaScript API, and SSR guidance
+description: Vite 库模式、多页应用、JavaScript API 和 SSR 指南
 ---
 
-# Build and SSR
+# 构建和 SSR
 
-## Library Mode
+## 库模式
 
-Build a library for distribution:
+构建用于分发的库:
 
 ```ts
 // vite.config.ts
@@ -34,7 +34,7 @@ export default defineConfig({
 })
 ```
 
-### Multiple Entries
+### 多入口
 
 ```ts
 build: {
@@ -48,12 +48,12 @@ build: {
 }
 ```
 
-### Output Formats
+### 输出格式
 
-- Single entry: `es` and `umd`
-- Multiple entries: `es` and `cjs`
+- 单入口: `es` 和 `umd`
+- 多入口: `es` 和 `cjs`
 
-### Package.json Setup
+### Package.json 设置
 
 ```json
 {
@@ -72,7 +72,7 @@ build: {
 }
 ```
 
-## Multi-Page App
+## 多页应用
 
 ```ts
 export default defineConfig({
@@ -87,18 +87,18 @@ export default defineConfig({
 })
 ```
 
-## SSR Development
+## SSR 开发
 
-**Note:** Vite's SSR support is **low-level** and designed mostly for meta-framework authors, not application developers. If you need SSR for your app, use a Vite-based meta-framework instead:
+**注意:** Vite 的 SSR 支持**是低级别的**,主要面向元框架作者,而不是应用开发者。如果你的应用需要 SSR,请使用基于 Vite 的元框架:
 
 - **Nuxt** (Vue) - https://nuxt.com
 - **SvelteKit** (Svelte) - https://svelte.dev/docs/kit
 - **SolidStart** (Solid) - https://start.solidjs.com
 - **TanStack Start** (React) - https://tanstack.com/start
 
-These frameworks build on top of Vite's SSR primitives so you don't have to wire them up yourself.
+这些框架构建在 Vite 的 SSR 原语之上,因此您不必自己连接它们。
 
-**Need a server?** Consider [Nitro](https://nitro.build) -- think of it as "Vite for servers." Nitro provides a portable, framework-agnostic server layer with file-based API routing, auto-imports, and deployment presets for dozens of platforms (Node.js, Deno, Bun, Cloudflare Workers, Vercel, Netlify, etc.). It integrates naturally with Vite and is what powers Nuxt's server engine. See the [Nitro docs](https://nitro.build) for more details.
+**需要服务器?** 考虑 [Nitro](https://nitro.build) -- 将其视为"服务器的 Vite"。Nitro 提供可移植的、框架无关的服务器层,具有基于文件的 API 路由、自动导入和数十个平台的部署预设(Node.js、Deno、Bun、Cloudflare Workers、Vercel、Netlify 等)。它与 Vite 自然集成,并为 Nuxt 的服务器引擎提供动力。有关更多详细信息,请参阅 [Nitro 文档](https://nitro.build)。
 
 ## JavaScript API
 
@@ -153,7 +153,7 @@ const config = await resolveConfig({}, 'build')
 import { loadEnv } from 'vite'
 
 const env = loadEnv('development', process.cwd(), '')
-// Loads all env vars (empty prefix = no filtering)
+// 加载所有环境变量(空前缀 = 无过滤)
 ```
 
 <!--

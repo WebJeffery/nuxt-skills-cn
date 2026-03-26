@@ -1,13 +1,13 @@
 ---
 name: plantuml
-description: Create UML diagrams from text descriptions
+description: 从文本描述创建 UML 图表
 ---
 
-# PlantUML Diagrams
+# PlantUML 图表
 
-Create UML diagrams from text descriptions.
+从文本描述创建 UML 图表。
 
-## Basic Usage
+## 基本用法
 
 ````md
 ```plantuml
@@ -17,11 +17,11 @@ Alice -> Bob : Hello!
 ```
 ````
 
-## Server Configuration
+## 服务器配置
 
-Default: Uses https://www.plantuml.com/plantuml
+默认：使用 https://www.plantuml.com/plantuml
 
-Custom server in headmatter:
+在 headmatter 中自定义服务器：
 
 ```md
 ---
@@ -29,17 +29,17 @@ plantUmlServer: https://your-server.com/plantuml
 ---
 ```
 
-## Diagram Types
+## 图表类型
 
-- Sequence diagrams
-- Class diagrams
-- Activity diagrams
-- Component diagrams
-- State diagrams
-- Object diagrams
-- Use case diagrams
+- 序列图
+- 类图
+- 活动图
+- 组件图
+- 状态图
+- 对象图
+- 用例图
 
-## Resources
+## 资源
 
-- PlantUML docs: https://plantuml.com/
-- Live editor: https://plantuml.com/plantuml
+- PlantUML 文档：https://plantuml.com/
+- 实时编辑器：https://plantuml.com/plantuml

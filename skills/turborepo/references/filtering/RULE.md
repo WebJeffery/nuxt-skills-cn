@@ -1,148 +1,148 @@
-# Turborepo Filter Syntax Reference
+# Turborepo 过滤语法参考
 
-## Running Only Changed Packages: `--affected`
+## 仅运行更改的包：`--affected`
 
-**The primary way to run only changed packages is `--affected`:**
+**仅运行更改的包的主要方式是 `--affected`：**
 
 ```bash
-# Run build/test/lint only in changed packages and their dependents
+# 仅在更改的包及其依赖项中运行 build/test/lint
 turbo run build test lint --affected
 ```
 
-This compares your current branch to the default branch (usually `main` or `master`) and runs tasks in:
+这会将你的当前分支与默认分支（通常是 `main` 或 `master`）进行比较，并在以下情况运行任务：
 
-1. Packages with file changes
-2. Packages that depend on changed packages (dependents)
+1. 具有文件更改的包
+2. 依赖于更改的包的包（依赖项）
 
-### Why Include Dependents?
+### 为什么要包含依赖项？
 
-If you change `@repo/ui`, packages that import `@repo/ui` (like `apps/web`) need to re-run their tasks to verify they still work with the changes.
+如果你更改 `@repo/ui`，导入 `@repo/ui` 的包（如 `apps/web`）需要重新运行其任务以验证它们在更改后仍然工作。
 
-### Customizing --affected
+### 自定义 --affected
 
 ```bash
-# Use a different base branch
+# 使用不同的基础分支
 turbo run build --affected --affected-base=origin/develop
 
-# Use a different head (current state)
+# 使用不同的头部（当前状态）
 turbo run build --affected --affected-head=HEAD~5
 ```
 
-### Common CI Pattern
+### 常见 CI 模式
 
 ```yaml
 # .github/workflows/ci.yml
 - run: turbo run build test lint --affected
 ```
 
-This is the most efficient CI setup - only run tasks for what actually changed.
+这是最高效的 CI 设置 - 仅对实际更改的内容运行任务。
 
 ---
 
-## Manual Git Comparison with --filter
+## 使用 --filter 进行手动 Git 比较
 
-For more control, use `--filter` with git comparison syntax:
+对于更多控制，将 `--filter` 与 git 比较语法一起使用：
 
 ```bash
-# Changed packages + dependents (same as --affected)
+# 更改的包 + 依赖项（与 --affected 相同）
 turbo run build --filter=...[origin/main]
 
-# Only changed packages (no dependents)
+# 仅更改的包（无依赖项）
 turbo run build --filter=[origin/main]
 
-# Changed packages + dependencies (packages they import)
+# 更改的包 + 依赖项（它们导入的包）
 turbo run build --filter=[origin/main]...
 
-# Changed since last commit
+# 自上次提交以来的更改
 turbo run build --filter=...[HEAD^1]
 
-# Changed between two commits
+# 两次提交之间的更改
 turbo run build --filter=[a1b2c3d...e4f5g6h]
 ```
 
-### Comparison Syntax
+### 比较语法
 
-| Syntax        | Meaning                               |
+| 语法        | 含义                               |
 | ------------- | ------------------------------------- |
-| `[ref]`       | Packages changed since `ref`          |
-| `...[ref]`    | Changed packages + their dependents   |
-| `[ref]...`    | Changed packages + their dependencies |
-| `...[ref]...` | Dependencies, changed, AND dependents |
+| `[ref]`       | 自 `ref` 以来更改的包          |
+| `...[ref]`    | 更改的包 + 其依赖项   |
+| `[ref]...`    | 更改的包 + 其依赖项 |
+| `...[ref]...` | 依赖项、更改的包及其依赖项  |
 
 ---
 
-## Other Filter Types
+## 其他过滤类型
 
-Filters select which packages to include in a `turbo run` invocation.
+过滤选择在 `turbo run` 调用中包含哪些包。
 
-### Basic Syntax
+### 基本语法
 
 ```bash
 turbo run build --filter=<package-name>
 turbo run build -F <package-name>
 ```
 
-Multiple filters combine as a union (packages matching ANY filter run).
+多个过滤器组合为并集（匹配任何过滤器的包都会运行）。
 
-### By Package Name
-
-```bash
---filter=web          # exact match
---filter=@acme/*      # scope glob
---filter=*-app        # name glob
-```
-
-### By Directory
+### 按包名
 
 ```bash
---filter=./apps/*           # all packages in apps/
---filter=./packages/ui      # specific directory
+--filter=web          # 精确匹配
+--filter=@acme/*      # 作用域 glob
+--filter=*-app        # 名称 glob
 ```
 
-### By Dependencies/Dependents
+### 按目录
 
-| Syntax      | Meaning                                |
+```bash
+--filter=./apps/*           # apps/ 中的所有包
+--filter=./packages/ui      # 特定目录
+```
+
+### 按依赖/依赖项
+
+| 语法      | 含义                                |
 | ----------- | -------------------------------------- |
-| `pkg...`    | Package AND all its dependencies       |
-| `...pkg`    | Package AND all its dependents         |
-| `...pkg...` | Dependencies, package, AND dependents  |
-| `^pkg...`   | Only dependencies (exclude pkg itself) |
-| `...^pkg`   | Only dependents (exclude pkg itself)   |
+| `pkg...`    | 包及其所有依赖项       |
+| `...pkg`    | 包及其所有依赖项         |
+| `...pkg...` | 依赖项、包及其依赖项  |
+| `^pkg...`   | 仅依赖项（排除包本身） |
+| `...^pkg`   | 仅依赖项（排除包本身）   |
 
-### Negation
+### 否定
 
-Exclude packages with `!`:
+使用 `!` 排除包：
 
 ```bash
---filter=!web              # exclude web
---filter=./apps/* --filter=!admin   # apps except admin
+--filter=!web              # 排除 web
+--filter=./apps/* --filter=!admin   # apps 除了 admin
 ```
 
-### Task Identifiers
+### 任务标识符
 
-Run a specific task in a specific package:
+在特定包中运行特定任务：
 
 ```bash
-turbo run web#build        # only web's build task
+turbo run web#build        # 仅 web 的 build 任务
 turbo run web#build api#test   # web build + api test
 ```
 
-### Combining Filters
+### 组合过滤器
 
-Multiple `--filter` flags create a union:
+多个 `--filter` 标志创建并集：
 
 ```bash
-turbo run build --filter=web --filter=api   # runs in both
+turbo run build --filter=web --filter=api   # 在两者中运行
 ```
 
 ---
 
-## Quick Reference: Changed Packages
+## 快速参考：更改的包
 
-| Goal                               | Command                                                     |
+| 目标                               | 命令                                                     |
 | ---------------------------------- | ----------------------------------------------------------- |
-| Changed + dependents (recommended) | `turbo run build --affected`                                |
-| Custom base branch                 | `turbo run build --affected --affected-base=origin/develop` |
-| Only changed (no dependents)       | `turbo run build --filter=[origin/main]`                    |
-| Changed + dependencies             | `turbo run build --filter=[origin/main]...`                 |
-| Since last commit                  | `turbo run build --filter=...[HEAD^1]`                      |
+| 更改 + 依赖项（推荐） | `turbo run build --affected`                                |
+| 自定义基础分支                 | `turbo run build --affected --affected-base=origin/develop` |
+| 仅更改（无依赖项）       | `turbo run build --filter=[origin/main]`                    |
+| 更改 + 依赖项             | `turbo run build --filter=[origin/main]...`                 |
+| 自上次提交以来                  | `turbo run build --filter=...[HEAD^1]`                      |

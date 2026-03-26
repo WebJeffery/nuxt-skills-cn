@@ -1,99 +1,99 @@
 ---
 name: vitepress-cli
-description: Command-line interface for development, building, and previewing VitePress sites
+description: 用于开发、构建和预览 VitePress 站点的命令行界面
 ---
 
-# CLI Commands
+# CLI 命令
 
-VitePress provides four main commands: `dev`, `build`, `preview`, and `init`.
+VitePress 提供四个主要命令:`dev`、`build`、`preview` 和 `init`。
 
-## Development Server
+## 开发服务器
 
-Start the dev server with hot module replacement:
+启动具有热模块替换的开发服务器:
 
 ```bash
-# In current directory (dev command is optional)
+# 在当前目录中(dev 命令是可选的)
 vitepress
 
-# Or explicitly
+# 或显式指定
 vitepress dev
 
-# With project in subdirectory
+# 项目在子目录中
 vitepress dev docs
 ```
 
-**Options:**
+**选项:**
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `--open [path]` | Open browser on startup |
-| `--port <port>` | Specify port number |
-| `--base <path>` | Override base URL |
-| `--cors` | Enable CORS |
-| `--strictPort` | Exit if port is in use |
-| `--force` | Ignore cache and re-bundle |
+| `--open [path]` | 启动时打开浏览器 |
+| `--port <port>` | 指定端口号 |
+| `--base <path>` | 覆盖基础 URL |
+| `--cors` | 启用 CORS |
+| `--strictPort` | 如果端口被使用则退出 |
+| `--force` | 忽略缓存并重新打包 |
 
 ```bash
 vitepress dev docs --port 3000 --open
 ```
 
-## Production Build
+## 生产构建
 
-Build static files for production:
+为生产构建静态文件:
 
 ```bash
 vitepress build docs
 ```
 
-**Options:**
+**选项:**
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `--base <path>` | Override base URL |
-| `--target <target>` | Transpile target (default: `modules`) |
-| `--outDir <dir>` | Output directory (relative to cwd) |
-| `--assetsInlineLimit <n>` | Asset inline threshold in bytes |
-| `--mpa` | Build in MPA mode (no client hydration) |
+| `--base <path>` | 覆盖基础 URL |
+| `--target <target>` | 转译目标(默认:`modules`) |
+| `--outDir <dir>` | 输出目录(相对于 cwd) |
+| `--assetsInlineLimit <n>` | 资源内联阈值(字节) |
+| `--mpa` | 以 MPA 模式构建(无客户端水合) |
 
 ```bash
 vitepress build docs --outDir dist
 ```
 
-## Preview Production Build
+## 预览生产构建
 
-Locally preview the production build:
+本地预览生产构建:
 
 ```bash
 vitepress preview docs
 ```
 
-**Options:**
+**选项:**
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `--port <port>` | Specify port number |
-| `--base <path>` | Override base URL |
+| `--port <port>` | 指定端口号 |
+| `--base <path>` | 覆盖基础 URL |
 
 ```bash
 vitepress preview docs --port 4173
 ```
 
-## Initialize Project
+## 初始化项目
 
-Start the setup wizard:
+启动设置向导:
 
 ```bash
 vitepress init
 ```
 
-This creates the basic file structure:
-- `.vitepress/config.js` - Configuration
-- `index.md` - Home page
-- Optional example pages
+这将创建基本文件结构:
+- `.vitepress/config.js` - 配置
+- `index.md` - 首页
+- 可选示例页面
 
-## Package.json Scripts
+## Package.json 脚本
 
-Typical scripts configuration:
+典型脚本配置:
 
 ```json
 {
@@ -105,13 +105,13 @@ Typical scripts configuration:
 }
 ```
 
-## Key Points
+## 关键点
 
-- Dev server runs at `http://localhost:5173` by default
-- Preview server runs at `http://localhost:4173`
-- Production output goes to `.vitepress/dist` by default
-- The `docs` argument specifies the project root directory
-- Use `--base` to override base path without modifying config
+- 开发服务器默认运行在 `http://localhost:5173`
+- 预览服务器默认运行在 `http://localhost:4173`
+- 生产输出默认到 `.vitepress/dist`
+- `docs` 参数指定项目根目录
+- 使用 `--base` 覆盖基础路径而无需修改配置
 
 <!--
 Source references:

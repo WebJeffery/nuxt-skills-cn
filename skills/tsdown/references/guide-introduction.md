@@ -1,42 +1,42 @@
-# Introduction
+# 介绍
 
-**tsdown** is _The Elegant Library Bundler_ — a fast, simple bundler for TypeScript and JavaScript libraries powered by Rolldown (Rust-based).
+**tsdown** 是_优雅的库打包器_——一个由 Rolldown（基于 Rust）驱动的快速、简单的 TypeScript 和 JavaScript 库打包器。
 
-## Why tsdown?
+## 为什么选择 tsdown？
 
-Built on [Rolldown](https://rolldown.rs), tsdown provides a complete out-of-the-box solution for library authors:
+基于 [Rolldown](https://rolldown.rs) 构建，tsdown 为库作者提供了完整的开箱即用解决方案：
 
-- **Simplified Configuration**: Sensible defaults for library development, minimal boilerplate
-- **Library-Specific Features**: Auto TypeScript declarations, multiple output formats, package validation
-- **Future-Ready**: Official Rolldown project, foundation for Rolldown Vite's Library Mode
+- **简化的配置**：库开发的合理默认值，最少的样板代码
+- **库特定功能**：自动 TypeScript 声明、多种输出格式、包验证
+- **面向未来**：官方 Rolldown 项目，Rolldown Vite 库模式的基础
 
-## Plugin Ecosystem
+## 插件生态系统
 
-Supports the full Rolldown plugin ecosystem plus most Rollup plugins. See [Plugins](advanced-plugins.md).
+支持完整的 Rolldown 插件生态系统以及大多数 Rollup 插件。请参阅[插件](advanced-plugins.md)。
 
-## What Can It Bundle?
+## 它可以打包什么？
 
-- **TypeScript/JavaScript**: `.ts`, `.js` with modern syntax
-- **TypeScript Declarations**: Auto-generate `.d.ts` files
-- **Multiple Formats**: `esm`, `cjs`, `iife`, `umd`
-- **Assets**: `.json`, `.wasm`, CSS files
-- Built-in tree shaking, minification, and source maps
+- **TypeScript/JavaScript**：带有现代语法的 `.ts`、`.js`
+- **TypeScript 声明**：自动生成 `.d.ts` 文件
+- **多种格式**：`esm`、`cjs`、`iife`、`umd`
+- **资源**：`.json`、`.wasm`、CSS 文件
+- 内置 tree shaking、压缩和源映射
 
-## Key Differences from Rolldown
+## 与 Rolldown 的主要区别
 
-tsdown wraps Rolldown with library-specific features:
-- Auto-external dependencies from `package.json`
-- DTS generation
-- `package.json` exports field generation
-- Watch mode with keyboard shortcuts
-- CSS preprocessing pipeline
-- Executable bundling (SEA)
+tsdown 用库特定功能包装 Rolldown：
+- 从 `package.json` 自动外部化依赖项
+- DTS 生成
+- `package.json` exports 字段生成
+- 带有键盘快捷键的监视模式
+- CSS 预处理管道
+- 可执行文件打包（SEA）
 
-## Prior Arts
+## 先前作品
 
-Inspired by: Rollup, esbuild, tsup, unbuild. Powered by Rolldown.
+灵感来自：Rollup、esbuild、tsup、unbuild。由 Rolldown 驱动。
 
-## Related
+## 相关内容
 
-- [Getting Started](guide-getting-started.md) - Installation and first build
-- [Migrate from tsup](guide-migrate-from-tsup.md) - Migration guide
+- [入门指南](guide-getting-started.md) - 安装和首次构建
+- [从 tsup 迁移](guide-migrate-from-tsup.md) - 迁移指南

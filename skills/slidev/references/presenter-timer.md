@@ -1,13 +1,13 @@
 ---
 name: presenter-timer
-description: Timer and progress bar in presenter mode
+description: 演讲者模式中的计时器和进度条
 ---
 
-# Presenter Timer
+# 演讲者计时器
 
-Timer and progress bar in presenter mode.
+演讲者模式中的计时器和进度条。
 
-## Configuration
+## 配置
 
 ```yaml
 ---
@@ -16,19 +16,19 @@ timer: stopwatch
 ---
 ```
 
-## Options
+## 选项
 
-- `duration`: Presentation length (default: `30min`)
-- `timer`: Mode - `stopwatch` or `countdown` (default: `stopwatch`)
+- `duration`：演示文稿长度（默认：`30min`）
+- `timer`：模式 - `stopwatch` 或 `countdown`（默认：`stopwatch`）
 
-## Features
+## 功能
 
-- Start, pause, reset controls
-- Progress bar showing time elapsed/remaining
-- Visible only in presenter mode
+- 开始、暂停、重置控制
+- 显示已用/剩余时间的进度条
+- 仅在演讲者模式下可见
 
-## Duration Format
+## 持续时间格式
 
-- `30min` - 30 minutes
-- `1h` - 1 hour
-- `45min` - 45 minutes
+- `30min` - 30 分钟
+- `1h` - 1 小时
+- `45min` - 45 分钟

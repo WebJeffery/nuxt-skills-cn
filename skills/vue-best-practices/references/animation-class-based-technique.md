@@ -1,40 +1,40 @@
 ---
-title: Use Class-based Animations for Non-Enter/Leave Effects
+title: 对非进入/离开效果使用基于类的动画
 impact: LOW
-impactDescription: Class-based animations are simpler and more performant for elements that remain in the DOM
+impactDescription: 对于保留在 DOM 中的元素,基于类的动画更简单且性能更高
 type: best-practice
 tags: [vue3, animation, css, class-binding, state]
 ---
 
-# Use Class-based Animations for Non-Enter/Leave Effects
+# 对非进入/离开效果使用基于类的动画
 
-**Impact: LOW** - For animations on elements that are not entering or leaving the DOM, use CSS class-based animations triggered by Vue's reactive state. This is simpler than `<Transition>` and more appropriate for feedback animations like shake, pulse, or highlight effects.
+**影响: LOW** - 对于不在进入或离开 DOM 的元素上的动画,使用由 Vue 响应式状态触发的 CSS 基于类的动画。这比 `<Transition>` 更简单,更适合抖动、脉冲或高亮效果等反馈动画。
 
-## Task List
+## 任务列表
 
-- Use class-based animations for elements staying in the DOM
-- Use `<Transition>` only for enter/leave animations
-- Combine CSS animations with Vue's class bindings (`:class`)
-- Consider using `setTimeout` to auto-remove animation classes
+- 对保留在 DOM 中的元素使用基于类的动画
+- 仅对进入/离开动画使用 `<Transition>`
+- 将 CSS 动画与 Vue 的类绑定(`:class`)结合
+- 考虑使用 `setTimeout` 自动移除动画类
 
-**When to Use Class-based Animations:**
-- User feedback (shake on error, pulse on success)
-- Attention-grabbing effects (highlight changes)
-- Hover/focus states that need more than CSS transitions
-- Any animation where the element stays mounted
+**何时使用基于类的动画:**
+- 用户反馈(错误时抖动,成功时脉冲)
+- 引起注意的效果(高亮更改)
+- 需要更多 CSS 过渡的悬停/焦点状态
+- 元素保持挂载的任何动画
 
-**When to Use Transition Component:**
-- Elements entering/leaving the DOM (v-if/v-show)
-- Route transitions
-- List item additions/removals
+**何时使用 Transition 组件:**
+- 进入/离开 DOM 的元素(v-if/v-show)
+- 路由过渡
+- 列表项添加/删除
 
-## Basic Pattern
+## 基本模式
 
 ```vue
 <template>
   <div :class="{ shake: showError }">
-    <button @click="submitForm">Submit</button>
-    <span v-if="showError">This feature is disabled!</span>
+    <button @click="submitForm">提交</button>
+    <span v-if="showError">此功能已禁用!</span>
   </div>
 </template>
 
@@ -45,13 +45,13 @@ const showError = ref(false)
 
 function submitForm() {
   if (!isValid()) {
-    // Trigger shake animation
+    // 触发抖动动画
     showError.value = true
 
-    // Auto-remove class after animation completes
+    // 动画完成后自动移除类
     setTimeout(() => {
       showError.value = false
-    }, 820)  // Match animation duration
+    }, 820)  // 匹配动画持续时间
   }
 }
 </script>
@@ -59,7 +59,7 @@ function submitForm() {
 <style>
 .shake {
   animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  transform: translate3d(0, 0, 0);  /* Enable GPU acceleration */
+  transform: translate3d(0, 0, 0);  /* 启用 GPU 加速 */
 }
 
 @keyframes shake {
@@ -71,9 +71,9 @@ function submitForm() {
 </style>
 ```
 
-## Common Animation Patterns
+## 常见动画模式
 
-### Pulse on Success
+### 成功时脉冲
 
 ```vue
 <template>
@@ -81,7 +81,7 @@ function submitForm() {
     @click="save"
     :class="{ pulse: saved }"
   >
-    {{ saved ? 'Saved!' : 'Save' }}
+    {{ saved ? '已保存!' : '保存' }}
   </button>
 </template>
 
@@ -109,14 +109,14 @@ async function save() {
 </style>
 ```
 
-### Highlight on Change
+### 更改时高亮
 
 ```vue
 <template>
   <div
     :class="{ highlight: justUpdated }"
   >
-    Value: {{ value }}
+    值: {{ value }}
   </div>
 </template>
 
@@ -144,7 +144,7 @@ watch(value, () => {
 </style>
 ```
 
-### Bounce Attention
+### 弹跳注意
 
 ```vue
 <template>
@@ -163,7 +163,7 @@ const needsAttention = ref(false)
 
 function notifyUser() {
   needsAttention.value = true
-  // No setTimeout needed - using animationend event
+  // 不需要 setTimeout - 使用 animationend 事件
 }
 </script>
 
@@ -179,9 +179,9 @@ function notifyUser() {
 </style>
 ```
 
-## Using animationend Event
+## 使用 animationend 事件
 
-Instead of `setTimeout`, use the `animationend` event for cleaner code:
+代替 `setTimeout`,使用 `animationend` 事件以获得更清晰的代码:
 
 ```vue
 <template>
@@ -189,7 +189,7 @@ Instead of `setTimeout`, use the `animationend` event for cleaner code:
     :class="{ animate: isAnimating }"
     @animationend="isAnimating = false"
   >
-    Content
+    内容
   </div>
 </template>
 
@@ -200,12 +200,12 @@ const isAnimating = ref(false)
 
 function triggerAnimation() {
   isAnimating.value = true
-  // Class is automatically removed when animation ends
+  // 动画结束时自动移除类
 }
 </script>
 ```
 
-## Composable for Reusable Animations
+## 可重用动画的 Composable
 
 ```javascript
 // composables/useAnimation.js
@@ -241,14 +241,14 @@ const pulse = useAnimation(500)
     :class="{ shake: shake.isAnimating.value }"
     @click="shake.trigger()"
   >
-    Shake me
+    抖动我
   </button>
 
   <button
     :class="{ pulse: pulse.isAnimating.value }"
     @click="pulse.trigger()"
   >
-    Pulse me
+    脉冲我
   </button>
 </template>
 ```

@@ -1,26 +1,26 @@
 ---
-title: Test Complex Composables with Host Component Wrapper
+title: 使用主机组件包装器测试复杂的 Composables
 impact: MEDIUM
-impactDescription: Composables using lifecycle hooks or provide/inject fail when tested directly without a component context
+impactDescription: 使用生命周期钩子或 provide/inject 的 composables 在没有组件上下文的情况下直接测试时会失败
 type: capability
 tags: [vue3, testing, composables, vitest, lifecycle-hooks, provide-inject]
 ---
 
-# Test Complex Composables with Host Component Wrapper
+# 使用主机组件包装器测试复杂的 Composables
 
-**Impact: MEDIUM** - Composables that use Vue lifecycle hooks (`onMounted`, `onUnmounted`) or dependency injection (`inject`) require a component context to function. Testing them directly will cause errors or incorrect behavior.
+**影响: MEDIUM** - 使用 Vue 生命周期钩子(`onMounted`、`onUnmounted`)或依赖注入(`inject`)的 composables 需要组件上下文才能工作。直接测试它们会导致错误或不正确的行为。
 
-Simple composables using only reactivity APIs can be tested directly. Complex composables need a helper function that creates a host component context.
+仅使用响应式 API 的简单 composables 可以直接测试。复杂的 composables 需要一个创建主机组件上下文的辅助函数。
 
-## Task Checklist
+## 任务清单
 
-- [ ] Identify if composable uses lifecycle hooks or inject
-- [ ] For simple composables (refs, computed only): test directly
-- [ ] For complex composables: use `withSetup` helper pattern
-- [ ] Clean up by unmounting the test app after each test
-- [ ] Use `app.provide()` to mock injected dependencies
+- [ ] 识别 composable 是否使用生命周期钩子或 inject
+- [ ] 对于简单的 composables(仅 refs、computed): 直接测试
+- [ ] 对于复杂的 composables: 使用 `withSetup` 辅助模式
+- [ ] 在每个测试后通过卸载测试应用来清理
+- [ ] 使用 `app.provide()` 模拟注入的依赖
 
-**Simple Composable - Test Directly:**
+**简单 Composable - 直接测试:**
 ```javascript
 // composables/useCounter.js
 import { ref, computed } from 'vue'
@@ -39,20 +39,20 @@ export function useCounter(initialValue = 0) {
 import { describe, it, expect } from 'vitest'
 import { useCounter } from './useCounter'
 
-// CORRECT: Simple composable can be tested directly
+// 正确: 简单的 composable 可以直接测试
 describe('useCounter', () => {
-  it('initializes with default value', () => {
+  it('使用默认值初始化', () => {
     const { count } = useCounter()
     expect(count.value).toBe(0)
   })
 
-  it('increments count', () => {
+  it('递增计数', () => {
     const { count, increment } = useCounter()
     increment()
     expect(count.value).toBe(1)
   })
 
-  it('computes doubled value', () => {
+  it('计算双倍值', () => {
     const { count, doubled, increment } = useCounter(5)
     expect(doubled.value).toBe(10)
     increment()
@@ -61,7 +61,7 @@ describe('useCounter', () => {
 })
 ```
 
-**Complex Composable - Use Host Wrapper:**
+**复杂 Composable - 使用主机包装器:**
 ```javascript
 // composables/useFetch.js
 import { ref, onMounted, onUnmounted, inject } from 'vue'
@@ -72,10 +72,10 @@ export function useFetch(url) {
   const loading = ref(true)
   let controller = null
 
-  // Uses inject - needs component context
+  // 使用 inject - 需要组件上下文
   const apiClient = inject('apiClient')
 
-  // Uses lifecycle hooks - needs component context
+  // 使用生命周期钩子 - 需要组件上下文
   onMounted(async () => {
     controller = new AbortController()
     try {
@@ -101,7 +101,7 @@ export function useFetch(url) {
 import { createApp } from 'vue'
 
 /**
- * Helper to test composables that need component context
+ * 测试需要组件上下文的 composables 的辅助函数
  */
 export function withSetup(composable) {
   let result
@@ -109,7 +109,7 @@ export function withSetup(composable) {
   const app = createApp({
     setup() {
       result = composable()
-      // Return a render function to suppress warnings
+      // 返回渲染函数以抑制警告
       return () => {}
     }
   })
@@ -134,20 +134,20 @@ describe('useFetch', () => {
   }
 
   afterEach(() => {
-    // IMPORTANT: Clean up to trigger onUnmounted
+    // 重要: 清理以触发 onUnmounted
     app?.unmount()
   })
 
-  it('fetches data on mount', async () => {
+  it('在挂载时获取数据', async () => {
     mockApiClient.get.mockResolvedValue({ data: { id: 1, name: 'Test' } })
 
     const [result, testApp] = withSetup(() => useFetch('/api/test'))
     app = testApp
 
-    // Provide mocked dependency
+    // 提供模拟的依赖
     app.provide('apiClient', mockApiClient)
 
-    // Wait for async operations
+    // 等待异步操作
     await flushPromises()
 
     expect(result.data.value).toEqual({ id: 1, name: 'Test' })
@@ -155,7 +155,7 @@ describe('useFetch', () => {
     expect(result.error.value).toBeNull()
   })
 
-  it('handles errors', async () => {
+  it('处理错误', async () => {
     const testError = new Error('Network error')
     mockApiClient.get.mockRejectedValue(testError)
 
@@ -171,7 +171,7 @@ describe('useFetch', () => {
 })
 ```
 
-## Enhanced withSetup Helper with Provide Support
+## 增强的 withSetup 辅助函数,支持 Provide
 ```javascript
 // test-utils.js
 export function withSetup(composable, options = {}) {
@@ -184,7 +184,7 @@ export function withSetup(composable, options = {}) {
     }
   })
 
-  // Apply global provides before mounting
+  // 在挂载前应用全局 provides
   if (options.provide) {
     Object.entries(options.provide).forEach(([key, value]) => {
       app.provide(key, value)
@@ -196,7 +196,7 @@ export function withSetup(composable, options = {}) {
   return [result, app]
 }
 
-// Usage
+// 使用
 const [result, app] = withSetup(() => useMyComposable(), {
   provide: {
     apiClient: mockApiClient,
@@ -205,13 +205,13 @@ const [result, app] = withSetup(() => useMyComposable(), {
 })
 ```
 
-## Testing with @vue/test-utils mount
+## 使用 @vue/test-utils mount 测试
 ```javascript
 import { mount } from '@vue/test-utils'
 import { defineComponent } from 'vue'
 import { useFetch } from './useFetch'
 
-test('useFetch in component context', async () => {
+test('在组件上下文中的 useFetch', async () => {
   const TestComponent = defineComponent({
     setup() {
       const { data, loading } = useFetch('/api/users')
@@ -233,6 +233,6 @@ test('useFetch in component context', async () => {
 })
 ```
 
-## Reference
-- [Vue.js Testing Guide - Testing Composables](https://vuejs.org/guide/scaling-up/testing#testing-composables)
-- [Vue Test Utils - Mounting Components](https://test-utils.vuejs.org/guide/)
+## 参考
+- [Vue.js 测试指南 - 测试 Composables](https://vuejs.org/guide/scaling-up/testing#testing-composables)
+- [Vue Test Utils - 挂载组件](https://test-utils.vuejs.org/guide/)

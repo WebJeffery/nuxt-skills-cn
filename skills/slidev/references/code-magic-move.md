@@ -1,13 +1,13 @@
 ---
 name: magic-move
-description: Animate code changes with smooth transitions between code blocks
+description: 使用平滑过渡动画化代码更改
 ---
 
 # Shiki Magic Move
 
-Animate code changes with smooth transitions (like Keynote's Magic Move).
+使用平滑过渡动画化代码更改（类似 Keynote 的 Magic Move）。
 
-## Basic Usage
+## 基本用法
 
 `````md
 ````md magic-move
@@ -21,11 +21,11 @@ console.log(`Step ${1 + 1}`)
 console.log(`Step ${3}` as string)
 ```
 ````
-`````
+````
 
-Note: Use 4 backticks for the wrapper.
+注意：包装器使用 4 个反引号。
 
-## With Line Highlighting
+## 带行高亮
 
 `````md
 ````md magic-move {at:4, lines: true}
@@ -36,22 +36,22 @@ function add() {
 }
 ```
 
-Non-code blocks in between are ignored.
+中间的非代码块将被忽略。
 
 ```js {*}{lines: false}
 let count = 1
 const add = () => count += 1
 ```
 ````
-`````
+````
 
-## How It Works
+## 工作原理
 
-- Wraps multiple code blocks as one
-- Each block is a "step"
-- Morphs between steps on click
-- Syntax highlighting preserved during animation
+- 将多个代码块包装为一个
+- 每个块是一个"步骤"
+- 点击时在步骤之间变形
+- 动画期间保留语法高亮
 
-## Resources
+## 资源
 
-- Playground: https://shiki-magic-move.netlify.app/
+- 演练场：https://shiki-magic-move.netlify.app/

@@ -1,79 +1,79 @@
-# CI/CD with Turborepo
+# 使用 Turborepo 的 CI/CD
 
-General principles for running Turborepo in continuous integration environments.
+在持续集成环境中运行 Turborepo 的一般原则。
 
-## Core Principles
+## 核心原则
 
-### Always Use `turbo run` in CI
+### 在 CI 中始终使用 `turbo run`
 
-**Never use the `turbo <tasks>` shorthand in CI or scripts.** Always use `turbo run`:
+**永远不要在 CI 或脚本中使用 `turbo <tasks>` 简写。** 始终使用 `turbo run`：
 
 ```bash
-# CORRECT - Always use in CI, package.json, scripts
+# 正确 - 始终在 CI、package.json、脚本中使用
 turbo run build test lint
 
-# WRONG - Shorthand is only for one-off terminal commands
+# 错误 - 简写仅用于一次性终端命令
 turbo build test lint
 ```
 
-The shorthand `turbo <tasks>` is only for one-off invocations typed directly in terminal by humans or agents. Anywhere the command is written into code (CI, package.json, scripts), use `turbo run`.
+简写 `turbo <tasks>` 仅用于人类或代理在终端中直接输入的一次性调用。在任何将命令写入代码的地方（CI、package.json、脚本），使用 `turbo run`。
 
-### Enable Remote Caching
+### 启用远程缓存
 
-Remote caching dramatically speeds up CI by sharing cached artifacts across runs.
+远程缓存通过在运行之间共享缓存工件显著加快 CI 速度。
 
-Required environment variables:
+所需的环境变量：
 
 ```bash
 TURBO_TOKEN=your_vercel_token
 TURBO_TEAM=your_team_slug
 ```
 
-### Use --affected for PR Builds
+### 在 PR 构建中使用 --affected
 
-The `--affected` flag only runs tasks for packages changed since the base branch:
+`--affected` 标志仅对自基础分支以来更改的包运行任务：
 
 ```bash
 turbo run build test --affected
 ```
 
-This requires Git history to compute what changed.
+这需要 Git 历史记录来计算更改了什么。
 
-## Git History Requirements
+## Git 历史记录要求
 
-### Fetch Depth
+### 获取深度
 
-`--affected` needs access to the merge base. Shallow clones break this.
+`--affected` 需要访问合并基础。浅克隆会破坏这一点。
 
 ```yaml
 # GitHub Actions
 - uses: actions/checkout@v4
   with:
-    fetch-depth: 2 # Minimum for --affected
-    # Use 0 for full history if merge base is far
+    fetch-depth: 2 # --affected 的最小值
+    # 如果合并基础很远，使用 0 获取完整历史
 ```
 
-### Why Shallow Clones Break --affected
+### 为什么浅克隆会破坏 --affected
 
-Turborepo compares the current HEAD to the merge base with `main`. If that commit isn't fetched, `--affected` falls back to running everything.
+Turborepo 将当前 HEAD 与 `main` 的合并基础进行比较。如果未获取该提交，`--affected` 将回退到运行所有内容。
 
-For PRs with many commits, consider:
+对于有许多提交的 PR，请考虑：
 
 ```yaml
-fetch-depth: 0 # Full history
+fetch-depth: 0 # 完整历史
 ```
 
-## Environment Variables Reference
+## 环境变量参考
 
-| Variable            | Purpose                              |
+| 变量            | 目的                              |
 | ------------------- | ------------------------------------ |
-| `TURBO_TOKEN`       | Vercel access token for remote cache |
-| `TURBO_TEAM`        | Your Vercel team slug                |
-| `TURBO_REMOTE_ONLY` | Skip local cache, use remote only    |
-| `TURBO_LOG_ORDER`   | Set to `grouped` for cleaner CI logs |
+| `TURBO_TOKEN`       | 用于远程缓存的 Vercel 访问令牌 |
+| `TURBO_TEAM`        | 你的 Vercel 团队 slug                |
+| `TURBO_REMOTE_ONLY` | 跳过本地缓存，仅使用远程    |
+| `TURBO_LOG_ORDER`   | 设置为 `grouped` 以获得更清晰的 CI 日志 |
 
-## See Also
+## 另请参阅
 
-- [github-actions.md](./github-actions.md) - GitHub Actions setup
-- [vercel.md](./vercel.md) - Vercel deployment
-- [patterns.md](./patterns.md) - CI optimization patterns
+- [github-actions.md](./github-actions.md) - GitHub Actions 设置
+- [vercel.md](./vercel.md) - Vercel 部署
+- [patterns.md](./patterns.md) - CI 优化模式

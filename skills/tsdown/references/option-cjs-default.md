@@ -1,30 +1,30 @@
-# CJS Default Export
+# CJS 默认导出
 
-Control how default exports are handled in CommonJS output.
+控制在 CommonJS 输出中如何处理默认导出。
 
-## Overview
+## 概述
 
-The `cjsDefault` option improves compatibility when generating CommonJS modules. When enabled (default), modules with only a single default export use `module.exports = ...` instead of `exports.default = ...`.
+`cjsDefault` 选项在生成 CommonJS 模块时提高兼容性。启用时（默认），只有单个默认导出的模块使用 `module.exports = ...` 而不是 `exports.default = ...`。
 
-## Type
+## 类型
 
 ```ts
-cjsDefault?: boolean  // default: true
+cjsDefault?: boolean  // 默认：true
 ```
 
-## Basic Usage
+## 基本用法
 
-### Enabled (Default)
+### 启用（默认）
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   format: ['cjs'],
-  cjsDefault: true,  // default behavior
+  cjsDefault: true,  // 默认行为
 })
 ```
 
-### Disabled
+### 禁用
 
 ```ts
 export default defineConfig({
@@ -34,13 +34,13 @@ export default defineConfig({
 })
 ```
 
-## How It Works
+## 工作原理
 
-### With `cjsDefault: true` (Default)
+### 使用 `cjsDefault: true`（默认）
 
-When your module has **only a single default export**, tsdown transforms:
+当您的模块**只有单个默认导出**时，tsdown 转换：
 
-**Source:**
+**源代码：**
 ```ts
 // src/index.ts
 export default function greet() {
@@ -48,7 +48,7 @@ export default function greet() {
 }
 ```
 
-**Generated CJS:**
+**生成的 CJS：**
 ```js
 // dist/index.cjs
 function greet() {
@@ -57,18 +57,18 @@ function greet() {
 module.exports = greet
 ```
 
-**Generated Declaration:**
+**生成的声明：**
 ```ts
 // dist/index.d.cts
 declare function greet(): void
 export = greet
 ```
 
-This allows consumers to use `const greet = require('your-module')` directly.
+这允许使用者直接使用 `const greet = require('your-module')`。
 
-### With `cjsDefault: false`
+### 使用 `cjsDefault: false`
 
-The default export stays as `exports.default`:
+默认导出保持为 `exports.default`：
 
 ```js
 // dist/index.cjs
@@ -78,21 +78,21 @@ function greet() {
 exports.default = greet
 ```
 
-Consumers need `require('your-module').default`.
+使用者需要 `require('your-module').default`。
 
-## When to Disable
+## 何时禁用
 
-- When your module has both default and named exports
-- When you need consistent `exports.default` behavior
-- When consumers always use ESM imports
+- 当您的模块同时具有默认导出和命名导出时
+- 当您需要一致的 `exports.default` 行为时
+- 当使用者始终使用 ESM 导入时
 
-## Tips
+## 提示
 
-1. **Leave enabled** for most libraries (default `true`)
-2. **Disable** if you have both default and named exports and need consistent behavior
-3. **Test CJS consumers** to verify compatibility
+1. **保持启用**用于大多数库（默认 `true`）
+2. **禁用**如果您同时具有默认导出和命名导出并且需要一致的行为
+3. **测试 CJS 使用者**以验证兼容性
 
-## Related Options
+## 相关选项
 
-- [Output Format](option-output-format.md) - Module formats
-- [Shims](option-shims.md) - ESM/CJS compatibility
+- [输出格式](option-output-format.md) - 模块格式
+- [Shims](option-shims.md) - ESM/CJS 兼容性

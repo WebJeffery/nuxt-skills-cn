@@ -1,15 +1,15 @@
 ---
 name: vitepress-code-blocks
-description: Syntax highlighting, line highlighting, colored diffs, focus, and line numbers
+description: 语法高亮、行高亮、彩色差异、焦点和行号
 ---
 
-# Code Blocks
+# 代码块
 
-VitePress uses Shiki for syntax highlighting with powerful code block features.
+VitePress 使用 Shiki 进行语法高亮,具有强大的代码块功能。
 
-## Syntax Highlighting
+## 语法高亮
 
-Specify language after opening backticks:
+在开始反引号后指定语言:
 
 ````md
 ```js
@@ -19,11 +19,11 @@ export default {
 ```
 ````
 
-Supports [all languages](https://shiki.style/languages) available in Shiki.
+支持 Shiki 中可用的[所有语言](https://shiki.style/languages)。
 
-## Line Highlighting
+## 行高亮
 
-Highlight specific lines:
+高亮特定行:
 
 ````md
 ```js{4}
@@ -37,7 +37,7 @@ export default {
 ```
 ````
 
-Multiple lines and ranges:
+多行和范围:
 
 ````md
 ```js{1,4,6-8}
@@ -54,7 +54,7 @@ export default {
 ```
 ````
 
-Inline highlighting with comment:
+使用注释的内联高亮:
 
 ````md
 ```js
@@ -68,9 +68,9 @@ export default {
 ```
 ````
 
-## Focus
+## 焦点
 
-Blur other code and focus specific lines:
+模糊其他代码并聚焦特定行:
 
 ````md
 ```js
@@ -84,15 +84,15 @@ export default {
 ```
 ````
 
-Focus multiple lines:
+聚焦多行:
 
 ```js
 // [!code focus:3]
 ```
 
-## Colored Diffs
+## 彩色差异
 
-Show additions and removals:
+显示添加和删除:
 
 ````md
 ```js
@@ -107,9 +107,9 @@ export default {
 ```
 ````
 
-## Errors and Warnings
+## 错误和警告
 
-Color lines as errors or warnings:
+将行着色为错误或警告:
 
 ````md
 ```js
@@ -124,9 +124,9 @@ export default {
 ```
 ````
 
-## Line Numbers
+## 行号
 
-Enable globally:
+全局启用:
 
 ```ts
 // .vitepress/config.ts
@@ -137,7 +137,7 @@ export default {
 }
 ```
 
-Per-block override:
+每块覆盖:
 
 ````md
 ```ts:line-numbers
@@ -151,7 +151,7 @@ const b = 2
 ```
 ````
 
-Start from specific number:
+从特定数字开始:
 
 ````md
 ```ts:line-numbers=5
@@ -161,9 +161,9 @@ const b = 2  // This is line 6
 ```
 ````
 
-## Code Groups
+## 代码组
 
-Tabbed code blocks:
+选项卡式代码块:
 
 ````md
 ::: code-group
@@ -179,33 +179,33 @@ export default defineConfig({ /* ... */ })
 :::
 ````
 
-## Import Code Snippets
+## 导入代码片段
 
-From external files:
+从外部文件:
 
 ```md
 <<< @/snippets/snippet.js
 ```
 
-With highlighting:
+使用高亮:
 
 ```md
 <<< @/snippets/snippet.js{2,4-6}
 ```
 
-Specific region:
+特定区域:
 
 ```md
 <<< @/snippets/snippet.js#regionName{1,2}
 ```
 
-With language and line numbers:
+使用语言和行号:
 
 ```md
 <<< @/snippets/snippet.cs{1,2,4-6 c#:line-numbers}
 ```
 
-In code groups:
+在代码组中:
 
 ```md
 ::: code-group
@@ -216,9 +216,9 @@ In code groups:
 :::
 ```
 
-## File Labels
+## 文件标签
 
-Add filename labels to code blocks:
+将文件名标签添加到代码块:
 
 ````md
 ```js [vite.config.js]
@@ -226,15 +226,15 @@ export default defineConfig({})
 ```
 ````
 
-## Key Points
+## 关键点
 
-- Use `// [!code highlight]` for inline highlighting
-- Use `// [!code focus]` to focus with blur effect
-- Use `// [!code ++]` and `// [!code --]` for diffs
-- Use `// [!code error]` and `// [!code warning]` for status
-- `:line-numbers` and `:no-line-numbers` control line numbers per block
-- `@` in imports refers to source root
-- Code groups create tabbed interfaces
+- 使用 `// [!code highlight]` 进行内联高亮
+- 使用 `// [!code focus]` 聚焦并带有模糊效果
+- 使用 `// [!code ++]` 和 `// [!code --]` 进行差异
+- 使用 `// [!code error]` 和 `// [!code warning]` 进行状态
+- `:line-numbers` 和 `:no-line-numbers` 控制每块的行号
+- 导入中的 `@` 引用源根目录
+- 代码组创建选项卡式界面
 
 <!--
 Source references:

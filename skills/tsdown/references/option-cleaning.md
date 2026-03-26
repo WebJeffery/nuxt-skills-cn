@@ -1,49 +1,49 @@
-# Output Directory Cleaning
+# 输出目录清理
 
-Control how the output directory is cleaned before builds.
+控制构建前如何清理输出目录。
 
-## Overview
+## 概述
 
-By default, tsdown **cleans the output directory** before each build to remove stale files from previous builds.
+默认情况下，tsdown 在每次构建前**清理输出目录**以删除先前构建中的过时文件。
 
-## Basic Usage
+## 基本用法
 
 ### CLI
 
 ```bash
-# Clean enabled (default)
+# 启用清理（默认）
 tsdown
 
-# Disable cleaning
+# 禁用清理
 tsdown --no-clean
 ```
 
-### Config File
+### 配置文件
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
-  clean: true,  // Default
+  clean: true,  // 默认
 })
 ```
 
-## Behavior
+## 行为
 
-### With Cleaning (Default)
+### 启用清理（默认）
 
-Before each build:
-1. All files in `outDir` are removed
-2. Fresh build starts with empty directory
-3. Only current build outputs remain
+每次构建前：
+1. `outDir` 中的所有文件都被删除
+2. 全新构建从空目录开始
+3. 仅保留当前构建输出
 
-**Benefits:**
-- No stale files
-- Predictable output
-- Clean slate each build
+**好处：**
+- 没有过时文件
+- 可预测的输出
+- 每次构建都是干净的
 
-### Without Cleaning
+### 不启用清理
 
-Build outputs are added to existing files:
+构建输出添加到现有文件：
 
 ```ts
 export default defineConfig({
@@ -51,95 +51,95 @@ export default defineConfig({
 })
 ```
 
-**Use when:**
-- Multiple builds to same directory
-- Incremental builds
-- Preserving other files
-- Watch mode (faster rebuilds)
+**在以下情况下使用：**
+- 多次构建到同一目录
+- 增量构建
+- 保留其他文件
+- 监视模式（更快的重新构建）
 
-## Common Patterns
+## 常见模式
 
-### Production Build
+### 生产构建
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   format: ['esm', 'cjs'],
-  clean: true,  // Ensure clean output
+  clean: true,  // 确保干净的输出
   minify: true,
 })
 ```
 
-### Development Mode
+### 开发模式
 
 ```ts
 export default defineConfig((options) => ({
   entry: ['src/index.ts'],
-  clean: !options.watch,  // Don't clean in watch mode
+  clean: !options.watch,  // 在监视模式下不清理
   sourcemap: options.watch,
 }))
 ```
 
-### Multiple Builds
+### 多次构建
 
 ```ts
 export default defineConfig([
   {
     entry: ['src/index.ts'],
     outDir: 'dist',
-    clean: true,  // Clean once
+    clean: true,  // 清理一次
   },
   {
     entry: ['src/cli.ts'],
     outDir: 'dist',
-    clean: false,  // Don't clean, add to same dir
+    clean: false,  // 不清理，添加到同一目录
   },
 ])
 ```
 
-### Monorepo Package
+### Monorepo 包
 
 ```ts
 export default defineConfig({
   workspace: 'packages/*',
   entry: ['src/index.ts'],
-  clean: true,  // Clean each package's dist
+  clean: true,  // 清理每个包的 dist
 })
 ```
 
-### Preserve Static Files
+### 保留静态文件
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
-  clean: false,  // Keep manually added files
+  clean: false,  // 保留手动添加的文件
   outDir: 'dist',
 })
 
-// Manually copy files first
-// Then run tsdown --no-clean
+// 首先手动复制文件
+// 然后运行 tsdown --no-clean
 ```
 
-## Clean Patterns
+## 清理模式
 
-### Selective Cleaning
+### 选择性清理
 
 ```ts
 import { rmSync } from 'fs'
 
 export default defineConfig({
-  clean: false,  // Disable auto clean
+  clean: false,  // 禁用自动清理
   hooks: {
     'build:prepare': () => {
-      // Custom cleaning logic
+      // 自定义清理逻辑
       rmSync('dist/*.js', { force: true })
-      // Keep other files
+      // 保留其他文件
     },
   },
 })
 ```
 
-### Clean Specific Directories
+### 清理特定目录
 
 ```ts
 export default defineConfig({
@@ -147,112 +147,112 @@ export default defineConfig({
   hooks: {
     'build:prepare': async () => {
       const { rm } = await import('fs/promises')
-      // Only clean specific subdirectories
+      // 仅清理特定子目录
       await rm('dist/esm', { recursive: true, force: true })
       await rm('dist/cjs', { recursive: true, force: true })
-      // Keep dist/types
+      // 保留 dist/types
     },
   },
 })
 ```
 
-## Watch Mode Behavior
+## 监视模式行为
 
-In watch mode, cleaning behavior is important:
+在监视模式下，清理行为很重要：
 
-### Clean on First Build Only
+### 仅在首次构建时清理
 
 ```ts
 export default defineConfig((options) => ({
   entry: ['src/index.ts'],
   watch: options.watch,
-  clean: !options.watch,  // Only clean initial build
+  clean: !options.watch,  // 仅清理初始构建
 }))
 ```
 
-**Result:**
-- First build: Clean
-- Subsequent rebuilds: Incremental
+**结果：**
+- 首次构建：清理
+- 后续重新构建：增量
 
-### Always Clean
+### 始终清理
 
 ```ts
 export default defineConfig({
   watch: true,
-  clean: true,  // Clean every rebuild
+  clean: true,  // 每次重新构建都清理
 })
 ```
 
-**Trade-off:** Slower rebuilds, but always fresh output.
+**权衡：** 重新构建较慢，但输出始终是新的。
 
-## Tips
+## 提示
 
-1. **Leave enabled** for production builds
-2. **Disable in watch mode** for faster rebuilds
-3. **Use multiple configs** carefully with cleaning
-4. **Custom clean logic** via hooks if needed
-5. **Be cautious** - cleaning removes ALL files in outDir
-6. **Test cleaning** - ensure no important files are lost
+1. **保持启用**用于生产构建
+2. **在监视模式下禁用**以加快重新构建
+3. **小心使用多个配置**与清理
+4. **自定义清理逻辑**通过 hooks（如果需要）
+5. **谨慎** - 清理会删除 outDir 中的所有文件
+6. **测试清理** - 确保没有重要文件丢失
 
-## Troubleshooting
+## 故障排除
 
-### Important Files Deleted
+### 重要文件被删除
 
-- Don't put non-build files in outDir
-- Use separate directory for static files
-- Disable cleaning and manage manually
+- 不要将非构建文件放在 outDir 中
+- 为静态文件使用单独的目录
+- 禁用清理并手动管理
 
-### Stale Files in Output
+### 输出中有过时文件
 
-- Enable cleaning: `clean: true`
-- Or manually remove before build
+- 启用清理：`clean: true`
+- 或在构建前手动删除
 
-### Slow Rebuilds in Watch
+### 监视中重新构建缓慢
 
-- Disable cleaning in watch mode
-- Use incremental builds
+- 在监视模式下禁用清理
+- 使用增量构建
 
-## CLI Examples
+## CLI 示例
 
 ```bash
-# Default (clean enabled)
+# 默认（启用清理）
 tsdown
 
-# Disable cleaning
+# 禁用清理
 tsdown --no-clean
 
-# Watch mode without cleaning
+# 不清理的监视模式
 tsdown --watch --no-clean
 
-# Multiple formats with cleaning
+# 多种格式并清理
 tsdown --format esm,cjs --clean
 ```
 
-## Examples
+## 示例
 
-### Safe Production Build
+### 安全的生产构建
 
 ```bash
-# Clean before build
+# 构建前清理
 rm -rf dist
 tsdown --clean
 ```
 
-### Incremental Development
+### 增量开发
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   watch: true,
-  clean: false,  // Faster rebuilds
+  clean: false,  // 更快的重新构建
   sourcemap: true,
 })
 ```
 
-### Multi-Stage Build
+### 多阶段构建
 
 ```ts
-// Stage 1: Clean and build main
+// 阶段 1：清理并构建主文件
 export default defineConfig([
   {
     entry: ['src/index.ts'],
@@ -262,14 +262,14 @@ export default defineConfig([
   {
     entry: ['src/utils.ts'],
     outDir: 'dist',
-    clean: false,  // Add to same directory
+    clean: false,  // 添加到同一目录
   },
 ])
 ```
 
-## Related Options
+## 相关选项
 
-- [Output Directory](option-output-directory.md) - Configure outDir
-- [Watch Mode](option-watch-mode.md) - Development workflow
-- [Hooks](advanced-hooks.md) - Custom clean logic
-- [Entry](option-entry.md) - Entry points
+- [输出目录](option-output-directory.md) - 配置 outDir
+- [监视模式](option-watch-mode.md) - 开发工作流
+- [Hooks](advanced-hooks.md) - 自定义清理逻辑
+- [入口点](option-entry.md) - 入口点

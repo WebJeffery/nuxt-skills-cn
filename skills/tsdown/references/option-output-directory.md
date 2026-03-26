@@ -1,25 +1,25 @@
-# Output Directory
+# 输出目录
 
-Configure the output directory for bundled files.
+配置打包文件的输出目录。
 
-## Overview
+## 概述
 
-By default, tsdown outputs bundled files to the `dist` directory. You can customize this location using the `outDir` option.
+默认情况下，tsdown 将打包文件输出到 `dist` 目录。您可以使用 `outDir` 选项自定义此位置。
 
-## Basic Usage
+## 基本用法
 
 ### CLI
 
 ```bash
-# Default output to dist/
+# 默认输出到 dist/
 tsdown
 
-# Custom output directory
+# 自定义输出目录
 tsdown --out-dir build
 tsdown -d lib
 ```
 
-### Config File
+### 配置文件
 
 ```ts
 export default defineConfig({
@@ -28,20 +28,20 @@ export default defineConfig({
 })
 ```
 
-## Common Patterns
+## 常见模式
 
-### Standard Library
+### 标准库
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   format: ['esm', 'cjs'],
-  outDir: 'dist',  // Default
+  outDir: 'dist',  // 默认
   dts: true,
 })
 ```
 
-**Output:**
+**输出：**
 ```
 dist/
 ├── index.mjs
@@ -49,7 +49,7 @@ dist/
 └── index.d.ts
 ```
 
-### Separate Directories by Format
+### 按格式分离目录
 
 ```ts
 export default defineConfig([
@@ -66,7 +66,7 @@ export default defineConfig([
 ])
 ```
 
-**Output:**
+**输出：**
 ```
 dist/
 ├── esm/
@@ -75,33 +75,33 @@ dist/
     └── index.js
 ```
 
-### Monorepo Package
+### Monorepo 包
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
-  outDir: 'lib',  // Custom directory
+  outDir: 'lib',  // 自定义目录
   clean: true,
 })
 ```
 
-### Build to Root
+### 构建到根目录
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
-  outDir: '.',  // Output to project root (not recommended)
-  clean: false,  // Don't clean root!
+  outDir: '.',  // 输出到项目根目录（不推荐）
+  clean: false,  // 不要清理根目录！
 })
 ```
 
-**Warning:** Be careful when outputting to root to avoid deleting important files.
+**警告：** 输出到根目录时要小心，以避免删除重要文件。
 
-## Output Extensions
+## 输出扩展名
 
-### Custom Extensions
+### 自定义扩展名
 
-Use `outExtensions` to control file extensions:
+使用 `outExtensions` 控制文件扩展名：
 
 ```ts
 export default defineConfig({
@@ -116,16 +116,16 @@ export default defineConfig({
 })
 ```
 
-### Default Extensions
+### 默认扩展名
 
-| Format | Default Extension | With `type: "module"` |
+| 格式 | 默认扩展名 | 使用 `type: "module"` |
 |--------|-------------------|----------------------|
 | `esm` | `.mjs` | `.js` |
 | `cjs` | `.cjs` | `.js` |
 | `iife` | `.global.js` | `.global.js` |
 | `umd` | `.umd.js` | `.umd.js` |
 
-### ESM with .js Extension
+### 使用 .js 扩展名的 ESM
 
 ```ts
 export default defineConfig({
@@ -135,13 +135,13 @@ export default defineConfig({
 })
 ```
 
-Requires `"type": "module"` in package.json.
+需要在 package.json 中使用 `"type": "module"`。
 
-## File Naming
+## 文件命名
 
-### Entry Names
+### 入口名称
 
-Control output filenames based on entry names:
+根据入口名称控制输出文件名：
 
 ```ts
 export default defineConfig({
@@ -153,24 +153,24 @@ export default defineConfig({
 })
 ```
 
-**Output:**
+**输出：**
 ```
 dist/
 ├── index.mjs
 └── utils.mjs
 ```
 
-### Glob Entry
+### Glob 入口
 
 ```ts
 export default defineConfig({
   entry: ['src/**/*.ts', '!**/*.test.ts'],
   outDir: 'dist',
-  unbundle: true,  // Preserve structure
+  unbundle: true,  // 保留结构
 })
 ```
 
-**Output:**
+**输出：**
 ```
 dist/
 ├── index.mjs
@@ -180,26 +180,26 @@ dist/
     └── button.mjs
 ```
 
-## Multiple Builds
+## 多次构建
 
-### Same Output Directory
+### 相同输出目录
 
 ```ts
 export default defineConfig([
   {
     entry: ['src/index.ts'],
     outDir: 'dist',
-    clean: true,  // Clean first
+    clean: true,  // 首先清理
   },
   {
     entry: ['src/cli.ts'],
     outDir: 'dist',
-    clean: false,  // Don't clean again
+    clean: false,  // 不要再次清理
   },
 ])
 ```
 
-### Different Output Directories
+### 不同输出目录
 
 ```ts
 export default defineConfig([
@@ -216,55 +216,55 @@ export default defineConfig([
 ])
 ```
 
-## CLI Examples
+## CLI 示例
 
 ```bash
-# Default
+# 默认
 tsdown
 
-# Custom directory
+# 自定义目录
 tsdown --out-dir build
 tsdown -d lib
 
-# Nested directory
+# 嵌套目录
 tsdown --out-dir dist/lib
 
-# With other options
+# 与其他选项一起
 tsdown --out-dir build --format esm,cjs --dts
 ```
 
-## Tips
+## 提示
 
-1. **Use default `dist`** for standard projects
-2. **Be careful with root** - avoid `outDir: '.'`
-3. **Clean before build** - use `clean: true`
-4. **Consistent naming** - match your project conventions
-5. **Separate by format** if needed for clarity
-6. **Check .gitignore** - ensure output dir is ignored
+1. **使用默认 `dist`**用于标准项目
+2. **小心使用根目录** - 避免使用 `outDir: '.'`
+3. **构建前清理** - 使用 `clean: true`
+4. **一致的命名** - 匹配您的项目约定
+5. **按格式分离**（如果需要清晰度）
+6. **检查 .gitignore** - 确保输出目录被忽略
 
-## Troubleshooting
+## 故障排除
 
-### Files Not in Expected Location
+### 文件不在预期位置
 
-- Check `outDir` config
-- Verify build completed successfully
-- Look for typos in path
+- 检查 `outDir` 配置
+- 验证构建成功完成
+- 查找路径中的拼写错误
 
-### Files Deleted Unexpectedly
+### 文件意外被删除
 
-- Check if `clean: true`
-- Ensure outDir doesn't overlap with source
-- Don't use root as outDir
+- 检查是否 `clean: true`
+- 确保 outDir 不与源代码重叠
+- 不要使用根目录作为 outDir
 
-### Permission Errors
+### 权限错误
 
-- Check write permissions
-- Ensure directory isn't locked
-- Try different location
+- 检查写入权限
+- 确保目录未被锁定
+- 尝试不同的位置
 
-## Related Options
+## 相关选项
 
-- [Cleaning](option-cleaning.md) - Clean output directory
-- [Entry](option-entry.md) - Entry points
-- [Output Format](option-output-format.md) - Module formats
-- [Unbundle](option-unbundle.md) - Preserve structure
+- [清理](option-cleaning.md) - 清理输出目录
+- [入口点](option-entry.md) - 入口点
+- [输出格式](option-output-format.md) - 模块格式
+- [Unbundle](option-unbundle.md) - 保留结构

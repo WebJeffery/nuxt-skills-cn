@@ -1,16 +1,16 @@
 ---
 name: direction
-description: Navigation direction-based styling
+description: 基于导航方向的样式
 ---
 
-# Navigation Direction Variants
+# 导航方向变体
 
-Apply different styles based on navigation direction (forward/backward).
+根据导航方向（前进/后退）应用不同的样式。
 
-## CSS Classes
+## CSS 类
 
 ```css
-/* Delay only when navigating forward */
+/* 仅在前进导航时延迟 */
 .slidev-nav-go-forward .slidev-vclick-target {
   transition-delay: 500ms;
 }
@@ -19,16 +19,16 @@ Apply different styles based on navigation direction (forward/backward).
 }
 ```
 
-## UnoCSS Variants
+## UnoCSS 变体
 
-Use `forward:` or `backward:` prefix:
+使用 `forward:` 或 `backward:` 前缀：
 
 ```html
-<div v-click class="transition forward:delay-300">Element</div>
+<div v-click class="transition forward:delay-300">元素</div>
 ```
 
-Animation is only delayed when navigating forward, not when going back.
+动画仅在前进导航时延迟，后退时不会。
 
-## Use Case
+## 使用场景
 
-Create asymmetric animations where entering a slide feels different from leaving it.
+创建不对称动画，使进入幻灯片的感觉与离开时不同。

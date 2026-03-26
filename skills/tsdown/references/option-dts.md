@@ -1,23 +1,23 @@
-# TypeScript Declaration Files
+# TypeScript 声明文件
 
-Generate `.d.ts` type declaration files for your library.
+为您的库生成 `.d.ts` 类型声明文件。
 
-## Overview
+## 概述
 
-tsdown uses [rolldown-plugin-dts](https://github.com/sxzz/rolldown-plugin-dts) to generate and bundle TypeScript declaration files.
+tsdown 使用 [rolldown-plugin-dts](https://github.com/sxzz/rolldown-plugin-dts) 来生成和打包 TypeScript 声明文件。
 
-**Requirements:**
-- TypeScript must be installed in your project
+**要求：**
+- 必须在项目中安装 TypeScript
 
-## Enabling DTS Generation
+## 启用 DTS 生成
 
-### Auto-Enabled
+### 自动启用
 
-DTS generation is **automatically enabled** if `package.json` contains:
-- `types` field, or
-- `typings` field
+如果 `package.json` 包含以下内容，DTS 生成将**自动启用**：
+- `types` 字段，或
+- `typings` 字段
 
-### Manual Enable
+### 手动启用
 
 #### CLI
 
@@ -25,7 +25,7 @@ DTS generation is **automatically enabled** if `package.json` contains:
 tsdown --dts
 ```
 
-#### Config File
+#### 配置文件
 
 ```ts
 export default defineConfig({
@@ -33,11 +33,11 @@ export default defineConfig({
 })
 ```
 
-## Performance
+## 性能
 
-### With `isolatedDeclarations` (Recommended)
+### 使用 `isolatedDeclarations`（推荐）
 
-**Extremely fast** - uses oxc-transform for generation.
+**极快** - 使用 oxc-transform 进行生成。
 
 ```json
 // tsconfig.json
@@ -48,15 +48,15 @@ export default defineConfig({
 }
 ```
 
-### Without `isolatedDeclarations`
+### 不使用 `isolatedDeclarations`
 
-Falls back to TypeScript compiler. Reliable but slower.
+回退到 TypeScript 编译器。可靠但较慢。
 
-## Declaration Maps
+## 声明映射
 
-Map `.d.ts` files back to original `.ts` sources (useful for monorepos).
+将 `.d.ts` 文件映射回原始 `.ts` 源文件（对 monorepos 有用）。
 
-### Enable in tsconfig.json
+### 在 tsconfig.json 中启用
 
 ```json
 {
@@ -66,7 +66,7 @@ Map `.d.ts` files back to original `.ts` sources (useful for monorepos).
 }
 ```
 
-### Enable in tsdown Config
+### 在 tsdown 配置中启用
 
 ```ts
 export default defineConfig({
@@ -76,11 +76,11 @@ export default defineConfig({
 })
 ```
 
-## Advanced Options
+## 高级选项
 
-### Custom Compiler Options
+### 自定义编译器选项
 
-Override TypeScript compiler options:
+覆盖 TypeScript 编译器选项：
 
 ```ts
 export default defineConfig({
@@ -92,14 +92,14 @@ export default defineConfig({
 })
 ```
 
-## Build Process
+## 构建过程
 
-- **ESM format**: `.js` and `.d.ts` files generated in same build
-- **CJS format**: Separate build process for `.d.ts` files
+- **ESM 格式**：在同一构建中生成 `.js` 和 `.d.ts` 文件
+- **CJS 格式**：为 `.d.ts` 文件使用单独的构建过程
 
-## Common Patterns
+## 常见模式
 
-### Basic Library
+### 基本库
 
 ```ts
 export default defineConfig({
@@ -109,12 +109,12 @@ export default defineConfig({
 })
 ```
 
-Output:
+输出：
 - `dist/index.mjs`
 - `dist/index.cjs`
 - `dist/index.d.ts`
 
-### Multiple Entry Points
+### 多个入口点
 
 ```ts
 export default defineConfig({
@@ -127,23 +127,23 @@ export default defineConfig({
 })
 ```
 
-Output:
-- `dist/index.mjs`, `dist/index.cjs`, `dist/index.d.ts`
-- `dist/utils.mjs`, `dist/utils.cjs`, `dist/utils.d.ts`
+输出：
+- `dist/index.mjs`、`dist/index.cjs`、`dist/index.d.ts`
+- `dist/utils.mjs`、`dist/utils.cjs`、`dist/utils.d.ts`
 
-### With Monorepo Support
+### Monorepo 支持
 
 ```ts
 export default defineConfig({
   entry: ['src/index.ts'],
   format: ['esm', 'cjs'],
   dts: {
-    sourcemap: true, // Enable declaration maps
+    sourcemap: true, // 启用声明映射
   },
 })
 ```
 
-### Fast Build (Isolated Declarations)
+### 快速构建（独立声明）
 
 ```json
 // tsconfig.json
@@ -161,35 +161,35 @@ export default defineConfig({
 export default defineConfig({
   entry: ['src/index.ts'],
   format: ['esm', 'cjs'],
-  dts: true, // Will use fast oxc-transform
+  dts: true, // 将使用快速的 oxc-transform
 })
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Missing Types
+### 缺少类型
 
-Ensure TypeScript is installed:
+确保已安装 TypeScript：
 
 ```bash
 pnpm add -D typescript
 ```
 
-### Slow Generation
+### 生成缓慢
 
-Enable `isolatedDeclarations` in `tsconfig.json` for faster builds.
+在 `tsconfig.json` 中启用 `isolatedDeclarations` 以加快构建。
 
-### Declaration Errors
+### 声明错误
 
-Check that all exports have explicit types (required for `isolatedDeclarations`).
+检查所有导出是否都有显式类型（`isolatedDeclarations` 所需）。
 
-### Report Issues
+### 报告问题
 
-For DTS-specific issues, report to [rolldown-plugin-dts](https://github.com/sxzz/rolldown-plugin-dts/issues).
+对于 DTS 特定问题，请报告到 [rolldown-plugin-dts](https://github.com/sxzz/rolldown-plugin-dts/issues)。
 
-### Vue Support
+### Vue 支持
 
-Enable Vue component type generation (requires `vue-tsc`):
+启用 Vue 组件类型生成（需要 `vue-tsc`）：
 
 ```ts
 export default defineConfig({
@@ -201,19 +201,19 @@ export default defineConfig({
 
 ### Oxc Transform
 
-Control Oxc usage for declaration generation:
+控制 Oxc 用于声明生成的使用：
 
 ```ts
 export default defineConfig({
   dts: {
-    oxc: true,  // Use oxc-transform (fast, requires isolatedDeclarations)
+    oxc: true,  // 使用 oxc-transform（快速，需要 isolatedDeclarations）
   },
 })
 ```
 
-### Custom TSConfig
+### 自定义 TSConfig
 
-Specify a different tsconfig for DTS generation:
+为 DTS 生成指定不同的 tsconfig：
 
 ```ts
 export default defineConfig({
@@ -223,29 +223,29 @@ export default defineConfig({
 })
 ```
 
-## Available DTS Options
+## 可用的 DTS 选项
 
-| Option | Type | Description |
+| 选项 | 类型 | 描述 |
 |--------|------|-------------|
-| `sourcemap` | `boolean` | Generate declaration source maps |
-| `compilerOptions` | `object` | Override TypeScript compiler options |
-| `vue` | `boolean` | Enable Vue type generation (requires vue-tsc) |
-| `oxc` | `boolean` | Use oxc-transform for fast generation |
-| `tsconfig` | `string` | Path to tsconfig file |
-| `resolver` | `'oxc' \| 'tsc'` | Module resolver: `'oxc'` (default, fast) or `'tsc'` (more compatible) |
-| `cjsDefault` | `boolean` | CJS default export handling |
-| `sideEffects` | `boolean` | Preserve side effects in declarations |
+| `sourcemap` | `boolean` | 生成声明源映射 |
+| `compilerOptions` | `object` | 覆盖 TypeScript 编译器选项 |
+| `vue` | `boolean` | 启用 Vue 类型生成（需要 vue-tsc） |
+| `oxc` | `boolean` | 使用 oxc-transform 进行快速生成 |
+| `tsconfig` | `string` | tsconfig 文件的路径 |
+| `resolver` | `'oxc' \| 'tsc'` | 模块解析器：`'oxc'`（默认，快速）或 `'tsc'`（更兼容） |
+| `cjsDefault` | `boolean` | CJS 默认导出处理 |
+| `sideEffects` | `boolean` | 在声明中保留副作用 |
 
-## Tips
+## 提示
 
-1. **Always enable DTS** for TypeScript libraries
-2. **Use isolatedDeclarations** for fast builds
-3. **Enable declaration maps** in monorepos
-4. **Ensure explicit types** for all exports
-5. **Install TypeScript** as dev dependency
+1. **始终启用 DTS**用于 TypeScript 库
+2. **使用 isolatedDeclarations**以加快构建
+3. **在 monorepos 中启用声明映射**
+4. **确保所有导出都有显式类型**
+5. **安装 TypeScript**作为开发依赖
 
-## Related Options
+## 相关选项
 
-- [Entry](option-entry.md) - Configure entry points
-- [Output Format](option-output-format.md) - Multiple output formats
-- [Target](option-target.md) - JavaScript version
+- [入口点](option-entry.md) - 配置入口点
+- [输出格式](option-output-format.md) - 多种输出格式
+- [目标](option-target.md) - JavaScript 版本

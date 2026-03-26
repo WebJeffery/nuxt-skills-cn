@@ -1,15 +1,15 @@
 ---
 name: vitepress-markdown
-description: Markdown extensions including frontmatter, custom containers, tables, anchors, and file includes
+description: Markdown 扩展,包括 frontmatter、自定义容器、表格、锚点和文件包含
 ---
 
-# Markdown Extensions
+# Markdown 扩展
 
-VitePress extends standard markdown with additional features for documentation.
+VitePress 使用文档的附加功能扩展标准 markdown。
 
 ## Frontmatter
 
-YAML metadata at the top of markdown files:
+markdown 文件顶部的 YAML 元数据:
 
 ```md
 ---
@@ -22,13 +22,13 @@ outline: [2, 3]
 # Content starts here
 ```
 
-Access frontmatter in templates:
+在模板中访问 frontmatter:
 
 ```md
 # {{ $frontmatter.title }}
 ```
 
-Or in script:
+或在 script 中:
 
 ```vue
 <script setup>
@@ -37,9 +37,9 @@ const { frontmatter } = useData()
 </script>
 ```
 
-## Custom Containers
+## 自定义容器
 
-Styled callout blocks:
+样式化的提示块:
 
 ```md
 ::: info
@@ -63,7 +63,7 @@ Hidden content here.
 :::
 ```
 
-Custom titles:
+自定义标题:
 
 ```md
 ::: danger STOP
@@ -75,9 +75,9 @@ Open by default with {open} attribute.
 :::
 ```
 
-## GitHub-flavored Alerts
+## GitHub 风格的警报
 
-Alternative syntax using blockquotes:
+使用块引用的替代语法:
 
 ```md
 > [!NOTE]
@@ -93,9 +93,9 @@ Alternative syntax using blockquotes:
 > Negative potential consequences.
 ```
 
-## Header Anchors
+## 标题锚点
 
-Headers get automatic anchor links. Custom anchors:
+标题获得自动锚点链接。自定义锚点:
 
 ```md
 # My Heading {#custom-anchor}
@@ -103,15 +103,15 @@ Headers get automatic anchor links. Custom anchors:
 [Link to heading](#custom-anchor)
 ```
 
-## Table of Contents
+## 目录
 
-Generate a TOC with:
+使用以下内容生成目录:
 
 ```md
 [[toc]]
 ```
 
-## GitHub-Style Tables
+## GitHub 风格的表格
 
 ```md
 | Feature | Status |
@@ -122,29 +122,29 @@ Generate a TOC with:
 
 ## Emoji
 
-Use shortcodes:
+使用短代码:
 
 ```md
 :tada: :rocket: :100:
 ```
 
-## File Includes
+## 文件包含
 
-Include content from other files:
+从其他文件包含内容:
 
 ```md
 <!--@include: ./shared/header.md-->
 ```
 
-With line ranges:
+使用行范围:
 
 ```md
-<!--@include: ./code.md{3,10}-->  <!-- Lines 3-10 -->
-<!--@include: ./code.md{3,}-->   <!-- From line 3 -->
-<!--@include: ./code.md{,10}-->  <!-- Up to line 10 -->
+<!--@include: ./code.md{3,10}-->  <!-- 行 3-10 -->
+<!--@include: ./code.md{3,}-->   <!-- 从第 3 行开始 -->
+<!--@include: ./code.md{,10}-->  <!-- 到第 10 行 -->
 ```
 
-With regions:
+使用区域:
 
 ```md
 <!-- In parts/basics.md -->
@@ -156,35 +156,35 @@ Usage content here
 <!--@include: ./parts/basics.md#usage-->
 ```
 
-## Code Snippet Import
+## 代码片段导入
 
-Import code from files:
+从文件导入代码:
 
 ```md
 <<< @/snippets/example.js
 ```
 
-With line highlighting:
+使用行高亮:
 
 ```md
 <<< @/snippets/example.js{2,4-6}
 ```
 
-With language override:
+使用语言覆盖:
 
 ```md
 <<< @/snippets/example.cs{1,2 c#:line-numbers}
 ```
 
-Import specific region:
+导入特定区域:
 
 ```md
 <<< @/snippets/example.js#regionName{1,2}
 ```
 
-## Code Groups
+## 代码组
 
-Tab groups for code variants:
+用于代码变体的选项卡组:
 
 ````md
 ::: code-group
@@ -200,7 +200,7 @@ export default defineConfig({ /* ... */ })
 :::
 ````
 
-Import files in code groups:
+在代码组中导入文件:
 
 ```md
 ::: code-group
@@ -211,9 +211,9 @@ Import files in code groups:
 :::
 ```
 
-## Math Equations
+## 数学方程
 
-Requires setup:
+需要设置:
 
 ```bash
 npm add -D markdown-it-mathjax3@^4
@@ -228,7 +228,7 @@ export default {
 }
 ```
 
-Then use LaTeX:
+然后使用 LaTeX:
 
 ```md
 Inline: $E = mc^2$
@@ -239,7 +239,7 @@ $$
 $$
 ```
 
-## Image Lazy Loading
+## 图像延迟加载
 
 ```ts
 export default {
@@ -251,9 +251,9 @@ export default {
 }
 ```
 
-## Raw Container
+## 原始容器
 
-Prevent VitePress style conflicts:
+防止 VitePress 样式冲突:
 
 ```md
 ::: raw
@@ -261,14 +261,14 @@ Prevent VitePress style conflicts:
 :::
 ```
 
-## Key Points
+## 关键点
 
-- Frontmatter supports YAML or JSON format
-- Custom containers support info, tip, warning, danger, details
-- `[[toc]]` generates table of contents
-- `@` in imports refers to source root (or `srcDir` if configured)
-- Code groups create tabbed code blocks
-- Math support requires markdown-it-mathjax3 package
+- Frontmatter 支持 YAML 或 JSON 格式
+- 自定义容器支持 info、tip、warning、danger、details
+- `[[toc]]` 生成目录
+- 导入中的 `@` 引用源根目录(如果配置了则是 `srcDir`)
+- 代码组创建选项卡式代码块
+- 数学支持需要 markdown-it-mathjax3 包
 
 <!--
 Source references:

@@ -1,25 +1,25 @@
-# Dependency Management
+# 依赖管理
 
-Best practices for managing dependencies in a Turborepo monorepo.
+在 Turborepo monorepo 中管理依赖的最佳实践。
 
-## Core Principle: Install Where Used
+## 核心原则：在使用处安装
 
-Dependencies belong in the package that uses them, not the root.
+依赖属于使用它们的包，而不是根目录。
 
 ```bash
-# Good: Install in specific package
+# 好：在特定包中安装
 pnpm add react --filter=@repo/ui
 pnpm add next --filter=web
 
-# Avoid: Installing in root
-pnpm add react -w  # Only for repo-level tools!
+# 避免：在根目录安装
+pnpm add react -w  # 仅用于仓库级工具！
 ```
 
-## Benefits of Local Installation
+## 本地安装的好处
 
-### 1. Clarity
+### 1. 清晰性
 
-Each package's `package.json` lists exactly what it needs:
+每个包的 `package.json` 准确列出它需要的内容：
 
 ```json
 // packages/ui/package.json
@@ -31,9 +31,9 @@ Each package's `package.json` lists exactly what it needs:
 }
 ```
 
-### 2. Flexibility
+### 2. 灵活性
 
-Different packages can use different versions when needed:
+不同包可以在需要时使用不同版本：
 
 ```json
 // packages/legacy-ui/package.json
@@ -43,20 +43,20 @@ Different packages can use different versions when needed:
 { "dependencies": { "react": "^18.0.0" } }
 ```
 
-### 3. Better Caching
+### 3. 更好的缓存
 
-Installing in root changes workspace lockfile, invalidating all caches.
+在根目录安装会更改工作区锁文件，使所有缓存失效。
 
-### 4. Pruning Support
+### 4. 修剪支持
 
-`turbo prune` can remove unused dependencies for Docker images.
+`turbo prune` 可以为 Docker 镜像删除未使用的依赖项。
 
-## What Belongs in Root
+## 根目录中应该有什么
 
-Only repository-level tools:
+只有仓库级工具：
 
 ```json
-// Root package.json
+// 根 package.json
 {
   "devDependencies": {
     "turbo": "latest",
@@ -66,15 +66,15 @@ Only repository-level tools:
 }
 ```
 
-**NOT** application dependencies:
+**不是**应用依赖：
 
-- react, next, express
-- lodash, axios, zod
-- Testing libraries (unless truly repo-wide)
+- react、next、express
+- lodash、axios、zod
+- 测试库（除非真正是仓库范围的）
 
-## Installing Dependencies
+## 安装依赖
 
-### Single Package
+### 单个包
 
 ```bash
 # pnpm
@@ -90,7 +90,7 @@ yarn workspace @repo/utils add lodash
 cd packages/utils && bun add lodash
 ```
 
-### Multiple Packages
+### 多个包
 
 ```bash
 # pnpm
@@ -103,13 +103,13 @@ npm install jest --save-dev --workspace=web --workspace=@repo/ui
 yarn workspaces foreach -R --from '{web,@repo/ui}' add jest --dev
 ```
 
-### Internal Packages
+### 内部包
 
 ```bash
 # pnpm
 pnpm add @repo/ui --filter=web
 
-# This updates package.json:
+# 这会更新 package.json：
 {
   "dependencies": {
     "@repo/ui": "workspace:*"
@@ -117,34 +117,34 @@ pnpm add @repo/ui --filter=web
 }
 ```
 
-## Keeping Versions in Sync
+## 保持版本同步
 
-### Option 1: Tooling
+### 选项 1：工具
 
 ```bash
-# syncpack - Check and fix version mismatches
+# syncpack - 检查和修复版本不匹配
 npx syncpack list-mismatches
 npx syncpack fix-mismatches
 
-# manypkg - Similar functionality
+# manypkg - 类似功能
 npx @manypkg/cli check
 npx @manypkg/cli fix
 
-# sherif - Rust-based, very fast
+# sherif - 基于 Rust，非常快
 npx sherif
 ```
 
-### Option 2: Package Manager Commands
+### 选项 2：包管理器命令
 
 ```bash
-# pnpm - Update everywhere
+# pnpm - 到处更新
 pnpm up --recursive typescript@latest
 
-# npm - Update in all workspaces
+# npm - 在所有工作区中更新
 npm install typescript@latest --workspaces
 ```
 
-### Option 3: pnpm Catalogs (pnpm 9.5+)
+### 选项 3：pnpm 目录（pnpm 9.5+）
 
 ```yaml
 # pnpm-workspace.yaml
@@ -158,17 +158,17 @@ catalog:
 ```
 
 ```json
-// Any package.json
+// 任何 package.json
 {
   "dependencies": {
-    "react": "catalog:" // Uses version from catalog
+    "react": "catalog:" // 使用目录中的版本
   }
 }
 ```
 
-## Internal vs External Dependencies
+## 内部 vs 外部依赖
 
-### Internal (Workspace)
+### 内部（工作区）
 
 ```json
 // pnpm/bun
@@ -178,19 +178,19 @@ catalog:
 { "@repo/ui": "*" }
 ```
 
-Turborepo understands these relationships and orders builds accordingly.
+Turborepo 理解这些关系并相应地排序构建。
 
-### External (npm Registry)
+### 外部（npm 注册表）
 
 ```json
 { "lodash": "^4.17.21" }
 ```
 
-Standard semver versioning from npm.
+来自 npm 的标准 semver 版本控制。
 
-## Peer Dependencies
+### Peer 依赖
 
-For library packages that expect the consumer to provide dependencies:
+对于期望使用者提供依赖的库包：
 
 ```json
 // packages/ui/package.json
@@ -200,31 +200,31 @@ For library packages that expect the consumer to provide dependencies:
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
-    "react": "^18.0.0", // For development/testing
+    "react": "^18.0.0", // 用于开发/测试
     "react-dom": "^18.0.0"
   }
 }
 ```
 
-## Common Issues
+## 常见问题
 
 ### "Module not found"
 
-1. Check the dependency is installed in the right package
-2. Run `pnpm install` / `npm install` to update lockfile
-3. Check exports are defined in the package
+1. 检查依赖是否安装在正确的包中
+2. 运行 `pnpm install` / `npm install` 更新锁文件
+3. 检查包中是否定义了导出
 
-### Version Conflicts
+### 版本冲突
 
-Packages can use different versions - this is a feature, not a bug. But if you need consistency:
+包可以使用不同版本 - 这是一个功能，不是错误。但如果您需要一致性：
 
-1. Use tooling (syncpack, manypkg)
-2. Use pnpm catalogs
-3. Create a lint rule
+1. 使用工具（syncpack、manypkg）
+2. 使用 pnpm 目录
+3. 创建 lint 规则
 
-### Hoisting Issues
+### 提升问题
 
-Some tools expect dependencies in specific locations. Use package manager config:
+某些工具期望依赖项在特定位置。使用包管理器配置：
 
 ```yaml
 # .npmrc (pnpm)
@@ -232,15 +232,15 @@ public-hoist-pattern[]=*eslint*
 public-hoist-pattern[]=*prettier*
 ```
 
-## Lockfile
+## 锁文件
 
-**Required** for:
+对于以下情况是**必需的**：
 
-- Reproducible builds
-- Turborepo dependency analysis
-- Cache correctness
+- 可重现的构建
+- Turborepo 依赖分析
+- 缓存正确性
 
 ```bash
-# Commit your lockfile!
-git add pnpm-lock.yaml  # or package-lock.json, yarn.lock
+# 提交您的锁文件！
+git add pnpm-lock.yaml  # 或 package-lock.json、yarn.lock
 ```

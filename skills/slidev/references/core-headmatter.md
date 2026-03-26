@@ -1,25 +1,25 @@
 ---
 name: headmatter
-description: Deck-wide configuration options in the first frontmatter block
+description: 第一个 frontmatter 块中的幻灯片组级别配置选项
 ---
 
-# Headmatter Configuration
+# Headmatter 配置
 
-Deck-wide configuration options in the first frontmatter block.
+第一个 frontmatter 块中的幻灯片组级别配置选项。
 
-## Theme & Appearance
+## 主题与外观
 
 ```yaml
 ---
-theme: default              # Theme package or path
+theme: default              # 主题包或路径
 colorSchema: auto           # 'auto' | 'light' | 'dark'
-favicon: /favicon.ico       # Favicon URL
-aspectRatio: 16/9           # Slide aspect ratio
-canvasWidth: 980            # Canvas width in px
+favicon: /favicon.ico       # 网站 图标 URL
+aspectRatio: 16/9           # 幻灯片宽高比
+canvasWidth: 980            # 画布宽度（像素）
 ---
 ```
 
-## Fonts
+## 字体
 
 ```yaml
 ---
@@ -31,40 +31,40 @@ fonts:
 ---
 ```
 
-## Code & Highlighting
+## 代码与高亮
 
 ```yaml
 ---
-highlighter: shiki          # Code highlighter
-lineNumbers: false          # Show line numbers
-monaco: true                # Enable Monaco editor ('true' | 'dev' | 'build')
-twoslash: true              # Enable TwoSlash
+highlighter: shiki          # 代码高亮器
+lineNumbers: false          # 显示行号
+monaco: true                # 启用 Monaco 编辑器（'true' | 'dev' | 'build'）
+twoslash: true              # 启用 TwoSlash
 monacoTypesSource: local    # 'local' | 'cdn' | 'none'
 ---
 ```
 
-## Features
+## 功能
 
 ```yaml
 ---
 drawings:
-  enabled: true             # Enable drawing mode
-  persist: false            # Save drawings
-  presenterOnly: false      # Only presenter can draw
-  syncAll: true             # Sync across instances
-record: dev                 # Enable recording
-selectable: true            # Text selection
-contextMenu: true           # Right-click menu
-wakeLock: true              # Prevent screen sleep
+  enabled: true             # 启用绘图模式
+  persist: false            # 保存绘图
+  presenterOnly: false      # 仅演讲者可以绘图
+  syncAll: true             # 在实例间同步
+record: dev                 # 启用录制
+selectable: true            # 文本选择
+contextMenu: true           # 右键菜单
+wakeLock: true              # 防止屏幕休眠
 ---
 ```
 
-## Export & Build
+## 导出与构建
 
 ```yaml
 ---
-download: false             # PDF download button
-exportFilename: slides      # Export filename
+download: false             # PDF 下载按钮
+exportFilename: slides      # 导出文件名
 export:
   format: pdf
   timeout: 30000
@@ -73,37 +73,37 @@ export:
 ---
 ```
 
-## Info & SEO
+## 信息与 SEO
 
 ```yaml
 ---
-title: My Presentation
+title: 我的演示
 titleTemplate: '%s - Slidev'
-author: Your Name
+author: 您的姓名
 keywords: slidev, presentation
 info: |
-  ## About
-  Presentation description
+  ## 关于
+  演示文稿描述
 ---
 ```
 
-## SEO Meta Tags
+## SEO 元标签
 
 ```yaml
 ---
 seoMeta:
-  ogTitle: Presentation Title
-  ogDescription: Description
+  ogTitle: 演示文稿标题
+  ogDescription: 描述
   ogImage: https://example.com/og.png
   ogUrl: https://example.com
   twitterCard: summary_large_image
-  twitterTitle: Title
-  twitterDescription: Description
+  twitterTitle: 标题
+  twitterDescription: 描述
   twitterImage: https://example.com/twitter.png
 ---
 ```
 
-## Addons & Themes
+## 插件与主题
 
 ```yaml
 ---
@@ -114,19 +114,19 @@ addons:
 ---
 ```
 
-## Theme Configuration
+## 主题配置
 
 ```yaml
 ---
 themeConfig:
   primary: '#5d8392'
-  # Theme-specific options
+  # 主题特定选项
 ---
 ```
 
-## Defaults
+## 默认值
 
-Set default frontmatter for all slides:
+为所有幻灯片设置默认 frontmatter：
 
 ```yaml
 ---
@@ -136,7 +136,7 @@ defaults:
 ---
 ```
 
-## HTML Attributes
+## HTML 属性
 
 ```yaml
 ---
@@ -146,7 +146,7 @@ htmlAttrs:
 ---
 ```
 
-## Presenter & Browser
+## 演讲者与浏览器
 
 ```yaml
 ---
@@ -156,22 +156,22 @@ routerMode: history         # 'history' | 'hash'
 ---
 ```
 
-## Remote Assets
+## 远程资源
 
 ```yaml
 ---
-remoteAssets: false         # Download remote assets locally
+remoteAssets: false         # 将远程资源下载到本地
 plantUmlServer: https://www.plantuml.com/plantuml
 ---
 ```
 
-## Full Template
+## 完整模板
 
 ```yaml
 ---
 theme: default
-title: Presentation Title
-author: Your Name
+title: 演示文稿标题
+author: 您的姓名
 highlighter: shiki
 lineNumbers: true
 transition: slide-left

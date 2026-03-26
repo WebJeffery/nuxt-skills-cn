@@ -1,35 +1,35 @@
 ---
 name: importing-slides
-description: Split presentations into multiple files for reusability
+description: 将演示文稿拆分为多个文件以实现可重用性
 ---
 
-# Importing Slides
+# 导入幻灯片
 
-Split presentations into multiple files for reusability.
+将演示文稿拆分为多个文件以实现可重用性。
 
-## Basic Import
+## 基本导入
 
 ```md
-# Title
+# 标题
 
-This is a normal page
+这是一个正常页面
 
 ---
 src: ./pages/toc.md
 ---
 
-<!-- Content here is ignored -->
+<!-- 此处的内容被忽略 -->
 
 ---
 
-# Page 4
+# 第 4 页
 
-Another normal page
+另一个正常页面
 ```
 
-## Import Specific Slides
+## 导入特定幻灯片
 
-Use hash to select slides:
+使用哈希选择幻灯片：
 
 ```md
 ---
@@ -37,24 +37,24 @@ src: ./another-presentation.md#2,5-7
 ---
 ```
 
-Imports slides 2, 5, 6, and 7.
+导入幻灯片 2、5、6 和 7。
 
-## Reuse Slides
+## 重用幻灯片
 
-Import the same file multiple times:
+多次导入同一文件：
 
 ```md
 ---
 src: ./pages/toc.md
 ---
 
-<!-- later... -->
+<!-- 稍后... -->
 
 ---
 src: ./pages/toc.md
 ---
 ```
 
-## Frontmatter Priority
+## Frontmatter 优先级
 
-Main entry frontmatter overrides imported file frontmatter for duplicate keys.
+主条目 frontmatter 覆盖导入文件 frontmatter 中的重复键。

@@ -1,187 +1,267 @@
 ---
-title: Navigation Guard Infinite Redirect Loops
+title: 导航守卫中的无限重定向循环
 impact: HIGH
-impactDescription: Misconfigured navigation guards can trap users in infinite redirect loops, crashing the browser or making the app unusable
+impactDescription: 在导航守卫中重定向到当前路由或创建循环重定向链会导致浏览器挂起或崩溃
 type: gotcha
-tags: [vue3, vue-router, navigation-guards, redirect, debugging]
+tags: [vue3, vue-router, navigation-guards, infinite-loop, redirect]
 ---
 
-# Navigation Guard Infinite Redirect Loops
+# 导航守卫中的无限重定向循环
 
-**Impact: HIGH** - A common mistake in navigation guards is creating conditions that cause infinite redirects. Vue Router will detect this and show a warning, but in production, it can crash the browser or create a broken user experience.
+**影响: HIGH** - 在导航守卫中重定向到当前路由或创建循环重定向链会导致浏览器挂起或崩溃。这是 Vue Router 中最常见的错误之一,通常发生在认证守卫或条件重定向中。
 
-## Task Checklist
+## 任务清单
 
-- [ ] Always check if already on target route before redirecting
-- [ ] Test guard logic with all possible navigation scenarios
-- [ ] Add route meta to control which routes need protection
-- [ ] Use Vue Router devtools to debug redirect chains
+- [ ] 检查重定向是否匹配当前路由
+- [ ] 检查重定向链是否循环
+- [ ] 添加条件以避免重定向到目标路由
+- [ ] 使用调试工具跟踪导航流程
+- [ ] 测试所有可能的导航路径
 
-## The Problem
+## 问题
 
 ```javascript
-// WRONG: Infinite loop - always redirects to login, even when on login!
+// WRONG: 重定向到当前路由
 router.beforeEach((to, from) => {
   if (!isAuthenticated()) {
-    return '/login'  // Redirects to /login, which triggers guard again...
+    return '/login'  // 如果已经在 /login,这会导致无限循环!
   }
 })
 
-// WRONG: Circular redirect between two routes
+// WRONG: 循环重定向链
 router.beforeEach((to, from) => {
-  if (to.path === '/dashboard' && !hasProfile()) {
-    return '/profile'
+  if (to.path === '/login') {
+    if (isAuthenticated()) {
+      return '/dashboard'
+    }
   }
-  if (to.path === '/profile' && !isVerified()) {
-    return '/dashboard'  // Back to dashboard, which goes to profile...
+
+  if (to.path === '/dashboard') {
+    if (!isAuthenticated()) {
+      return '/login'
+    }
   }
+})
+
+// WRONG: 条件始终为真
+router.beforeEach((to, from) => {
+  if (to.meta.requiresAuth && !isAuthenticated()) {
+    return { name: 'Login' }
+  }
+  // 如果 Login 路由也有 requiresAuth,这会导致循环!
 })
 ```
 
-**Error you'll see:**
-```
-[Vue Router warn]: Detected an infinite redirection in a navigation guard when going from "/" to "/login". Aborting to avoid a Stack Overflow.
-```
-
-## Solution 1: Exclude Target Route
+## 解决方案 1: 检查当前路由
 
 ```javascript
-// CORRECT: Don't redirect if already going to login
+// CORRECT: 不要重定向到当前路由
 router.beforeEach((to, from) => {
   if (!isAuthenticated() && to.path !== '/login') {
     return '/login'
   }
 })
 
-// CORRECT: Use route name for cleaner check
+// CORRECT: 使用路由名称
 router.beforeEach((to, from) => {
-  const publicPages = ['Login', 'Register', 'ForgotPassword']
-
-  if (!isAuthenticated() && !publicPages.includes(to.name)) {
+  if (!isAuthenticated() && to.name !== 'Login') {
     return { name: 'Login' }
   }
 })
 ```
 
-## Solution 2: Use Route Meta Fields
+## 解决方案 2: 处理认证/未认证状态
 
 ```javascript
-// router.js
+// CORRECT: 根据认证状态处理
+router.beforeEach((to, from) => {
+  const isAuthenticated = checkAuth()
+
+  // 如果已认证且尝试访问登录页面,重定向到仪表板
+  if (isAuthenticated && to.name === 'Login') {
+    return { name: 'Dashboard' }
+  }
+
+  // 如果未认证且尝试访问受保护路由,重定向到登录页面
+  if (!isAuthenticated && to.meta.requiresAuth) {
+    return { name: 'Login', query: { redirect: to.fullPath } }
+  }
+})
+```
+
+## 解决方案 3: 使用公共路由列表
+
+```javascript
+// 定义不需要认证的路由
+const publicRoutes = ['Login', 'Register', 'Home', 'ForgotPassword']
+
+router.beforeEach((to, from) => {
+  const isAuthenticated = checkAuth()
+
+  // 如果已认证且在公共路由上,重定向到仪表板
+  if (isAuthenticated && publicRoutes.includes(to.name)) {
+    return { name: 'Dashboard' }
+  }
+
+  // 如果未认证且不在公共路由上,重定向到登录页面
+  if (!isAuthenticated && !publicRoutes.includes(to.name)) {
+    return { name: 'Login', query: { redirect: to.fullPath } }
+  }
+})
+```
+
+## 解决方案 4: 使用路由元字段
+
+```javascript
+// 路由配置
 const routes = [
   {
     path: '/login',
     name: 'Login',
     component: Login,
-    meta: { requiresAuth: false }
+    meta: { requiresAuth: false, isPublic: true }
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
     meta: { requiresAuth: true }
-  },
-  {
-    path: '/public',
-    name: 'PublicPage',
-    component: PublicPage,
-    meta: { requiresAuth: false }
   }
 ]
 
-// Guard checks meta field
+// 导航守卫
 router.beforeEach((to, from) => {
-  // Only redirect if route requires auth
-  if (to.meta.requiresAuth && !isAuthenticated()) {
+  const isAuthenticated = checkAuth()
+
+  // 如果已认证且在公共路由上,重定向到仪表板
+  if (isAuthenticated && to.meta.isPublic) {
+    return { name: 'Dashboard' }
+  }
+
+  // 如果未认证且需要认证,重定向到登录页面
+  if (!isAuthenticated && to.meta.requiresAuth) {
     return { name: 'Login', query: { redirect: to.fullPath } }
   }
 })
 ```
 
-## Solution 3: Handle Redirect Chains Carefully
+## 解决方案 5: 使用导航历史检查
 
 ```javascript
-// CORRECT: Break potential circular redirects
 router.beforeEach((to, from) => {
-  // Prevent redirect loops by tracking redirect depth
-  const redirectCount = to.query._redirectCount || 0
+  const isAuthenticated = checkAuth()
 
-  if (redirectCount > 3) {
-    console.error('Too many redirects, stopping at:', to.path)
-    return '/error'  // Escape hatch
+  // 如果正在从登录页面重定向到登录页面,停止
+  if (from.name === 'Login' && to.name === 'Login') {
+    return false  // 取消导航
   }
 
-  if (needsRedirect(to)) {
-    return {
-      path: getRedirectTarget(to),
-      query: { ...to.query, _redirectCount: redirectCount + 1 }
+  // 如果未认证且需要认证
+  if (!isAuthenticated && to.meta.requiresAuth) {
+    // 如果已经在登录页面,不要重定向
+    if (to.name === 'Login') {
+      return false
     }
+    return { name: 'Login', query: { redirect: to.fullPath } }
   }
 })
 ```
 
-## Solution 4: Centralized Redirect Logic
+## 调试无限循环
 
 ```javascript
-// guards/auth.js
-export function createAuthGuard(router) {
-  const publicRoutes = new Set(['Login', 'Register', 'ForgotPassword', 'ResetPassword'])
-  const guestOnlyRoutes = new Set(['Login', 'Register'])
+// 添加调试日志以跟踪导航
+let navigationCount = 0
+const MAX_NAVIGATIONS = 10
 
-  router.beforeEach((to, from) => {
-    const isPublic = publicRoutes.has(to.name)
-    const isGuestOnly = guestOnlyRoutes.has(to.name)
-    const isLoggedIn = isAuthenticated()
-
-    // Not logged in, trying to access protected route
-    if (!isLoggedIn && !isPublic) {
-      return { name: 'Login', query: { redirect: to.fullPath } }
-    }
-
-    // Logged in, trying to access guest-only route (like login page)
-    if (isLoggedIn && isGuestOnly) {
-      return { name: 'Dashboard' }
-    }
-
-    // All other cases: proceed
-  })
-}
-```
-
-## Debugging Redirect Loops
-
-```javascript
-// Add logging to understand the redirect chain
 router.beforeEach((to, from) => {
-  console.log(`Navigation: ${from.path} -> ${to.path}`)
-  console.log('Auth state:', isAuthenticated())
-  console.log('Route meta:', to.meta)
+  navigationCount++
 
-  // Your guard logic here
-})
+  if (navigationCount > MAX_NAVIGATIONS) {
+    console.error('Possible infinite redirect loop detected!')
+    console.error('Current route:', to.path)
+    console.error('From route:', from.path)
+    return false  // 停止导航
+  }
 
-// Or use afterEach for confirmed navigations
-router.afterEach((to, from) => {
-  console.log(`Navigated: ${from.path} -> ${to.path}`)
+  console.log(`Navigation #${navigationCount}: ${from.path} -> ${to.path}`)
+
+  // 你的守卫逻辑
 })
 ```
 
-## Common Redirect Loop Patterns
+## 常见循环场景
 
-| Pattern | Problem | Fix |
-|---------|---------|-----|
-| Auth check without exclusion | Login redirects to login | Exclude `/login` from check |
-| Role-based with circular deps | Admin -> User -> Admin | Use single source of truth for role requirements |
-| Onboarding flow | Step 1 -> Step 2 -> Step 1 | Track completion state properly |
-| Redirect query handling | Reading redirect creates new redirect | Process redirect only once |
+### 场景 1: 认证循环
 
-## Key Points
+```javascript
+// 问题: Login 路由也需要认证
+const routes = [
+  { path: '/login', name: 'Login', meta: { requiresAuth: true } }  // BUG!
+]
 
-1. **Always exclude the target route** - Never redirect to a route that would trigger the same redirect
-2. **Use route meta fields** - Cleaner than path string comparisons
-3. **Test edge cases** - Direct URL access, refresh, back button
-4. **Add logging during development** - Helps trace redirect chains
-5. **Have an escape hatch** - Error page or max redirect count
+router.beforeEach((to, from) => {
+  if (to.meta.requiresAuth && !isAuthenticated()) {
+    return { name: 'Login' }  // 无限循环!
+  }
+})
 
-## Reference
-- [Vue Router Navigation Guards](https://router.vuejs.org/guide/advanced/navigation-guards.html)
-- [Vue Router Route Meta Fields](https://router.vuejs.org/guide/advanced/meta.html)
+// 修复: Login 不应该需要认证
+const routes = [
+  { path: '/login', name: 'Login', meta: { requiresAuth: false } }
+]
+```
+
+### 场景 2: 重定向链
+
+```javascript
+// 问题: 两个路由相互重定向
+router.beforeEach((to, from) => {
+  if (to.path === '/route1') {
+    return '/route2'
+  }
+  if (to.path === '/route2') {
+    return '/route1'  // 无限循环!
+  }
+})
+
+// 修复: 添加条件
+router.beforeEach((to, from) => {
+  if (to.path === '/route1' && someCondition) {
+    return '/route2'
+  }
+  if (to.path === '/route2' && someOtherCondition) {
+    return '/route1'
+  }
+})
+```
+
+### 场景 3: 参数更改循环
+
+```javascript
+// 问题: 参数更改导致重定向到同一路由
+router.beforeEach((to, from) => {
+  if (to.params.id !== 'default') {
+    return { name: 'SameRoute', params: { id: 'default' } }  // 可能循环!
+  }
+})
+
+// 修复: 检查是否已经重定向
+router.beforeEach((to, from) => {
+  if (to.params.id !== 'default' && from.params.id !== 'default') {
+    return { name: 'SameRoute', params: { id: 'default' } }
+  }
+})
+```
+
+## 关键点
+
+1. **始终检查当前路由** - 不要重定向到已经在的路由
+2. **使用公共路由列表** - 明确定义哪些路由不需要认证
+3. **处理认证/未认证状态** - 两个方向都需要考虑
+4. **添加调试日志** - 跟踪导航流程以识别循环
+5. **测试所有路径** - 确保没有意外的重定向链
+
+## 参考
+- [Vue Router 导航守卫](https://router.vuejs.org/guide/advanced/navigation-guards.html)
+- [Vue Router 重定向](https://router.vuejs.org/guide/essentials/dynamic-matching.html#redirect)

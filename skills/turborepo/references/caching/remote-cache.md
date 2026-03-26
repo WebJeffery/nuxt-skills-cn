@@ -1,42 +1,42 @@
-# Remote Caching
+# 远程缓存
 
-Share cache artifacts across your team and CI pipelines.
+在你的团队和 CI 管道之间共享缓存工件。
 
-## Benefits
+## 优势
 
-- Team members get cache hits from each other's work
-- CI gets cache hits from local development (and vice versa)
-- Dramatically faster CI runs after first build
-- No more "works on my machine" rebuilds
+- 团队成员从彼此的工作中获得缓存命中
+- CI 从本地开发中获得缓存命中（反之亦然）
+- 第一次构建后 CI 运行速度显著加快
+- 不再有"在我的机器上可以工作"的重新构建
 
-## Vercel Remote Cache
+## Vercel 远程缓存
 
-Free, zero-config when deploying on Vercel. For local dev and other CI:
+在 Vercel 上部署时免费、零配置。对于本地开发和其他 CI：
 
-### Local Development Setup
+### 本地开发设置
 
 ```bash
-# Authenticate with Vercel
+# 使用 Vercel 身份验证
 npx turbo login
 
-# Link repo to your Vercel team
+# 将仓库链接到你的 Vercel 团队
 npx turbo link
 ```
 
-This creates `.turbo/config.json` with your team info (gitignored by default).
+这会创建 `.turbo/config.json`，其中包含你的团队信息（默认被 gitignore）。
 
-### CI Setup
+### CI 设置
 
-Set these environment variables:
+设置这些环境变量：
 
 ```bash
 TURBO_TOKEN=<your-token>
 TURBO_TEAM=<your-team-slug>
 ```
 
-Get your token from Vercel dashboard → Settings → Tokens.
+从 Vercel 仪表板 → 设置 → 令牌获取你的令牌。
 
-**GitHub Actions example:**
+**GitHub Actions 示例：**
 
 ```yaml
 - name: Build
@@ -46,7 +46,7 @@ Get your token from Vercel dashboard → Settings → Tokens.
     TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 ```
 
-## Configuration in turbo.json
+## turbo.json 中的配置
 
 ```json
 {
@@ -57,21 +57,21 @@ Get your token from Vercel dashboard → Settings → Tokens.
 }
 ```
 
-Options:
+选项：
 
-- `enabled`: toggle remote cache (default: true when authenticated)
-- `signature`: require artifact signing (default: false)
+- `enabled`：切换远程缓存（默认：身份验证时为 true）
+- `signature`：需要工件签名（默认：false）
 
-## Artifact Signing
+## 工件签名
 
-Verify cache artifacts haven't been tampered with:
+验证缓存工件未被篡改：
 
 ```bash
-# Set a secret key (use same key across all environments)
+# 设置密钥（在所有环境中使用相同的密钥）
 export TURBO_REMOTE_CACHE_SIGNATURE_KEY="your-secret-key"
 ```
 
-Enable in config:
+在配置中启用：
 
 ```json
 {
@@ -81,17 +81,17 @@ Enable in config:
 }
 ```
 
-Signed artifacts can only be restored if the signature matches.
+只有签名匹配时才能恢复已签名的工件。
 
-## Self-Hosted Options
+## 自托管选项
 
-Community implementations for running your own cache server:
+用于运行自己的缓存服务器的社区实现：
 
-- **turbo-remote-cache** (Node.js) - supports S3, GCS, Azure
-- **turborepo-remote-cache** (Go) - lightweight, S3-compatible
-- **ducktape** (Rust) - high-performance option
+- **turbo-remote-cache** (Node.js) - 支持 S3、GCS、Azure
+- **turborepo-remote-cache** (Go) - 轻量级、S3 兼容
+- **ducktape** (Rust) - 高性能选项
 
-Configure with environment variables:
+使用环境变量配置：
 
 ```bash
 TURBO_API=https://your-cache-server.com
@@ -99,29 +99,29 @@ TURBO_TOKEN=your-auth-token
 TURBO_TEAM=your-team
 ```
 
-## Cache Behavior Control
+## 缓存行为控制
 
 ```bash
-# Disable remote cache for a run
-turbo build --remote-cache-read-only  # read but don't write
-turbo build --no-cache                # skip cache entirely
+# 为运行禁用远程缓存
+turbo build --remote-cache-read-only  # 读取但不写入
+turbo build --no-cache                # 完全跳过缓存
 
-# Environment variable alternative
-TURBO_REMOTE_ONLY=true  # only use remote, skip local
+# 环境变量替代方案
+TURBO_REMOTE_ONLY=true  # 仅使用远程，跳过本地
 ```
 
-## Debugging Remote Cache
+## 调试远程缓存
 
 ```bash
-# Verbose output shows cache operations
+# 详细输出显示缓存操作
 turbo build --verbosity=2
 
-# Check if remote cache is configured
+# 检查是否配置了远程缓存
 turbo config
 ```
 
-Look for:
+查找：
 
-- "Remote caching enabled" in output
-- Upload/download messages during runs
-- "cache hit, replaying output" with remote cache indicator
+- 输出中的"Remote caching enabled"
+- 运行期间的上传/下载消息
+- 带有远程缓存指示器的"cache hit, replaying output"

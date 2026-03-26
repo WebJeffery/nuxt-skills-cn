@@ -1,45 +1,45 @@
 ---
 name: lifecycle-hooks
-description: beforeEach, afterEach, beforeAll, afterAll, and around hooks
+description: beforeEach、afterEach、beforeAll、afterAll 和 around 钩子
 ---
 
-# Lifecycle Hooks
+# 生命周期钩子
 
-## Basic Hooks
+## 基本钩子
 
 ```ts
 import { afterAll, afterEach, beforeAll, beforeEach, test } from 'vitest'
 
 beforeAll(async () => {
-  // Runs once before all tests in file/suite
+  // 在文件/套件中的所有测试之前运行一次
   await setupDatabase()
 })
 
 afterAll(async () => {
-  // Runs once after all tests in file/suite
+  // 在文件/套件中的所有测试之后运行一次
   await teardownDatabase()
 })
 
 beforeEach(async () => {
-  // Runs before each test
+  // 在每个测试之前运行
   await clearTestData()
 })
 
 afterEach(async () => {
-  // Runs after each test
+  // 在每个测试之后运行
   await cleanupMocks()
 })
 ```
 
-## Cleanup Return Pattern
+## 清理返回模式
 
-Return cleanup function from `before*` hooks:
+从 `before*` 钩子返回清理函数:
 
 ```ts
 beforeAll(async () => {
   const server = await startServer()
   
-  // Returned function runs as afterAll
+  // 返回的函数作为 afterAll 运行
   return async () => {
     await server.close()
   }
@@ -48,14 +48,14 @@ beforeAll(async () => {
 beforeEach(async () => {
   const connection = await connect()
   
-  // Runs as afterEach
+  // 作为 afterEach 运行
   return () => connection.close()
 })
 ```
 
-## Scoped Hooks
+## 作用域钩子
 
-Hooks apply to current suite and nested suites:
+钩子应用于当前套件和嵌套套件:
 
 ```ts
 describe('outer', () => {
@@ -71,51 +71,51 @@ describe('outer', () => {
 })
 ```
 
-## Hook Timeout
+## 钩子超时
 
 ```ts
 beforeAll(async () => {
   await slowSetup()
-}, 30_000) // 30 second timeout
+}, 30_000) // 30 秒超时
 ```
 
-## Around Hooks
+## Around 钩子
 
-Wrap tests with setup/teardown context:
+使用设置/清理上下文包装测试:
 
 ```ts
 import { aroundEach, test } from 'vitest'
 
-// Wrap each test in database transaction
+// 在数据库事务中包装每个测试
 aroundEach(async (runTest) => {
   await db.beginTransaction()
-  await runTest() // Must be called!
+  await runTest() // 必须调用!
   await db.rollback()
 })
 
 test('insert user', async () => {
   await db.insert({ name: 'Alice' })
-  // Automatically rolled back after test
+  // 测试后自动回滚
 })
 ```
 
 ### aroundAll
 
-Wrap entire suite:
+包装整个套件:
 
 ```ts
 import { aroundAll, test } from 'vitest'
 
 aroundAll(async (runSuite) => {
   console.log('before all tests')
-  await runSuite() // Must be called!
+  await runSuite() // 必须调用!
   console.log('after all tests')
 })
 ```
 
-### Multiple Around Hooks
+### 多个 Around 钩子
 
-Nested like onion layers:
+像洋葱层一样嵌套:
 
 ```ts
 aroundEach(async (runTest) => {
@@ -130,12 +130,12 @@ aroundEach(async (runTest) => {
   console.log('inner after')
 })
 
-// Order: outer before → inner before → test → inner after → outer after
+// 顺序: outer before → inner before → test → inner after → outer after
 ```
 
-## Test Hooks
+## 测试钩子
 
-Inside test body:
+在测试体内:
 
 ```ts
 import { onTestFailed, onTestFinished, test } from 'vitest'
@@ -143,10 +143,10 @@ import { onTestFailed, onTestFinished, test } from 'vitest'
 test('with cleanup', () => {
   const db = connect()
   
-  // Runs after test finishes (pass or fail)
+  // 测试完成后运行(通过或失败)
   onTestFinished(() => db.close())
   
-  // Only runs if test fails
+  // 仅在测试失败时运行
   onTestFailed(({ task }) => {
     console.log('Failed:', task.result?.errors)
   })
@@ -155,7 +155,7 @@ test('with cleanup', () => {
 })
 ```
 
-### Reusable Cleanup Pattern
+### 可重用清理模式
 
 ```ts
 function useTestDb() {
@@ -170,14 +170,14 @@ test('query users', () => {
 })
 
 test('query orders', () => {
-  const db = useTestDb() // Fresh connection, auto-closed
+  const db = useTestDb() // 新连接,自动关闭
   expect(db.query('SELECT * FROM orders')).toBeDefined()
 })
 ```
 
-## Concurrent Test Hooks
+## 并发测试钩子
 
-For concurrent tests, use context's hooks:
+对于并发测试,使用上下文的钩子:
 
 ```ts
 test.concurrent('concurrent', ({ onTestFinished }) => {
@@ -186,9 +186,9 @@ test.concurrent('concurrent', ({ onTestFinished }) => {
 })
 ```
 
-## Extended Test Hooks
+## 扩展测试钩子
 
-With `test.extend`, hooks are type-aware:
+使用 `test.extend`,钩子是类型感知的:
 
 ```ts
 const test = base.extend<{ db: Database }>({
@@ -199,7 +199,7 @@ const test = base.extend<{ db: Database }>({
   },
 })
 
-// These hooks know about `db` fixture
+// 这些钩子知道 `db` fixture
 test.beforeEach(({ db }) => {
   db.seed()
 })
@@ -209,34 +209,34 @@ test.afterEach(({ db }) => {
 })
 ```
 
-## Hook Execution Order
+## 钩子执行顺序
 
-Default order (stack):
-1. `beforeAll` (in order)
-2. `beforeEach` (in order)
-3. Test
-4. `afterEach` (reverse order)
-5. `afterAll` (reverse order)
+默认顺序(堆栈):
+1. `beforeAll`(按顺序)
+2. `beforeEach`(按顺序)
+3. 测试
+4. `afterEach`(反向顺序)
+5. `afterAll`(反向顺序)
 
-Configure with `sequence.hooks`:
+使用 `sequence.hooks` 配置:
 
 ```ts
 defineConfig({
   test: {
     sequence: {
-      hooks: 'list', // 'stack' (default), 'list', 'parallel'
+      hooks: 'list', // 'stack'(默认)、'list'、'parallel'
     },
   },
 })
 ```
 
-## Key Points
+## 关键点
 
-- Hooks are not called during type checking
-- Return cleanup function from `before*` to avoid `after*` duplication
-- `aroundEach`/`aroundAll` must call `runTest()`/`runSuite()`
-- `onTestFinished` always runs, even if test fails
-- Use context hooks for concurrent tests
+- 钩子在类型检查期间不调用
+- 从 `before*` 返回清理函数以避免 `after*` 重复
+- `aroundEach`/`aroundAll` 必须调用 `runTest()`/`runSuite()`
+- `onTestFinished` 始终运行,即使测试失败
+- 对并发测试使用上下文钩子
 
 <!-- 
 Source references:

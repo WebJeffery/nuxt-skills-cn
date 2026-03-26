@@ -1,44 +1,44 @@
 ---
-title: Component Slots Best Practices
+title: 组件插槽最佳实践
 impact: MEDIUM
-impactDescription: Poor slot API design causes empty DOM wrappers, weak TypeScript safety, brittle defaults, and unnecessary component overhead
+impactDescription: 不当的插槽 API 设计会导致空的 DOM 包装器、弱的 TypeScript 安全性、脆弱的默认值和不必要的组件开销
 type: best-practice
 tags: [vue3, slots, components, typescript, composables]
 ---
 
-# Component Slots Best Practices
+# 组件插槽最佳实践
 
-**Impact: MEDIUM** - Slots are a core component API surface in Vue. Structure them intentionally so templates stay predictable, typed, and performant.
+**影响: MEDIUM** - 插槽是 Vue 中的核心组件 API 表面。有意构建它们,以便模板保持可预测、类型化和高性能。
 
-## Task List
+## 任务列表
 
-- Use shorthand syntax for named slots (`#` instead of `v-slot:`)
-- Render optional slot wrapper elements only when slot content exists (`$slots` checks)
-- Type scoped slot contracts with `defineSlots` in TypeScript components
-- Provide fallback content for optional slots
-- Prefer composables over renderless components for pure logic reuse
+- 对命名插槽使用简写语法(`#` 而不是 `v-slot:`)
+- 仅当插槽内容存在时才渲染可选插槽包装器元素(`$slots` 检查)
+- 在 TypeScript 组件中使用 `defineSlots` 类型化作用域插槽契约
+- 为可选插槽提供回退内容
+- 偏好 composables 而不是无渲染组件以进行纯逻辑重用
 
-## Shorthand syntax for named slots
+## 命名插槽的简写语法
 
-**BAD:**
+**错误:**
 ```vue
 <MyComponent>
   <template v-slot:header> ... </template>
 </MyComponent>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <MyComponent>
   <template #header> ... </template>
 </MyComponent>
 ```
 
-## Conditionally Render Optional Slot Wrappers
+## 有条件地渲染可选插槽包装器
 
-Use `$slots` checks when wrapper elements add spacing, borders, or layout constraints.
+当包装器元素添加间距、边框或布局约束时使用 `$slots` 检查。
 
-**BAD:**
+**错误:**
 ```vue
 <!-- Card.vue -->
 <template>
@@ -58,7 +58,7 @@ Use `$slots` checks when wrapper elements add spacing, borders, or layout constr
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <!-- Card.vue -->
 <template>
@@ -78,11 +78,11 @@ Use `$slots` checks when wrapper elements add spacing, borders, or layout constr
 </template>
 ```
 
-## Type Scoped Slot Props with defineSlots
+## 使用 defineSlots 类型化作用域插槽 Props
 
-In `<script setup lang="ts">`, use `defineSlots` so slot consumers get autocomplete and static checks.
+在 `<script setup lang="ts">` 中,使用 `defineSlots` 以便插槽消费者获得自动完成和静态检查。
 
-**BAD:**
+**错误:**
 ```vue
 <!-- ProductList.vue -->
 <script setup lang="ts">
@@ -103,7 +103,7 @@ defineProps<{ products: Product[] }>()
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <!-- ProductList.vue -->
 <script setup lang="ts">
@@ -130,11 +130,11 @@ defineSlots<{
 </template>
 ```
 
-## Provide Slot Fallback Content
+## 提供插槽回退内容
 
-Fallback content makes components resilient when parents omit optional slots.
+回退内容使组件在父级省略可选插槽时具有弹性。
 
-**BAD:**
+**错误:**
 ```vue
 <!-- SubmitButton.vue -->
 <template>
@@ -144,21 +144,21 @@ Fallback content makes components resilient when parents omit optional slots.
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <!-- SubmitButton.vue -->
 <template>
   <button type="submit" class="btn-primary">
-    <slot>Submit</slot>
+    <slot>提交</slot>
   </button>
 </template>
 ```
 
-## Prefer Composables for Pure Logic Reuse
+## 偏好 Composables 进行纯逻辑重用
 
-Renderless components are still useful for slot-driven composition, but composables are usually cleaner for logic-only reuse.
+无渲染组件对于插槽驱动的组合仍然有用,但对于仅逻辑重用,composables 通常更清晰。
 
-**BAD:**
+**错误:**
 ```vue
 <!-- MouseTracker.vue -->
 <script setup lang="ts">
@@ -181,7 +181,7 @@ onUnmounted(() => window.removeEventListener('mousemove', onMove))
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```ts
 // composables/useMouse.ts
 import { ref, onMounted, onUnmounted } from 'vue'

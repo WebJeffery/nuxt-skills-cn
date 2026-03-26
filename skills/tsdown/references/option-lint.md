@@ -1,29 +1,29 @@
-# Package Validation (publint & attw)
+# 包验证（publint & attw）
 
-Validate your package configuration and type declarations before publishing.
+在发布前验证您的包配置和类型声明。
 
-## Overview
+## 概述
 
-tsdown integrates with [publint](https://publint.dev/) and [Are the types wrong?](https://arethetypeswrong.github.io/) (attw) to catch common packaging issues. Both are optional dependencies.
+tsdown 与 [publint](https://publint.dev/) 和 [Are the types wrong?](https://arethetypeswrong.github.io/) (attw) 集成，以捕获常见的打包问题。两者都是可选依赖项。
 
-## Installation
+## 安装
 
 ```bash
-# publint only
+# 仅 publint
 npm install -D publint
 
-# attw only
+# 仅 attw
 npm install -D @arethetypeswrong/core
 
-# both
+# 两者
 npm install -D publint @arethetypeswrong/core
 ```
 
 ## publint
 
-Checks that `package.json` fields (`exports`, `main`, `module`, `types`) match your actual output files.
+检查 `package.json` 字段（`exports`、`main`、`module`、`types`）是否与您的实际输出文件匹配。
 
-### Enable
+### 启用
 
 ```ts
 export default defineConfig({
@@ -31,7 +31,7 @@ export default defineConfig({
 })
 ```
 
-### Configuration
+### 配置
 
 ```ts
 export default defineConfig({
@@ -49,9 +49,9 @@ tsdown --publint
 
 ## attw (Are the types wrong?)
 
-Verifies TypeScript declarations are correct across different module resolution strategies (`node10`, `node16`, `bundler`).
+验证 TypeScript 声明在不同模块解析策略（`node10`、`node16`、`bundler`）下是否正确。
 
-### Enable
+### 启用
 
 ```ts
 export default defineConfig({
@@ -59,7 +59,7 @@ export default defineConfig({
 })
 ```
 
-### Configuration
+### 配置
 
 ```ts
 export default defineConfig({
@@ -71,32 +71,32 @@ export default defineConfig({
 })
 ```
 
-### Profiles
+### 配置文件
 
-| Profile | Description |
+| 配置文件 | 描述 |
 |---------|-------------|
-| `strict` | Requires all resolutions to pass (default) |
-| `node16` | Ignores `node10` resolution failures |
-| `esm-only` | Ignores `node10` and `node16-cjs` resolution failures |
+| `strict` | 要求所有解析都通过（默认）|
+| `node16` | 忽略 `node10` 解析失败 |
+| `esm-only` | 忽略 `node10` 和 `node16-cjs` 解析失败 |
 
-### Ignore Rules
+### 忽略规则
 
-Suppress specific problem types with `ignoreRules`:
+使用 `ignoreRules` 抑制特定问题类型：
 
-| Rule | Description |
+| 规则 | 描述 |
 |------|-------------|
-| `no-resolution` | Module could not be resolved |
-| `untyped-resolution` | Resolution succeeded but has no types |
-| `false-cjs` | Types indicate CJS but implementation is ESM |
-| `false-esm` | Types indicate ESM but implementation is CJS |
-| `cjs-resolves-to-esm` | CJS resolution points to an ESM module |
-| `fallback-condition` | A fallback/wildcard condition was used |
-| `cjs-only-exports-default` | CJS module only exports a default |
-| `named-exports` | Named exports mismatch between types and implementation |
-| `false-export-default` | Types declare a default export that doesn't exist |
-| `missing-export-equals` | Types are missing `export =` for CJS |
-| `unexpected-module-syntax` | File uses unexpected module syntax |
-| `internal-resolution-error` | Internal resolution error in type checking |
+| `no-resolution` | 无法解析模块 |
+| `untyped-resolution` | 解析成功但没有类型 |
+| `false-cjs` | 类型指示 CJS 但实现是 ESM |
+| `false-esm` | 类型指示 ESM 但实现是 CJS |
+| `cjs-resolves-to-esm` | CJS 解析指向 ESM 模块 |
+| `fallback-condition` | 使用了回退/通配符条件 |
+| `cjs-only-exports-default` | CJS 模块仅导出默认值 |
+| `named-exports` | 类型和实现之间的命名导出不匹配 |
+| `false-export-default` | 类型声明不存在的默认导出 |
+| `missing-export-equals` | 类型缺少 CJS 的 `export =` |
+| `unexpected-module-syntax` | 文件使用意外的模块语法 |
+| `internal-resolution-error` | 类型检查中的内部解析错误 |
 
 ### CLI
 
@@ -104,9 +104,9 @@ Suppress specific problem types with `ignoreRules`:
 tsdown --attw
 ```
 
-## CI Integration
+## CI 集成
 
-Both tools support CI-aware options:
+两个工具都支持 CI 感知选项：
 
 ```ts
 export default defineConfig({
@@ -119,9 +119,9 @@ export default defineConfig({
 })
 ```
 
-Both tools require a `package.json` in your project directory.
+两个工具都需要在项目目录中有 `package.json`。
 
-## Related Options
+## 相关选项
 
-- [CI Environment](advanced-ci.md) - CI-aware option details
-- [Package Exports](option-package-exports.md) - Auto-generate exports field
+- [CI 环境](advanced-ci.md) - CI 感知选项详细信息
+- [包导出](option-package-exports.md) - 自动生成 exports 字段

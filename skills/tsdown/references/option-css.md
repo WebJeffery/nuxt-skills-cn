@@ -1,22 +1,22 @@
-# CSS Support
+# CSS 支持
 
-**Status: Experimental — API and behavior may change.**
+**状态：实验性 - API 和行为可能会更改。**
 
-Configure CSS handling including preprocessors, syntax lowering, minification, and code splitting.
+配置 CSS 处理，包括预处理器、语法降级、压缩和代码分割。
 
-## Getting Started
+## 入门指南
 
-All CSS support in `tsdown` is provided by the `@tsdown/css` package. Install it to enable CSS handling:
+`tsdown` 中的所有 CSS 支持都由 `@tsdown/css` 包提供。安装它以启用 CSS 处理：
 
 ```bash
 npm install -D @tsdown/css
 ```
 
-When `@tsdown/css` is installed, CSS processing is automatically enabled. Without it, encountering CSS files will result in an error.
+安装 `@tsdown/css` 后，CSS 处理会自动启用。没有它，遇到 CSS 文件将导致错误。
 
-## CSS Import
+## CSS 导入
 
-Import `.css` files from TypeScript/JavaScript — CSS is extracted into separate `.css` assets:
+从 TypeScript/JavaScript 导入 `.css` 文件 — CSS 被提取到单独的 `.css` 资源中：
 
 ```ts
 // src/index.ts
@@ -24,30 +24,30 @@ import './style.css'
 export function greet() { return 'Hello' }
 ```
 
-Output: `index.mjs` + `index.css`
+输出：`index.mjs` + `index.css`
 
-### `@import` Inlining
+### `@import` 内联
 
-CSS `@import` statements are resolved and inlined automatically. No separate output files produced.
+CSS `@import` 语句会自动解析和内联。不生成单独的输出文件。
 
-### Inline CSS (`?inline`)
+### 内联 CSS (`?inline`)
 
-Append `?inline` to return processed CSS as a JS string instead of emitting a `.css` file:
+附加 `?inline` 以将处理的 CSS 作为 JS 字符串返回，而不是发出 `.css` 文件：
 
 ```ts
-import './style.css'                   // → .css file
-import css from './theme.css?inline'   // → JS string
+import './style.css'                   // → .css 文件
+import css from './theme.css?inline'   // → JS 字符串
 ```
 
-Works with preprocessors too (`./foo.scss?inline`). Goes through full pipeline (preprocessors, @import inlining, lowering, minification). Tree-shakeable (`moduleSideEffects: false`).
+也适用于预处理器（`./foo.scss?inline`）。经过完整管道（预处理器、@import 内联、降级、压缩）。可 tree-shake（`moduleSideEffects: false`）。
 
-## CSS Pre-processors
+## CSS 预处理器
 
-Built-in support for Sass, Less, and Stylus. Install the preprocessor:
+内置支持 Sass、Less 和 Stylus。安装预处理器：
 
 ```bash
-# Sass (either one)
-npm install -D sass-embedded  # recommended, faster
+# Sass（任一）
+npm install -D sass-embedded  # 推荐，更快
 npm install -D sass
 
 # Less
@@ -57,7 +57,7 @@ npm install -D less
 npm install -D stylus
 ```
 
-Then import directly:
+然后直接导入：
 
 ```ts
 import './style.scss'
@@ -65,7 +65,7 @@ import './theme.less'
 import './global.styl'
 ```
 
-### Preprocessor Options
+### 预处理器选项
 
 ```ts
 export default defineConfig({
@@ -87,15 +87,15 @@ export default defineConfig({
 
 ### `additionalData`
 
-Inject code at the beginning of every preprocessor file:
+在每个预处理器文件的开头注入代码：
 
 ```ts
-// String form
+// 字符串形式
 scss: {
   additionalData: `@use "src/styles/variables" as *;`,
 }
 
-// Function form
+// 函数形式
 scss: {
   additionalData: (source, filename) => {
     if (filename.includes('theme')) return source
@@ -104,7 +104,7 @@ scss: {
 }
 ```
 
-## CSS Minification
+## CSS 压缩
 
 ```ts
 export default defineConfig({
@@ -114,29 +114,29 @@ export default defineConfig({
 })
 ```
 
-Powered by Lightning CSS.
+由 Lightning CSS 提供支持。
 
-## CSS Target
+## CSS 目标
 
-Override the top-level `target` specifically for CSS:
+专门为 CSS 覆盖顶级 `target`：
 
 ```ts
 export default defineConfig({
   target: 'node18',
   css: {
-    target: 'chrome90', // CSS-specific target
+    target: 'chrome90', // CSS 特定目标
   },
 })
 ```
 
-Set `css.target: false` to disable CSS syntax lowering entirely.
+设置 `css.target: false` 以完全禁用 CSS 语法降级。
 
-## CSS Transformer
+## CSS 转换器
 
-`css.transformer` controls mutually exclusive CSS processing paths:
+`css.transformer` 控制互斥的 CSS 处理路径：
 
-- `'lightningcss'` (default): `@import` via Lightning CSS `bundleAsync()`, no PostCSS.
-- `'postcss'`: `@import` via `postcss-import`, PostCSS plugins applied, Lightning CSS for final transform only.
+- `'lightningcss'`（默认）：通过 Lightning CSS `bundleAsync()` 进行 `@import`，无 PostCSS。
+- `'postcss'`：通过 `postcss-import` 进行 `@import`，应用 PostCSS 插件，仅对最终转换使用 Lightning CSS。
 
 ```ts
 export default defineConfig({
@@ -146,7 +146,7 @@ export default defineConfig({
 })
 ```
 
-### PostCSS Options
+### PostCSS 选项
 
 ```ts
 export default defineConfig({
@@ -155,32 +155,32 @@ export default defineConfig({
     postcss: {
       plugins: [require('autoprefixer')],
     },
-    // Or: postcss: './config' — path to search for postcss.config.js
+    // 或：postcss: './config' — 搜索 postcss.config.js 的路径
   },
 })
 ```
 
-Auto-detects PostCSS config from project root when `transformer` is `'postcss'` and `css.postcss` is omitted.
+当 `transformer` 为 `'postcss'` 且省略 `css.postcss` 时，从项目根目录自动检测 PostCSS 配置。
 
-## Lightning CSS (Syntax Lowering)
+## Lightning CSS（语法降级）
 
-Install `lightningcss` to enable CSS syntax lowering based on your `target`:
+安装 `lightningcss` 以根据您的 `target` 启用 CSS 语法降级：
 
 ```bash
 npm install -D lightningcss
 ```
 
-When `target` is set (e.g., `target: 'chrome108'`), modern CSS features are automatically downleveled:
+设置 `target` 时（例如，`target: 'chrome108'`），现代 CSS 特性会自动降级：
 
 ```css
-/* Input */
+/* 输入 */
 .foo { & .bar { color: red } }
 
-/* Output (chrome108) */
+/* 输出 (chrome108) */
 .foo .bar { color: red }
 ```
 
-### Custom Lightning CSS Options
+### 自定义 Lightning CSS 选项
 
 ```ts
 import { Features } from 'lightningcss'
@@ -195,35 +195,35 @@ export default defineConfig({
 })
 ```
 
-`css.lightningcss.targets` takes precedence over both `target` and `css.target` for CSS.
+对于 CSS，`css.lightningcss.targets` 优先于 `target` 和 `css.target`。
 
-## Code Splitting
+## 代码分割
 
-### Merged (Default)
+### 合并（默认）
 
-All CSS merged into a single file (default: `style.css`).
-
-```ts
-export default defineConfig({
-  css: {
-    fileName: 'my-library.css', // Custom name (default: 'style.css')
-  },
-})
-```
-
-### Per-Chunk Splitting
+所有 CSS 合并为单个文件（默认：`style.css`）。
 
 ```ts
 export default defineConfig({
   css: {
-    splitting: true, // Each JS chunk gets a corresponding .css file
+    fileName: 'my-library.css', // 自定义名称（默认：'style.css'）
   },
 })
 ```
 
-## Preserving CSS Imports (`css.inject`)
+### 每个块分割
 
-When enabled, JS output preserves `import` statements pointing to emitted CSS files. Consumers auto-import CSS alongside JS:
+```ts
+export default defineConfig({
+  css: {
+    splitting: true, // 每个 JS 块都有对应的 .css 文件
+  },
+})
+```
+
+## 保留 CSS 导入（`css.inject`）
+
+启用时，JS 输出保留指向发出的 CSS 文件的 `import` 语句。使用者会自动与 JS 一起导入 CSS：
 
 ```ts
 export default defineConfig({
@@ -233,21 +233,21 @@ export default defineConfig({
 })
 ```
 
-## Options Reference
+## 选项参考
 
-| Option | Type | Default | Description |
+| 选项 | 类型 | 默认值 | 描述 |
 |--------|------|---------|-------------|
-| `css.transformer` | `'postcss' \| 'lightningcss'` | `'lightningcss'` | CSS processing pipeline |
-| `css.splitting` | `boolean` | `false` | Per-chunk CSS splitting |
-| `css.fileName` | `string` | `'style.css'` | Merged CSS file name |
-| `css.minify` | `boolean` | `false` | CSS minification |
-| `css.inject` | `boolean` | `false` | Preserve CSS imports in JS output |
-| `css.target` | `string \| string[] \| false` | _from `target`_ | CSS-specific lowering target |
-| `css.postcss` | `string \| object` | — | PostCSS config path or inline options |
-| `css.preprocessorOptions` | `object` | — | Preprocessor options |
-| `css.lightningcss` | `object` | — | Lightning CSS options |
+| `css.transformer` | `'postcss' \| 'lightningcss'` | `'lightningcss'` | CSS 处理管道 |
+| `css.splitting` | `boolean` | `false` | 每个块的 CSS 分割 |
+| `css.fileName` | `string` | `'style.css'` | 合并的 CSS 文件名 |
+| `css.minify` | `boolean` | `false` | CSS 压缩 |
+| `css.inject` | `boolean` | `false` | 在 JS 输出中保留 CSS 导入 |
+| `css.target` | `string \| string[] \| false` | _来自 `target`_ | CSS 特定降级目标 |
+| `css.postcss` | `string \| object` | — | PostCSS 配置路径或内联选项 |
+| `css.preprocessorOptions` | `object` | — | 预处理器选项 |
+| `css.lightningcss` | `object` | — | Lightning CSS 选项 |
 
-## Related
+## 相关
 
-- [Target](option-target.md) - Configure syntax lowering targets
-- [Output Format](option-output-format.md) - Module output formats
+- [目标](option-target.md) - 配置语法降级目标
+- [输出格式](option-output-format.md) - 模块输出格式

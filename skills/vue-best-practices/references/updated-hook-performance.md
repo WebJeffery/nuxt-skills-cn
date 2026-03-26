@@ -1,187 +1,152 @@
 ---
-title: Avoid Expensive Operations in Updated Hook
-impact: MEDIUM
-impactDescription: Heavy computations in updated hook cause performance bottlenecks and potential infinite loops
-type: capability
-tags: [vue3, vue2, lifecycle, updated, performance, optimization, reactivity]
+title: updated 钩子性能
+impact: HIGH
+impactDescription: updated 钩子会在每次渲染后触发,误用会导致性能问题和无限循环
+type: best-practice
+tags: [vue3, lifecycle, updated, performance, watch]
 ---
 
-# Avoid Expensive Operations in Updated Hook
+# updated 钩子性能
 
-**Impact: MEDIUM** - The `updated` hook runs after every reactive state change that causes a re-render. Placing expensive operations, API calls, or state mutations here can cause severe performance degradation, infinite loops, and dropped frames below the optimal 60fps threshold.
+**影响: HIGH** - `updated` 钩子会在每次组件更新后触发。误用会导致性能问题和无限循环。优先使用 `watch` 或 `watchEffect` 进行响应式副作用。
 
-Use `updated`/`onUpdated` sparingly for post-DOM-update operations that cannot be handled by watchers or computed properties. For most reactive data handling, prefer watchers (`watch`/`watchEffect`) which provide more control over what triggers the callback.
+## 任务列表
 
-## Task List
+- 避免在 `updated` 钩子中进行 DOM 操作
+- 使用 `watch` 或 `watchEffect` 进行响应式副作用
+- 在 `updated` 钩子中避免修改响应式状态
+- 使用 `nextTick` 等待 DOM 更新完成
+- 考虑使用 `watchPostEffect` 在 DOM 更新后执行
 
-- Never perform API calls in updated hook
-- Never mutate reactive state inside updated (causes infinite loops)
-- Use conditional checks to verify updates are relevant before acting
-- Prefer `watch` or `watchEffect` for reacting to specific data changes
-- Use throttling/debouncing if updated operations are expensive
-- Reserve updated for low-level DOM synchronization tasks
+## 错误示例
 
-**BAD:**
-```javascript
-// BAD: API call in updated - fires on every re-render
-export default {
-  data() {
-    return { items: [], lastUpdate: null }
-  },
-  updated() {
-    // This runs after every single state change!
-    fetch('/api/sync', {
-      method: 'POST',
-      body: JSON.stringify(this.items)
-    })
-  }
-}
-```
-
-```javascript
-// BAD: State mutation in updated - infinite loop
-export default {
-  data() {
-    return { renderCount: 0 }
-  },
-  updated() {
-    // This causes another update, which triggers updated again!
-    this.renderCount++ // Infinite loop
-  }
-}
-```
-
-```javascript
-// BAD: Heavy computation on every update
-export default {
-  updated() {
-    // Expensive operation runs on every keystroke, every state change
-    this.processedData = this.heavyComputation(this.rawData)
-    this.analytics = this.calculateMetrics(this.allData)
-  }
-}
-```
-
-**GOOD:**
-```javascript
-import debounce from 'lodash-es/debounce'
-
-// GOOD: Use watcher for specific data changes
-export default {
-  data() {
-    return { items: [] }
-  },
-  watch: {
-    // Only fires when items actually changes
-    items: {
-      handler(newItems) {
-        this.syncToServer(newItems)
-      },
-      deep: true
-    }
-  },
-  methods: {
-    syncToServer: debounce(function(items) {
-      fetch('/api/sync', {
-        method: 'POST',
-        body: JSON.stringify(items)
-      })
-    }, 500)
-  }
-}
-```
-
+**错误:**
 ```vue
-<!-- GOOD: Composition API with targeted watchers -->
 <script setup>
-import { ref, watch, onUpdated } from 'vue'
-import { useDebounceFn } from '@vueuse/core'
+import { ref, onUpdated } from 'vue'
 
-const items = ref([])
-const scrollContainer = ref(null)
+const count = ref(0)
 
-// Watch specific data - not all updates
-watch(items, (newItems) => {
-  syncToServer(newItems)
-}, { deep: true })
-
-const syncToServer = useDebounceFn((items) => {
-  fetch('/api/sync', { method: 'POST', body: JSON.stringify(items) })
-}, 500)
-
-// Only use onUpdated for DOM synchronization
 onUpdated(() => {
-  // Scroll to bottom only if content changed height
-  if (scrollContainer.value) {
-    scrollContainer.value.scrollTop = scrollContainer.value.scrollHeight
-  }
+  // 这会导致无限循环
+  count.value++
 })
 </script>
 ```
 
-```javascript
-// GOOD: Conditional check in updated hook
-export default {
-  data() {
-    return {
-      content: '',
-      lastSyncedContent: ''
-    }
-  },
-  updated() {
-    // Only act if specific condition is met
-    if (this.content !== this.lastSyncedContent) {
-      this.syncContent()
-      this.lastSyncedContent = this.content
-    }
-  },
-  methods: {
-    syncContent: debounce(function() {
-      // Sync logic
-    }, 300)
-  }
-}
+**错误:**
+```vue
+<script setup>
+import { onUpdated } from 'vue'
+
+onUpdated(() => {
+  // 在 updated 中进行 DOM 操作是不必要的
+  document.querySelector('.title').textContent = '新标题'
+})
+</script>
 ```
 
-## Valid Use Cases for Updated Hook
+## 正确示例
 
-```javascript
-// GOOD: Low-level DOM synchronization
-export default {
-  updated() {
-    // Sync third-party library with Vue's DOM
-    this.thirdPartyWidget.refresh()
+**使用 watch:**
+```vue
+<script setup>
+import { ref, watch } from 'vue'
 
-    // Update scroll position after content change
-    this.$nextTick(() => {
-      this.maintainScrollPosition()
-    })
-  }
-}
+const count = ref(0)
+
+watch(count, (newValue) => {
+  console.log(`Count changed to ${newValue}`)
+})
+</script>
 ```
 
-## Prefer Computed Properties for Derived Data
+**使用 watchEffect:**
+```vue
+<script setup>
+import { ref, watchEffect } from 'vue'
 
-```javascript
-// BAD: Calculating derived data in updated
-export default {
-  data() {
-    return { numbers: [1, 2, 3, 4, 5] }
-  },
-  updated() {
-    this.sum = this.numbers.reduce((a, b) => a + b, 0) // Causes another update!
-  }
-}
+const count = ref(0)
 
-// GOOD: Use computed property instead
-export default {
-  data() {
-    return { numbers: [1, 2, 3, 4, 5] }
-  },
-  computed: {
-    sum() {
-      return this.numbers.reduce((a, b) => a + b, 0)
-    }
-  }
-}
+watchEffect(() => {
+  console.log(`Count is ${count.value}`)
+})
+</script>
 ```
+
+## 使用 nextTick
+
+**正确:**
+```vue
+<script setup>
+import { ref, nextTick } from 'vue'
+
+const count = ref(0)
+
+async function increment() {
+  count.value++
+  await nextTick()
+  // DOM 已更新
+  console.log('DOM updated')
+}
+</script>
+```
+
+## 使用 watchPostEffect
+
+**正确:**
+```vue
+<script setup>
+import { ref, watchPostEffect } from 'vue'
+
+const count = ref(0)
+
+watchPostEffect(() => {
+  // 在 DOM 更新后执行
+  console.log('DOM updated, count is', count.value)
+})
+</script>
+```
+
+## 最佳实践
+
+1. **避免使用 updated:**
+   - `updated` 钩子会在每次更新后触发
+   - 很难控制触发时机
+   - 容易导致性能问题
+
+2. **使用 watch 进行响应式副作用:**
+   - `watch` 只在依赖项变化时触发
+   - 更精确的控制
+   - 更好的性能
+
+3. **使用 watchEffect 进行即时响应:**
+   - `watchEffect` 立即执行并追踪依赖
+   - 自动收集依赖
+   - 适合需要立即执行的场景
+
+4. **使用 nextTick 等待 DOM 更新:**
+   - `nextTick` 确保在下一次 DOM 更新后执行
+   - 更可靠的 DOM 操作时机
+   - 避免在渲染过程中修改 DOM
+
+5. **使用 watchPostEffect 进行 DOM 后操作:**
+   - `watchPostEffect` 在 DOM 更新后执行
+   - 适合需要访问更新后 DOM 的场景
+   - 比 `updated` 更可控
+
+## 性能影响
+
+- `updated` 钩子会在每次渲染后触发
+- 在 `updated` 中进行复杂操作会严重影响性能
+- 在 `updated` 中修改状态会导致无限循环
+- 使用 `watch` 或 `watchEffect` 可以避免不必要的执行
+
+## 替代方案
+
+| 需求 | 推荐方案 |
+|------|---------|
+| 响应式副作用 | `watch` 或 `watchEffect` |
+| DOM 更新后操作 | `nextTick` 或 `watchPostEffect` |
+| 组件挂载后操作 | `onMounted` |
+| 组件卸载前操作 | `onBeforeUnmount` |

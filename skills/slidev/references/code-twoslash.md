@@ -1,13 +1,13 @@
 ---
 name: twoslash
-description: Show TypeScript type information inline or on hover in code blocks
+description: 在代码块中内联或悬停时显示 TypeScript 类型信息
 ---
 
-# TwoSlash Integration
+# TwoSlash 集成
 
-Show TypeScript type information inline or on hover.
+在代码块中内联或悬停时显示 TypeScript 类型信息。
 
-## Usage
+## 用法
 
 ````md
 ```ts twoslash
@@ -18,25 +18,25 @@ const count = ref(0)
 ```
 ````
 
-## Features
+## 功能
 
-- Type information on hover
-- Inline type annotations with `^?`
-- Errors and warnings display
-- Full TypeScript compiler integration
+- 悬停时显示类型信息
+- 使用 `^?` 进行内联类型注释
+- 显示错误和警告
+- 完整的 TypeScript 编译器集成
 
-## Annotations
+## 注释
 
 ```ts twoslash
 const count = ref(0)
 //            ^?
-// Shows: const count: Ref<number>
+// 显示：const count: Ref<number>
 ```
 
-## Use Case
+## 使用场景
 
-Perfect for TypeScript/JavaScript teaching materials where showing types helps understanding.
+非常适合 TypeScript/JavaScript 教学材料，其中显示类型有助于理解。
 
-## Resources
+## 资源
 
-- TwoSlash docs: https://twoslash.netlify.app/
+- TwoSlash 文档：https://twoslash.netlify.app/

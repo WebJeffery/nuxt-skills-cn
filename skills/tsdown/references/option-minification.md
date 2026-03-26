@@ -1,39 +1,39 @@
-# Minification
+# 压缩
 
-Compress code to reduce bundle size.
+压缩代码以减小包大小。
 
-## Overview
+## 概述
 
-Minification removes unnecessary characters (whitespace, comments) and optimizes code for production, reducing bundle size and improving load times.
+压缩删除不必要的字符（空白、注释）并优化代码以用于生产，减小包大小并提高加载时间。
 
-**Note:** Uses [Oxc minifier](https://oxc.rs/docs/contribute/minifier) internally. The minifier is currently in alpha.
+**注意：** 内部使用 [Oxc 压缩器](https://oxc.rs/docs/contribute/minifier)。压缩器目前处于 alpha 阶段。
 
-## Type
+## 类型
 
 ```ts
 minify?: boolean | 'dce-only' | MinifyOptions
 ```
 
-- `true` — Enable full minification (whitespace removal, mangling, compression)
-- `false` — Disable minification (default)
-- `'dce-only'` — Only perform dead code elimination without full minification
-- `MinifyOptions` — Pass detailed options to the Oxc minifier
+- `true` — 启用完整压缩（空白删除、混淆、压缩）
+- `false` — 禁用压缩（默认）
+- `'dce-only'` — 仅执行死代码消除而不进行完整压缩
+- `MinifyOptions` — 向 Oxc 压缩器传递详细选项
 
-## Basic Usage
+## 基本用法
 
 ### CLI
 
 ```bash
-# Enable minification
+# 启用压缩
 tsdown --minify
 
-# Disable minification
+# 禁用压缩
 tsdown --no-minify
 ```
 
-**Note:** The CLI `--minify` flag is a boolean toggle. For `'dce-only'` mode or advanced options, use the config file.
+**注意：** CLI `--minify` 标志是布尔切换。对于 `'dce-only'` 模式或高级选项，请使用配置文件。
 
-### Config File
+### 配置文件
 
 ```ts
 export default defineConfig({
@@ -42,9 +42,9 @@ export default defineConfig({
 })
 ```
 
-### DCE-Only Mode
+### DCE-Only 模式
 
-Remove dead code without full minification (keeps readable output):
+删除死代码而不进行完整压缩（保持输出可读）：
 
 ```ts
 export default defineConfig({
@@ -53,9 +53,9 @@ export default defineConfig({
 })
 ```
 
-## Example Output
+## 示例输出
 
-### Without Minification
+### 不压缩
 
 ```js
 // dist/index.mjs
@@ -69,16 +69,16 @@ function hello(x$1) {
 hello(x)
 ```
 
-### With Minification
+### 压缩
 
 ```js
 // dist/index.mjs
 const e=1;function t(e){console.log(`Hello World`),console.log(e)}t(e);
 ```
 
-## Common Patterns
+## 常见模式
 
-### Production Build
+### 生产构建
 
 ```ts
 export default defineConfig({
@@ -89,17 +89,17 @@ export default defineConfig({
 })
 ```
 
-### Conditional Minification
+### 条件压缩
 
 ```ts
 export default defineConfig((options) => ({
   entry: ['src/index.ts'],
   format: ['esm'],
-  minify: !options.watch,  // Only minify in production
+  minify: !options.watch,  // 仅在生产中压缩
 }))
 ```
 
-### Browser Library
+### 浏览器库
 
 ```ts
 export default defineConfig({
@@ -111,18 +111,18 @@ export default defineConfig({
 })
 ```
 
-### Multiple Builds
+### 多次构建
 
 ```ts
 export default defineConfig([
-  // Development build
+  // 开发构建
   {
     entry: ['src/index.ts'],
     format: ['esm'],
     minify: false,
     outDir: 'dist/dev',
   },
-  // Production build
+  // 生产构建
   {
     entry: ['src/index.ts'],
     format: ['esm'],
@@ -132,46 +132,46 @@ export default defineConfig([
 ])
 ```
 
-## CLI Examples
+## CLI 示例
 
 ```bash
-# Production build with minification
+# 带压缩的生产构建
 tsdown --minify --clean
 
-# Multiple formats with minification
+# 多种格式并压缩
 tsdown --format esm --format cjs --minify
 
-# Conditional minification (only when not watching)
-tsdown --minify  # Or omit --watch
+# 条件压缩（仅在不监视时）
+tsdown --minify  # 或省略 --watch
 ```
 
-## Tips
+## 提示
 
-1. **Use `minify: true`** for production builds
-2. **Use `'dce-only'`** to remove dead code while keeping output readable
-3. **Skip minification** during development for faster rebuilds
-4. **Combine with tree shaking** for best results
-5. **Test minified output** thoroughly (Oxc minifier is in alpha)
+1. **使用 `minify: true`**用于生产构建
+2. **使用 `'dce-only'`**删除死代码同时保持输出可读
+3. **在开发期间跳过压缩**以加快重新构建
+4. **与 tree shaking 结合**以获得最佳结果
+5. **彻底测试压缩输出**（Oxc 压缩器处于 alpha 阶段）
 
-## Troubleshooting
+## 故障排除
 
-### Minified Code Has Bugs
+### 压缩代码有错误
 
-Oxc minifier is in alpha and may have issues:
+Oxc 压缩器处于 alpha 阶段，可能存在问题：
 
-1. **Use DCE-only mode**: `minify: 'dce-only'`
-2. **Report bug** to [Oxc project](https://github.com/oxc-project/oxc/issues)
-3. **Disable minification**: `minify: false`
+1. **使用 DCE-only 模式**：`minify: 'dce-only'`
+2. **报告错误**到 [Oxc 项目](https://github.com/oxc-project/oxc/issues)
+3. **禁用压缩**：`minify: false`
 
-### Unexpected Output
+### 意外的输出
 
-- **Test unminified** first to isolate issue
-- **Check source maps** for debugging
-- **Verify target compatibility**
+- **首先测试未压缩**以隔离问题
+- **检查源映射**用于调试
+- **验证目标兼容性**
 
-## Related Options
+## 相关选项
 
-- [Tree Shaking](option-tree-shaking.md) - Remove unused code
-- [Target](option-target.md) - Syntax transformations
-- [Output Format](option-output-format.md) - Module formats
-- [Sourcemap](option-sourcemap.md) - Debug information
+- [Tree Shaking](option-tree-shaking.md) - 删除未使用的代码
+- [目标](option-target.md) - 语法转换
+- [输出格式](option-output-format.md) - 模块格式
+- [源映射](option-sourcemap.md) - 调试信息

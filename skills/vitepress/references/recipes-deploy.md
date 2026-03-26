@@ -1,27 +1,27 @@
 ---
 name: vitepress-deployment
-description: Deploying VitePress sites to various platforms including GitHub Pages, Netlify, Vercel, and more
+description: 将 VitePress 站点部署到各种平台,包括 GitHub Pages、Netlify、Vercel 等
 ---
 
-# Deployment
+# 部署
 
-Deploy VitePress static sites to various hosting platforms.
+将 VitePress 静态站点部署到各种托管平台。
 
-## Build and Preview
+## 构建和预览
 
 ```bash
-# Build production files
+# 构建生产文件
 npm run docs:build
 
-# Preview locally
+# 本地预览
 npm run docs:preview
 ```
 
-Output is in `.vitepress/dist` by default.
+默认输出在 `.vitepress/dist` 中。
 
-## Setting Base Path
+## 设置基础路径
 
-For sub-path deployment (e.g., `https://user.github.io/repo/`):
+对于子路径部署(例如 `https://user.github.io/repo/`):
 
 ```ts
 // .vitepress/config.ts
@@ -32,7 +32,7 @@ export default {
 
 ## GitHub Pages
 
-Create `.github/workflows/deploy.yml`:
+创建 `.github/workflows/deploy.yml`:
 
 ```yaml
 name: Deploy VitePress
@@ -79,9 +79,9 @@ jobs:
         id: deployment
 ```
 
-Enable GitHub Pages in repository settings → Pages → Source: "GitHub Actions".
+在仓库设置中启用 GitHub Pages → Pages → Source: "GitHub Actions"。
 
-For pnpm, add before setup-node:
+对于 pnpm,在 setup-node 之前添加:
 
 ```yaml
 - uses: pnpm/action-setup@v4
@@ -91,19 +91,19 @@ For pnpm, add before setup-node:
 
 ## Netlify / Vercel / Cloudflare Pages
 
-Configure in dashboard:
+在仪表板中配置:
 
-| Setting | Value |
+| 设置 | 值 |
 |---------|-------|
-| Build Command | `npm run docs:build` |
-| Output Directory | `docs/.vitepress/dist` |
-| Node Version | `20` (or above) |
+| 构建命令 | `npm run docs:build` |
+| 输出目录 | `docs/.vitepress/dist` |
+| Node 版本 | `20` (或更高) |
 
-**Warning:** Don't enable "Auto Minify" for HTML - it removes Vue hydration comments.
+**警告:** 不要为 HTML 启用"自动最小化" - 它会删除 Vue 水合注释。
 
-### Vercel Configuration
+### Vercel 配置
 
-For clean URLs, add `vercel.json`:
+为了干净的 URL,添加 `vercel.json`:
 
 ```json
 {
@@ -113,7 +113,7 @@ For clean URLs, add `vercel.json`:
 
 ## GitLab Pages
 
-Create `.gitlab-ci.yml`:
+创建 `.gitlab-ci.yml`:
 
 ```yaml
 image: node:18
@@ -132,7 +132,7 @@ pages:
     - main
 ```
 
-Set `outDir: '../public'` in config if needed.
+如果需要,在配置中设置 `outDir: '../public'`。
 
 ## Firebase
 
@@ -169,7 +169,7 @@ server {
         error_page 403 /404.html;
     }
 
-    # Cache hashed assets
+    # 缓存哈希资产
     location ~* ^/assets/ {
         expires 1y;
         add_header Cache-Control "public, immutable";
@@ -177,11 +177,11 @@ server {
 }
 ```
 
-**Important:** Don't default to `index.html` like SPAs - use `$uri.html` for clean URLs.
+**重要:** 不要像 SPA 那样默认为 `index.html` - 使用 `$uri.html` 以获得干净的 URL。
 
-## HTTP Cache Headers
+## HTTP 缓存头
 
-For hashed assets (immutable):
+对于哈希资产(不可变):
 
 ```
 Cache-Control: max-age=31536000, immutable
@@ -189,7 +189,7 @@ Cache-Control: max-age=31536000, immutable
 
 ### Netlify `_headers`
 
-Place in `docs/public/_headers`:
+放置在 `docs/public/_headers` 中:
 
 ```
 /assets/*
@@ -215,24 +215,24 @@ Place in `docs/public/_headers`:
 }
 ```
 
-## Other Platforms
+## 其他平台
 
-| Platform | Guide |
+| 平台 | 指南 |
 |----------|-------|
-| Azure Static Web Apps | Set `app_location: /`, `output_location: docs/.vitepress/dist` |
+| Azure Static Web Apps | 设置 `app_location: /`, `output_location: docs/.vitepress/dist` |
 | Surge | `npx surge docs/.vitepress/dist` |
-| Heroku | Use `heroku-buildpack-static` |
-| Render | Build: `npm run docs:build`, Publish: `docs/.vitepress/dist` |
-| Kinsta | Follow [Kinsta docs](https://kinsta.com/docs/vitepress-static-site-example/) |
+| Heroku | 使用 `heroku-buildpack-static` |
+| Render | 构建: `npm run docs:build`, 发布: `docs/.vitepress/dist` |
+| Kinsta | 遵循 [Kinsta 文档](https://kinsta.com/docs/vitepress-static-site-example/) |
 
-## Key Points
+## 关键点
 
-- Set `base` for sub-path deployments
-- GitHub Pages requires workflow file and enabling Pages in settings
-- Most platforms: Build `npm run docs:build`, output `docs/.vitepress/dist`
-- Don't enable HTML minification (breaks hydration)
-- Cache `/assets/*` with immutable headers
-- For clean URLs on Nginx, use `try_files $uri $uri.html $uri/ =404`
+- 为子路径部署设置 `base`
+- GitHub Pages 需要工作流文件并在设置中启用 Pages
+- 大多数平台: 构建 `npm run docs:build`, 输出 `docs/.vitepress/dist`
+- 不要启用 HTML 最小化(破坏水合)
+- 使用不可变头缓存 `/assets/*`
+- 对于 Nginx 上的干净 URL,使用 `try_files $uri $uri.html $uri/ =404`
 
 <!--
 Source references:

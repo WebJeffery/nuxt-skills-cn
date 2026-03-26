@@ -1,18 +1,18 @@
 ---
 name: advanced-patterns
-description: Vue 3 built-in components (Transition, Teleport, Suspense, KeepAlive) and advanced directives
+description: Vue 3 内置组件(Transition、Teleport、Suspense、KeepAlive)和高级指令
 ---
 
-# Built-in Components & Directives
+# 内置组件 & 指令
 
 ## Transition
 
-Animate enter/leave of a single element or component.
+为单个元素或组件的进入/离开设置动画。
 
 ```vue
 <template>
   <Transition name="fade">
-    <div v-if="show">Content</div>
+    <div v-if="show">内容</div>
   </Transition>
 </template>
 
@@ -26,27 +26,27 @@ Animate enter/leave of a single element or component.
 </style>
 ```
 
-### CSS Classes
+### CSS 类
 
-| Class | When |
+| 类 | 时机 |
 |-------|------|
-| `{name}-enter-from` | Start state for enter |
-| `{name}-enter-active` | Active state for enter (add transitions here) |
-| `{name}-enter-to` | End state for enter |
-| `{name}-leave-from` | Start state for leave |
-| `{name}-leave-active` | Active state for leave |
-| `{name}-leave-to` | End state for leave |
+| `{name}-enter-from` | 进入的开始状态 |
+| `{name}-enter-active` | 进入的活动状态(在此添加过渡) |
+| `{name}-enter-to` | 进入的结束状态 |
+| `{name}-leave-from` | 离开的开始状态 |
+| `{name}-leave-active` | 离开的活动状态 |
+| `{name}-leave-to` | 离开的结束状态 |
 
-### Transition Modes
+### 过渡模式
 
 ```vue
-<!-- Wait for leave to complete before enter -->
+<!-- 等待离开完成后再进入 -->
 <Transition name="fade" mode="out-in">
   <component :is="currentView" />
 </Transition>
 ```
 
-### JavaScript Hooks
+### JavaScript 钩子
 
 ```vue
 <Transition
@@ -56,28 +56,28 @@ Animate enter/leave of a single element or component.
   @leave="onLeave"
   :css="false"
 >
-  <div v-if="show">Content</div>
+  <div v-if="show">内容</div>
 </Transition>
 
 <script setup lang="ts">
 function onEnter(el: Element, done: () => void) {
-  // Animate with JS library
+  // 使用 JS 库进行动画
   gsap.to(el, { opacity: 1, onComplete: done })
 }
 </script>
 ```
 
-### Appear on Initial Render
+### 初始渲染时出现
 
 ```vue
 <Transition appear name="fade">
-  <div>Shows with animation on mount</div>
+  <div>挂载时显示动画</div>
 </Transition>
 ```
 
 ## TransitionGroup
 
-Animate list items. Each child must have a unique `key`.
+为列表项设置动画。每个子元素必须有唯一的 `key`。
 
 ```vue
 <template>
@@ -96,7 +96,7 @@ Animate list items. Each child must have a unique `key`.
   opacity: 0;
   transform: translateX(30px);
 }
-/* Move animation for reordering */
+/* 重新排序的移动动画 */
 .list-move {
   transition: transform 0.3s ease;
 }
@@ -105,15 +105,15 @@ Animate list items. Each child must have a unique `key`.
 
 ## Teleport
 
-Render content to a different DOM location.
+将内容渲染到不同的 DOM 位置。
 
 ```vue
 <template>
-  <button @click="open = true">Open Modal</button>
+  <button @click="open = true">打开模态框</button>
   
   <Teleport to="body">
     <div v-if="open" class="modal">
-      Modal content rendered at body
+      模态框内容渲染在 body 中
     </div>
   </Teleport>
 </template>
@@ -122,22 +122,22 @@ Render content to a different DOM location.
 ### Props
 
 ```vue
-<!-- CSS selector -->
+<!-- CSS 选择器 -->
 <Teleport to="#modal-container">
 
-<!-- DOM element -->
+<!-- DOM 元素 -->
 <Teleport :to="targetElement">
 
-<!-- Disable teleport conditionally -->
+<!-- 有条件地禁用 teleport -->
 <Teleport to="body" :disabled="isMobile">
 
-<!-- Defer until target exists (Vue 3.5+) -->
+<!-- 延迟到目标存在(Vue 3.5+) -->
 <Teleport defer to="#late-rendered-target">
 ```
 
 ## Suspense
 
-Handle async dependencies with loading states. **Experimental feature.**
+使用加载状态处理异步依赖。**实验性功能。**
 
 ```vue
 <template>
@@ -146,18 +146,18 @@ Handle async dependencies with loading states. **Experimental feature.**
       <AsyncComponent />
     </template>
     <template #fallback>
-      <div>Loading...</div>
+      <div>加载中...</div>
     </template>
   </Suspense>
 </template>
 ```
 
-### Async Dependencies
+### 异步依赖
 
-Suspense waits for:
-- Components with `async setup()`
-- Components using top-level `await` in `<script setup>`
-- Async components created with `defineAsyncComponent`
+Suspense 等待:
+- 具有 `async setup()` 的组件
+- 在 `<script setup>` 中使用顶层 `await` 的组件
+- 使用 `defineAsyncComponent` 创建的异步组件
 
 ```vue
 <!-- AsyncComponent.vue -->
@@ -166,7 +166,7 @@ const data = await fetch('/api/data').then(r => r.json())
 </script>
 ```
 
-### Events
+### 事件
 
 ```vue
 <Suspense
@@ -180,7 +180,7 @@ const data = await fetch('/api/data').then(r => r.json())
 
 ## KeepAlive
 
-Cache component instances when toggled.
+在切换时缓存组件实例。
 
 ```vue
 <template>
@@ -190,74 +190,74 @@ Cache component instances when toggled.
 </template>
 ```
 
-### Include/Exclude
+### 包含/排除
 
 ```vue
-<!-- By name (string or regex) -->
+<!-- 按名称(字符串或正则) -->
 <KeepAlive include="ComponentA,ComponentB">
 <KeepAlive :include="/^Tab/">
 <KeepAlive :include="['TabA', 'TabB']">
 
-<!-- Exclude -->
+<!-- 排除 -->
 <KeepAlive exclude="ModalComponent">
 
-<!-- Max cached instances -->
+<!-- 最大缓存实例数 -->
 <KeepAlive :max="10">
 ```
 
-### Lifecycle Hooks
+### 生命周期钩子
 
 ```ts
 import { onActivated, onDeactivated } from 'vue'
 
 onActivated(() => {
-  // Called when component is inserted from cache
+  // 当组件从缓存插入时调用
   fetchLatestData()
 })
 
 onDeactivated(() => {
-  // Called when component is removed to cache
+  // 当组件移除到缓存时调用
   pauseTimers()
 })
 ```
 
 ## v-memo
 
-Skip re-renders when dependencies unchanged. Use for performance optimization.
+当依赖项未更改时跳过重新渲染。用于性能优化。
 
 ```vue
 <template>
   <div v-for="item in list" :key="item.id" v-memo="[item.selected]">
-    <!-- Only re-renders when item.selected changes -->
+    <!-- 仅在 item.selected 更改时重新渲染 -->
     <ExpensiveComponent :item="item" />
   </div>
 </template>
 ```
 
-Equivalent to `v-once` when empty:
+为空时等同于 `v-once`:
 ```vue
-<div v-memo="[]">Never updates</div>
+<div v-memo="[]">永不更新</div>
 ```
 
 ## v-once
 
-Render once, skip all future updates.
+渲染一次,跳过所有未来的更新。
 
 ```vue
-<span v-once>Static: {{ neverChanges }}</span>
+<span v-once>静态: {{ neverChanges }}</span>
 ```
 
-## Custom Directives
+## 自定义指令
 
-Create reusable DOM manipulations.
+创建可重用的 DOM 操作。
 
 ```ts
-// Directive definition
+// 指令定义
 const vFocus: Directive<HTMLElement> = {
   mounted: (el) => el.focus()
 }
 
-// Full hooks
+// 完整钩子
 const vColor: Directive<HTMLElement, string> = {
   created(el, binding, vnode, prevVnode) {},
   beforeMount(el, binding) {},
@@ -273,7 +273,7 @@ const vColor: Directive<HTMLElement, string> = {
 }
 ```
 
-### Directive Arguments & Modifiers
+### 指令参数 & 修饰符
 
 ```vue
 <div v-color:background.bold="'red'">
@@ -293,7 +293,7 @@ const vColor: Directive<HTMLElement, string> = {
 </script>
 ```
 
-### Global Registration
+### 全局注册
 
 ```ts
 // main.ts

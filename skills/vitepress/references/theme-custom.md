@@ -1,267 +1,298 @@
 ---
-name: vitepress-custom-themes
-description: Building custom themes from scratch with the theme interface, Layout component, and enhanceApp
+name: building-custom-vitepress-theme
+description: 创建自定义主题,包括布局、组件和主题配置
 ---
 
-# Custom Themes
+# 构建自定义主题
 
-Build a theme from scratch when the default theme doesn't fit your needs.
+从零开始创建自定义主题,而不是扩展默认主题。
 
-## Theme Entry
+## 主题入口文件
 
-Create `.vitepress/theme/index.ts`:
+创建 `.vitepress/theme/index.ts`:
 
 ```ts
 // .vitepress/theme/index.ts
 import Layout from './Layout.vue'
+import './custom.css'
 
 export default {
   Layout,
   enhanceApp({ app, router, siteData }) {
-    // Register global components, plugins, etc.
+    // 注册全局组件
+    app.component('MyComponent', MyComponent)
   }
 }
 ```
 
-## Theme Interface
-
-```ts
-interface Theme {
-  // Required: Root layout component
-  Layout: Component
-  
-  // Optional: Enhance Vue app instance
-  enhanceApp?: (ctx: EnhanceAppContext) => Awaitable<void>
-  
-  // Optional: Extend another theme
-  extends?: Theme
-}
-
-interface EnhanceAppContext {
-  app: App              // Vue app instance
-  router: Router        // VitePress router
-  siteData: Ref<SiteData>  // Site-level metadata
-}
-```
-
-## Basic Layout
-
-The Layout component must render `<Content />` for markdown:
+## 布局组件
 
 ```vue
 <!-- .vitepress/theme/Layout.vue -->
 <script setup>
 import { useData } from 'vitepress'
+
 const { page, frontmatter } = useData()
 </script>
 
 <template>
   <div class="layout">
     <header>
-      <nav>My Site</nav>
+      <a href="/" class="home-link">{{ siteData.title }}</a>
+      <nav>
+        <a v-for="link in siteData.themeConfig.nav" :href="link.link">
+          {{ link.text }}
+        </a>
+      </nav>
     </header>
     
     <main>
-      <div v-if="page.isNotFound">
-        <h1>404 - Page Not Found</h1>
-      </div>
-      
-      <div v-else-if="frontmatter.layout === 'home'">
-        <h1>Welcome!</h1>
-      </div>
-      
-      <article v-else>
-        <Content />
-      </article>
+      <Content />
     </main>
     
     <footer>
-      <p>© 2024 My Site</p>
+      © {{ new Date().getFullYear() }} {{ siteData.title }}
     </footer>
+  </div>
+</template>
+
+<style scoped>
+.layout {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+}
+
+nav a {
+  margin-left: 20px;
+}
+</style>
+```
+
+## 使用默认主题组件
+
+导入特定组件:
+
+```vue
+<!-- .vitepress/theme/Layout.vue -->
+<script setup>
+import { useData } from 'vitepress'
+import VPNavBar from 'vitepress/theme-default/components/VPNavBar.vue'
+import VPFooter from 'vitepress/theme-default/components/VPFooter.vue'
+
+const { siteData } = useData()
+</script>
+
+<template>
+  <div class="layout">
+    <VPNavBar />
+    <main><Content /></main>
+    <VPFooter />
   </div>
 </template>
 ```
 
-## Runtime API
-
-Access VitePress data in your theme:
-
-```vue
-<script setup>
-import { useData, useRoute, useRouter } from 'vitepress'
-
-// Page and site data
-const { 
-  site,        // Site config (title, description, etc.)
-  theme,       // Theme config
-  page,        // Current page data
-  frontmatter, // Current page frontmatter
-  title,       // Page title
-  description, // Page description
-  lang,        // Current language
-  isDark,      // Dark mode state
-  params       // Dynamic route params
-} = useData()
-
-// Routing
-const route = useRoute()
-const router = useRouter()
-
-// Navigate programmatically
-const goToGuide = () => router.go('/guide/')
-</script>
-```
-
-## Built-in Components
-
-```vue
-<script setup>
-import { Content } from 'vitepress'
-</script>
-
-<template>
-  <!-- Renders markdown content -->
-  <Content />
-  
-  <!-- Renders slot only on client (SSR-safe) -->
-  <ClientOnly>
-    <NonSSRComponent />
-  </ClientOnly>
-</template>
-```
-
-## Extend Another Theme
-
-Build on top of default theme or any other:
-
-```ts
-// .vitepress/theme/index.ts
-import DefaultTheme from 'vitepress/theme'
-
-export default {
-  extends: DefaultTheme,
-  enhanceApp({ app }) {
-    // Your customizations
-  }
-}
-```
-
-## Register Plugins and Components
-
-```ts
-// .vitepress/theme/index.ts
-import Layout from './Layout.vue'
-import GlobalComponent from './GlobalComponent.vue'
-
-export default {
-  Layout,
-  enhanceApp({ app }) {
-    // Register global component
-    app.component('GlobalComponent', GlobalComponent)
-    
-    // Register plugin
-    app.use(MyPlugin)
-    
-    // Provide/inject
-    app.provide('key', value)
-  }
-}
-```
-
-## Async enhanceApp
-
-For plugins that need async initialization:
-
-```ts
-export default {
-  Layout,
-  async enhanceApp({ app }) {
-    if (!import.meta.env.SSR) {
-      // Client-only plugin
-      const plugin = await import('browser-only-plugin')
-      app.use(plugin.default)
-    }
-  }
-}
-```
-
-## Theme-Aware Layout
-
-Handle different page layouts:
+## 响应式布局
 
 ```vue
 <script setup>
 import { useData } from 'vitepress'
-import Home from './Home.vue'
-import Doc from './Doc.vue'
-import Page from './Page.vue'
-import NotFound from './NotFound.vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
-const { page, frontmatter } = useData()
+const { page } = useData()
+const isMobile = ref(false)
+
+const checkMobile = () => {
+  isMobile.value = window.innerWidth < 768
+}
+
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
+})
 </script>
 
 <template>
-  <NotFound v-if="page.isNotFound" />
-  <Home v-else-if="frontmatter.layout === 'home'" />
-  <Page v-else-if="frontmatter.layout === 'page'" />
-  <Doc v-else />
+  <div :class="{ 'mobile': isMobile }">
+    <Content />
+  </div>
 </template>
 ```
 
-## Distributing a Theme
+## 暗色模式支持
 
-As npm package:
+```vue
+<script setup>
+import { useData } from 'vitepress'
+import { onMounted, watch } from 'vue'
 
-```ts
-// my-theme/index.ts
-import Layout from './Layout.vue'
-export default { Layout }
+const { isDark } = useData()
 
-// Export types for config
-export type { ThemeConfig } from './types'
+const toggleTheme = () => {
+  isDark.value = !isDark.value
+}
+
+onMounted(() => {
+  // 从 localStorage 或系统偏好初始化
+  const saved = localStorage.getItem('vitepress-theme-appearance')
+  if (saved) {
+    isDark.value = saved === 'dark'
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    isDark.value = true
+  }
+})
+
+watch(isDark, (value) => {
+  document.documentElement.classList.toggle('dark', value)
+  localStorage.setItem('vitepress-theme-appearance', value ? 'dark' : 'light')
+})
+</script>
+
+<template>
+  <button @click="toggleTheme">
+    {{ isDark ? 'Light' : 'Dark' }}
+  </button>
+</template>
 ```
 
-Consumer usage:
+## 自定义 404 页面
+
+```vue
+<!-- .vitepress/theme/NotFound.vue -->
+<script setup>
+import { useData } from 'vitepress'
+
+const { siteData } = useData()
+</script>
+
+<template>
+  <div class="not-found">
+    <h1>404</h1>
+    <p>Page not found</p>
+    <a href="/">Go home</a>
+  </div>
+</template>
+
+<style scoped>
+.not-found {
+  text-align: center;
+  padding: 100px 20px;
+}
+</style>
+```
+
+在主题入口中注册:
 
 ```ts
 // .vitepress/theme/index.ts
-import Theme from 'my-vitepress-theme'
+import Layout from './Layout.vue'
+import NotFound from './NotFound.vue'
 
-export default Theme
-
-// Or extend it
 export default {
-  extends: Theme,
+  Layout,
+  NotFound,
   enhanceApp({ app }) {
-    // Additional customization
+    // ...
   }
 }
 ```
 
-## Theme Config Types
-
-For custom theme config types:
+## 主题配置类型
 
 ```ts
-// .vitepress/config.ts
-import { defineConfigWithTheme } from 'vitepress'
-import type { ThemeConfig } from 'my-theme'
+// .vitepress/theme/index.ts
+import type { Theme } from 'vitepress'
 
-export default defineConfigWithTheme<ThemeConfig>({
-  themeConfig: {
-    // Type-checked theme config
+const theme: Theme = {
+  Layout,
+  NotFound,
+  enhanceApp({ app, router, siteData }) {
+    app.provide('theme-config', siteData.themeConfig)
   }
-})
+}
+
+export default theme
 ```
 
-## Key Points
+## 使用插件
 
-- Theme must export `Layout` component
-- `<Content />` renders the markdown content
-- Use `useData()` to access page/site data
-- `enhanceApp` runs on both server and client
-- Check `import.meta.env.SSR` for client-only code
-- Use `extends` to build on existing themes
+```ts
+// .vitepress/theme/index.ts
+import Layout from './Layout.vue'
+import mediumZoom from 'medium-zoom'
+
+export default {
+  Layout,
+  enhanceApp({ app }) {
+    app.mount('#app')
+    
+    // 初始化插件
+    mediumZoom('img:not([no-zoom])')
+  }
+}
+```
+
+## CSS 架构
+
+```css
+/* .vitepress/theme/custom.css */
+:root {
+  /* 颜色变量 */
+  --c-primary: #42b883;
+  --c-text: #2c3e50;
+  --c-bg: #ffffff;
+  
+  /* 间距 */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  
+  /* 字体 */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+.dark {
+  --c-text: #e2e8f0;
+  --c-bg: #1a202c;
+}
+
+/* 基础样式 */
+body {
+  font-family: var(--font-sans);
+  color: var(--c-text);
+  background: var(--c-bg);
+}
+
+/* 组件样式 */
+.btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--c-primary);
+  color: white;
+  border-radius: 4px;
+}
+```
+
+## 关键点
+
+- 自定义主题导出 `Layout`、`NotFound` 和 `enhanceApp`
+- `Content` 组件渲染 markdown 内容
+- 使用 `useData()` 访问页面和站点数据
+- 在 `enhanceApp` 中注册全局组件
+- `NotFound` 组件用于 404 页面
+- 使用 CSS 变量实现主题化和暗色模式
 
 <!--
 Source references:

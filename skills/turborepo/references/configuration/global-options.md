@@ -1,10 +1,10 @@
-# Global Options Reference
+# 全局选项参考
 
-Options that affect all tasks. Full docs: https://turborepo.dev/docs/reference/configuration
+影响所有任务的选项。完整文档：https://turborepo.dev/docs/reference/configuration
 
 ## globalEnv
 
-Environment variables affecting all task hashes.
+影响所有任务哈希的环境变量。
 
 ```json
 {
@@ -12,11 +12,11 @@ Environment variables affecting all task hashes.
 }
 ```
 
-Use for variables that should invalidate all caches when changed.
+用于更改时应使所有缓存失效的变量。
 
 ## globalDependencies
 
-Files that affect all task hashes.
+影响所有任务哈希的文件。
 
 ```json
 {
@@ -24,11 +24,11 @@ Files that affect all task hashes.
 }
 ```
 
-Lockfile is included by default. Add shared configs here.
+默认包含 lockfile。在此添加共享配置。
 
 ## globalPassThroughEnv
 
-Variables available to tasks but not included in hash.
+可用于任务但不包含在哈希中的变量。
 
 ```json
 {
@@ -36,11 +36,11 @@ Variables available to tasks but not included in hash.
 }
 ```
 
-Use for credentials that shouldn't affect cache keys.
+用于不应影响缓存键的凭据。
 
 ## cacheDir
 
-Custom cache location. Default: `node_modules/.cache/turbo`.
+自定义缓存位置。默认：`node_modules/.cache/turbo`。
 
 ```json
 {
@@ -50,39 +50,39 @@ Custom cache location. Default: `node_modules/.cache/turbo`.
 
 ## daemon
 
-**Deprecated**: The daemon is no longer used for `turbo run` and this option will be removed in version 3.0. The daemon is still used by `turbo watch` and the Turborepo LSP.
+**已弃用**：守护进程不再用于 `turbo run`，此选项将在 3.0 版本中删除。守护进程仍由 `turbo watch` 和 Turborepo LSP 使用。
 
 ## envMode
 
-How unspecified env vars are handled. Default: `"strict"`.
+如何处理未指定的环境变量。默认：`"strict"`。
 
 ```json
 {
-  "envMode": "strict"  // Only specified vars available
-  // or
-  "envMode": "loose"   // All vars pass through
+  "envMode": "strict"  // 仅指定的变量可用
+  // 或
+  "envMode": "loose"   // 所有变量通过
 }
 ```
 
-Strict mode catches missing env declarations.
+严格模式捕获缺少的环境声明。
 
 ## ui
 
-Terminal UI mode. Default: `"stream"`.
+终端 UI 模式。默认：`"stream"`。
 
 ```json
 {
-  "ui": "tui"     // Interactive terminal UI
-  // or
-  "ui": "stream"  // Traditional streaming logs
+  "ui": "tui"     // 交互式终端 UI
+  // 或
+  "ui": "stream"  // 传统流式日志
 }
 ```
 
-TUI provides better UX for parallel tasks.
+TUI 为并行任务提供更好的 UX。
 
 ## remoteCache
 
-Configure remote caching.
+配置远程缓存。
 
 ```json
 {
@@ -95,37 +95,37 @@ Configure remote caching.
 }
 ```
 
-| Option          | Default                | Description                                            |
+| 选项          | 默认值                | 描述                                            |
 | --------------- | ---------------------- | ------------------------------------------------------ |
-| `enabled`       | `true`                 | Enable/disable remote caching                          |
-| `signature`     | `false`                | Sign artifacts with `TURBO_REMOTE_CACHE_SIGNATURE_KEY` |
-| `preflight`     | `false`                | Send OPTIONS request before cache requests             |
-| `timeout`       | `30`                   | Timeout in seconds for cache operations                |
-| `uploadTimeout` | `60`                   | Timeout in seconds for uploads                         |
-| `apiUrl`        | `"https://vercel.com"` | Remote cache API endpoint                              |
-| `loginUrl`      | `"https://vercel.com"` | Login endpoint                                         |
-| `teamId`        | -                      | Team ID (must start with `team_`)                      |
-| `teamSlug`      | -                      | Team slug for querystring                              |
+| `enabled`       | `true`                 | 启用/禁用远程缓存                          |
+| `signature`     | `false`                | 使用 `TURBO_REMOTE_CACHE_SIGNATURE_KEY` 签名工件 |
+| `preflight`     | `false`                | 在缓存请求之前发送 OPTIONS 请求             |
+| `timeout`       | `30`                   | 缓存操作的超时时间（秒）                |
+| `uploadTimeout` | `60`                   | 上传的超时时间（秒）                         |
+| `apiUrl`        | `"https://vercel.com"` | 远程缓存 API 端点                              |
+| `loginUrl`      | `"https://vercel.com"` | 登录端点                                         |
+| `teamId`        | -                      | 团队 ID（必须以 `team_` 开头）                      |
+| `teamSlug`      | -                      | 用于查询字符串的团队 slug                              |
 
-See https://turborepo.dev/docs/core-concepts/remote-caching for setup.
+有关设置，请参阅 https://turborepo.dev/docs/core-concepts/remote-caching。
 
 ## concurrency
 
-Default: `"10"`
+默认：`"10"`
 
-Limit parallel task execution.
+限制并行任务执行。
 
 ```json
 {
-  "concurrency": "4"     // Max 4 tasks at once
-  // or
-  "concurrency": "50%"   // 50% of available CPUs
+  "concurrency": "4"     // 最多 4 个任务
+  // 或
+  "concurrency": "50%"   // 50% 的可用 CPU
 }
 ```
 
 ## futureFlags
 
-Enable experimental features that will become default in future versions.
+启用将在未来版本中成为默认值的实验性功能。
 
 ```json
 {
@@ -137,18 +137,18 @@ Enable experimental features that will become default in future versions.
 
 ### `errorsOnlyShowHash`
 
-When using `outputLogs: "errors-only"`, show task hashes on start/completion:
+使用 `outputLogs: "errors-only"` 时，在开始/完成时显示任务哈希：
 
-- Cache miss: `cache miss, executing <hash> (only logging errors)`
-- Cache hit: `cache hit, replaying logs (no errors) <hash>`
+- 缓存未命中：`cache miss, executing <hash> (only logging errors)`
+- 缓存命中：`cache hit, replaying logs (no errors) <hash>`
 
 ### `longerSignatureKey`
 
-Enforce a minimum key length of 32 bytes for `TURBO_REMOTE_CACHE_SIGNATURE_KEY` when `remoteCache.signature` is enabled. Short keys weaken HMAC-SHA256 signatures. Fails the run immediately if the key is too short.
+当 `remoteCache.signature` 启用时，为 `TURBO_REMOTE_CACHE_SIGNATURE_KEY` 强制执行 32 字节的最小密钥长度。短密钥会削弱 HMAC-SHA256 签名。如果密钥太短，立即失败运行。
 
 ## noUpdateNotifier
 
-Disable update notifications when new turbo versions are available.
+当有新的 turbo 版本可用时禁用更新通知。
 
 ```json
 {
@@ -158,7 +158,7 @@ Disable update notifications when new turbo versions are available.
 
 ## dangerouslyDisablePackageManagerCheck
 
-Bypass the `packageManager` field requirement. Use for incremental migration.
+绕过 `packageManager` 字段要求。用于增量迁移。
 
 ```json
 {
@@ -166,22 +166,22 @@ Bypass the `packageManager` field requirement. Use for incremental migration.
 }
 ```
 
-**Warning**: Unstable lockfiles can cause unpredictable behavior.
+**警告**：不稳定的 lockfile 可能导致不可预测的行为。
 
-## Git Worktree Cache Sharing
+## Git Worktree 缓存共享
 
-When working in Git worktrees, Turborepo automatically shares local cache between the main worktree and linked worktrees.
+在 Git worktree 中工作时，Turborepo 自动在主 worktree 和链接的 worktree 之间共享本地缓存。
 
-**How it works:**
+**工作原理：**
 
-- Detects worktree configuration
-- Redirects cache to main worktree's `.turbo/cache`
-- Works alongside Remote Cache
+- 检测 worktree 配置
+- 将缓存重定向到主 worktree 的 `.turbo/cache`
+- 与远程缓存一起工作
 
-**Benefits:**
+**优势：**
 
-- Cache hits across branches
-- Reduced disk usage
-- Faster branch switching
+- 跨分支缓存命中
+- 减少磁盘使用
+- 更快的分支切换
 
-**Disabled by**: Setting explicit `cacheDir` in turbo.json.
+**禁用方式**：在 turbo.json 中设置显式 `cacheDir`。

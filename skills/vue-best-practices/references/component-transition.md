@@ -1,77 +1,77 @@
 ---
-title: Transition Component Best Practices
+title: Transition 组件最佳实践
 impact: MEDIUM
-impactDescription: Transition animates a single element or component; incorrect structure or keys prevent animations
+impactDescription: Transition 为单个元素或组件设置动画;不正确的结构或键会阻止动画
 type: best-practice
 tags: [vue3, transition, animation, performance, keys]
 ---
 
-# Transition Component Best Practices
+# Transition 组件最佳实践
 
-**Impact: MEDIUM** - `<Transition>` animates entering/leaving of a single element or component. It is ideal for toggling UI states, swapping views, or animating one component at a time.
+**影响: MEDIUM** - `<Transition>` 为单个元素或组件的进入/离开设置动画。它非常适合切换 UI 状态、交换视图或一次为一个组件设置动画。
 
-## Task List
+## 任务列表
 
-- Wrap a single element or component inside `<Transition>`
-- Provide a `key` when switching between same element types
-- Use `mode="out-in"` when you need sequential swaps
-- Prefer `transform` and `opacity` for smooth animations
+- 在 `<Transition>` 内包装单个元素或组件
+- 在相同元素类型之间切换时提供 `key`
+- 当您需要顺序交换时使用 `mode="out-in"`
+- 偏好 `transform` 和 `opacity` 以获得平滑动画
 
-## Use Transition for a Single Root Element
+## 对单个根元素使用 Transition
 
-`<Transition>` only supports one direct child. Wrap multiple nodes in a single element or component.
+`<Transition>` 仅支持一个直接子级。将多个节点包装在单个元素或组件中。
 
-**BAD:**
+**错误:**
 ```vue
 <template>
   <Transition name="fade">
-    <h3>Title</h3>
-    <p>Description</p>
+    <h3>标题</h3>
+    <p>描述</p>
   </Transition>
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <template>
   <Transition name="fade">
     <div>
-      <h3>Title</h3>
-      <p>Description</p>
+      <h3>标题</h3>
+      <p>描述</p>
     </div>
   </Transition>
 </template>
 ```
 
-## Force Transitions Between Same Element Types
+## 在相同元素类型之间强制过渡
 
-Vue reuses the same DOM element when the tag type does not change. Add `key` so Vue treats it as a new element and triggers enter/leave.
+当标签类型不更改时,Vue 重用相同的 DOM 元素。添加 `key` 以便 Vue 将其视为新元素并触发进入/离开。
 
-**BAD:**
+**错误:**
 ```vue
 <template>
   <Transition name="fade">
-    <p v-if="isActive">Active</p>
-    <p v-else>Inactive</p>
+    <p v-if="isActive">活动</p>
+    <p v-else>不活动</p>
   </Transition>
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <template>
   <Transition name="fade" mode="out-in">
-    <p v-if="isActive" key="active">Active</p>
-    <p v-else key="inactive">Inactive</p>
+    <p v-if="isActive" key="active">活动</p>
+    <p v-else key="inactive">不活动</p>
   </Transition>
 </template>
 ```
 
-## Use `mode` to Avoid Overlap During Swaps
+## 使用 `mode` 避免交换期间重叠
 
-When swapping components or views, use `mode="out-in"` to prevent both from being visible at the same time.
+当交换组件或视图时,使用 `mode="out-in"` 以防止两者同时可见。
 
-**BAD:**
+**错误:**
 ```vue
 <template>
   <Transition name="fade">
@@ -80,7 +80,7 @@ When swapping components or views, use `mode="out-in"` to prevent both from bein
 </template>
 ```
 
-**GOOD:**
+**正确:**
 ```vue
 <template>
   <Transition name="fade" mode="out-in">
@@ -89,11 +89,11 @@ When swapping components or views, use `mode="out-in"` to prevent both from bein
 </template>
 ```
 
-## Animate `transform` and `opacity` for Performance
+## 为性能动画 `transform` 和 `opacity`
 
-Avoid layout-triggering properties such as `height`, `margin`, or `top`. Use `transform` and `opacity` for smooth, GPU-friendly transitions.
+避免触发布局的属性,如 `height`、`margin` 或 `top`。使用 `transform` 和 `opacity` 进行平滑、GPU 友好的过渡。
 
-**BAD:**
+**错误:**
 ```css
 .slide-enter-active,
 .slide-leave-active {
@@ -106,7 +106,7 @@ Avoid layout-triggering properties such as `height`, `margin`, or `top`. Use `tr
 }
 ```
 
-**GOOD:**
+**正确:**
 ```css
 .slide-enter-active,
 .slide-leave-active {

@@ -1,53 +1,53 @@
 ---
 name: test-context-fixtures
-description: Test context, custom fixtures with test.extend
+description: 测试上下文,使用 test.extend 的自定义 fixtures
 ---
 
-# Test Context & Fixtures
+# 测试上下文 & Fixtures
 
-## Built-in Context
+## 内置上下文
 
-Every test receives context as first argument:
+每个测试接收上下文作为第一个参数:
 
 ```ts
 test('context', ({ task, expect, skip }) => {
-  console.log(task.name)  // Test name
-  expect(1).toBe(1)       // Context-bound expect
-  skip()                  // Skip test dynamically
+  console.log(task.name)  // 测试名称
+  expect(1).toBe(1)       // 上下文绑定的 expect
+  skip()                  // 动态跳过测试
 })
 ```
 
-### Context Properties
+### 上下文属性
 
-- `task` - Test metadata (name, file, etc.)
-- `expect` - Expect bound to this test (important for concurrent tests)
-- `skip(condition?, message?)` - Skip the test
-- `onTestFinished(fn)` - Cleanup after test
-- `onTestFailed(fn)` - Run on failure only
+- `task` - 测试元数据(名称、文件等)
+- `expect` - 绑定到此测试的 expect(对并发测试很重要)
+- `skip(condition?, message?)` - 跳过测试
+- `onTestFinished(fn)` - 测试后清理
+- `onTestFailed(fn)` - 仅在失败时运行
 
-## Custom Fixtures with test.extend
+## 使用 test.extend 的自定义 Fixtures
 
-Create reusable test utilities:
+创建可重用的测试工具:
 
 ```ts
 import { test as base } from 'vitest'
 
-// Define fixture types
+// 定义 fixture 类型
 interface Fixtures {
   db: Database
   user: User
 }
 
-// Create extended test
+// 创建扩展的测试
 export const test = base.extend<Fixtures>({
-  // Fixture with setup/teardown
+  // 带设置/清理的 fixture
   db: async ({}, use) => {
     const db = await createDatabase()
-    await use(db)           // Provide to test
-    await db.close()        // Cleanup
+    await use(db)           // 提供给测试
+    await db.close()        // 清理
   },
   
-  // Fixture depending on another fixture
+  // 依赖于另一个 fixture 的 fixture
   user: async ({ db }, use) => {
     const user = await db.createUser({ name: 'Test' })
     await use(user)
@@ -56,7 +56,7 @@ export const test = base.extend<Fixtures>({
 })
 ```
 
-Using fixtures:
+使用 fixtures:
 
 ```ts
 test('query user', async ({ db, user }) => {
@@ -65,25 +65,25 @@ test('query user', async ({ db, user }) => {
 })
 ```
 
-## Fixture Initialization
+## Fixture 初始化
 
-Fixtures only initialize when accessed:
+Fixtures 仅在访问时初始化:
 
 ```ts
 const test = base.extend({
   expensive: async ({}, use) => {
-    console.log('initializing')  // Only runs if test uses it
+    console.log('initializing')  // 仅在测试使用时运行
     await use('value')
   },
 })
 
-test('no fixture', () => {})           // expensive not called
-test('uses fixture', ({ expensive }) => {}) // expensive called
+test('no fixture', () => {})           // expensive 未调用
+test('uses fixture', ({ expensive }) => {}) // expensive 被调用
 ```
 
-## Auto Fixtures
+## 自动 Fixtures
 
-Run fixture for every test:
+为每个测试运行 fixture:
 
 ```ts
 const test = base.extend({
@@ -93,16 +93,16 @@ const test = base.extend({
       await use()
       await globalTeardown()
     },
-    { auto: true }  // Always run
+    { auto: true }  // 始终运行
   ],
 })
 ```
 
-## Scoped Fixtures
+## 作用域 Fixtures
 
-### File Scope
+### 文件作用域
 
-Initialize once per file:
+每个文件初始化一次:
 
 ```ts
 const test = base.extend({
@@ -117,9 +117,9 @@ const test = base.extend({
 })
 ```
 
-### Worker Scope
+### 工作器作用域
 
-Initialize once per worker:
+每个工作器初始化一次:
 
 ```ts
 const test = base.extend({
@@ -132,12 +132,12 @@ const test = base.extend({
 })
 ```
 
-## Injected Fixtures (from Config)
+## 注入的 Fixtures(来自配置)
 
-Override fixtures per project:
+每个项目覆盖 fixtures:
 
 ```ts
-// test file
+// 测试文件
 const test = base.extend({
   apiUrl: ['/default', { injected: true }],
 })
@@ -157,9 +157,9 @@ defineConfig({
 })
 ```
 
-## Scoped Values per Suite
+## 每个套件的作用域值
 
-Override fixture for specific suite:
+为特定套件覆盖 fixture:
 
 ```ts
 const test = base.extend({
@@ -179,9 +179,9 @@ test('uses default', ({ environment }) => {
 })
 ```
 
-## Extended Test Hooks
+## 扩展测试钩子
 
-Type-aware hooks with fixtures:
+使用 fixtures 的类型感知钩子:
 
 ```ts
 const test = base.extend<{ db: Database }>({
@@ -192,7 +192,7 @@ const test = base.extend<{ db: Database }>({
   },
 })
 
-// Hooks know about fixtures
+// 钩子知道 fixtures
 test.beforeEach(({ db }) => {
   db.seed()
 })
@@ -202,9 +202,9 @@ test.afterEach(({ db }) => {
 })
 ```
 
-## Composing Fixtures
+## 组合 Fixtures
 
-Extend from another extended test:
+从另一个扩展的测试扩展:
 
 ```ts
 // base-test.ts
@@ -223,14 +223,14 @@ export const test = dbTest.extend<{ admin: User }>({
 })
 ```
 
-## Key Points
+## 关键点
 
-- Use `{ }` destructuring to access fixtures
-- Fixtures are lazy - only initialize when accessed
-- Return cleanup function from fixtures
-- Use `{ auto: true }` for setup fixtures
-- Use `{ scope: 'file' }` for expensive shared resources
-- Fixtures compose - extend from extended tests
+- 使用 `{ }` 解构访问 fixtures
+- Fixtures 是惰性的 - 仅在访问时初始化
+- 从 fixtures 返回清理函数
+- 使用 `{ auto: true }` 进行设置 fixtures
+- 使用 `{ scope: 'file' }` 进行昂贵的共享资源
+- Fixtures 组合 - 从扩展的测试扩展
 
 <!-- 
 Source references:

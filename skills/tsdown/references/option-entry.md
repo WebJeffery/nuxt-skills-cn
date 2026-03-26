@@ -1,29 +1,29 @@
-# Entry Points
+# 入口点
 
-Configure which files to bundle as entry points.
+配置要打包为入口点的文件。
 
-## Overview
+## 概述
 
-Entry points are the starting files for the bundling process. Each entry point generates a separate bundle.
+入口点是打包过程的起始文件。每个入口点生成一个单独的包。
 
-## Usage Patterns
+## 使用模式
 
 ### CLI
 
 ```bash
-# Single entry
+# 单个入口
 tsdown src/index.ts
 
-# Multiple entries
+# 多个入口
 tsdown src/index.ts src/cli.ts
 
-# Glob patterns
+# Glob 模式
 tsdown 'src/*.ts'
 ```
 
-### Config File
+### 配置文件
 
-#### Single Entry
+#### 单个入口
 
 ```ts
 export default defineConfig({
@@ -31,7 +31,7 @@ export default defineConfig({
 })
 ```
 
-#### Multiple Entries (Array)
+#### 多个入口（数组）
 
 ```ts
 export default defineConfig({
@@ -39,7 +39,7 @@ export default defineConfig({
 })
 ```
 
-#### Named Entries (Object)
+#### 命名入口（对象）
 
 ```ts
 export default defineConfig({
@@ -51,16 +51,16 @@ export default defineConfig({
 })
 ```
 
-Output files will match the keys:
+输出文件将与键匹配：
 - `dist/main.mjs`
 - `dist/utils.mjs`
 - `dist/cli.mjs`
 
-## Glob Patterns
+## Glob 模式
 
-Match multiple files dynamically using glob patterns:
+使用 glob 模式动态匹配多个文件：
 
-### All TypeScript Files
+### 所有 TypeScript 文件
 
 ```ts
 export default defineConfig({
@@ -68,7 +68,7 @@ export default defineConfig({
 })
 ```
 
-### Exclude Test Files
+### 排除测试文件
 
 ```ts
 export default defineConfig({
@@ -76,22 +76,22 @@ export default defineConfig({
 })
 ```
 
-### Object Entries with Glob Patterns
+### 使用 Glob 模式的对象入口
 
-Use glob wildcards (`*`) in both keys and values. The `*` in the key acts as a placeholder replaced with the matched file name (without extension):
+在键和值中使用 glob 通配符（`*`）。键中的 `*` 充当占位符，被匹配的文件名（不带扩展名）替换：
 
 ```ts
 export default defineConfig({
   entry: {
-    // Maps src/foo.ts → dist/lib/foo.js, src/bar.ts → dist/lib/bar.js
+    // 映射 src/foo.ts → dist/lib/foo.js, src/bar.ts → dist/lib/bar.js
     'lib/*': 'src/*.ts',
   },
 })
 ```
 
-#### Negation Patterns in Object Entries
+#### 对象入口中的否定模式
 
-Values can be an array with negation patterns (`!`):
+值可以是带有否定模式（`!`）的数组：
 
 ```ts
 export default defineConfig({
@@ -101,7 +101,7 @@ export default defineConfig({
 })
 ```
 
-Multiple positive and negation patterns:
+多个肯定和否定模式：
 
 ```ts
 export default defineConfig({
@@ -116,11 +116,11 @@ export default defineConfig({
 })
 ```
 
-**Warning:** Multiple positive patterns in an array value must share the same base directory.
+**警告：** 数组值中的多个肯定模式必须共享相同的基本目录。
 
-### Mixed Entries
+### 混合入口
 
-Mix strings, glob patterns, and object entries in an array:
+在数组中混合字符串、glob 模式和对象入口：
 
 ```ts
 export default defineConfig({
@@ -133,23 +133,23 @@ export default defineConfig({
 })
 ```
 
-Object entries take precedence when output names conflict.
+当输出名称冲突时，对象入口优先。
 
-### Windows Compatibility
+### Windows 兼容性
 
-Use forward slashes `/` instead of backslashes `\` on Windows:
+在 Windows 上使用正斜杠 `/` 而不是反斜杠 `\`：
 
 ```ts
-// ✅ Correct
+// ✅ 正确
 entry: 'src/utils/*.ts'
 
-// ❌ Wrong on Windows
+// ❌ 在 Windows 上错误
 entry: 'src\\utils\\*.ts'
 ```
 
-## Common Patterns
+## 常见模式
 
-### Library with Main Export
+### 带有主导出的库
 
 ```ts
 export default defineConfig({
@@ -159,7 +159,7 @@ export default defineConfig({
 })
 ```
 
-### Library with Multiple Exports
+### 带有多个导出的库
 
 ```ts
 export default defineConfig({
@@ -173,7 +173,7 @@ export default defineConfig({
 })
 ```
 
-### CLI Tool
+### CLI 工具
 
 ```ts
 export default defineConfig({
@@ -185,9 +185,9 @@ export default defineConfig({
 })
 ```
 
-### Preserve Directory Structure
+### 保留目录结构
 
-Use with `unbundle: true` to keep file structure:
+与 `unbundle: true` 一起使用以保持文件结构：
 
 ```ts
 export default defineConfig({
@@ -198,14 +198,14 @@ export default defineConfig({
 })
 ```
 
-This will output files matching the source structure:
+这将输出与源结构匹配的文件：
 - `src/index.ts` → `dist/index.mjs`
 - `src/utils/helper.ts` → `dist/utils/helper.mjs`
 
-## Tips
+## 提示
 
-1. **Use glob patterns** for multiple related files
-2. **Use object syntax** for custom output names
-3. **Exclude test files** with negation patterns `!**/*.test.ts`
-4. **Combine with unbundle** to preserve directory structure
-5. **Use named entries** for better control over output filenames
+1. **使用 glob 模式**处理多个相关文件
+2. **使用对象语法**自定义输出名称
+3. **使用否定模式**排除测试文件 `!**/*.test.ts`
+4. **与 unbundle 结合**保留目录结构
+5. **使用命名入口**更好地控制输出文件名

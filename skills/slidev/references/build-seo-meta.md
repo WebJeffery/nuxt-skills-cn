@@ -1,43 +1,43 @@
 ---
 name: seo-meta
-description: Configure SEO and social media meta tags
+description: 配置 SEO 和社交媒体元标签
 ---
 
-# SEO Meta Tags
+# SEO 元标签
 
-Configure social media and search engine meta tags.
+配置社交媒体和搜索引擎元标签。
 
-## Configuration
+## 配置
 
 ```yaml
 ---
 seoMeta:
-  ogTitle: Slidev Starter Template
-  ogDescription: Presentation slides for developers
+  ogTitle: Slidev 入门模板
+  ogDescription: 面向开发者的演示文稿幻灯片
   ogImage: https://cover.sli.dev
   ogUrl: https://example.com
   twitterCard: summary_large_image
-  twitterTitle: Slidev Starter Template
-  twitterDescription: Presentation slides for developers
+  twitterTitle: Slidev 入门模板
+  twitterDescription: 面向开发者的演示文稿幻灯片
   twitterImage: https://cover.sli.dev
   twitterSite: username
   twitterUrl: https://example.com
 ---
 ```
 
-## Available Options
+## 可用选项
 
-**Open Graph (Facebook, LinkedIn):**
-- `ogTitle` - Title
-- `ogDescription` - Description
-- `ogImage` - Preview image URL
-- `ogUrl` - Canonical URL
+**Open Graph（Facebook、LinkedIn）：**
+- `ogTitle` - 标题
+- `ogDescription` - 描述
+- `ogImage` - 预览图像 URL
+- `ogUrl` - 规范 URL
 
-**Twitter Card:**
-- `twitterCard` - Card type (summary, summary_large_image)
-- `twitterTitle` - Title
-- `twitterDescription` - Description
-- `twitterImage` - Preview image URL
-- `twitterSite` - Twitter username
+**Twitter Card：**
+- `twitterCard` - 卡片类型（summary、summary_large_image）
+- `twitterTitle` - 标题
+- `twitterDescription` - 描述
+- `twitterImage` - 预览图像 URL
+- `twitterSite` - Twitter 用户名
 
-Powered by unhead.
+由 unhead 提供支持。

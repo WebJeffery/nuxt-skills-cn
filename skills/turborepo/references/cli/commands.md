@@ -1,12 +1,12 @@
-# turbo run Flags Reference
+# turbo run 标志参考
 
-Full docs: https://turborepo.dev/docs/reference/run
+完整文档：https://turborepo.dev/docs/reference/run
 
-## Package Selection
+## 包选择
 
 ### `--filter` / `-F`
 
-Select specific packages to run tasks in.
+选择要在其中运行任务的特定包。
 
 ```bash
 turbo build --filter=web
@@ -14,49 +14,49 @@ turbo build -F=@repo/ui -F=@repo/utils
 turbo test --filter=./apps/*
 ```
 
-See `filtering/` for complete syntax (globs, dependencies, git ranges).
+完整语法（glob、依赖项、git 范围）请参阅 `filtering/`。
 
-### Task Identifier Syntax (v2.2.4+)
+### 任务标识符语法（v2.2.4+）
 
-Run specific package tasks directly:
+直接运行特定包任务：
 
 ```bash
-turbo run web#build              # Build web package
-turbo run web#build docs#lint    # Multiple specific tasks
+turbo run web#build              # 构建 web 包
+turbo run web#build docs#lint    # 多个特定任务
 ```
 
 ### `--affected`
 
-Run only in packages changed since the base branch.
+仅自基础分支以来更改的包中运行。
 
 ```bash
 turbo build --affected
-turbo test --affected --filter=./apps/*  # combine with filter
+turbo test --affected --filter=./apps/*  # 与 filter 结合
 ```
 
-**How it works:**
+**工作原理：**
 
-- Default: compares `main...HEAD`
-- In GitHub Actions: auto-detects `GITHUB_BASE_REF`
-- Override base: `TURBO_SCM_BASE=development turbo build --affected`
-- Override head: `TURBO_SCM_HEAD=your-branch turbo build --affected`
+- 默认：比较 `main...HEAD`
+- 在 GitHub Actions 中：自动检测 `GITHUB_BASE_REF`
+- 覆盖基础：`TURBO_SCM_BASE=development turbo build --affected`
+- 覆盖头部：`TURBO_SCM_HEAD=your-branch turbo build --affected`
 
-**Requires git history** - shallow clones may fall back to running all tasks.
+**需要 git 历史记录** - 浅克隆可能会回退到运行所有任务。
 
-## Execution Control
+## 执行控制
 
 ### `--dry` / `--dry=json`
 
-Preview what would run without executing.
+预览将要运行的内容而不执行。
 
 ```bash
-turbo build --dry          # human-readable
-turbo build --dry=json     # machine-readable
+turbo build --dry          # 人类可读
+turbo build --dry=json     # 机器可读
 ```
 
 ### `--force`
 
-Ignore all cached artifacts, re-run everything.
+忽略所有缓存工件，重新运行所有内容。
 
 ```bash
 turbo build --force
@@ -64,16 +64,16 @@ turbo build --force
 
 ### `--concurrency`
 
-Limit parallel task execution.
+限制并行任务执行。
 
 ```bash
-turbo build --concurrency=4      # max 4 tasks
-turbo build --concurrency=50%    # 50% of CPU cores
+turbo build --concurrency=4      # 最多 4 个任务
+turbo build --concurrency=50%    # 50% 的 CPU 核心
 ```
 
 ### `--continue`
 
-Keep running other tasks when one fails.
+当一个任务失败时，继续运行其他任务。
 
 ```bash
 turbo build test --continue
@@ -81,190 +81,190 @@ turbo build test --continue
 
 ### `--only`
 
-Run only the specified task, skip its dependencies.
+仅运行指定的任务，跳过其依赖项。
 
 ```bash
-turbo build --only  # skip running dependsOn tasks
+turbo build --only  # 跳过运行 dependsOn 任务
 ```
 
-### `--parallel` (Discouraged)
+### `--parallel`（不推荐）
 
-Ignores task graph dependencies, runs all tasks simultaneously. **Avoid using this flag**—if tasks need to run in parallel, configure `dependsOn` correctly instead. Using `--parallel` bypasses Turborepo's dependency graph, which can cause race conditions and incorrect builds.
+忽略任务图依赖项，同时运行所有任务。**避免使用此标志**——如果任务需要并行运行，请正确配置 `dependsOn`。使用 `--parallel` 会绕过 Turborepo 的依赖图，这可能导致竞态条件和错误的构建。
 
-## Cache Control
+## 缓存控制
 
 ### `--cache`
 
-Fine-grained cache behavior control.
+细粒度缓存行为控制。
 
 ```bash
-# Default: read/write both local and remote
+# 默认：读写本地和远程
 turbo build --cache=local:rw,remote:rw
 
-# Read-only local, no remote
+# 只读本地，无远程
 turbo build --cache=local:r,remote:
 
-# Disable local, read-only remote
+# 禁用本地，只读远程
 turbo build --cache=local:,remote:r
 
-# Disable all caching
+# 禁用所有缓存
 turbo build --cache=local:,remote:
 ```
 
-## Output & Debugging
+## 输出和调试
 
 ### `--graph`
 
-Generate task graph visualization.
+生成任务图可视化。
 
 ```bash
-turbo build --graph                # opens in browser
-turbo build --graph=graph.svg      # SVG file
-turbo build --graph=graph.png      # PNG file
-turbo build --graph=graph.json     # JSON data
-turbo build --graph=graph.mermaid  # Mermaid diagram
+turbo build --graph                # 在浏览器中打开
+turbo build --graph=graph.svg      # SVG 文件
+turbo build --graph=graph.png      # PNG 文件
+turbo build --graph=graph.json     # JSON 数据
+turbo build --graph=graph.mermaid  # Mermaid 图表
 ```
 
 ### `--summarize`
 
-Generate JSON run summary for debugging.
+生成 JSON 运行摘要用于调试。
 
 ```bash
 turbo build --summarize
-# creates .turbo/runs/<run-id>.json
+# 创建 .turbo/runs/<run-id>.json
 ```
 
 ### `--output-logs`
 
-Control log output verbosity.
+控制日志输出详细程度。
 
 ```bash
-turbo build --output-logs=full        # all logs (default)
-turbo build --output-logs=new-only    # only cache misses
-turbo build --output-logs=errors-only # only failures
-turbo build --output-logs=none        # silent
+turbo build --output-logs=full        # 所有日志（默认）
+turbo build --output-logs=new-only    # 仅缓存未命中
+turbo build --output-logs=errors-only # 仅失败
+turbo build --output-logs=none        # 静默
 ```
 
 ### `--profile`
 
-Generate Chrome tracing profile for performance analysis.
+生成 Chrome 跟踪配置文件用于性能分析。
 
 ```bash
 turbo build --profile=profile.json
-# open chrome://tracing and load the file
+# 打开 chrome://tracing 并加载文件
 ```
 
 ### `--verbosity` / `-v`
 
-Control turbo's own log level.
+控制 turbo 自己的日志级别。
 
 ```bash
-turbo build -v      # verbose
-turbo build -vv     # more verbose
-turbo build -vvv    # maximum verbosity
+turbo build -v      # 详细
+turbo build -vv     # 更详细
+turbo build -vvv    # 最大详细程度
 ```
 
-## Environment
+## 环境
 
 ### `--env-mode`
 
-Control environment variable handling.
+控制环境变量处理。
 
 ```bash
-turbo build --env-mode=strict  # only declared env vars (default)
-turbo build --env-mode=loose   # include all env vars in hash
+turbo build --env-mode=strict  # 仅声明的环境变量（默认）
+turbo build --env-mode=loose   # 在哈希中包含所有环境变量
 ```
 
 ## UI
 
 ### `--ui`
 
-Select output interface.
+选择输出界面。
 
 ```bash
-turbo build --ui=tui     # interactive terminal UI (default in TTY)
-turbo build --ui=stream  # streaming logs (default in CI)
+turbo build --ui=tui     # 交互式终端 UI（TTY 中默认）
+turbo build --ui=stream  # 流式日志（CI 中默认）
 ```
 
 ---
 
 # turbo-ignore
 
-Full docs: https://turborepo.dev/docs/reference/turbo-ignore
+完整文档：https://turborepo.dev/docs/reference/turbo-ignore
 
-Skip CI work when nothing relevant changed. Useful for skipping container setup.
+当没有相关更改时跳过 CI 工作。对于跳过容器设置很有用。
 
-## Basic Usage
+## 基本用法
 
 ```bash
-# Check if build is needed for current package (uses Automatic Package Scoping)
+# 检查当前包是否需要构建（使用自动包作用域）
 npx turbo-ignore
 
-# Check specific package
+# 检查特定包
 npx turbo-ignore web
 
-# Check specific task
+# 检查特定任务
 npx turbo-ignore --task=test
 ```
 
-## Exit Codes
+## 退出代码
 
-- `0`: No changes detected - skip CI work
-- `1`: Changes detected - proceed with CI
+- `0`：未检测到更改 - 跳过 CI 工作
+- `1`：检测到更改 - 继续执行 CI
 
-## CI Integration Example
+## CI 集成示例
 
 ```yaml
 # GitHub Actions
-- name: Check for changes
+- name: 检查更改
   id: turbo-ignore
   run: npx turbo-ignore web
   continue-on-error: true
 
-- name: Build
-  if: steps.turbo-ignore.outcome == 'failure'  # changes detected
+- name: 构建
+  if: steps.turbo-ignore.outcome == 'failure'  # 检测到更改
   run: pnpm build
 ```
 
-## Comparison Depth
+## 比较深度
 
-Default: compares to parent commit (`HEAD^1`).
+默认：与父提交比较（`HEAD^1`）。
 
 ```bash
-# Compare to specific commit
+# 与特定提交比较
 npx turbo-ignore --fallback=abc123
 
-# Compare to branch
+# 与分支比较
 npx turbo-ignore --fallback=main
 ```
 
 ---
 
-# Other Commands
+# 其他命令
 
 ## turbo boundaries
 
-Check workspace violations (experimental).
+检查工作区违规（实验性）。
 
 ```bash
 turbo boundaries
 ```
 
-See `references/boundaries/` for configuration.
+配置请参阅 `references/boundaries/`。
 
 ## turbo watch
 
-Re-run tasks on file changes.
+在文件更改时重新运行任务。
 
 ```bash
 turbo watch build test
 ```
 
-See `references/watch/` for details.
+详细信息请参阅 `references/watch/`。
 
 ## turbo prune
 
-Create sparse checkout for Docker.
+为 Docker 创建稀疏检出。
 
 ```bash
 turbo prune web --docker
@@ -272,25 +272,25 @@ turbo prune web --docker
 
 ## turbo link / unlink
 
-Connect/disconnect Remote Cache.
+连接/断开远程缓存。
 
 ```bash
-turbo link    # connect to Vercel Remote Cache
-turbo unlink  # disconnect
+turbo link    # 连接到 Vercel 远程缓存
+turbo unlink  # 断开连接
 ```
 
 ## turbo login / logout
 
-Authenticate with Remote Cache provider.
+使用远程缓存提供程序进行身份验证。
 
 ```bash
-turbo login   # authenticate
-turbo logout  # log out
+turbo login   # 身份验证
+turbo logout  # 登出
 ```
 
 ## turbo generate
 
-Scaffold new packages.
+搭建新包。
 
 ```bash
 turbo generate

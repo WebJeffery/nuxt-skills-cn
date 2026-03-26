@@ -1,27 +1,27 @@
 ---
 name: eject-theme
-description: Extract theme to local filesystem for customization
+description: 将主题提取到本地文件系统以进行自定义
 ---
 
-# Eject Theme
+# 弹出主题
 
-Extract installed theme to local filesystem for customization.
+将安装的主题提取到本地文件系统以进行自定义。
 
-## Command
+## 命令
 
 ```bash
 slidev theme eject
 ```
 
-## Result
+## 结果
 
-- Theme files copied to `./theme/`
-- Frontmatter updated to `theme: ./theme`
+- 主题文件复制到 `./theme/`
+- Frontmatter 更新为 `theme: ./theme`
 
-## Use Case
+## 使用场景
 
-- Full control over theme
-- Create new theme based on existing one
-- Customize without modifying node_modules
+- 完全控制主题
+- 基于现有主题创建新主题
+- 在不修改 node_modules 的情况下进行自定义
 
-If creating a derivative theme, credit the original theme and author.
+如果创建衍生主题，请致谢原始主题和作者。
